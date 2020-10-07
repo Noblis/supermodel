@@ -1,0 +1,36 @@
+﻿@using MvcCoreTester.Models
+@model MvcCoreTester.Models.StudentDetailMvcModel
+@*Html.Super().Bs4().CRUDEditHeader()*@
+@*
+    <super-bs4-crud-header-and-footer page-title="Student">
+        <super-bs4-editor-for-model read-only="true"/>
+    </super-bs4-crud-header-and-footer>
+*@
+@*Html.Super().Bs4().CRUDEditFooter()*@
+
+@*await Html.Super().Bs4().CRUDEditAsync()*@
+
+@{
+    var students = new List<StudentDetailMvcModel> { Model, Model, Model, Model };
+}
+
+<super-bs4-crud-list items="students" />
+
+<super-bs4-crud-edit page-title="Student" />
+
+
+@*
+    <form method="post" asp-action="" asp-controller="Home" enctype="multipart/form-data">
+        @* @Model.EditorTemplate(Html)* @
+
+        <super-bs4-editor-for-model />
+        @ *
+            <super-bs4-display-for-model />
+            <super-bs4-hidden-for-model />
+
+            <super-bs4-display for="FirstName" />
+            <super-bs4-hidden for="FirstName" />
+        * @
+        </form>
+*@
+

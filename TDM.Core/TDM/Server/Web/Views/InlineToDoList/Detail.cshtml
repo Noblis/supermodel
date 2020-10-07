@@ -1,0 +1,15 @@
+﻿@using System.Linq
+
+@model ToDoListMvcModel
+
+<super-bs4-crud-edit page-title="@Model.Name.Value" />
+
+<super-bs4-crud-multi-column-children-editable-list 
+    items="@Model.ToDoItems.OrderBy(x => x.Completed.ValueBool).ThenBy(x => x.DueOn.DateTimeValue).ThenBy(x => x.Priority.SelectedEnum).ToList()" 
+    child-controller-type="@typeof(InlineToDoItemController)" 
+    title="To Do Items" 
+    parent-id="@Model.Id"
+    type-of-data-context="typeof(DataContext)"/>
+
+
+

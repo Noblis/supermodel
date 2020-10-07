@@ -1,0 +1,8 @@
+﻿@using MvcCoreTester.DataContexts
+@model MvcCoreTester.Models.StudentDetailMvcModel
+@*<super-bs4-crud-edit />*@
+<super-bs4-crud-edit-in-accordion accordion-id="accordion" panels="Model.Panels" page-title="Student" />
+
+@*<super-bs4-crud-children-list items="Model.Classes" child-controller-type="typeof(ClassController)" parent-id="Model.Id" title="Classes" />*@
+@*<super-bs4-crud-multi-column-children-list-no-actions items="Model.Classes" detail-controller-type="typeof(ClassController)" parent-id="Model.Id" page-title="Classes" />*@
+<super-bs4-crud-multi-column-children-editable-list items="Model.Classes" detail-controller-type="typeof(MvcCoreTester.Controllers.ClassController)" parent-id="Model.Id" page-title="Classes" type-of-data-context="typeof(DataContext)"/>

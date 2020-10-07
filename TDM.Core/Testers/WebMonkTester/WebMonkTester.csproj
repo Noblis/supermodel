@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <PreserveCompilationContext>true</PreserveCompilationContext>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="View.cshtml" />
+    <None Remove="wwwroot\favicon.ico" />
+    <None Remove="wwwroot\site.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\css\site.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\images\favicon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Frameworks\Supermodel.Presentation\WebMonk\Supermodel.Presentation.WebMonk.Bootstrap4\Supermodel.Presentation.WebMonk.Bootstrap4.csproj" />
+    <ProjectReference Include="..\..\Frameworks\WebMonk\WebMonk\WebMonk.csproj" />
+  </ItemGroup>
+
+</Project>

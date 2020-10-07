@@ -1,0 +1,29 @@
+﻿@using MvcCoreTester.Models
+@using Supermodel.Presentation.Mvc.Bootstrap4.Models
+
+@model Supermodel.Presentation.Mvc.Models.Mvc.ListWithCriteria<StudentListMvcModel, MvcCoreTester.Models.StudentSearchMvcModel>
+<super-bs4-new-search-action-link />
+<super-bs4-crud-search-form for="Criteria" page-title="Search Students" reset-button="true" />
+@*<super-bs4-crud-search-form-in-accordion for="Criteria" panels="Model.Criteria.Panels" page-title="Search Students" reset-button="true" />*@
+
+<br />
+<hr />
+<br />
+
+@*<super-bs4-crud-list items="Model" />*@
+@*<super-bs4-crud-multi-column-list-no-actions items="Model" page-title="Students" />*@
+
+<super-bs4-crud-multi-column-list items="Model" page-title="Students" />
+
+<super-bs4-pagination />
+Total Records:
+<super-bs4-pagination-total-records-count />
+<br />
+<br />
+@{
+    var options = new Bs4.SortByOptions { { "First Name", "FirstName" }, { "Last Name", "LastName" } };
+}
+<super-bs4-sort-by-dropdown-form sort-by-options="options" test="ilya" />
+
+
+

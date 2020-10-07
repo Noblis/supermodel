@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <AssemblyName>Supermodel.WebMonk</AssemblyName>
+    <LangVersion>8.0</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Namotion.Reflection" Version="1.0.13" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="System.Collections.Immutable" Version="1.7.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Supermodel.DataAnnotations\Supermodel.DataAnnotations.csproj" />
+    <ProjectReference Include="..\WebMonk.RazorSharp\WebMonk.RazorSharp.csproj" />
+  </ItemGroup>
+
+</Project>

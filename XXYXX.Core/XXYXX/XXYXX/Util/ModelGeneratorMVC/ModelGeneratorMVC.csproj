@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Frameworks\Supermodel.Mobile\Supermodel.Mobile.CodeGen\Supermodel.Mobile.CodeGen.csproj" />
+    <ProjectReference Include="..\..\Server\WebMVC\WebMVC.csproj" />
+  </ItemGroup>
+
+</Project>

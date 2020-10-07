@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <LangVersion>8.0</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Frameworks\Supermodel.Persistence\Supermodel.Persistence.EFCore.SQLite\Supermodel.Persistence.EFCore.SQLite.csproj" />
+    <ProjectReference Include="..\..\..\Frameworks\Supermodel.Persistence\Supermodel.Persistence.EFCore.SQLServer\Supermodel.Persistence.EFCore.SQLServer.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Supermodel\Persistence\CustomRepos\" />
+  </ItemGroup>
+
+</Project>

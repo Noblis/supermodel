@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <LangVersion>8.0</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Web' ">
+    <StartAction>Project</StartAction>
+    <ExternalConsole>true</ExternalConsole>
+    <ApplicationURL>https://localhost:5001;http://localhost:5000</ApplicationURL>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Frameworks\Supermodel.Presentation\Mvc\Supermodel.Presentation.Mvc.Bootstrap4.D3\Supermodel.Presentation.Mvc.Bootstrap4.D3.csproj" />
+    <ProjectReference Include="..\Domain\Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Supermodel.Presentation.Mvc.Bootstrap4">
+      <HintPath>..\..\..\Frameworks\Supermodel.Presentation\Mvc\Supermodel.Presentation.Mvc.Bootstrap4\bin\Debug\netcoreapp3.1\Supermodel.Presentation.Mvc.Bootstrap4.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

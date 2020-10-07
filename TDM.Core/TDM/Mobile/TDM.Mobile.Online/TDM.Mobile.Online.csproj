@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <RootNamespace>TDM.Mobile</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Class1.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="EmbeddedResources\Checked-droid.png" />
+    <None Remove="EmbeddedResources\Checked.png" />
+    <None Remove="EmbeddedResources\List-droid.png" />
+    <None Remove="EmbeddedResources\List.png" />
+    <None Remove="EmbeddedResources\Logo.png" />
+    <None Remove="EmbeddedResources\Unchecked-droid.png" />
+    <None Remove="EmbeddedResources\Unchecked.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="EmbeddedResources\Checked-droid.png" />
+    <EmbeddedResource Include="EmbeddedResources\Checked.png" />
+    <EmbeddedResource Include="EmbeddedResources\List-droid.png" />
+    <EmbeddedResource Include="EmbeddedResources\List.png" />
+    <EmbeddedResource Include="EmbeddedResources\Logo.png" />
+    <EmbeddedResource Include="EmbeddedResources\Unchecked-droid.png" />
+    <EmbeddedResource Include="EmbeddedResources\Unchecked.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Frameworks\Supermodel.Mobile\Supermodel.Mobile.Runtime.Common\Supermodel.Mobile.Runtime.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Pages\" />
+    <Folder Include="Supermodel\Runtime\" />
+  </ItemGroup>
+</Project>

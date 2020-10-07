@@ -1,0 +1,43 @@
+﻿@using Supermodel.Presentation.Mvc.Context
+
+@{ 
+    Layout = "_EmptyLayout"; 
+}
+
+<nav class="navbar navbar-expand-sm navbar-dark bg-primary">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link active" asp-controller="Home" asp-action="Index">Home</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Menu Group
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" asp-controller="ToDoList" asp-action="List" asp-route-smTake="25">My To Do Lists</a>
+                    <a class="dropdown-item" asp-controller="InlineToDoList" asp-action="List" asp-route-smTake="25">My To Do Lists Inline</a>
+                </div>
+            </li>
+        </ul>
+        <ul class="nav-item navbar-nav navbar-right">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Welcome, @RequestHttpContext.CurrentUserLabel
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" asp-controller="TDMUserUpdatePassword" asp-action="Detail" asp-route-id="@RequestHttpContext.CurrentUserId">Change Password</a>
+                    <a class="dropdown-item" asp-controller="Auth" asp-action="LogOut">Sign Out</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
+<br/>
+<div id="body">
+    @RenderBody()
+</div>

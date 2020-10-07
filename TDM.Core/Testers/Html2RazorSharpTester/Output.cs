@@ -1,0 +1,50 @@
+var html = new Tags
+{
+	new Html
+	{
+		new Body
+		{
+			new Link(new { href="https://fonts.googleapis.com/css?family=Tangerine", rel="stylesheet", }),
+			new Center
+			{
+				new Td
+				{
+					new Tr
+					{
+						new Th
+						{
+							new Div(new { style="background-image: url(https://www.esa.int/var/esa/storage/images/19716864-11-eng-GB/ESA_root_pillars.jpg); background-size: 200%;", })
+							{
+								new H1(new { style="color: #ffffff; font-size: 46px; text-align:center", })
+								{
+									new Txt("Look!"),
+								},
+								new P(new { style="color: #ff88ff; font-size: 46px; font-family: Tangerine", })
+								{
+									new B
+									{
+										new Txt("I can do fancy stuff!"),
+									},
+								},
+								new P(new { style="color: #ffffff; font-size: 46px; font-family: Tangerine", })
+								{
+									new B
+									{
+										new Txt("Guess who's sending this email?"),
+									},
+								},
+								new P(new { style="color: #ffffff; font-size: 46px; font-family: Tangerine", })
+								{
+									new B
+									{
+										new Txt("It's not Andrew! It's his console app!"),
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+	},
+};

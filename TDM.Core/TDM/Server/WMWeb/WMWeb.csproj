@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="wwwroot\css\site.css" />
+    <None Remove="wwwroot\favicon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\css\site.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\favicon.ico">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="3.0.62" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Frameworks\Supermodel.Presentation\WebMonk\Supermodel.Presentation.WebMonk.Bootstrap4\Supermodel.Presentation.WebMonk.Bootstrap4.csproj" />
+    <ProjectReference Include="..\..\..\Frameworks\Supermodel.Presentation\WebMonk\Supermodel.Presentation.WebMonk\Supermodel.Presentation.WebMonk.csproj" />
+    <ProjectReference Include="..\..\..\Frameworks\WebMonk\WebMonk\WebMonk.csproj" />
+    <ProjectReference Include="..\WMDomain\WMDomain.csproj" />
+  </ItemGroup>
+
+</Project>

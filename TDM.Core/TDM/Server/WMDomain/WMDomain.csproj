@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Frameworks\Supermodel.Persistence\Supermodel.Persistence.EFCore.SQLite\Supermodel.Persistence.EFCore.SQLite.csproj" />
+    <ProjectReference Include="..\..\..\Frameworks\Supermodel.Persistence\Supermodel.Persistence\Supermodel.Persistence.csproj" />
+    <ProjectReference Include="..\..\..\Frameworks\Supermodel.Presentation\WebMonk\Supermodel.Presentation.WebMonk\Supermodel.Presentation.WebMonk.csproj" />
+  </ItemGroup>
+
+</Project>

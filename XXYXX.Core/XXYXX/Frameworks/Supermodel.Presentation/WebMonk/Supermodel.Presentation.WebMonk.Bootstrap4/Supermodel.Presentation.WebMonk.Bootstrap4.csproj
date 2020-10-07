@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="wwwroot\css\super.bs4.css" />
+    <None Remove="wwwroot\js\bootbox.all.min.js" />
+    <None Remove="wwwroot\js\super.bs4.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\css\super.bs4.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\js\bootbox.all.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\js\super.bs4.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Supermodel.ReflectionMapper\Supermodel.ReflectionMapper.csproj" />
+    <ProjectReference Include="..\Supermodel.Presentation.WebMonk\Supermodel.Presentation.WebMonk.csproj" />
+  </ItemGroup>
+
+</Project>

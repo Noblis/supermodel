@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Class1.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Frameworks\Supermodel.Persistence\Supermodel.Persistence.EFCore.SQLite\Supermodel.Persistence.EFCore.SQLite.csproj" />
+    <ProjectReference Include="..\..\..\Frameworks\Supermodel.Persistence\Supermodel.Persistence.EFCore.SQLServer\Supermodel.Persistence.EFCore.SQLServer.csproj" />
+    <ProjectReference Include="..\..\..\Frameworks\Supermodel.Presentation\Mvc\Supermodel.Presentation.Mvc.Bootstrap4\Supermodel.Presentation.Mvc.Bootstrap4.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Entities\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="3.0.62" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,11 @@
+﻿@using System.Linq
+@model ToDoListMvcModel
+
+<super-bs4-crud-edit page-title="@Model.Name.Value"/>
+
+<super-bs4-crud-children-list 
+    items="@Model.ToDoItems.OrderBy(x => x.Completed.ValueBool).ThenBy(x => x.DueOn.DateTimeValue).ThenBy(x => x.Priority.SelectedEnum).ToList()" 
+    child-controller-type="@typeof(ToDoItemController)" 
+    title="To Do Items" 
+    parent-id="@Model.Id" />
+

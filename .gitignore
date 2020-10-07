@@ -1,0 +1,17 @@
+*.dtbcache
+*.suo
+*.user
+bin/
+obj/
+packages/
+project.lock.json
+sqlite3/
+.vs/*/v*/
+DesignTimeBuild/
+/XXYXX/Server/XXYXX.SQLite.db
+/XXYXX/Server/XXYXX.SQLite.db-shm
+/XXYXX/Server/XXYXX.SQLite.db-wal
+/.vs/TDM/DesignTimeBuild/.dtbcache
+/.vs/TDM.Core/DesignTimeBuild/.dtbcache.v2
+/TDM/Server/TDMCore.SQLite.db
+

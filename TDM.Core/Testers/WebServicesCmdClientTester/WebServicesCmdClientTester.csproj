@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Frameworks\Supermodel.Mobile\Supermodel.Mobile.Runtime.Common\Supermodel.Mobile.Runtime.Common.csproj" />
+    <ProjectReference Include="..\..\Frameworks\Supermodel.Mobile\Supermodel.Mobile.Runtime.NetCore\Supermodel.Mobile.Runtime.NetCore.csproj" />
+    <ProjectReference Include="..\XFormsTester\XFormsTester\XFormsTester.csproj" />
+  </ItemGroup>
+
+</Project>

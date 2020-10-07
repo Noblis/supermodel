@@ -1,0 +1,10 @@
+﻿@model Supermodel.Presentation.Mvc.Models.Mvc.ListWithCriteria<ToDoListMvcModel, ToDoListSearchMvcModel>
+
+<super-bs4-crud-search-form for="Criteria" page-title="Search ToDos" reset-button="true"/>
+
+<h2>My ToDo Lists</h2>
+<super-bs4-pagination />
+<super-bs4-crud-list items="Model" />
+<super-bs4-pagination />
+
+<p> Total Records: <super-bs4-pagination-total-records-count /> </p>

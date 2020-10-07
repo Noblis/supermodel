@@ -1,0 +1,352 @@
+﻿#nullable enable
+
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
+using Supermodel.DataAnnotations;
+using Supermodel.DataAnnotations.Validations.Attributes;
+using Supermodel.Presentation.WebMonk.Extensions;
+using Supermodel.Presentation.WebMonk.Models.Mvc;
+using Supermodel.ReflectionMapper;
+using WebMonk.RazorSharp.HtmlTags;
+using WebMonk.RazorSharp.HtmlTags.BaseTags;
+using WebMonk.Rendering.Views;
+
+namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
+{
+    public static partial class Bs4
+    {
+        public class MvcModel : IMvcModel, IAsyncInit
+        {
+            #region EmbeddedTypes
+            public enum NumberOfColumnsEnum
+            {
+                One = 1, 
+                Two = 2, 
+                Three = 3,
+                Four = 4,
+                Six = 6,
+                Twelve = 12
+            }
+            #endregion
+            
+            #region IAsyncInit implementation
+            [ScaffoldColumn(false), NotRMapped] public virtual bool AsyncInitialized { get; protected set; }
+            public virtual async Task InitAsync()
+            {
+                //If already initialized, do nothing
+                if (AsyncInitialized) return;
+
+                //Run init async for all properties that we will show
+                foreach (var propertyInfo in GetType().GetProperties())
+                {
+                    var typedModel = this.PropertyGet(propertyInfo.Name);
+                    if (typedModel is IAsyncInit iAsyncInitModel && !iAsyncInitModel.AsyncInitialized) 
+                    {
+                        await iAsyncInitModel.InitAsync().ConfigureAwait(false);
+                    }
+                }
+
+                //Mark as initialized
+                AsyncInitialized = true;
+            }
+            #endregion
+            
+            #region Methods
+            public virtual IGenerateHtml EditorTemplate(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue, object? attributes = null)
+            {
+                if (NumberOfColumns != NumberOfColumnsEnum.One) return EditorTemplateForMultipleColumnsInternal(screenOrderFrom, screenOrderTo, attributes, NumberOfColumns);
+
+                var result = new HtmlStack();
+                foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
+                {
+                    //Div 1
+                    var htmlAttrAttribute = propertyInfo.GetAttribute<HtmlAttrAttribute>();
+                    result.AppendAndPush(new Div(new { @class="form-group row" }))
+                            .AddOrUpdateAttr(htmlAttrAttribute?.Attributes)
+                            .AddOrUpdateAttr(attributes);
+
+
+                    //Label
+                    var hideLabelAttribute = propertyInfo.GetAttribute<HideLabelAttribute>();
+                    if (hideLabelAttribute == null)
+                    {
+                        result.AppendAndPush(Render.Label(this, propertyInfo.Name, null, new { @class=ScaffoldingSettings.EditorLabelCssClass }));
+                        if (!propertyInfo.HasAttribute<NoRequiredLabelAttribute>())
+                        {
+                            if (propertyInfo.HasAttribute<RequiredAttribute>() || propertyInfo.HasAttribute<ForceRequiredLabelAttribute>()) 
+                            {
+                                result.Append(new Tags
+                                { 
+                                    new Sup(null, true)
+                                    {
+                                        new Em(new { @class=$"text-danger font-weight-bold {ScaffoldingSettings.RequiredAsteriskCssClass}" }, true){ new Txt("*", true)}
+                                    }
+                                });
+                            }
+                        }
+                        result.Pop<Label>();
+                    }
+                    else
+                    {
+                        if (hideLabelAttribute.KeepLabelSpace) result.Append(new Div(new { @class=ScaffoldingSettings.EditorLabelCssClass}));
+                    }
+                    
+                    //Div 2
+                    if (hideLabelAttribute == null || hideLabelAttribute.KeepLabelSpace) result.AppendAndPush(new Div( new { @class="col-sm-10" } ));
+                    else result.AppendAndPush(new Div( new { @class="col-sm-12" } ));
+
+                    //Value
+                    if (!propertyInfo.HasAttribute<DisplayOnlyAttribute>())
+                    {
+                        result.Append(Render.Editor(this, propertyInfo.Name, new { @class="form-control" } ));
+                        result.Append(Render.ValidationMessage(this, propertyInfo.Name, new { @class=ScaffoldingSettings.ValidationErrorCssClass }, true));
+                    }
+                    else
+                    {
+                        result.Append(new Tags 
+                        { 
+                            new Span(new { @class=ScaffoldingSettings.DisplayCssClass })
+                            {
+                                Render.Display(this, propertyInfo.Name)
+                            }
+                        });
+                    }
+
+                    result.Pop<Div>(); //close Div 2
+                    result.Pop<Div>(); //close Div 1
+                }
+                return result; 
+            }
+            public virtual IGenerateHtml DisplayTemplate(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue, object? attributes = null)
+            {
+                if (NumberOfColumns != NumberOfColumnsEnum.One) return DisplayTemplateForMultipleColumnsInternal(screenOrderFrom, screenOrderTo, attributes, NumberOfColumns);
+                
+                var result = new HtmlStack();
+                foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
+                {
+                    //Div 1
+                    var htmlAttrAttribute = propertyInfo.GetAttribute<HtmlAttrAttribute>();
+                    result.AppendAndPush(new Div(new { @class="form-group row" }))
+                        .AddOrUpdateAttr(htmlAttrAttribute?.Attributes)
+                        .AddOrUpdateAttr(attributes);
+
+                    //Label
+                    var hideLabelAttribute = propertyInfo.GetAttribute<HideLabelAttribute>();
+                    if (hideLabelAttribute == null)
+                    {
+                        result.AppendAndPush(Render.Label(this, propertyInfo.Name, null, new { @class=ScaffoldingSettings.DisplayLabelCssClass }));
+                        if (!propertyInfo.HasAttribute<NoRequiredLabelAttribute>())
+                        {
+                            if (propertyInfo.HasAttribute<RequiredAttribute>() || propertyInfo.HasAttribute<ForceRequiredLabelAttribute>()) 
+                            {
+                                result.Append(new Tags
+                                { 
+                                    new Sup(null, true)
+                                    {
+                                        new Em(new { @class=$"text-danger font-weight-bold {ScaffoldingSettings.RequiredAsteriskCssClass}" }, true){ new Txt("*", true)}
+                                    }
+                                });
+                            }
+                        }
+                        result.Pop<Label>();
+                    }
+                    else
+                    {
+                        if (hideLabelAttribute.KeepLabelSpace) result.Append(new Div(new { @class=ScaffoldingSettings.EditorLabelCssClass}));
+                    }
+                    
+                    //Div 2
+                    if (hideLabelAttribute == null || hideLabelAttribute.KeepLabelSpace) result.AppendAndPush(new Div( new { @class="col-sm-10" } ));
+                    else result.AppendAndPush(new Div( new { @class="col-sm-12" } ));
+
+                    //Value
+                    result.Append(new Tags 
+                    { 
+                        new Span(new { @class=ScaffoldingSettings.DisplayCssClass })
+                        {
+                            Render.Display(this, propertyInfo.Name)
+                        }
+                    });
+                    
+                    result.Pop<Div>(); //close Div 2
+                    result.Pop<Div>(); //close Div 1
+                }
+                return result;   
+            }
+            public virtual IGenerateHtml HiddenTemplate(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue, object? attributes = null)
+            {
+                var tags = new Tags();
+                foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
+                {
+                    var hiddenTags = Render.Hidden(this, propertyInfo.Name);
+                    foreach (var tag in hiddenTags.GetTagsInOrder().Where(x => x.Name == "Input" && x.Attributes.KeyExistsAndEqualsTo("type", "hidden")))
+                    {
+                        var htmlAttrAttribute = propertyInfo.GetAttribute<HtmlAttrAttribute>();
+                        tag.AddOrUpdateAttr(htmlAttrAttribute?.Attributes);
+                        tag.AddOrUpdateAttr(attributes);
+                    }
+                    tags.Add(hiddenTags);
+                }
+                return tags; 
+            }
+            
+            protected virtual IGenerateHtml EditorTemplateForMultipleColumnsInternal(int screenOrderFrom, int screenOrderTo, object? attributes, NumberOfColumnsEnum numberOfColumns)
+            {
+                var maxColumns = (int)numberOfColumns;
+                var currentColumn = 1;
+                
+                var result = new HtmlStack();
+                foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
+                {
+                    //If this is a beginning of a row
+                    if (currentColumn == 1) result.AppendAndPush(new Div(new { @class="form-row"}));
+
+                    //Div
+                    var htmlAttrAttribute = propertyInfo.GetAttribute<HtmlAttrAttribute>();
+                    result.AppendAndPush(new Div(new { @class=$"form-group col-md-{12/maxColumns}" } ))
+                        .AddOrUpdateAttr(htmlAttrAttribute?.Attributes)
+                        .AddOrUpdateAttr(attributes);
+
+                    //Label
+                    var hideLabelAttribute = propertyInfo.GetAttribute<HideLabelAttribute>();
+                    if (hideLabelAttribute == null)
+                    {
+                        result.AppendAndPush(Render.Label(this, propertyInfo.Name, null, new { @class=ScaffoldingSettings.EditorMultiColumnLabelCssClass }));
+                        if (!propertyInfo.HasAttribute<NoRequiredLabelAttribute>())
+                        {
+                            if (propertyInfo.HasAttribute<RequiredAttribute>() || propertyInfo.HasAttribute<ForceRequiredLabelAttribute>()) 
+                            {
+                                result.Append(new Tags
+                                { 
+                                    new Sup(null, true)
+                                    {
+                                        new Em(new { @class=$"text-danger font-weight-bold {ScaffoldingSettings.RequiredAsteriskCssClass}" }, true){ new Txt("*", true)}
+                                    }
+                                });
+                            }
+                        }
+                        result.Pop<Label>();
+                    }
+                    else
+                    {
+                        if (hideLabelAttribute.KeepLabelSpace) result.Append(new Div(new { @class=ScaffoldingSettings.EditorMultiColumnLabelCssClass}));
+                    }                    
+                    
+                    //Value
+                    if (!propertyInfo.HasAttribute<DisplayOnlyAttribute>())
+                    {
+                        result.Append(Render.Editor(this, propertyInfo.Name));
+                        result.Append(Render.ValidationMessage(this, propertyInfo.Name, new { @class=ScaffoldingSettings.ValidationErrorCssClass }, true));
+                    }
+                    else
+                    {
+                        result.Append(new Tags 
+                        { 
+                            new Span(new { @class=ScaffoldingSettings.MultiColumnDisplayCssClass })
+                            {
+                                Render.Display(this, propertyInfo.Name)
+                            }
+                        });
+                    }
+                    
+                    result.Pop<Div>(); //close Div
+
+                    //if this is an ending of a row
+                    if (currentColumn == maxColumns)
+                    {
+                        currentColumn = 1;
+                        result.Pop<Div>();
+                    }
+                    else
+                    {
+                        currentColumn++;
+                    }
+                }
+                if (currentColumn != 1) result.Pop<Div>();
+
+                return result;                 
+            }
+            protected virtual IGenerateHtml DisplayTemplateForMultipleColumnsInternal(int screenOrderFrom, int screenOrderTo, object? attributes, NumberOfColumnsEnum numberOfColumns)
+            {
+                var maxColumns = (int)numberOfColumns;
+                var currentColumn = 1;
+                
+                var result = new HtmlStack();
+                foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
+                {
+                    //If this is a beginning of a row
+                    if (currentColumn == 1) result.AppendAndPush(new Div(new { @class="form-row"}));
+
+                    //Div
+                    var htmlAttrAttribute = propertyInfo.GetAttribute<HtmlAttrAttribute>();
+                    result.AppendAndPush(new Div(new { @class=$"form-group col-md-{12/maxColumns}" } ))
+                        .AddOrUpdateAttr(htmlAttrAttribute?.Attributes)
+                        .AddOrUpdateAttr(attributes);
+
+                    //Label
+                    var hideLabelAttribute = propertyInfo.GetAttribute<HideLabelAttribute>();
+                    if (hideLabelAttribute == null)
+                    {
+                        result.AppendAndPush(Render.Label(this, propertyInfo.Name, null, new { @class=ScaffoldingSettings.DisplayMultiColumnLabelCssClass }));
+                        if (!propertyInfo.HasAttribute<NoRequiredLabelAttribute>())
+                        {
+                            if (propertyInfo.HasAttribute<RequiredAttribute>() || propertyInfo.HasAttribute<ForceRequiredLabelAttribute>()) 
+                            {
+                                result.Append(new Tags
+                                { 
+                                    new Sup(null, true)
+                                    {
+                                        new Em(new { @class=$"text-danger font-weight-bold {ScaffoldingSettings.RequiredAsteriskCssClass}" }, true){ new Txt("*", true)}
+                                    }
+                                });
+                            }
+                        }
+                        result.Pop<Label>();
+                    }
+                    else
+                    {
+                        if (hideLabelAttribute.KeepLabelSpace) result.Append(new Div(new { @class=ScaffoldingSettings.DisplayMultiColumnLabelCssClass}));
+                    }   
+
+                    //Value
+                    result.Append(new Tags 
+                    { 
+                        new Span(new { @class=ScaffoldingSettings.MultiColumnDisplayCssClass })
+                        {
+                            Render.Display(this, propertyInfo.Name)
+                        }
+                    });
+                    
+                    result.Pop<Div>(); //close Div
+
+                    //if this is an ending of a row
+                    if (currentColumn == maxColumns)
+                    {
+                        currentColumn = 1;
+                        result.Pop<Div>();
+                    }
+                    else
+                    {
+                        currentColumn++;
+                    }
+                }
+                if (currentColumn != 1) result.Pop<Div>();
+
+                return result;                   
+            }
+
+            protected virtual IEnumerable<PropertyInfo> GetDetailPropertyInfosInOrder(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
+            {
+                return GetType().GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo);
+            }
+            #endregion
+
+            #region Properties
+            [ScaffoldColumn(false), NotRMapped] public virtual NumberOfColumnsEnum NumberOfColumns => NumberOfColumnsEnum.One;
+            #endregion
+        }
+    }
+}
