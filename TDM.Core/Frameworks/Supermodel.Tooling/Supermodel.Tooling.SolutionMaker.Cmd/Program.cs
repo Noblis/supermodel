@@ -7,9 +7,9 @@ namespace Supermodel.Tooling.SolutionMaker.Cmd
         static void Main()
         {
             //Un-comment and run this once to refresh the solution zip
-            SolutionMaker.CreateSnapshot(@"..\..\..\..\..\..\..\XXYXX.Core\XXYXX", @"..\..\..\");
-            Console.WriteLine("All done!");
-            return;
+            //SolutionMaker.CreateSnapshot(@"..\..\..\..\..\..\..\XXYXX.Core\XXYXX", @"..\..\..\");
+            //Console.WriteLine("All done!");
+            //return;
 
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.Magenta;

@@ -26,9 +26,11 @@ namespace Supermodel.Tooling.SolutionMaker
             // ReSharper disable once AssignNullToNotNullAttribute
             ZipFile.ExtractToDirectory(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), ZipFileName), path);
 
+            //Adjust for Xamarin.Forms UI vs Native UI
+            AdjustForXamarinFormsUIvsNativeUI(solutionMakerParams.MobileApi, path);
         }
 
-        private static void AdjustForXamarinFormsUIvsNativeUI(MobileApiEnum? mobileApi, string path)
+        private static void AdjustForXamarinFormsUIvsNativeUI(MobileApiEnum mobileApi, string path)
         {
             if (mobileApi == MobileApiEnum.XamarinForms)
             {
@@ -48,8 +50,7 @@ namespace Supermodel.Tooling.SolutionMaker
                 //iOS
                 File.Delete(path + @"\XXYXX\Mobile\XXYXX.iOS\AppDelegate.XamarinForms.cs");
 
-                //Shared
-                //XXYXX.Shared.projitems
+                //Mobile
                 Directory.Delete(path + @"\XXYXX\Mobile\XXYXX.Shared\AppCore", true);
 
                 Directory.Delete(path + @"\XXYXX\Mobile\XXYXX.Mobile\EmbeddedResources", true);

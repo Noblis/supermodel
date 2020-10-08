@@ -1,9 +1,9 @@
 ﻿using Android.App;
 using Android.OS;
 
-namespace XXYXX.Droid
+namespace XXYXX.Mobile.Droid
 {
-    [Activity(Label = "XXYXX.Droid", MainLauncher = true, Icon = "@drawable/icon")]
+    [Activity(Label = "XXYXX.Mobile.Droid", MainLauncher = true, Icon = "@drawable/icon")]
     public class MainActivity : Activity
     {
         protected override void OnCreate(Bundle bundle)
