@@ -35,7 +35,7 @@ namespace Supermodel.Tooling.SolutionMaker
 
         private static void AdjustForWebFramework(WebFrameworkEnum webFramework, string path)
         {
-            var solutionFile = Path.Combine(path, @"\XXYXX.Core.sln");
+            var solutionFile = Path.Combine(path, @"XXYXX.Core.sln");
             var solutionFileContent = File.ReadAllText(solutionFile);
 
             var assemblyName = typeof(SolutionMaker).Assembly.GetName().Name;

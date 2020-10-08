@@ -38,7 +38,7 @@ namespace Supermodel.Tooling.SolutionMaker.Cmd
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.Write(path);
                 Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine(" already exists.\nWould you like to replace it? (y/n)");
+                Console.Write(" already exists.\nWould you like to replace it? (y/n): ");
                 
                 var input = Console.ReadLine();
                 if (input == null) return;
@@ -46,10 +46,13 @@ namespace Supermodel.Tooling.SolutionMaker.Cmd
                 if (input != "y") return;
                 Directory.Delete(Path.Combine(solutionMakerParams.SolutionDirectory, solutionMakerParams.SolutionName), true);
             }
-
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"Generating solution {solutionMakerParams.SolutionName}. Please standby...");
             SolutionMaker.CreateSupermodelShell(solutionMakerParams);
             
             Console.ForegroundColor = ConsoleColor.Green;
+
+            Console.WriteLine($"Solution {solutionMakerParams.SolutionName} generated successfully");
         }
     }
 }
