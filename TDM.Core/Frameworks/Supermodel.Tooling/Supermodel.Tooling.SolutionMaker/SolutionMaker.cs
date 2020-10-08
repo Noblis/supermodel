@@ -41,6 +41,9 @@ namespace Supermodel.Tooling.SolutionMaker
             var webApiDataContextFile = Path.Combine(path, @"XXYXX\Mobile\XXYXX.Mobile\Supermodel\Persistence\XXYXXWebApiDataContext.cs");
             var webApiDataContextFileContent = File.ReadAllText(webApiDataContextFile);
 
+            var mobileModelsForRuntimeFile = Path.Combine(path, @"XXYXX\Mobile\XXYXX.Mobile\Supermodel\ModelsForRuntime\Supermodel.Mobile.ModelsForRuntime.cs");
+            var mobileModelsForRuntimeFileContent = File.ReadAllText(mobileModelsForRuntimeFile);
+
             var assemblyName = typeof(SolutionMaker).Assembly.GetName().Name;
 
             if (webFramework == WebFrameworkEnum.WebMonk)
@@ -66,6 +69,8 @@ namespace Supermodel.Tooling.SolutionMaker
 
                 //Modify XXYXXWebApiDataContext.cs to have the right web api endpoint
                 webApiDataContextFileContent.RemoveStrWithCheck(@"//public override string BaseUrl => ""http://10.211.55.9:54208/""; //this one is for MVC");
+
+                //We do not modify runtime models to update RestUrl attribute because WM is the default
             }
             else
             {
@@ -91,8 +96,12 @@ namespace Supermodel.Tooling.SolutionMaker
                 //Modify XXYXXWebApiDataContext.cs to have the right web api endpoint
                 webApiDataContextFileContent.ReplaceStrWithCheck(@"//public override string BaseUrl => ""http://10.211.55.9:54208/""; //this one is for MVC", @"public override string BaseUrl => ""http://10.211.55.9:54208/"";");
                 webApiDataContextFileContent.RemoveStrWithCheck(@"public override string BaseUrl => ""http://10.211.55.9:54208/api/""; //this one is for WM");
+
+                //Modify runtime models to update RestUrl attribute
+                mobileModelsForRuntimeFileContent.ReplaceStrWithCheck(@"[RestUrl(""XXYXXUserUpdatePassword"")]", @"[RestUrl(""XXYXXUserUpdatePasswordApi"")]");
             }
 
+            File.WriteAllText(mobileModelsForRuntimeFile, mobileModelsForRuntimeFileContent);
             File.WriteAllText(webApiDataContextFile, webApiDataContextFileContent);
             File.WriteAllText(solutionFile, solutionFileContent);
         }
