@@ -44,15 +44,16 @@ namespace Supermodel.Tooling.SolutionMaker.Cmd
                 if (input == null) return;
                 input = input.Trim().ToLower();
                 if (input != "y") return;
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine($"Deleting {path}...");
                 Directory.Delete(Path.Combine(solutionMakerParams.SolutionDirectory, solutionMakerParams.SolutionName), true);
             }
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"Generating solution {solutionMakerParams.SolutionName}...");
+            Console.WriteLine($"Generating new solution {solutionMakerParams.SolutionName}...");
             SolutionMaker.CreateSupermodelShell(solutionMakerParams);
             
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"Solution {solutionMakerParams.SolutionName} generated successfully");
+            Console.WriteLine($"Solution {solutionMakerParams.SolutionName} generated successfully!");
         }
     }
 }
