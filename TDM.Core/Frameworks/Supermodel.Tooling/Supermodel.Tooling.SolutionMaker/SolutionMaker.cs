@@ -27,7 +27,7 @@ namespace Supermodel.Tooling.SolutionMaker
             ZipFile.ExtractToDirectory(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), ZipFileName), path);
 
             //Adjust for Xamarin.Forms UI vs Native UI
-            AdjustForXamarinFormsUIvsNativeUI(solutionMakerParams.MobileApi, path);
+            //AdjustForXamarinFormsUIvsNativeUI(solutionMakerParams.MobileApi, path);
         }
 
         private static void AdjustForXamarinFormsUIvsNativeUI(MobileApiEnum mobileApi, string path)
