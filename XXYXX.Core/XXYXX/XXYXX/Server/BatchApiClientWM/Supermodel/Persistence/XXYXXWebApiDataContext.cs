@@ -7,8 +7,7 @@ namespace BatchApiClientWM.Supermodel.Persistence
     public class XXYXXWebApiDataContext: WebApiDataContext
     {
         #region Overrides
-        //public override string BaseUrl => "http://10.211.55.9:54207/"; //this one is for MVC
-        public override string BaseUrl => "http://10.211.55.9:54208/api/"; //this one is for WM
+        public override string BaseUrl => "http://10.211.55.9:54208/api/";
 
         // set timeout to 10 min, so we can debug
         //protected override HttpClient CreateHttpClient()

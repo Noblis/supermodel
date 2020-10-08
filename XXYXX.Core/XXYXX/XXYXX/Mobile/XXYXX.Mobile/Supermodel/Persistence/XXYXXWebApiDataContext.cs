@@ -7,7 +7,7 @@ namespace XXYXX.Mobile.Supermodel.Persistence
     public class XXYXXWebApiDataContext: WebApiDataContext
     {
         #region Overrides
-        //public override string BaseUrl => "http://10.211.55.9:54207/"; //this one is for MVC
+        //public override string BaseUrl => "http://10.211.55.9:54208/"; //this one is for MVC
         public override string BaseUrl => "http://10.211.55.9:54208/api/"; //this one is for WM
 
         // set timeout to 10 min, so we can debug
