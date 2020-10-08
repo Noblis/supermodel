@@ -79,7 +79,7 @@ namespace Supermodel.Tooling.SolutionMaker
                 var fileName = Path.GetFileName(file);
                 if (fileName == "project.lock.json" || fileName == ZipFileName || ext == ".suo" || ext == ".user") 
                 {
-                    Console.WriteLine($"Deleting file: {file}");
+                    Console.WriteLine($"Deleting file: {Path.GetFullPath(file)}");
                     File.Delete(file);
                 }
             }
@@ -89,7 +89,7 @@ namespace Supermodel.Tooling.SolutionMaker
                 var dirName = Path.GetFileName(dir);
                 if (dirName == "bin" || dirName == "obj" || dirName == "packages") 
                 {
-                    Console.WriteLine($"Deleting directory: {dir}");
+                    Console.WriteLine($"Deleting directory: {Path.GetFullPath(dir)}");
                     Directory.Delete(dir, true);
                 }
                 else DeleteWhatWeDoNotNeedForSnapshot(dir);
