@@ -16,8 +16,8 @@ namespace Supermodel.Tooling.SolutionMaker.Cmd
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Supermodel.Core Solution Maker. Version Beta 2.0");
             
-            //var solutionMakerParams = SolutionMakerParams.ReadFromConsole();
             //Console.WriteLine("Please Enter Solution Parameters");
+            //var solutionMakerParams = SolutionMakerParams.ReadFromConsole();
 
             //Comment this out for production, this is to speed up development and incremental testing
             var solutionMakerParams = new SolutionMakerParams
@@ -25,9 +25,10 @@ namespace Supermodel.Tooling.SolutionMaker.Cmd
                 SolutionName = "XYX",
                 SolutionDirectory = @"C:\Users\ilyabasin\Documents\Projects",
                 WebFramework = WebFrameworkEnum.WebMonk,
-                MobileApi = MobileApiEnum.Native,
+                MobileApi = MobileApiEnum.XamarinForms,
                 Database = DatabaseEnum.Sqlite
             };
+            //End of comment out for production
             
             var path = solutionMakerParams.CalculateFullPath();
             if (Directory.Exists(path))

@@ -30,15 +30,15 @@ namespace Supermodel.Tooling.SolutionMaker
             AdjustForMobileApi(solutionMakerParams.MobileApi, path);
 
             //Adjust for WM vs MVC
-            //AdjustForWebFramework(solutionMakerParams.WebFramework, path);
+            AdjustForWebFramework(solutionMakerParams.WebFramework, path);
         }
 
         private static void AdjustForWebFramework(WebFrameworkEnum webFramework, string path)
         {
-            var assemblyName = typeof(SolutionMaker).Assembly.GetName().Name;
-            
             var solutionFile = Path.Combine(path, @"\XXYXX.Core.sln");
             var solutionFileContent = File.ReadAllText(solutionFile);
+
+            var assemblyName = typeof(SolutionMaker).Assembly.GetName().Name;
 
             if (webFramework == WebFrameworkEnum.WebMonk)
             {
