@@ -127,10 +127,20 @@ namespace Supermodel.Tooling.SolutionMaker
                 File.Delete(path + @"\XXYXX\Mobile\XXYXX.Mobile.iOS\AppDelegate.XamarinForms.cs");
 
                 //Mobile
-                Directory.Delete(path + @"\XXYXX\Mobile\XXYXX.Mobile\AppCore", true);
-                Directory.Delete(path + @"\XXYXX\Mobile\XXYXX.Mobile\EmbeddedResources", true);
-                Directory.Delete(path + @"\XXYXX\Mobile\XXYXX.Mobile\Models", true);
-                Directory.Delete(path + @"\XXYXX\Mobile\XXYXX.Mobile\Pages", true);
+                Directory.Delete(Path.Combine(path, @"XXYXX\Mobile\XXYXX.Mobile\AppCore"), true);
+                Directory.Delete(Path.Combine(path, @"XXYXX\Mobile\XXYXX.Mobile\EmbeddedResources"), true);
+                Directory.Delete(Path.Combine(path, @"XXYXX\Mobile\XXYXX.Mobile\Models"), true);
+                Directory.Delete(Path.Combine(path, @"XXYXX\Mobile\XXYXX.Mobile\Pages"), true);
+
+                //Remove icon as embedded resource
+                var assemblyName = typeof(SolutionMaker).Assembly.GetName().Name;
+                var xxyxxMobileProjFile = Path.Combine(path, @"XXYXX\Mobile\XXYXX.Mobile\XXYXX.Mobile.csproj");
+                var xxyxxMobileProjFileContent = File.ReadAllText(xxyxxMobileProjFile);
+                
+                var snippet1 = ReadResourceTextFile($"{assemblyName}.Snippets2Delete.XXYXXMobileProjIfNativeAPI.snippet1.txt");
+                xxyxxMobileProjFileContent = xxyxxMobileProjFileContent.RemoveStrWithCheck(snippet1);
+
+                File.WriteAllText(xxyxxMobileProjFile, xxyxxMobileProjFileContent);
             }
         }
         

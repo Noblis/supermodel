@@ -17,6 +17,11 @@
     <None Remove="Snippets2Delete\SolutionIfWMSelected\snippet4.txt" />
     <None Remove="Snippets2Delete\SolutionIfWMSelected\snippet5.txt" />
     <None Remove="Snippets2Delete\SolutionIfWMSelected\snippet6.txt" />
+    <None Remove="Snippets2Delete\XXYXXMobileProjIfNativeAPI\snippet1.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Snippets2Delete\XXYXXMobileProjIfNativeAPI\snippet1.txt" />
   </ItemGroup>
 
   <ItemGroup>
