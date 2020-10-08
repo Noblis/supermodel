@@ -30,7 +30,7 @@ namespace Supermodel.Tooling.SolutionMaker
             AdjustForXamarinFormsUIvsNativeUI(solutionMakerParams.MobileApi, path);
 
             //Adjust for WM vs MVC
-            AdjustForWMvsMvc(solutionMakerParams.WebFramework, path);
+            //AdjustForWMvsMvc(solutionMakerParams.WebFramework, path);
         }
 
         private static void AdjustForWMvsMvc(WebFrameworkEnum webFramework, string path)
@@ -76,137 +76,137 @@ namespace Supermodel.Tooling.SolutionMaker
             }
         }
         
-        private static void RemoveProjectsNotNeeded(string path, bool ios, bool droid, bool uwp, bool webTBS, bool webJQM, bool web, bool cmd)
-        {
-            var solutionFile = path + @"\XXYXX.sln";
-            var solutionFileContent = File.ReadAllText(solutionFile);
+        //private static void RemoveProjectsNotNeeded(string path, bool ios, bool droid, bool uwp, bool webTBS, bool webJQM, bool web, bool cmd)
+        //{
+        //    var solutionFile = path + @"\XXYXX.sln";
+        //    var solutionFileContent = File.ReadAllText(solutionFile);
 
-            var userFile = path + @"\XXYXX\Server\Domain\Entities\XXYXXUser.cs";
-            var userFileContent = File.ReadAllText(userFile);
+        //    var userFile = path + @"\XXYXX\Server\Domain\Entities\XXYXXUser.cs";
+        //    var userFileContent = File.ReadAllText(userFile);
 
-            var assemblyName = typeof(SolutionMaker).Assembly.GetName().Name;
+        //    var assemblyName = typeof(SolutionMaker).Assembly.GetName().Name;
 
-            if (!ios)
-            {
-                var snippet1 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.iOS.snippet1.txt");
-                var snippet2 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.iOS.snippet2.txt");
-                var snippet3 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.iOS.snippet3.txt");
-                var snippet4 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.iOS.snippet4.txt");
-                solutionFileContent = solutionFileContent
-                    .RemoveStrWithCheck(snippet1)
-                    .RemoveStrWithCheck(snippet2)
-                    .RemoveStrWithCheck(snippet3)
-                    .RemoveStrWithCheck(snippet4);
-                Directory.Delete(path + @"\XXYXX\Mobile\XXYXX.iOS", true);
-            }
+        //    if (!ios)
+        //    {
+        //        var snippet1 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.iOS.snippet1.txt");
+        //        var snippet2 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.iOS.snippet2.txt");
+        //        var snippet3 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.iOS.snippet3.txt");
+        //        var snippet4 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.iOS.snippet4.txt");
+        //        solutionFileContent = solutionFileContent
+        //            .RemoveStrWithCheck(snippet1)
+        //            .RemoveStrWithCheck(snippet2)
+        //            .RemoveStrWithCheck(snippet3)
+        //            .RemoveStrWithCheck(snippet4);
+        //        Directory.Delete(path + @"\XXYXX\Mobile\XXYXX.iOS", true);
+        //    }
 
-            if (!droid)
-            {
-                var snippet1 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.Droid.snippet1.txt");
-                var snippet2 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.Droid.snippet2.txt");
-                var snippet3 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.Droid.snippet3.txt");
-                var snippet4 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.Droid.snippet4.txt");
-                solutionFileContent = solutionFileContent
-                    .RemoveStrWithCheck(snippet1)
-                    .RemoveStrWithCheck(snippet2)
-                    .RemoveStrWithCheck(snippet3)
-                    .RemoveStrWithCheck(snippet4);
-                Directory.Delete(path + @"\XXYXX\Mobile\XXYXX.Droid", true);
-            }
+        //    if (!droid)
+        //    {
+        //        var snippet1 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.Droid.snippet1.txt");
+        //        var snippet2 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.Droid.snippet2.txt");
+        //        var snippet3 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.Droid.snippet3.txt");
+        //        var snippet4 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.Droid.snippet4.txt");
+        //        solutionFileContent = solutionFileContent
+        //            .RemoveStrWithCheck(snippet1)
+        //            .RemoveStrWithCheck(snippet2)
+        //            .RemoveStrWithCheck(snippet3)
+        //            .RemoveStrWithCheck(snippet4);
+        //        Directory.Delete(path + @"\XXYXX\Mobile\XXYXX.Droid", true);
+        //    }
 
-            if (!uwp)
-            {
-                var snippet1 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.UWP.snippet1.txt");
-                var snippet2 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.UWP.snippet2.txt");
-                var snippet3 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.UWP.snippet3.txt");
-                var snippet4 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.UWP.snippet4.txt");
-                solutionFileContent = solutionFileContent
-                    .RemoveStrWithCheck(snippet1)
-                    .RemoveStrWithCheck(snippet2)
-                    .RemoveStrWithCheck(snippet3)
-                    .RemoveStrWithCheck(snippet4);
-                Directory.Delete(path + @"\XXYXX\Mobile\XXYXX.UWP", true);
-            }
+        //    if (!uwp)
+        //    {
+        //        var snippet1 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.UWP.snippet1.txt");
+        //        var snippet2 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.UWP.snippet2.txt");
+        //        var snippet3 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.UWP.snippet3.txt");
+        //        var snippet4 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.UWP.snippet4.txt");
+        //        solutionFileContent = solutionFileContent
+        //            .RemoveStrWithCheck(snippet1)
+        //            .RemoveStrWithCheck(snippet2)
+        //            .RemoveStrWithCheck(snippet3)
+        //            .RemoveStrWithCheck(snippet4);
+        //        Directory.Delete(path + @"\XXYXX\Mobile\XXYXX.UWP", true);
+        //    }
 
-            if (!ios && !droid && !uwp)
-            {
-                var snippet1 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.AllMobile.snippet1.txt");
-                var snippet2 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.AllMobile.snippet2.txt");
-                var snippet3 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.AllMobile.snippet3.txt");
-                var snippet4 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.AllMobile.snippet4.txt");
-                var snippet5 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.AllMobile.snippet5.txt");
-                var snippet6 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.AllMobile.snippet6.txt");
-                solutionFileContent = solutionFileContent
-                    .RemoveStrWithCheck(snippet1)
-                    .RemoveStrWithCheck(snippet2)
-                    .RemoveStrWithCheck(snippet3)
-                    .RemoveStrWithCheck(snippet4)
-                    .RemoveStrWithCheck(snippet5)
-                    .RemoveStrWithCheck(snippet6);
-                Directory.Delete(path + @"\XXYXX\Mobile", true);
-                Directory.Delete(path + @"\XXYXX\Util", true);
-            }
+        //    if (!ios && !droid && !uwp)
+        //    {
+        //        var snippet1 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.AllMobile.snippet1.txt");
+        //        var snippet2 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.AllMobile.snippet2.txt");
+        //        var snippet3 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.AllMobile.snippet3.txt");
+        //        var snippet4 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.AllMobile.snippet4.txt");
+        //        var snippet5 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.AllMobile.snippet5.txt");
+        //        var snippet6 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.AllMobile.snippet6.txt");
+        //        solutionFileContent = solutionFileContent
+        //            .RemoveStrWithCheck(snippet1)
+        //            .RemoveStrWithCheck(snippet2)
+        //            .RemoveStrWithCheck(snippet3)
+        //            .RemoveStrWithCheck(snippet4)
+        //            .RemoveStrWithCheck(snippet5)
+        //            .RemoveStrWithCheck(snippet6);
+        //        Directory.Delete(path + @"\XXYXX\Mobile", true);
+        //        Directory.Delete(path + @"\XXYXX\Util", true);
+        //    }
 
-            if (!webTBS)
-            {
-                var snippet1 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.Web.TBS.snippet1.txt");
-                var snippet2 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.Web.TBS.snippet2.txt");
-                var snippet3 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.Web.TBS.snippet3.txt");
-                solutionFileContent = solutionFileContent
-                    .RemoveStrWithCheck(snippet1)
-                    .RemoveStrWithCheck(snippet2)
-                    .RemoveStrWithCheck(snippet3);
-                Directory.Delete(path + @"\XXYXX\Server\Web.TBS", true);
+        //    if (!webTBS)
+        //    {
+        //        var snippet1 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.Web.TBS.snippet1.txt");
+        //        var snippet2 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.Web.TBS.snippet2.txt");
+        //        var snippet3 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.Web.TBS.snippet3.txt");
+        //        solutionFileContent = solutionFileContent
+        //            .RemoveStrWithCheck(snippet1)
+        //            .RemoveStrWithCheck(snippet2)
+        //            .RemoveStrWithCheck(snippet3);
+        //        Directory.Delete(path + @"\XXYXX\Server\Web.TBS", true);
 
-                var userSnippet = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.Web.TBS.userSnippet.txt");
-                userFileContent = userFileContent.RemoveStrWithCheck(userSnippet);
-            }
+        //        var userSnippet = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.Web.TBS.userSnippet.txt");
+        //        userFileContent = userFileContent.RemoveStrWithCheck(userSnippet);
+        //    }
 
-            if (!webJQM)
-            {
-                var snippet1 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.Web.JQM.snippet1.txt");
-                var snippet2 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.Web.JQM.snippet2.txt");
-                var snippet3 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.Web.JQM.snippet3.txt");
-                solutionFileContent = solutionFileContent
-                    .RemoveStrWithCheck(snippet1)
-                    .RemoveStrWithCheck(snippet2)
-                    .RemoveStrWithCheck(snippet3);
-                Directory.Delete(path + @"\XXYXX\Server\Web.JQM", true);
+        //    if (!webJQM)
+        //    {
+        //        var snippet1 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.Web.JQM.snippet1.txt");
+        //        var snippet2 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.Web.JQM.snippet2.txt");
+        //        var snippet3 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.Web.JQM.snippet3.txt");
+        //        solutionFileContent = solutionFileContent
+        //            .RemoveStrWithCheck(snippet1)
+        //            .RemoveStrWithCheck(snippet2)
+        //            .RemoveStrWithCheck(snippet3);
+        //        Directory.Delete(path + @"\XXYXX\Server\Web.JQM", true);
 
-                var userSnippet = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.Web.JQM.userSnippet.txt");
-                userFileContent = userFileContent.RemoveStrWithCheck(userSnippet);
-            }
+        //        var userSnippet = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.Web.JQM.userSnippet.txt");
+        //        userFileContent = userFileContent.RemoveStrWithCheck(userSnippet);
+        //    }
 
-            if (!web)
-            {
-                var snippet1 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.Web.snippet1.txt");
-                var snippet2 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.Web.snippet2.txt");
-                var snippet3 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.Web.snippet3.txt");
-                solutionFileContent = solutionFileContent
-                    .RemoveStrWithCheck(snippet1)
-                    .RemoveStrWithCheck(snippet2)
-                    .RemoveStrWithCheck(snippet3);
-                Directory.Delete(path + @"\XXYXX\Server\Web", true);
+        //    if (!web)
+        //    {
+        //        var snippet1 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.Web.snippet1.txt");
+        //        var snippet2 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.Web.snippet2.txt");
+        //        var snippet3 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.Web.snippet3.txt");
+        //        solutionFileContent = solutionFileContent
+        //            .RemoveStrWithCheck(snippet1)
+        //            .RemoveStrWithCheck(snippet2)
+        //            .RemoveStrWithCheck(snippet3);
+        //        Directory.Delete(path + @"\XXYXX\Server\Web", true);
 
-                var userSnippet = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.Web.userSnippet.txt");
-                userFileContent = userFileContent.RemoveStrWithCheck(userSnippet);
-            }
+        //        var userSnippet = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.Web.userSnippet.txt");
+        //        userFileContent = userFileContent.RemoveStrWithCheck(userSnippet);
+        //    }
 
-            if (!cmd)
-            {
-                var snippet1 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.Cmd.snippet1.txt");
-                var snippet2 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.Cmd.snippet2.txt");
-                var snippet3 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.Cmd.snippet3.txt");
-                solutionFileContent = solutionFileContent
-                    .RemoveStrWithCheck(snippet1)
-                    .RemoveStrWithCheck(snippet2)
-                    .RemoveStrWithCheck(snippet3);
-                Directory.Delete(path + @"\XXYXX\Server\XXYXX.Cmd", true);
-            }
+        //    if (!cmd)
+        //    {
+        //        var snippet1 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.Cmd.snippet1.txt");
+        //        var snippet2 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.Cmd.snippet2.txt");
+        //        var snippet3 = ReadResourceTextFile($"{assemblyName}.SupermodelCreator.Snippets2Delete.Cmd.snippet3.txt");
+        //        solutionFileContent = solutionFileContent
+        //            .RemoveStrWithCheck(snippet1)
+        //            .RemoveStrWithCheck(snippet2)
+        //            .RemoveStrWithCheck(snippet3);
+        //        Directory.Delete(path + @"\XXYXX\Server\XXYXX.Cmd", true);
+        //    }
 
-            File.WriteAllText(userFile, userFileContent);
-            File.WriteAllText(solutionFile, solutionFileContent);
-        }
+        //    File.WriteAllText(userFile, userFileContent);
+        //    File.WriteAllText(solutionFile, solutionFileContent);
+        //}
         #endregion
 
         #region CreateSnpshot Methods
