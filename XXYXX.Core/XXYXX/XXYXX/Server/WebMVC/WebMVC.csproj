@@ -15,10 +15,4 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="Supermodel.Presentation.Mvc.Bootstrap4">
-      <HintPath>..\..\..\Frameworks\Supermodel.Presentation\Mvc\Supermodel.Presentation.Mvc.Bootstrap4\bin\Debug\netcoreapp3.1\Supermodel.Presentation.Mvc.Bootstrap4.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>
