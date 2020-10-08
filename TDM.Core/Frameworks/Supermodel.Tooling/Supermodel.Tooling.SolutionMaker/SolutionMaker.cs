@@ -64,7 +64,9 @@ namespace Supermodel.Tooling.SolutionMaker
         #region CreateSnpshot Methods
         public static void CreateSnapshot(string projectTemplateDirectory, string? destinationDir = null)
         {
+            Console.WriteLine("Deleting files and directories...");
             DeleteWhatWeDoNotNeedForSnapshot(projectTemplateDirectory);
+            Console.WriteLine("Done Deleting.");
 
             var zipFileNamePath = ZipFileName;
             if (destinationDir != null) zipFileNamePath = Path.Combine(destinationDir, ZipFileName);
@@ -80,7 +82,7 @@ namespace Supermodel.Tooling.SolutionMaker
                 var fileName = Path.GetFileName(file);
                 if (fileName == "project.lock.json" || fileName == ZipFileName || ext == ".suo" || ext == ".user") 
                 {
-                    Console.WriteLine($"Deleting file: {Path.GetFullPath(file)}");
+                    Console.WriteLine(Path.GetFullPath(file));
                     File.Delete(file);
                 }
             }
@@ -90,7 +92,7 @@ namespace Supermodel.Tooling.SolutionMaker
                 var dirName = Path.GetFileName(dir);
                 if (dirName == "bin" || dirName == "obj" || dirName == "packages") 
                 {
-                    Console.WriteLine($"Deleting directory: {Path.GetFullPath(dir)}");
+                    Console.WriteLine(Path.GetFullPath(dir));
                     Directory.Delete(dir, true);
                 }
                 else DeleteWhatWeDoNotNeedForSnapshot(dir);
@@ -169,7 +171,7 @@ namespace Supermodel.Tooling.SolutionMaker
         #region Properties and Contants
         private static Random Random { get; } = new Random();
         private const string Marker = "XXYXX";
-        private const string ZipFileName = "SupermodelSolutionTemplate.XXYXX.zip";
+        public const string ZipFileName = "SupermodelSolutionTemplate.XXYXX.zip";
         #endregion
 
     }
