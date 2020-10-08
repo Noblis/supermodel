@@ -12,6 +12,8 @@ namespace Supermodel.Tooling.SolutionMaker
         MobileApiEnum MobileApi { get; }
 
         DatabaseEnum Database { get; }
+
+        string CalculateFullPath();
         #endregion
     }
 }

@@ -18,7 +18,7 @@ namespace Supermodel.Tooling.SolutionMaker
         public static void CreateSupermodelShell(ISolutionMakerParams solutionMakerParams)
         {
             //Create path
-            var path = Path.Combine(solutionMakerParams.SolutionDirectory, solutionMakerParams.SolutionName);
+            var path = solutionMakerParams.CalculateFullPath();
             
             //Create dir and extract files into it
             if (Directory.Exists(path)) throw new CreatorException($"Unable to create the new Solution.\n\nDirectory '{path}' already exists.");
@@ -27,28 +27,66 @@ namespace Supermodel.Tooling.SolutionMaker
             ZipFile.ExtractToDirectory(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), ZipFileName), path);
 
             //Adjust for Xamarin.Forms UI vs Native UI
-            AdjustForXamarinFormsUIvsNativeUI(solutionMakerParams.MobileApi, path);
+            AdjustForMobileApi(solutionMakerParams.MobileApi, path);
 
             //Adjust for WM vs MVC
-            //AdjustForWMvsMvc(solutionMakerParams.WebFramework, path);
+            //AdjustForWebFramework(solutionMakerParams.WebFramework, path);
         }
 
-        private static void AdjustForWMvsMvc(WebFrameworkEnum webFramework, string path)
+        private static void AdjustForWebFramework(WebFrameworkEnum webFramework, string path)
         {
+            var assemblyName = typeof(SolutionMaker).Assembly.GetName().Name;
+            
             var solutionFile = Path.Combine(path, @"\XXYXX.Core.sln");
             var solutionFileContent = File.ReadAllText(solutionFile);
 
             if (webFramework == WebFrameworkEnum.WebMonk)
             {
+                var snippet1 = ReadResourceTextFile($"{assemblyName}.Snippets2Delete.SolutionIfWMSelected.snippet1.txt");
+                var snippet2 = ReadResourceTextFile($"{assemblyName}.Snippets2Delete.SolutionIfWMSelected.snippet2.txt");
+                var snippet3 = ReadResourceTextFile($"{assemblyName}.Snippets2Delete.SolutionIfWMSelected.snippet3.txt");
+                var snippet4 = ReadResourceTextFile($"{assemblyName}.Snippets2Delete.SolutionIfWMSelected.snippet4.txt");
+                var snippet5 = ReadResourceTextFile($"{assemblyName}.Snippets2Delete.SolutionIfWMSelected.snippet5.txt");
+                var snippet6 = ReadResourceTextFile($"{assemblyName}.Snippets2Delete.SolutionIfWMSelected.snippet6.txt");
+                
+                solutionFileContent = solutionFileContent
+                    .RemoveStrWithCheck(snippet1)
+                    .RemoveStrWithCheck(snippet2)
+                    .RemoveStrWithCheck(snippet3)
+                    .RemoveStrWithCheck(snippet4)
+                    .RemoveStrWithCheck(snippet5)
+                    .RemoveStrWithCheck(snippet6);
 
+                Directory.Delete(path + @"\XXYXX\Server\WebMVC", true);
+                Directory.Delete(path + @"\XXYXX\Server\BatchApiClientMVC", true);
+                Directory.Delete(path + @"\XXYXX\Util\ModelGeneratorMVC", true);
             }
             else
             {
+                var snippet1 = ReadResourceTextFile($"{assemblyName}.Snippets2Delete.SolutionIfMVCSelected.snippet1.txt");
+                var snippet2 = ReadResourceTextFile($"{assemblyName}.Snippets2Delete.SolutionIfMVCSelected.snippet2.txt");
+                var snippet3 = ReadResourceTextFile($"{assemblyName}.Snippets2Delete.SolutionIfMVCSelected.snippet3.txt");
+                var snippet4 = ReadResourceTextFile($"{assemblyName}.Snippets2Delete.SolutionIfMVCSelected.snippet4.txt");
+                var snippet5 = ReadResourceTextFile($"{assemblyName}.Snippets2Delete.SolutionIfMVCSelected.snippet5.txt");
+                var snippet6 = ReadResourceTextFile($"{assemblyName}.Snippets2Delete.SolutionIfMVCSelected.snippet6.txt");
                 
+                solutionFileContent = solutionFileContent
+                    .RemoveStrWithCheck(snippet1)
+                    .RemoveStrWithCheck(snippet2)
+                    .RemoveStrWithCheck(snippet3)
+                    .RemoveStrWithCheck(snippet4)
+                    .RemoveStrWithCheck(snippet5)
+                    .RemoveStrWithCheck(snippet6);
+
+                Directory.Delete(path + @"\XXYXX\Server\WebWM", true);
+                Directory.Delete(path + @"\XXYXX\Server\BatchApiClientWM", true);
+                Directory.Delete(path + @"\XXYXX\Util\ModelGeneratorWM", true);
             }
+
+            File.WriteAllText(solutionFile, solutionFileContent);
         }
 
-        private static void AdjustForXamarinFormsUIvsNativeUI(MobileApiEnum mobileApi, string path)
+        private static void AdjustForMobileApi(MobileApiEnum mobileApi, string path)
         {
             if (mobileApi == MobileApiEnum.XamarinForms)
             {

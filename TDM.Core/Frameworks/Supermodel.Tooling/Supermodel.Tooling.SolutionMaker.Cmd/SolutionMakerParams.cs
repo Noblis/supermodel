@@ -59,6 +59,8 @@ namespace Supermodel.Tooling.SolutionMaker.Cmd
                 Console.WriteLine();
             }
         }
+
+        public string CalculateFullPath() => Path.Combine(SolutionDirectory, SolutionName);
         #endregion
 
         #region Private Helper Methods
