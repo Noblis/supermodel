@@ -38,6 +38,9 @@ namespace Supermodel.Tooling.SolutionMaker
             var solutionFile = Path.Combine(path, @"XXYXX.Core.sln");
             var solutionFileContent = File.ReadAllText(solutionFile);
 
+            var webApiDataContextFile = Path.Combine(path, @"XXYXX\Mobile\XXYXX.Mobile\Supermodel\Persistence\XXYXXWebApiDataContext.cs");
+            var webApiDataContextFileContent = File.ReadAllText(webApiDataContextFile);
+
             var assemblyName = typeof(SolutionMaker).Assembly.GetName().Name;
 
             if (webFramework == WebFrameworkEnum.WebMonk)
@@ -60,6 +63,9 @@ namespace Supermodel.Tooling.SolutionMaker
                 Directory.Delete(path + @"\XXYXX\Server\WebMVC", true);
                 Directory.Delete(path + @"\XXYXX\Server\BatchApiClientMVC", true);
                 Directory.Delete(path + @"\XXYXX\Util\ModelGeneratorMVC", true);
+
+                //Modify XXYXXWebApiDataContext.cs to have the right web api endpoint
+                webApiDataContextFileContent.RemoveStrWithCheck(@"//public override string BaseUrl => ""http://10.211.55.9:54208/""; //this one is for MVC");
             }
             else
             {
@@ -81,8 +87,13 @@ namespace Supermodel.Tooling.SolutionMaker
                 Directory.Delete(path + @"\XXYXX\Server\WebWM", true);
                 Directory.Delete(path + @"\XXYXX\Server\BatchApiClientWM", true);
                 Directory.Delete(path + @"\XXYXX\Util\ModelGeneratorWM", true);
+
+                //Modify XXYXXWebApiDataContext.cs to have the right web api endpoint
+                webApiDataContextFileContent.ReplaceStrWithCheck(@"//public override string BaseUrl => ""http://10.211.55.9:54208/""; //this one is for MVC", @"public override string BaseUrl => ""http://10.211.55.9:54208/"";");
+                webApiDataContextFileContent.RemoveStrWithCheck(@"public override string BaseUrl => ""http://10.211.55.9:54208/api/""; //this one is for WM");
             }
 
+            File.WriteAllText(webApiDataContextFile, webApiDataContextFileContent);
             File.WriteAllText(solutionFile, solutionFileContent);
         }
 

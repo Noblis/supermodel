@@ -14,8 +14,8 @@ namespace ModelGeneratorMVC
             var sb = modelGenerator.GenerateModels();
             var code = sb.ToString();
 
-            File.WriteAllText(@"..\..\..\..\..\Server\BatchApiClientMVC\Supermodel\ModelsForRuntime\Supermodel.Mobile.ModelsForRuntime.cs", code);
-            File.WriteAllText(@"..\..\..\..\..\Mobile\XXYXX.Mobile\Supermodel\ModelsForRuntime\Supermodel.Mobile.ModelsForRuntime.cs", code);
+            File.WriteAllText(@"..\..\..\..\..\Server\BatchApiClientMVC\Supermodel\ModelsForRuntime\Supermodel.Mobile.ModelsForRuntime.MVC.cs", code);
+            File.WriteAllText(@"..\..\..\..\..\Mobile\XXYXX.Mobile\Supermodel\ModelsForRuntime\Supermodel.Mobile.ModelsForRuntime.MVC.cs", code);
 
             Console.WriteLine("All done!");
         }

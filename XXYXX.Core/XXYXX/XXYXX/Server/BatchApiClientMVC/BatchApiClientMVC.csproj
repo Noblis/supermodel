@@ -10,4 +10,8 @@
     <ProjectReference Include="..\..\..\Frameworks\Supermodel.Mobile\Supermodel.Mobile.Runtime.NetCore\Supermodel.Mobile.Runtime.NetCore.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Supermodel\ModelsForRuntime\" />
+  </ItemGroup>
+
 </Project>

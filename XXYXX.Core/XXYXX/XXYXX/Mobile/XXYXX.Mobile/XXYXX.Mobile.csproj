@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <Folder Include="AppCore\" />
+    <Folder Include="Supermodel\ModelsForRuntime\" />
   </ItemGroup>
 
   <ItemGroup>
