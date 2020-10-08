@@ -4,4 +4,22 @@
     <TargetFramework>netstandard2.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Snippets2Delete\SolutionIfWMSelected\snippet1.txt" />
+    <None Remove="Snippets2Delete\SolutionIfWMSelected\snippet2.txt" />
+    <None Remove="Snippets2Delete\SolutionIfWMSelected\snippet3.txt" />
+    <None Remove="Snippets2Delete\SolutionIfWMSelected\snippet4.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Snippets2Delete\SolutionIfWMSelected\snippet1.txt" />
+    <EmbeddedResource Include="Snippets2Delete\SolutionIfWMSelected\snippet2.txt" />
+    <EmbeddedResource Include="Snippets2Delete\SolutionIfWMSelected\snippet3.txt" />
+    <EmbeddedResource Include="Snippets2Delete\SolutionIfWMSelected\snippet4.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Snippets2Delete\SolutionIfMVCSelected\" />
+  </ItemGroup>
+
 </Project>
