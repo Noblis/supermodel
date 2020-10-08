@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace Supermodel.Tooling.SolutionMaker.Cmd
 {
@@ -16,7 +17,19 @@ namespace Supermodel.Tooling.SolutionMaker.Cmd
             Console.WriteLine("Supermodel.Core Solution Maker. Version Beta 2.0");
             Console.WriteLine("Please Enter Solution Parameters");
             
-            var solutionMakerParams = SolutionMakerParams.ReadFromConsole();
+            //var solutionMakerParams = SolutionMakerParams.ReadFromConsole();
+
+            //Comment this out for production, this is to speed up development and incremental testing
+            var solutionMakerParams = new SolutionMakerParams
+            {
+                SolutionName = "XYX",
+                SolutionDirectory = @"C:\Users\ilyabasin\Documents\Projects",
+                WebFramework = WebFrameworkEnum.WebMonk,
+                MobileApi = MobileApiEnum.XamarinForms,
+                Database = DatabaseEnum.Sqlite
+            };
+            Directory.Delete(Path.Combine(solutionMakerParams.SolutionDirectory, solutionMakerParams.SolutionName));
+
             SolutionMaker.CreateSupermodelShell(solutionMakerParams);
         }
     }
