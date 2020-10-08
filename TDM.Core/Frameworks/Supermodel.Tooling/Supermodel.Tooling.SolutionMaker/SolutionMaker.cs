@@ -68,7 +68,7 @@ namespace Supermodel.Tooling.SolutionMaker
                 Directory.Delete(path + @"\XXYXX\Util\ModelGeneratorMVC", true);
 
                 //Modify XXYXXWebApiDataContext.cs to have the right web api endpoint
-                webApiDataContextFileContent.RemoveStrWithCheck(@"//public override string BaseUrl => ""http://10.211.55.9:54208/""; //this one is for MVC");
+                webApiDataContextFileContent = webApiDataContextFileContent.RemoveStrWithCheck(@"//public override string BaseUrl => ""http://10.211.55.9:54208/""; //this one is for MVC");
 
                 //We do not modify runtime models to update RestUrl attribute because WM is the default
             }
@@ -94,11 +94,11 @@ namespace Supermodel.Tooling.SolutionMaker
                 Directory.Delete(path + @"\XXYXX\Util\ModelGeneratorWM", true);
 
                 //Modify XXYXXWebApiDataContext.cs to have the right web api endpoint
-                webApiDataContextFileContent.ReplaceStrWithCheck(@"//public override string BaseUrl => ""http://10.211.55.9:54208/""; //this one is for MVC", @"public override string BaseUrl => ""http://10.211.55.9:54208/"";");
-                webApiDataContextFileContent.RemoveStrWithCheck(@"public override string BaseUrl => ""http://10.211.55.9:54208/api/""; //this one is for WM");
+                webApiDataContextFileContent = webApiDataContextFileContent.ReplaceStrWithCheck(@"//public override string BaseUrl => ""http://10.211.55.9:54208/""; //this one is for MVC", @"public override string BaseUrl => ""http://10.211.55.9:54208/"";");
+                webApiDataContextFileContent = webApiDataContextFileContent.RemoveStrWithCheck(@"public override string BaseUrl => ""http://10.211.55.9:54208/api/""; //this one is for WM");
 
                 //Modify runtime models to update RestUrl attribute
-                mobileModelsForRuntimeFileContent.ReplaceStrWithCheck(@"[RestUrl(""XXYXXUserUpdatePassword"")]", @"[RestUrl(""XXYXXUserUpdatePasswordApi"")]");
+                mobileModelsForRuntimeFileContent = mobileModelsForRuntimeFileContent.ReplaceStrWithCheck(@"[RestUrl(""XXYXXUserUpdatePassword"")]", @"[RestUrl(""XXYXXUserUpdatePasswordApi"")]");
             }
 
             File.WriteAllText(mobileModelsForRuntimeFile, mobileModelsForRuntimeFileContent);
