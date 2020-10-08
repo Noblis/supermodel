@@ -5,16 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="EmbeddedResources\Logo.png" />
-  </ItemGroup>
-
-  <ItemGroup>
     <EmbeddedResource Include="EmbeddedResources\Logo.png" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="AppCore\" />
-    <Folder Include="Supermodel\ModelsForRuntime\" />
   </ItemGroup>
 
   <ItemGroup>
