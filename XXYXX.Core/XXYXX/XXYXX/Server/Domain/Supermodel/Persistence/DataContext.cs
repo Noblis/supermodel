@@ -22,11 +22,11 @@ namespace Domain.Supermodel.Persistence
         #endregion
     }
 
-    //Sqlite in memory db
-    //public class DataContext : EFCoreSQLiteDataContext
+    //Sql Server db
+    //public class DataContext : EFCoreSQLServerDataContext
     //{
     //    #region Constructors
-    //    public DataContext() : base("DataSource=:memory:", new CustomRepoFactory()) { }
+    //    public DataContext() : base(@"Data Source=.\SQL_DEVELOPER; Initial Catalog=XXYXXDb; Trusted_Connection=True", new CustomRepoFactory()) { }
     //    #endregion
 
     //    #region Overrides
@@ -37,11 +37,11 @@ namespace Domain.Supermodel.Persistence
     //    #endregion
     //}
 
-    //Sql Server db
-    //public class DataContext : EFCoreSQLServerDataContext
+    //Sqlite in memory db
+    //public class DataContext : EFCoreSQLiteDataContext
     //{
     //    #region Constructors
-    //    public DataContext() : base(@"Data Source=.\SQL_DEVELOPER; Initial Catalog=XXYXXDb; Trusted_Connection=True", new CustomRepoFactory()) { }
+    //    public DataContext() : base("DataSource=:memory:", new CustomRepoFactory()) { }
     //    #endregion
 
     //    #region Overrides

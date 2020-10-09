@@ -18,6 +18,8 @@
     <None Remove="Snippets2Delete\SolutionIfWMSelected\snippet5.txt" />
     <None Remove="Snippets2Delete\SolutionIfWMSelected\snippet6.txt" />
     <None Remove="Snippets2Delete\XXYXXMobileProjIfNativeAPI\snippet1.txt" />
+    <None Remove="Snippets2Replace\DataContextIfSqlServer\replacement1.txt" />
+    <None Remove="Snippets2Replace\DataContextIfSqlServer\snippet1.txt" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,6 +39,10 @@
     <EmbeddedResource Include="Snippets2Delete\SolutionIfWMSelected\snippet4.txt" />
     <EmbeddedResource Include="Snippets2Delete\SolutionIfWMSelected\snippet5.txt" />
     <EmbeddedResource Include="Snippets2Delete\SolutionIfWMSelected\snippet6.txt" />
+    <EmbeddedResource Include="Snippets2Replace\DataContextIfSqlServer\replacement2.txt" />
+    <EmbeddedResource Include="Snippets2Replace\DataContextIfSqlServer\snippet2.txt" />
+    <EmbeddedResource Include="Snippets2Replace\DataContextIfSqlServer\replacement1.txt" />
+    <EmbeddedResource Include="Snippets2Replace\DataContextIfSqlServer\snippet1.txt" />
   </ItemGroup>
 
 </Project>

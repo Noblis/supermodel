@@ -28,7 +28,7 @@ namespace Supermodel.Tooling.SolutionMaker.Cmd
                     SolutionDirectory = @"C:\Users\ilyabasin\Documents\Projects",
                     WebFramework = WebFrameworkEnum.Mvc,
                     MobileApi = MobileApiEnum.Native,
-                    Database = DatabaseEnum.Sqlite
+                    Database = DatabaseEnum.SqlServer
                 };
                 //End of comment out for production
                 
