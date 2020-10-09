@@ -34,6 +34,12 @@ namespace Supermodel.Tooling.SolutionMaker
 
             //Adjust for Database
             AdjustForDatabase(solutionMakerParams.Database, path);
+
+            //Auto-assign random port
+            var newPort =  Random.Next(41000, 59000);
+
+
+
         }
 
         private static void AdjustForMobileApi(MobileApiEnum mobileApi, string path)
@@ -162,7 +168,8 @@ namespace Supermodel.Tooling.SolutionMaker
 
                 dataContextFileContent = dataContextFileContent
                     .ReplaceStrWithCheck(snippet1, replacement1)
-                    .ReplaceStrWithCheck(snippet2, replacement2);
+                    .ReplaceStrWithCheck(snippet2, replacement2)
+                    .ReplaceStrWithCheck("using Supermodel.Persistence.EFCore.SQLite;", "using Supermodel.Persistence.EFCore.SQLServer;");
 
                 File.WriteAllText(dataContextFile, dataContextFileContent);
             }
@@ -209,6 +216,32 @@ namespace Supermodel.Tooling.SolutionMaker
         #endregion
 
         #region Helper Methods
+        private static void ReplaceInDir(string directory, string oldStr, string newStr)
+        {
+            //Ignore Frameworks directory
+            var directoryName = Path.GetFileName(directory);
+            if (directoryName == "Frameworks") return;
+
+            //Rename dir
+            var newDirectory = directory.Replace(oldStr, newStr);
+            if (directory.Contains(oldStr) && newStr != oldStr) Directory.Move(directory, newDirectory);
+
+            foreach (var file in Directory.GetFiles(newDirectory))
+            {
+                //Replace marker in file contents
+                var fileContents = File.ReadAllText(file);
+                if (fileContents.Contains(oldStr))
+                {
+                    fileContents = fileContents.Replace(oldStr, newStr);
+                    File.WriteAllText(file, fileContents);
+                }
+
+                //Replace marker in file name 
+                if (file.Contains(oldStr) && newStr != oldStr) File.Move(file, file.Replace(oldStr, newStr));
+            }
+
+            foreach (var subDir in Directory.GetDirectories(newDirectory)) ReplaceInDir(subDir, oldStr, newStr);
+        }
         private static string RemoveStrWithCheck(this string me, string str)
         {
             if (!me.Contains(str)) throw new Exception($"RemoveStrWithCheck: '{str.Substring(0, 60)}...' not found. \n" + GetStackTrace());
@@ -278,7 +311,7 @@ namespace Supermodel.Tooling.SolutionMaker
 
         #region Properties and Contants
         private static Random Random { get; } = new Random();
-        private const string Marker = "XXYXX";
+        private const string Marker2 = "XXYXX";
         public const string ZipFileName = "SupermodelSolutionTemplate.XXYXX.zip";
         #endregion
     }
