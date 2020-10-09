@@ -36,28 +36,6 @@ namespace Supermodel.Tooling.SolutionMaker
             AdjustForDatabase(solutionMakerParams.Database, path);
         }
 
-        private static void AdjustForDatabase(DatabaseEnum database, string path)
-        {
-            //Sqlite is the default
-            if (database == DatabaseEnum.SqlServer)
-            {
-                var assemblyName = typeof(SolutionMaker).Assembly.GetName().Name;
-
-                var snippet1 = ReadResourceTextFile($"{assemblyName}.Snippets2Replace.DataContextIfSqlServer.snippet1.txt");
-                var replacement1 = ReadResourceTextFile($"{assemblyName}.Snippets2Replace.DataContextIfSqlServer.replacement1.txt");
-                var snippet2 = ReadResourceTextFile($"{assemblyName}.Snippets2Replace.DataContextIfSqlServer.snippet2.txt");
-                var replacement2 = ReadResourceTextFile($"{assemblyName}.Snippets2Replace.DataContextIfSqlServer.replacement2.txt");
-
-                var dataContextFile = Path.Combine(path, @"XXYXX\Server\Domain\Supermodel\Persistence\DataContext.cs");
-                var dataContextFileContent = File.ReadAllText(dataContextFile);
-
-                dataContextFileContent = dataContextFileContent
-                    .ReplaceStrWithCheck(snippet1, replacement1)
-                    .ReplaceStrWithCheck(snippet2, replacement2);
-
-                File.WriteAllText(dataContextFile, dataContextFileContent);
-            }
-        }
         private static void AdjustForMobileApi(MobileApiEnum mobileApi, string path)
         {
             if (mobileApi == MobileApiEnum.XamarinForms)
@@ -166,6 +144,28 @@ namespace Supermodel.Tooling.SolutionMaker
             File.WriteAllText(mobileModelsForRuntimeFile, mobileModelsForRuntimeFileContent);
             File.WriteAllText(webApiDataContextFile, webApiDataContextFileContent);
             File.WriteAllText(solutionFile, solutionFileContent);
+        }
+        private static void AdjustForDatabase(DatabaseEnum database, string path)
+        {
+            //Sqlite is the default
+            if (database == DatabaseEnum.SqlServer)
+            {
+                var assemblyName = typeof(SolutionMaker).Assembly.GetName().Name;
+
+                var snippet1 = ReadResourceTextFile($"{assemblyName}.Snippets2Replace.DataContextIfSqlServer.snippet1.txt");
+                var replacement1 = ReadResourceTextFile($"{assemblyName}.Snippets2Replace.DataContextIfSqlServer.replacement1.txt");
+                var snippet2 = ReadResourceTextFile($"{assemblyName}.Snippets2Replace.DataContextIfSqlServer.snippet2.txt");
+                var replacement2 = ReadResourceTextFile($"{assemblyName}.Snippets2Replace.DataContextIfSqlServer.replacement2.txt");
+
+                var dataContextFile = Path.Combine(path, @"XXYXX\Server\Domain\Supermodel\Persistence\DataContext.cs");
+                var dataContextFileContent = File.ReadAllText(dataContextFile);
+
+                dataContextFileContent = dataContextFileContent
+                    .ReplaceStrWithCheck(snippet1, replacement1)
+                    .ReplaceStrWithCheck(snippet2, replacement2);
+
+                File.WriteAllText(dataContextFile, dataContextFileContent);
+            }
         }
         #endregion
 
