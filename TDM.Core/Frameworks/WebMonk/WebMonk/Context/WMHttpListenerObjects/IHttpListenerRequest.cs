@@ -30,6 +30,7 @@ namespace WebMonk.Context.WMHttpListenerObjects
         //IAsyncResult BeginGetClientCertificate(AsyncCallback requestCallback, object state);
         //Task<X509Certificate2> GetClientCertificateAsync();
         //int ClientCertificateError { get; }
+        IPEndPoint RemoteEndPoint { get; }
 
         NameValueCollection Headers { get; }
         string HttpMethod { get; }

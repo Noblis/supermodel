@@ -18,6 +18,9 @@ namespace WebMonk.ValueProviders
         #region Methods
         public virtual async Task<IValueProvider> InitAsync(IHttpListenerRequest request)
         {
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+            if (request == null) return this; //had an exception in production where request was somehow null
+
             if (!request.HasEntityBody) return this;
             if (request.ContentType.StartsWith("multipart/mixed")) return this;
 

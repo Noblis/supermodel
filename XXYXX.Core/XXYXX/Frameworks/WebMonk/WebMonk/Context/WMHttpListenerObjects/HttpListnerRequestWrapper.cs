@@ -34,6 +34,7 @@ namespace WebMonk.Context.WMHttpListenerObjects
         public Stream InputStream => Request.InputStream;
         public bool IsSecureConnection => Request.IsSecureConnection;
         public bool HasEntityBody => Request.HasEntityBody;
+        public IPEndPoint RemoteEndPoint => Request.RemoteEndPoint;
         #endregion
         
         #region Properties

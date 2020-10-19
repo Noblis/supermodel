@@ -69,6 +69,8 @@ namespace Supermodel.Presentation.WebMonk.Batch
             buffer = buffer[headerConsumed..];
             HasEntityBody = buffer.Length > 0;
             InputStream = new MemoryStream(buffer);
+
+            RemoteEndPoint = rootRequest.RemoteEndPoint;
         }
         #endregion
 
@@ -88,6 +90,7 @@ namespace Supermodel.Presentation.WebMonk.Batch
         public Stream InputStream { get; set; }
         public bool IsSecureConnection { get; set; }
         public bool HasEntityBody { get; set; }
+        public IPEndPoint RemoteEndPoint { get; set; }
         #endregion
     }
 }

@@ -1,7 +1,48 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Snippets2Delete\SolutionIfMVCSelected\snippet1.txt" />
+    <None Remove="Snippets2Delete\SolutionIfMVCSelected\snippet2.txt" />
+    <None Remove="Snippets2Delete\SolutionIfMVCSelected\snippet3.txt" />
+    <None Remove="Snippets2Delete\SolutionIfMVCSelected\snippet4.txt" />
+    <None Remove="Snippets2Delete\SolutionIfMVCSelected\snippet5.txt" />
+    <None Remove="Snippets2Delete\SolutionIfMVCSelected\snippet6.txt" />
+    <None Remove="Snippets2Delete\SolutionIfWMSelected\snippet1.txt" />
+    <None Remove="Snippets2Delete\SolutionIfWMSelected\snippet2.txt" />
+    <None Remove="Snippets2Delete\SolutionIfWMSelected\snippet3.txt" />
+    <None Remove="Snippets2Delete\SolutionIfWMSelected\snippet4.txt" />
+    <None Remove="Snippets2Delete\SolutionIfWMSelected\snippet5.txt" />
+    <None Remove="Snippets2Delete\SolutionIfWMSelected\snippet6.txt" />
+    <None Remove="Snippets2Delete\XXYXXMobileProjIfNativeAPI\snippet1.txt" />
+    <None Remove="Snippets2Replace\DataContextIfSqlServer\replacement1.txt" />
+    <None Remove="Snippets2Replace\DataContextIfSqlServer\snippet1.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Snippets2Delete\XXYXXMobileProjIfNativeAPI\snippet1.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Snippets2Delete\SolutionIfMVCSelected\snippet1.txt" />
+    <EmbeddedResource Include="Snippets2Delete\SolutionIfMVCSelected\snippet2.txt" />
+    <EmbeddedResource Include="Snippets2Delete\SolutionIfMVCSelected\snippet3.txt" />
+    <EmbeddedResource Include="Snippets2Delete\SolutionIfMVCSelected\snippet4.txt" />
+    <EmbeddedResource Include="Snippets2Delete\SolutionIfMVCSelected\snippet5.txt" />
+    <EmbeddedResource Include="Snippets2Delete\SolutionIfMVCSelected\snippet6.txt" />
+    <EmbeddedResource Include="Snippets2Delete\SolutionIfWMSelected\snippet1.txt" />
+    <EmbeddedResource Include="Snippets2Delete\SolutionIfWMSelected\snippet2.txt" />
+    <EmbeddedResource Include="Snippets2Delete\SolutionIfWMSelected\snippet3.txt" />
+    <EmbeddedResource Include="Snippets2Delete\SolutionIfWMSelected\snippet4.txt" />
+    <EmbeddedResource Include="Snippets2Delete\SolutionIfWMSelected\snippet5.txt" />
+    <EmbeddedResource Include="Snippets2Delete\SolutionIfWMSelected\snippet6.txt" />
+    <EmbeddedResource Include="Snippets2Replace\DataContextIfSqlServer\replacement2.txt" />
+    <EmbeddedResource Include="Snippets2Replace\DataContextIfSqlServer\snippet2.txt" />
+    <EmbeddedResource Include="Snippets2Replace\DataContextIfSqlServer\replacement1.txt" />
+    <EmbeddedResource Include="Snippets2Replace\DataContextIfSqlServer\snippet1.txt" />
+  </ItemGroup>
 
 </Project>
