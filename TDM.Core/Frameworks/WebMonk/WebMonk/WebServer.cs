@@ -10,6 +10,7 @@ using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Supermodel.DataAnnotations.Validations.Attributes;
@@ -228,6 +229,29 @@ namespace WebMonk
                 } 
             
                 var httpListenerContext = await httpContextTask.ConfigureAwait(false);
+                if (httpListenerContext == null) continue;
+                if (httpListenerContext.Request == null)
+                {
+                    //400 Bad Request
+                    try
+                    {
+                        var response = httpListenerContext.Response;
+                        var statusCode = HttpStatusCode.BadRequest;
+                        httpListenerContext.Response.StatusCode = (int)statusCode;
+                        var description = ShowErrorDetails ? "httpListenerContext.Request == null" : null;
+                        var bytes = Encoding.Default.GetBytes(GetErrorHtmlPage(statusCode, description));
+                        await response.OutputStream.WriteAsync(bytes, 0, bytes.Length, cancellationToken).ConfigureAwait(false);
+
+                    }
+                    // ReSharper disable once EmptyGeneralCatchClause
+                    catch (Exception) {} //ignore exceptions
+
+                    try { httpListenerContext.Response.Close(); }
+                    // ReSharper disable once EmptyGeneralCatchClause
+                    catch (Exception) {} //ignore exceptions
+
+                    continue;
+                }
                 var httpListenerContextWrapper = new HttpListenerContextWrapper(httpListenerContext);
                 ProcessHttpRequestAsync(httpListenerContextWrapper, cancellationToken);
             }
