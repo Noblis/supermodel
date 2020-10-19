@@ -53,6 +53,7 @@ namespace Supermodel.Persistence.EFCore.SQLite
                 //this is to make Cmd project point to the same db as web projects
                 var workingPath = Directory.GetCurrentDirectory();
                 if (workingPath.Contains("\\bin\\Debug\\")) return "../../../../"; 
+                if (workingPath.Contains("\\bin\\Release\\")) return "../../../../"; 
                 return "../"; 
             }
         }
