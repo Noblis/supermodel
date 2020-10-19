@@ -4,6 +4,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
@@ -37,9 +38,7 @@ namespace Supermodel.Tooling.SolutionMaker
 
             //Auto-assign random port
             var newPort =  Random.Next(41000, 59000);
-
-
-
+            ReplaceInDir(path, "54208", newPort.ToString(), "SolutionMaker.cs");
         }
 
         private static void AdjustForMobileApi(MobileApiEnum mobileApi, string path)
@@ -216,7 +215,7 @@ namespace Supermodel.Tooling.SolutionMaker
         #endregion
 
         #region Helper Methods
-        private static void ReplaceInDir(string directory, string oldStr, string newStr)
+        private static void ReplaceInDir(string directory, string oldStr, string newStr, params string[]? ignoreFileNames)
         {
             //Ignore Frameworks directory
             var directoryName = Path.GetFileName(directory);
@@ -228,6 +227,9 @@ namespace Supermodel.Tooling.SolutionMaker
 
             foreach (var file in Directory.GetFiles(newDirectory))
             {
+                var fileName = Path.GetFileName(file);
+                if (ignoreFileNames != null && ignoreFileNames.Any(x => x == fileName)) continue;
+                
                 //Replace marker in file contents
                 var fileContents = File.ReadAllText(file);
                 if (fileContents.Contains(oldStr))
@@ -240,7 +242,7 @@ namespace Supermodel.Tooling.SolutionMaker
                 if (file.Contains(oldStr) && newStr != oldStr) File.Move(file, file.Replace(oldStr, newStr));
             }
 
-            foreach (var subDir in Directory.GetDirectories(newDirectory)) ReplaceInDir(subDir, oldStr, newStr);
+            foreach (var subDir in Directory.GetDirectories(newDirectory)) ReplaceInDir(subDir, oldStr, newStr, ignoreFileNames);
         }
         private static string RemoveStrWithCheck(this string me, string str)
         {
