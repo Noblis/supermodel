@@ -1,6 +1,7 @@
 ﻿#nullable enable
 
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
@@ -9,6 +10,7 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace Supermodel.Tooling.SolutionMaker
@@ -45,7 +47,11 @@ namespace Supermodel.Tooling.SolutionMaker
             ReplaceInDir(path, "10.211.55.9", newIP, "SolutionMaker.cs");
 
             //Register MVC with netsh
+            if (solutionMakerParams.WebFramework == WebFrameworkEnum.Mvc) RegisterMvcWithNetsh(path);
 
+            //Update batch files to pause after execution
+            if (solutionMakerParams.WebFramework == WebFrameworkEnum.WebMonk) UpdateBatchFileToPauseAfterExecution(Path.Combine(path, @"XXYXX\Util\ModelGeneratorWM\RegisterSiteWithNetsh.bat"));
+            if (solutionMakerParams.WebFramework == WebFrameworkEnum.Mvc) UpdateBatchFileToPauseAfterExecution(Path.Combine(path, @"XXYXX\Util\ModelGeneratorMVC\RegisterSiteWithNetsh.bat"));
 
 
 
@@ -182,6 +188,47 @@ namespace Supermodel.Tooling.SolutionMaker
 
                 File.WriteAllText(dataContextFile, dataContextFileContent);
             }
+        }
+        private static void RegisterMvcWithNetsh(string path)
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                var batFile = Path.Combine(path, @"XXYXX\Util\ModelGeneratorMVC\RegisterSiteWithNetsh.bat");
+                
+                var info = new ProcessStartInfo("cmd.exe")
+                {
+                    UseShellExecute = true,
+                    Arguments = $"/c \"{batFile}\"",
+                    WindowStyle = ProcessWindowStyle.Hidden,
+                    CreateNoWindow = true,
+                    Verb = "runas"
+                };
+                
+                try
+                {
+                    var process = Process.Start(info);
+                    if (process == null) throw new Exception("batch process after starting is null");
+                    process.WaitForExit();
+                    if (process.ExitCode != 0) throw new Exception($"returned exit code {process.ExitCode}");
+                }
+                catch (Win32Exception ex1)
+                {
+                    const int errorCancelled = 1223; //The operation was canceled by the user.
+                    if (ex1.NativeErrorCode == errorCancelled) throw new CreatorException("You must allow Administrator access in order to register web projects with netsh.");
+                    throw;
+                }
+                catch (Exception ex2)
+                {
+                    throw new CreatorException($"Error executing RegisterSitesWithIISExpress.bat: {ex2.Message}");
+                }
+            }
+        }
+        private static void UpdateBatchFileToPauseAfterExecution(string filePath)
+        {
+            var registerSiteWithIISExpressFile = Path.Combine(filePath);
+            var registerSiteWithIISExpressFileContent = File.ReadAllText(registerSiteWithIISExpressFile);
+            registerSiteWithIISExpressFileContent = registerSiteWithIISExpressFileContent.ReplaceStrWithCheck("rem pause", "pause");
+            File.WriteAllText(registerSiteWithIISExpressFile, registerSiteWithIISExpressFileContent);
         }
         #endregion
 

@@ -16,7 +16,7 @@ namespace Supermodel.Tooling.SolutionMaker.Cmd
 
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("Supermodel.Core Solution Maker. Version Beta 2.0");
+                Console.WriteLine("Supermodel.Core version Beta 2.0 Solution Maker.");
                 
                 //Console.WriteLine("Please Enter Solution Parameters");
                 //var solutionMakerParams = SolutionMakerParams.ReadFromConsole();

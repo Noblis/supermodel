@@ -10,6 +10,7 @@ using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -154,19 +155,25 @@ namespace WebMonk
 
         public virtual void RegisterWithNetsh()
         {
-            RunNetsh($"http add urlacl url={ListeningBaseUrl} user=everyone");
-            Console.WriteLine($"{ListeningBaseUrl} registered successfully with Netsh...");
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                RunNetsh($"http add urlacl url={ListeningBaseUrl} user=everyone");
+                Console.WriteLine($"{ListeningBaseUrl} registered successfully with Netsh...");
+            }
         }
         public virtual void UnregisterWithNetsh()
         {
-            try
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                RunNetsh($"http delete urlacl url={ListeningBaseUrl}");
-                Console.WriteLine($"{ListeningBaseUrl} unregistered successfully with Netsh...");
-            }
-            catch (SystemException ex)
-            { 
-                Console.WriteLine($"Unable to unregister {ListeningBaseUrl}. Error: {ex.Message}");
+                try
+                {
+                    RunNetsh($"http delete urlacl url={ListeningBaseUrl}");
+                    Console.WriteLine($"{ListeningBaseUrl} unregistered successfully with Netsh...");
+                }
+                catch (SystemException ex)
+                { 
+                    Console.WriteLine($"Unable to unregister {ListeningBaseUrl}. Error: {ex.Message}");
+                }
             }
         }
         #endregion

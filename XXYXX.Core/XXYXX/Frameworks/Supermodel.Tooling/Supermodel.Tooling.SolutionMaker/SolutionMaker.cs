@@ -1,13 +1,16 @@
 ﻿#nullable enable
 
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace Supermodel.Tooling.SolutionMaker
@@ -37,6 +40,14 @@ namespace Supermodel.Tooling.SolutionMaker
 
             //Auto-assign random port
             var newPort =  Random.Next(41000, 59000);
+            ReplaceInDir(path, "54208", newPort.ToString(), "SolutionMaker.cs");
+
+            //Replace IP address
+            var newIP = GetServerIpAddress();
+            ReplaceInDir(path, "10.211.55.9", newIP, "SolutionMaker.cs");
+
+            //Register MVC with netsh
+            if (solutionMakerParams.WebFramework == WebFrameworkEnum.Mvc) RegisterMvcWithNetsh(path);
 
 
 
@@ -174,6 +185,40 @@ namespace Supermodel.Tooling.SolutionMaker
                 File.WriteAllText(dataContextFile, dataContextFileContent);
             }
         }
+        private static void RegisterMvcWithNetsh(string path)
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                var batFile = Path.Combine(path, @"XXYXX\Util\ModelGeneratorMVC\RegisterSiteWithNetsh.bat");
+                
+                var info = new ProcessStartInfo("cmd.exe")
+                {
+                    UseShellExecute = true,
+                    Arguments = $"/c \"{batFile}\"",
+                    //WindowStyle = ProcessWindowStyle.Hidden,
+                    //CreateNoWindow = true,
+                    Verb = "runas"
+                };
+                
+                try
+                {
+                    var process = Process.Start(info);
+                    if (process == null) throw new Exception("batch process after starting is null");
+                    process.WaitForExit();
+                    if (process.ExitCode != 0) throw new Exception($"returned exit code {process.ExitCode}");
+                }
+                catch (Win32Exception ex1)
+                {
+                    const int errorCancelled = 1223; //The operation was canceled by the user.
+                    if (ex1.NativeErrorCode == errorCancelled) throw new CreatorException("You must allow Administrator access in order to register web projects with netsh.");
+                    throw;
+                }
+                catch (Exception ex2)
+                {
+                    throw new CreatorException($"Error executing RegisterSitesWithIISExpress.bat: {ex2.Message}");
+                }
+            }
+        }
         #endregion
 
         #region CreateSnpshot Methods
@@ -216,7 +261,7 @@ namespace Supermodel.Tooling.SolutionMaker
         #endregion
 
         #region Helper Methods
-        private static void ReplaceInDir(string directory, string oldStr, string newStr)
+        private static void ReplaceInDir(string directory, string oldStr, string newStr, params string[]? ignoreFileNames)
         {
             //Ignore Frameworks directory
             var directoryName = Path.GetFileName(directory);
@@ -228,6 +273,9 @@ namespace Supermodel.Tooling.SolutionMaker
 
             foreach (var file in Directory.GetFiles(newDirectory))
             {
+                var fileName = Path.GetFileName(file);
+                if (ignoreFileNames != null && ignoreFileNames.Any(x => x == fileName)) continue;
+                
                 //Replace marker in file contents
                 var fileContents = File.ReadAllText(file);
                 if (fileContents.Contains(oldStr))
@@ -240,7 +288,7 @@ namespace Supermodel.Tooling.SolutionMaker
                 if (file.Contains(oldStr) && newStr != oldStr) File.Move(file, file.Replace(oldStr, newStr));
             }
 
-            foreach (var subDir in Directory.GetDirectories(newDirectory)) ReplaceInDir(subDir, oldStr, newStr);
+            foreach (var subDir in Directory.GetDirectories(newDirectory)) ReplaceInDir(subDir, oldStr, newStr, ignoreFileNames);
         }
         private static string RemoveStrWithCheck(this string me, string str)
         {
@@ -310,7 +358,7 @@ namespace Supermodel.Tooling.SolutionMaker
         #endregion
 
         #region Properties and Contants
-        private static Random Random { get; } = new Random();
+        private static Random Random { get; } = new Random(Guid.NewGuid().GetHashCode());
         private const string Marker2 = "XXYXX";
         public const string ZipFileName = "SupermodelSolutionTemplate.XXYXX.zip";
         #endregion
