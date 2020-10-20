@@ -39,6 +39,16 @@ namespace Supermodel.Tooling.SolutionMaker
             //Auto-assign random port
             var newPort =  Random.Next(41000, 59000);
             ReplaceInDir(path, "54208", newPort.ToString(), "SolutionMaker.cs");
+
+            //Replace IP address
+            var newIP = GetServerIpAddress();
+            ReplaceInDir(path, "10.211.55.9", newIP, "SolutionMaker.cs");
+
+            //Register MVC with netsh
+
+
+
+
         }
 
         private static void AdjustForMobileApi(MobileApiEnum mobileApi, string path)
@@ -312,7 +322,7 @@ namespace Supermodel.Tooling.SolutionMaker
         #endregion
 
         #region Properties and Contants
-        private static Random Random { get; } = new Random();
+        private static Random Random { get; } = new Random(Guid.NewGuid().GetHashCode());
         private const string Marker2 = "XXYXX";
         public const string ZipFileName = "SupermodelSolutionTemplate.XXYXX.zip";
         #endregion
