@@ -40,11 +40,11 @@ namespace Supermodel.Tooling.SolutionMaker
 
             //Auto-assign random port
             var newPort =  Random.Next(41000, 59000);
-            ReplaceInDir(path, "54208", newPort.ToString(), "SolutionMaker.cs");
+            ReplaceInDir(path, OldPort, newPort.ToString(), "SolutionMaker.cs");
 
             //Replace IP address
             var newIP = GetServerIpAddress();
-            ReplaceInDir(path, "10.211.55.9", newIP, "SolutionMaker.cs");
+            ReplaceInDir(path, OldIPAddress, newIP, "SolutionMaker.cs");
 
             //Register MVC with netsh
             if (solutionMakerParams.WebFramework == WebFrameworkEnum.Mvc) RegisterMvcWithNetsh(path);
@@ -53,6 +53,9 @@ namespace Supermodel.Tooling.SolutionMaker
             if (solutionMakerParams.WebFramework == WebFrameworkEnum.WebMonk) UpdateBatchFileToPauseAfterExecution(Path.Combine(path, @"XXYXX\Util\ModelGeneratorWM\RegisterSiteWithNetsh.bat"));
             if (solutionMakerParams.WebFramework == WebFrameworkEnum.Mvc) UpdateBatchFileToPauseAfterExecution(Path.Combine(path, @"XXYXX\Util\ModelGeneratorMVC\RegisterSiteWithNetsh.bat"));
 
+            //Replace GUIDs
+            GenerateReplacementGuids();
+            ReplaceGuidsInDir(path);
 
 
         }
@@ -372,6 +375,20 @@ namespace Supermodel.Tooling.SolutionMaker
         private static Random Random { get; } = new Random(Guid.NewGuid().GetHashCode());
         private const string Marker2 = "XXYXX";
         public const string ZipFileName = "SupermodelSolutionTemplate.XXYXX.zip";
+
+        private const string OldIPAddress = "10.211.55.9";
+        private const string OldPort = "54208";
+
+        private const string WebTBSProjGuidStr = "AE75C293-4436-4E20-A846-F382656DAC2B";
+        private const string WebJQMProjGuidStr = "F06A3700-807C-4844-8218-BA13D1295F0E";
+        private const string WebProjGuidStr = "D7408613-8671-4FBC-87D2-310B4C77851E";
+        private const string CmdProjGuidStr = "6C8593BB-1AB5-4978-9C36-3EAC346B854A";
+        private const string DomainProjGuidStr = "94A06D7A-E408-4F87-AB12-F82BA95B503A";
+        private const string IOSProjGuidStr = "E10F2FFA-51CD-450B-9A5F-239233CEFEFB";
+        private const string DroidProjGuidStr = "AB720255-DB3B-4FF6-9313-57926BB40B4C";
+        private const string ModelGenProjGuidStr = "E3CF3252-AD84-4E23-BD38-9F9136752520";
+        private const string UWPProjGuidStr = "98AA2380-F62D-4785-AF29-BE9DA3F0C16C";
+        private const string SharedProjGuidStr = "03C0964B-5C5F-4D62-86FF-8381CBE9169E";
         #endregion
     }
 }
