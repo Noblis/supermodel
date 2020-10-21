@@ -57,6 +57,8 @@ namespace Supermodel.Tooling.SolutionMaker
             ReplaceGuidsInDir(path);
 
 
+
+
         }
 
 
@@ -235,17 +237,53 @@ namespace Supermodel.Tooling.SolutionMaker
         }
         private static void ReplaceGuidsInDir(string path)
         {
-            ReplaceInDir(path, XXYXX_Mobile_ProjOldGuidStr, XXYXX_Mobile_ProjNewGuidStr, "SolutionMaker.cs");
-            ReplaceInDir(path, XXYXX_Mobile_iOS_ProjOldGuidStr, XXYXX_Mobile_iOS_ProjNewGuidStr, "SolutionMaker.cs");
-            ReplaceInDir(path, XXYXX_Mobile_Droid_ProjOldGuidStr, XXYXX_Mobile_Droid_ProjNewGuidStr, "SolutionMaker.cs");
-            ReplaceInDir(path, Batch_ProjOldGuidStr, Batch_ProjNewGuidStr, "SolutionMaker.cs");
-            ReplaceInDir(path, BatchApiClientMVC_ProjOldGuidStr, BatchApiClientMVC_ProjNewGuidStr, "SolutionMaker.cs");
-            ReplaceInDir(path, BatchApiClientWM_ProjOldGuidStr, BatchApiClientWM_ProjNewGuidStr, "SolutionMaker.cs");
-            ReplaceInDir(path, Domain_ProjOldGuidStr, Domain_ProjNewGuidStr, "SolutionMaker.cs");
-            ReplaceInDir(path, WebMVC_ProjOldGuidStr, WebMVC_ProjNewGuidStr, "SolutionMaker.cs");
-            ReplaceInDir(path, WebWM_ProjOldGuidStr, WebWM_ProjNewGuidStr, "SolutionMaker.cs");
-            ReplaceInDir(path, ModelGeneratorMVC_ProjOldGuidStr, ModelGeneratorMVC_ProjNewGuidStr, "SolutionMaker.cs");
-            ReplaceInDir(path, ModelGeneratorWM_ProjOldGuidStr, ModelGeneratorWM_ProjNewGuidStr, "SolutionMaker.cs");
+            foreach (var file in Directory.GetFiles(path))
+            {
+                var ext = Path.GetExtension(file);
+                // ReSharper disable once StringLiteralTypo
+                if (ext == ".csproj" || ext == ".projitems" || ext == ".shproj" || ext == ".sln")
+                {
+                    //Replace Guids in file contents
+                    var fileContents = File.ReadAllText(file);
+
+                    fileContents = fileContents.Replace(XXYXX_Mobile_ProjOldGuidStr, XXYXX_Mobile_ProjNewGuidStr);
+                    fileContents = fileContents.Replace(XXYXX_Mobile_ProjOldGuidStr.ToLower(), XXYXX_Mobile_ProjNewGuidStr.ToLower());
+
+                    fileContents = fileContents.Replace(XXYXX_Mobile_iOS_ProjOldGuidStr, XXYXX_Mobile_iOS_ProjNewGuidStr);
+                    fileContents = fileContents.Replace(XXYXX_Mobile_iOS_ProjOldGuidStr.ToLower(), XXYXX_Mobile_iOS_ProjNewGuidStr.ToLower());
+
+                    fileContents = fileContents.Replace(XXYXX_Mobile_Droid_ProjOldGuidStr, XXYXX_Mobile_Droid_ProjNewGuidStr);
+                    fileContents = fileContents.Replace(XXYXX_Mobile_Droid_ProjOldGuidStr.ToLower(), XXYXX_Mobile_Droid_ProjNewGuidStr.ToLower());
+
+                    fileContents = fileContents.Replace(Batch_ProjOldGuidStr, Batch_ProjNewGuidStr);
+                    fileContents = fileContents.Replace(Batch_ProjOldGuidStr.ToLower(), Batch_ProjNewGuidStr.ToLower());
+
+                    fileContents = fileContents.Replace(BatchApiClientMVC_ProjOldGuidStr, BatchApiClientMVC_ProjNewGuidStr);
+                    fileContents = fileContents.Replace(BatchApiClientMVC_ProjOldGuidStr.ToLower(), BatchApiClientMVC_ProjNewGuidStr.ToLower());
+
+                    fileContents = fileContents.Replace(BatchApiClientWM_ProjOldGuidStr, BatchApiClientWM_ProjNewGuidStr);
+                    fileContents = fileContents.Replace(BatchApiClientWM_ProjOldGuidStr.ToLower(), BatchApiClientWM_ProjNewGuidStr.ToLower());
+
+                    fileContents = fileContents.Replace(Domain_ProjOldGuidStr, Domain_ProjNewGuidStr);
+                    fileContents = fileContents.Replace(Domain_ProjOldGuidStr.ToLower(), Domain_ProjNewGuidStr.ToLower());
+
+                    fileContents = fileContents.Replace(WebMVC_ProjOldGuidStr, WebMVC_ProjNewGuidStr);
+                    fileContents = fileContents.Replace(WebMVC_ProjOldGuidStr.ToLower(), WebMVC_ProjNewGuidStr.ToLower());
+
+                    fileContents = fileContents.Replace(WebWM_ProjOldGuidStr, WebWM_ProjNewGuidStr);
+                    fileContents = fileContents.Replace(WebWM_ProjOldGuidStr.ToLower(), WebWM_ProjNewGuidStr.ToLower());
+
+                    fileContents = fileContents.Replace(ModelGeneratorMVC_ProjOldGuidStr, ModelGeneratorMVC_ProjNewGuidStr);
+                    fileContents = fileContents.Replace(ModelGeneratorMVC_ProjOldGuidStr.ToLower(), ModelGeneratorMVC_ProjNewGuidStr.ToLower());
+
+                    fileContents = fileContents.Replace(ModelGeneratorWM_ProjOldGuidStr, ModelGeneratorWM_ProjNewGuidStr);
+                    fileContents = fileContents.Replace(ModelGeneratorWM_ProjOldGuidStr.ToLower(), ModelGeneratorWM_ProjNewGuidStr.ToLower());
+
+                    File.WriteAllText(file, fileContents);
+                }
+            }
+
+            foreach (var subDir in Directory.GetDirectories(path)) ReplaceGuidsInDir(subDir);
         }
         #endregion
 
