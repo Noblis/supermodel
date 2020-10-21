@@ -395,13 +395,13 @@ namespace Supermodel.Tooling.SolutionMaker
         private const string Batch_ProjOldGuidStr = "0A117320-9AFB-4E93-8F80-BFF93A197DE3";
         private const string BatchApiClientMVC_ProjOldGuidStr = "0EBAAD4F-173C-41E3-86DC-7ACEF76FC571";
         private const string BatchApiClientWM_ProjOldGuidStr = "17CBF940-4D77-4528-86E1-3BB1E7C5EDFF";
-        private const string Domain_ProjOldGuidStr = "";
-        private const string WebMVC_ProjOldGuidStr = "";
-        private const string WebWM_ProjOldGuidStr = "";
+        private const string Domain_ProjOldGuidStr = "A65A0F48-90BD-4987-8E7C-7431D2A19547";
+        private const string WebMVC_ProjOldGuidStr = "A948AEF7-8737-49A0-A47C-0652ED858D3";
+        private const string WebWM_ProjOldGuidStr = "52339205-60DC-4289-A179-9DDE6D6DA1B3";
 
         //Utils
-        private const string ModelGeneratorMVC_ProjOldGuidStr = "";
-        private const string ModelGeneratorWM_ProjOldGuidStr = "";
+        private const string ModelGeneratorMVC_ProjOldGuidStr = "7234523C-4609-4197-9DA5-3DC77A172D5B";
+        private const string ModelGeneratorWM_ProjOldGuidStr = "AD0DFA5F-8D59-4775-8A87-EA83F9A8437B";
         // ReSharper restore InconsistentNaming
 
 
