@@ -54,11 +54,11 @@ namespace Supermodel.Tooling.SolutionMaker
             if (solutionMakerParams.WebFramework == WebFrameworkEnum.Mvc) UpdateBatchFileToPauseAfterExecution(Path.Combine(path, @"XXYXX\Util\ModelGeneratorMVC\RegisterSiteWithNetsh.bat"));
 
             //Replace GUIDs
-            GenerateReplacementGuids();
-            ReplaceGuidsInDir(path);
+            //ReplaceGuidsInDir(path);
 
 
         }
+
 
         private static void AdjustForMobileApi(MobileApiEnum mobileApi, string path)
         {
@@ -233,6 +233,10 @@ namespace Supermodel.Tooling.SolutionMaker
             registerSiteWithIISExpressFileContent = registerSiteWithIISExpressFileContent.ReplaceStrWithCheck("rem pause", "pause");
             File.WriteAllText(registerSiteWithIISExpressFile, registerSiteWithIISExpressFileContent);
         }
+        private static void GenerateReplacementGuids()
+        {
+            throw new NotImplementedException();
+        }
         #endregion
 
         #region CreateSnpshot Methods
@@ -378,17 +382,47 @@ namespace Supermodel.Tooling.SolutionMaker
 
         private const string OldIPAddress = "10.211.55.9";
         private const string OldPort = "54208";
+        #endregion
 
-        private const string WebTBSProjGuidStr = "AE75C293-4436-4E20-A846-F382656DAC2B";
-        private const string WebJQMProjGuidStr = "F06A3700-807C-4844-8218-BA13D1295F0E";
-        private const string WebProjGuidStr = "D7408613-8671-4FBC-87D2-310B4C77851E";
-        private const string CmdProjGuidStr = "6C8593BB-1AB5-4978-9C36-3EAC346B854A";
-        private const string DomainProjGuidStr = "94A06D7A-E408-4F87-AB12-F82BA95B503A";
-        private const string IOSProjGuidStr = "E10F2FFA-51CD-450B-9A5F-239233CEFEFB";
-        private const string DroidProjGuidStr = "AB720255-DB3B-4FF6-9313-57926BB40B4C";
-        private const string ModelGenProjGuidStr = "E3CF3252-AD84-4E23-BD38-9F9136752520";
-        private const string UWPProjGuidStr = "98AA2380-F62D-4785-AF29-BE9DA3F0C16C";
-        private const string SharedProjGuidStr = "03C0964B-5C5F-4D62-86FF-8381CBE9169E";
+        #region Project Guids
+        // ReSharper disable InconsistentNaming
+        //Mobile
+        private const string XXYXX_Mobile_ProjOldGuidStr = "2D56B4B2-C249-404E-8633-D1E2C25B3F01";
+        private const string XXYXX_Mobile_iOS_ProjOldGuidStr = "335038D0-C3B3-4CCB-B92C-BF48454F86AA";
+        private const string XXYXX_Mobile_Droid_ProjOldGuidStr = "C2061A1C-D2FE-41AA-8CC4-6397089EC77F";
+
+        //Server
+        private const string Batch_ProjOldGuidStr = "0A117320-9AFB-4E93-8F80-BFF93A197DE3";
+        private const string BatchApiClientMVC_ProjOldGuidStr = "0EBAAD4F-173C-41E3-86DC-7ACEF76FC571";
+        private const string BatchApiClientWM_ProjOldGuidStr = "17CBF940-4D77-4528-86E1-3BB1E7C5EDFF";
+        private const string Domain_ProjOldGuidStr = "";
+        private const string WebMVC_ProjOldGuidStr = "";
+        private const string WebWM_ProjOldGuidStr = "";
+
+        //Utils
+        private const string ModelGeneratorMVC_ProjOldGuidStr = "";
+        private const string ModelGeneratorWM_ProjOldGuidStr = "";
+        // ReSharper restore InconsistentNaming
+
+
+        // ReSharper disable InconsistentNaming
+        //Mobile
+        private static string XXYXX_Mobile_ProjNewGuidStr = Guid.NewGuid().ToString().ToUpper();
+        private static string XXYXX_Mobile_iOS_ProjNewGuidStr = Guid.NewGuid().ToString().ToUpper();
+        private static string XXYXX_Mobile_Droid_ProjNewGuidStr = Guid.NewGuid().ToString().ToUpper();
+
+        //Server
+        private static string Batch_ProjNewGuidStr = Guid.NewGuid().ToString().ToUpper();
+        private static string BatchApiClientMVC_ProjNewGuidStr = Guid.NewGuid().ToString().ToUpper();
+        private static string BatchApiClientWM_ProjNewGuidStr = Guid.NewGuid().ToString().ToUpper();
+        private static string Domain_ProjNewGuidStr = Guid.NewGuid().ToString().ToUpper();
+        private static string WebMVC_ProjNewGuidStr = Guid.NewGuid().ToString().ToUpper();
+        private static string WebWM_ProjNewGuidStr = Guid.NewGuid().ToString().ToUpper();
+
+        //Utils
+        private static string ModelGeneratorMVC_ProjNewGuidStr = Guid.NewGuid().ToString().ToUpper();
+        private static string ModelGeneratorWM_ProjNewGuidStr = Guid.NewGuid().ToString().ToUpper();
+        // ReSharper restore InconsistentNaming
         #endregion
     }
 }
