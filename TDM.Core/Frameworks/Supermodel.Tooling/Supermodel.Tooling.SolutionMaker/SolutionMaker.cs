@@ -54,7 +54,7 @@ namespace Supermodel.Tooling.SolutionMaker
             if (solutionMakerParams.WebFramework == WebFrameworkEnum.Mvc) UpdateBatchFileToPauseAfterExecution(Path.Combine(path, @"XXYXX\Util\ModelGeneratorMVC\RegisterSiteWithNetsh.bat"));
 
             //Replace GUIDs
-            //ReplaceGuidsInDir(path);
+            ReplaceGuidsInDir(path);
 
 
         }
@@ -226,16 +226,26 @@ namespace Supermodel.Tooling.SolutionMaker
                 }
             }
         }
-        private static void UpdateBatchFileToPauseAfterExecution(string filePath)
+        private static void UpdateBatchFileToPauseAfterExecution(string batchFilePath)
         {
-            var registerSiteWithIISExpressFile = Path.Combine(filePath);
+            var registerSiteWithIISExpressFile = Path.Combine(batchFilePath);
             var registerSiteWithIISExpressFileContent = File.ReadAllText(registerSiteWithIISExpressFile);
             registerSiteWithIISExpressFileContent = registerSiteWithIISExpressFileContent.ReplaceStrWithCheck("rem pause", "pause");
             File.WriteAllText(registerSiteWithIISExpressFile, registerSiteWithIISExpressFileContent);
         }
-        private static void GenerateReplacementGuids()
+        private static void ReplaceGuidsInDir(string path)
         {
-            throw new NotImplementedException();
+            ReplaceInDir(path, XXYXX_Mobile_ProjOldGuidStr, XXYXX_Mobile_ProjNewGuidStr, "SolutionMaker.cs");
+            ReplaceInDir(path, XXYXX_Mobile_iOS_ProjOldGuidStr, XXYXX_Mobile_iOS_ProjNewGuidStr, "SolutionMaker.cs");
+            ReplaceInDir(path, XXYXX_Mobile_Droid_ProjOldGuidStr, XXYXX_Mobile_Droid_ProjNewGuidStr, "SolutionMaker.cs");
+            ReplaceInDir(path, Batch_ProjOldGuidStr, Batch_ProjNewGuidStr, "SolutionMaker.cs");
+            ReplaceInDir(path, BatchApiClientMVC_ProjOldGuidStr, BatchApiClientMVC_ProjNewGuidStr, "SolutionMaker.cs");
+            ReplaceInDir(path, BatchApiClientWM_ProjOldGuidStr, BatchApiClientWM_ProjNewGuidStr, "SolutionMaker.cs");
+            ReplaceInDir(path, Domain_ProjOldGuidStr, Domain_ProjNewGuidStr, "SolutionMaker.cs");
+            ReplaceInDir(path, WebMVC_ProjOldGuidStr, WebMVC_ProjNewGuidStr, "SolutionMaker.cs");
+            ReplaceInDir(path, WebWM_ProjOldGuidStr, WebWM_ProjNewGuidStr, "SolutionMaker.cs");
+            ReplaceInDir(path, ModelGeneratorMVC_ProjOldGuidStr, ModelGeneratorMVC_ProjNewGuidStr, "SolutionMaker.cs");
+            ReplaceInDir(path, ModelGeneratorWM_ProjOldGuidStr, ModelGeneratorWM_ProjNewGuidStr, "SolutionMaker.cs");
         }
         #endregion
 
@@ -407,21 +417,21 @@ namespace Supermodel.Tooling.SolutionMaker
 
         // ReSharper disable InconsistentNaming
         //Mobile
-        private static string XXYXX_Mobile_ProjNewGuidStr = Guid.NewGuid().ToString().ToUpper();
-        private static string XXYXX_Mobile_iOS_ProjNewGuidStr = Guid.NewGuid().ToString().ToUpper();
-        private static string XXYXX_Mobile_Droid_ProjNewGuidStr = Guid.NewGuid().ToString().ToUpper();
+        private static readonly string XXYXX_Mobile_ProjNewGuidStr = Guid.NewGuid().ToString().ToUpper();
+        private static readonly string XXYXX_Mobile_iOS_ProjNewGuidStr = Guid.NewGuid().ToString().ToUpper();
+        private static readonly string XXYXX_Mobile_Droid_ProjNewGuidStr = Guid.NewGuid().ToString().ToUpper();
 
         //Server
-        private static string Batch_ProjNewGuidStr = Guid.NewGuid().ToString().ToUpper();
-        private static string BatchApiClientMVC_ProjNewGuidStr = Guid.NewGuid().ToString().ToUpper();
-        private static string BatchApiClientWM_ProjNewGuidStr = Guid.NewGuid().ToString().ToUpper();
-        private static string Domain_ProjNewGuidStr = Guid.NewGuid().ToString().ToUpper();
-        private static string WebMVC_ProjNewGuidStr = Guid.NewGuid().ToString().ToUpper();
-        private static string WebWM_ProjNewGuidStr = Guid.NewGuid().ToString().ToUpper();
+        private static readonly string Batch_ProjNewGuidStr = Guid.NewGuid().ToString().ToUpper();
+        private static readonly string BatchApiClientMVC_ProjNewGuidStr = Guid.NewGuid().ToString().ToUpper();
+        private static readonly string BatchApiClientWM_ProjNewGuidStr = Guid.NewGuid().ToString().ToUpper();
+        private static readonly string Domain_ProjNewGuidStr = Guid.NewGuid().ToString().ToUpper();
+        private static readonly string WebMVC_ProjNewGuidStr = Guid.NewGuid().ToString().ToUpper();
+        private static readonly string WebWM_ProjNewGuidStr = Guid.NewGuid().ToString().ToUpper();
 
         //Utils
-        private static string ModelGeneratorMVC_ProjNewGuidStr = Guid.NewGuid().ToString().ToUpper();
-        private static string ModelGeneratorWM_ProjNewGuidStr = Guid.NewGuid().ToString().ToUpper();
+        private static readonly string ModelGeneratorMVC_ProjNewGuidStr = Guid.NewGuid().ToString().ToUpper();
+        private static readonly string ModelGeneratorWM_ProjNewGuidStr = Guid.NewGuid().ToString().ToUpper();
         // ReSharper restore InconsistentNaming
         #endregion
     }
