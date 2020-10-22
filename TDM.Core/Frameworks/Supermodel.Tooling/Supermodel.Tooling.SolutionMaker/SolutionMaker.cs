@@ -364,7 +364,7 @@ namespace Supermodel.Tooling.SolutionMaker
         public static void CreateSnapshot(string projectTemplateDirectory, string? destinationDir = null)
         {
             Console.WriteLine("Deleting files and directories...");
-            DeleteWhatWeDoNotNeedForSnapshot(projectTemplateDirectory);
+            DeleteWhatWeDoNotNeedForSnapshot(AdjustPath(projectTemplateDirectory));
             Console.WriteLine("Done Deleting.");
 
             var zipFileNamePath = ZipFileName;

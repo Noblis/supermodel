@@ -11,9 +11,9 @@ namespace Supermodel.Tooling.SolutionMaker.Cmd
             try
             {
                 //Un-comment and run this once to refresh the solution zip
-                SolutionMaker.CreateSnapshot(@"..\..\..\..\..\..\..\XXYXX.Core\XXYXX", @"..\..\..\");
-                Console.WriteLine($"{SolutionMaker.ZipFileName} created successfully!");
-                return;
+                //SolutionMaker.CreateSnapshot(@"..\..\..\..\..\..\..\XXYXX.Core\XXYXX", @"..\..\..\");
+                //Console.WriteLine($"{SolutionMaker.ZipFileName} created successfully!");
+                //return;
 
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.Green;
