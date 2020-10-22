@@ -73,7 +73,6 @@ namespace Supermodel.Tooling.SolutionMaker
             ReplaceInDir(path, marker, solutionMakerParams.SolutionName, "SolutionMaker.cs");
         }
 
-
         private static void AdjustForMobileApi(MobileApiEnum mobileApi, string path)
         {
             if (mobileApi == MobileApiEnum.XamarinForms)
