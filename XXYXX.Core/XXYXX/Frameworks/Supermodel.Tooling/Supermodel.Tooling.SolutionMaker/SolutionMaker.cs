@@ -113,7 +113,7 @@ namespace Supermodel.Tooling.SolutionMaker
         }
         private static void AdjustForWebFramework(WebFrameworkEnum webFramework, string path)
         {
-            var solutionFile = Path.Combine(path, @"XXYXX.Core.sln");
+            var solutionFile = Path.Combine(path, @"XXYXX.sln");
             var solutionFileContent = File.ReadAllText(solutionFile);
 
             var webApiDataContextFile = Path.Combine(path, @"XXYXX\Mobile\XXYXX.Mobile\Supermodel\Persistence\XXYXXWebApiDataContext.cs");
