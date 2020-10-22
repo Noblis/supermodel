@@ -80,11 +80,11 @@ namespace Supermodel.Tooling.SolutionMaker
             {
                 //Droid
                 File.Delete(Path.Combine(path, @"XXYXX\Mobile\XXYXX.Mobile.Droid\MainActivity.cs"));
-                File.Move(Path.Combine(path, @"XXYXX\Mobile\XXYXX.Mobile.Droid\MainActivity.XamarinForms.cs"), Path.Combine(path, @"\XXYXX\Mobile\XXYXX.Mobile.Droid\MainActivity.cs"));
+                File.Move(Path.Combine(path, @"XXYXX\Mobile\XXYXX.Mobile.Droid\MainActivity.XamarinForms.cs"), Path.Combine(path, @"XXYXX\Mobile\XXYXX.Mobile.Droid\MainActivity.cs"));
 
                 //iOS
                 File.Delete(Path.Combine(path, @"XXYXX\Mobile\XXYXX.Mobile.iOS\AppDelegate.cs"));
-                File.Move(Path.Combine(path, @"XXYXX\Mobile\XXYXX.Mobile.iOS\AppDelegate.XamarinForms.cs"), Path.Combine(path, @"\XXYXX\Mobile\XXYXX.Mobile.iOS\AppDelegate.cs"));
+                File.Move(Path.Combine(path, @"XXYXX\Mobile\XXYXX.Mobile.iOS\AppDelegate.XamarinForms.cs"), Path.Combine(path, @"XXYXX\Mobile\XXYXX.Mobile.iOS\AppDelegate.cs"));
             }
             else
             {
