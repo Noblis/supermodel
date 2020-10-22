@@ -11,6 +11,7 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Supermodel.Tooling.SolutionMaker
@@ -39,19 +40,39 @@ namespace Supermodel.Tooling.SolutionMaker
             AdjustForDatabase(solutionMakerParams.Database, path);
 
             //Auto-assign random port
+            const string oldPort = "54208";
             var newPort =  Random.Next(41000, 59000);
-            ReplaceInDir(path, "54208", newPort.ToString(), "SolutionMaker.cs");
+            ReplaceInDir(path, oldPort, newPort.ToString(), "SolutionMaker.cs");
 
             //Replace IP address
+            const string oldIPAddress = "10.211.55.9";
             var newIP = GetServerIpAddress();
-            ReplaceInDir(path, "10.211.55.9", newIP, "SolutionMaker.cs");
+            ReplaceInDir(path, oldIPAddress, newIP, "SolutionMaker.cs");
 
             //Register MVC with netsh
             if (solutionMakerParams.WebFramework == WebFrameworkEnum.Mvc) RegisterMvcWithNetsh(path);
 
+            //Update batch files to pause after execution
+            if (solutionMakerParams.WebFramework == WebFrameworkEnum.WebMonk) UpdateBatchFileToPauseAfterExecution(Path.Combine(path, @"XXYXX\Util\ModelGeneratorWM\RegisterSiteWithNetsh.bat"));
+            if (solutionMakerParams.WebFramework == WebFrameworkEnum.Mvc) UpdateBatchFileToPauseAfterExecution(Path.Combine(path, @"XXYXX\Util\ModelGeneratorMVC\RegisterSiteWithNetsh.bat"));
 
+            //Replace GUIDs
+            ReplaceGuidsInDir(path);
 
+            //Generate new random key for encrypting username/password locally
+            GenerateNewRandomEncryptionKeyForLocalStorage(path);
+
+            //Generate new random key for secure auth
+            GenerateNewRandomEncryptionKeyForSecureAuth(path);
+
+            //Generate new secret token for secure auth
+            GenerateNewSecretTokenForSecureAuth(path);
+
+            //rename files and directories containing Marker, find and replace Marker inside the files
+            const string marker = "XXYXX";
+            ReplaceInDir(path, marker, solutionMakerParams.SolutionName, "SolutionMaker.cs");
         }
+
 
         private static void AdjustForMobileApi(MobileApiEnum mobileApi, string path)
         {
@@ -195,8 +216,8 @@ namespace Supermodel.Tooling.SolutionMaker
                 {
                     UseShellExecute = true,
                     Arguments = $"/c \"{batFile}\"",
-                    //WindowStyle = ProcessWindowStyle.Hidden,
-                    //CreateNoWindow = true,
+                    WindowStyle = ProcessWindowStyle.Hidden,
+                    CreateNoWindow = true,
                     Verb = "runas"
                 };
                 
@@ -218,6 +239,124 @@ namespace Supermodel.Tooling.SolutionMaker
                     throw new CreatorException($"Error executing RegisterSitesWithIISExpress.bat: {ex2.Message}");
                 }
             }
+        }
+        private static void UpdateBatchFileToPauseAfterExecution(string batchFilePath)
+        {
+            var registerSiteWithIISExpressFile = Path.Combine(batchFilePath);
+            var registerSiteWithIISExpressFileContent = File.ReadAllText(registerSiteWithIISExpressFile);
+            registerSiteWithIISExpressFileContent = registerSiteWithIISExpressFileContent.ReplaceStrWithCheck("rem pause", "pause");
+            File.WriteAllText(registerSiteWithIISExpressFile, registerSiteWithIISExpressFileContent);
+        }
+        private static void ReplaceGuidsInDir(string path)
+        {
+            foreach (var file in Directory.GetFiles(path))
+            {
+                var ext = Path.GetExtension(file);
+                // ReSharper disable once StringLiteralTypo
+                if (ext == ".csproj" || ext == ".projitems" || ext == ".shproj" || ext == ".sln")
+                {
+                    //Replace Guids in file contents
+                    var fileContents = File.ReadAllText(file);
+
+                    //Mobile
+                    const string xxyxxMobileProjOldGuidStr = "2D56B4B2-C249-404E-8633-D1E2C25B3F01";
+                    var xxyxxMobileProjNewGuidStr = Guid.NewGuid().ToString().ToUpper();
+                    fileContents = fileContents.Replace(xxyxxMobileProjOldGuidStr, xxyxxMobileProjNewGuidStr);
+                    fileContents = fileContents.Replace(xxyxxMobileProjOldGuidStr.ToLower(), xxyxxMobileProjNewGuidStr.ToLower());
+
+                    const string xxyxxMobileIOSProjOldGuidStr = "335038D0-C3B3-4CCB-B92C-BF48454F86AA";
+                    var xxyxxMobileIOSProjNewGuidStr = Guid.NewGuid().ToString().ToUpper();
+                    fileContents = fileContents.Replace(xxyxxMobileIOSProjOldGuidStr, xxyxxMobileIOSProjNewGuidStr);
+                    fileContents = fileContents.Replace(xxyxxMobileIOSProjOldGuidStr.ToLower(), xxyxxMobileIOSProjNewGuidStr.ToLower());
+
+                    const string xxyxxMobileDroidProjOldGuidStr = "C2061A1C-D2FE-41AA-8CC4-6397089EC77F";
+                    var xxyxxMobileDroidProjNewGuidStr = Guid.NewGuid().ToString().ToUpper();
+                    fileContents = fileContents.Replace(xxyxxMobileDroidProjOldGuidStr, xxyxxMobileDroidProjNewGuidStr);
+                    fileContents = fileContents.Replace(xxyxxMobileDroidProjOldGuidStr.ToLower(), xxyxxMobileDroidProjNewGuidStr.ToLower());
+
+                    
+                    //Server
+                    const string batchProjOldGuidStr = "0A117320-9AFB-4E93-8F80-BFF93A197DE3";
+                    var batchProjNewGuidStr = Guid.NewGuid().ToString().ToUpper();
+                    fileContents = fileContents.Replace(batchProjOldGuidStr, batchProjNewGuidStr);
+                    fileContents = fileContents.Replace(batchProjOldGuidStr.ToLower(), batchProjNewGuidStr.ToLower());
+
+                    const string batchApiClientMvcProjOldGuidStr = "0EBAAD4F-173C-41E3-86DC-7ACEF76FC571";
+                    var batchApiClientMvcProjNewGuidStr = Guid.NewGuid().ToString().ToUpper();
+                    fileContents = fileContents.Replace(batchApiClientMvcProjOldGuidStr, batchApiClientMvcProjNewGuidStr);
+                    fileContents = fileContents.Replace(batchApiClientMvcProjOldGuidStr.ToLower(), batchApiClientMvcProjNewGuidStr.ToLower());
+
+                    const string batchApiClientWMProjOldGuidStr = "17CBF940-4D77-4528-86E1-3BB1E7C5EDFF";
+                    var batchApiClientWMProjNewGuidStr = Guid.NewGuid().ToString().ToUpper();
+                    fileContents = fileContents.Replace(batchApiClientWMProjOldGuidStr, batchApiClientWMProjNewGuidStr);
+                    fileContents = fileContents.Replace(batchApiClientWMProjOldGuidStr.ToLower(), batchApiClientWMProjNewGuidStr.ToLower());
+
+                    const string domainProjOldGuidStr = "A65A0F48-90BD-4987-8E7C-7431D2A19547";
+                    var domainProjNewGuidStr = Guid.NewGuid().ToString().ToUpper();
+                    fileContents = fileContents.Replace(domainProjOldGuidStr, domainProjNewGuidStr);
+                    fileContents = fileContents.Replace(domainProjOldGuidStr.ToLower(), domainProjNewGuidStr.ToLower());
+
+                    const string webMvcProjOldGuidStr = "A948AEF7-8737-49A0-A47C-0652ED858D3";
+                    var webMvcProjNewGuidStr = Guid.NewGuid().ToString().ToUpper();
+                    fileContents = fileContents.Replace(webMvcProjOldGuidStr, webMvcProjNewGuidStr);
+                    fileContents = fileContents.Replace(webMvcProjOldGuidStr.ToLower(), webMvcProjNewGuidStr.ToLower());
+
+                    const string webWMProjOldGuidStr = "52339205-60DC-4289-A179-9DDE6D6DA1B3";
+                    var webWMProjNewGuidStr = Guid.NewGuid().ToString().ToUpper();
+                    fileContents = fileContents.Replace(webWMProjOldGuidStr, webWMProjNewGuidStr);
+                    fileContents = fileContents.Replace(webWMProjOldGuidStr.ToLower(), webWMProjNewGuidStr.ToLower());
+                    
+                    
+                    //Utils
+                    const string modelGeneratorMvcProjOldGuidStr = "7234523C-4609-4197-9DA5-3DC77A172D5B";
+                    var modelGeneratorMvcProjNewGuidStr = Guid.NewGuid().ToString().ToUpper();
+                    fileContents = fileContents.Replace(modelGeneratorMvcProjOldGuidStr, modelGeneratorMvcProjNewGuidStr);
+                    fileContents = fileContents.Replace(modelGeneratorMvcProjOldGuidStr.ToLower(), modelGeneratorMvcProjNewGuidStr.ToLower());
+
+                    const string modelGeneratorWMProjOldGuidStr = "AD0DFA5F-8D59-4775-8A87-EA83F9A8437B";
+                    var modelGeneratorWMProjNewGuidStr = Guid.NewGuid().ToString().ToUpper();
+                    fileContents = fileContents.Replace(modelGeneratorWMProjOldGuidStr, modelGeneratorWMProjNewGuidStr);
+                    fileContents = fileContents.Replace(modelGeneratorWMProjOldGuidStr.ToLower(), modelGeneratorWMProjNewGuidStr.ToLower());
+
+                    File.WriteAllText(file, fileContents);
+                }
+            }
+
+            foreach (var subDir in Directory.GetDirectories(path)) ReplaceGuidsInDir(subDir);
+        }
+        private static void GenerateNewRandomEncryptionKeyForLocalStorage(string path)
+        {
+            const string oldKey = @"{ 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE };";
+
+            var sb = new StringBuilder();
+            for (var i = 0; i < 16; i++)
+            {
+                var nextHex = Random.Next(255);
+                sb.AppendFormat(i == 0 ? "0x{0:X2}" : ", 0x{0:X2}", nextHex);
+            }
+            var newKey = "{ " + sb + " };";
+
+            ReplaceInDir(path, oldKey, newKey, "SolutionMaker.cs");
+        }
+        private static void GenerateNewRandomEncryptionKeyForSecureAuth(string path)
+        {
+            const string oldKey = @"{ 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };";
+
+            var sb = new StringBuilder();
+            for (var i = 0; i < 16; i++)
+            {
+                var nextHex = Random.Next(255);
+                sb.AppendFormat(i == 0 ? "0x{0:X2}" : ", 0x{0:X2}", nextHex);
+            }
+            var newKey = "{ " + sb + " };";
+
+            ReplaceInDir(path, oldKey, newKey, "SolutionMaker.cs");
+        }
+        private static void GenerateNewSecretTokenForSecureAuth(string path)
+        {
+            const string oldSecretToken = "[SECRET_TOKEN]";
+            var newSecretToken = Convert.ToBase64String(new SHA512CryptoServiceProvider().ComputeHash(Encoding.Unicode.GetBytes($"{Guid.NewGuid()}{Guid.NewGuid()}")))[..86];
+            ReplaceInDir(path, oldSecretToken, newSecretToken, "SolutionMaker.cs");
         }
         #endregion
 
@@ -276,7 +415,7 @@ namespace Supermodel.Tooling.SolutionMaker
                 var fileName = Path.GetFileName(file);
                 if (ignoreFileNames != null && ignoreFileNames.Any(x => x == fileName)) continue;
                 
-                //Replace marker in file contents
+                //Replace oldStr in file contents with newStr
                 var fileContents = File.ReadAllText(file);
                 if (fileContents.Contains(oldStr))
                 {
@@ -358,8 +497,7 @@ namespace Supermodel.Tooling.SolutionMaker
         #endregion
 
         #region Properties and Contants
-        private static Random Random { get; } = new Random(Guid.NewGuid().GetHashCode());
-        private const string Marker2 = "XXYXX";
+        public static Random Random { get; } = new Random(Guid.NewGuid().GetHashCode());
         public const string ZipFileName = "SupermodelSolutionTemplate.XXYXX.zip";
         #endregion
     }
