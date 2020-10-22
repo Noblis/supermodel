@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace Supermodel.Tooling.SolutionMaker.Cmd
 {
@@ -10,9 +12,9 @@ namespace Supermodel.Tooling.SolutionMaker.Cmd
             try
             {
                 //Un-comment and run this once to refresh the solution zip
-                //SolutionMaker.CreateSnapshot(@"..\..\..\..\..\..\..\XXYXX.Core\XXYXX", @"..\..\..\");
-                //Console.WriteLine($"{SolutionMaker.ZipFileName} created successfully!");
-                //return;
+                SolutionMaker.CreateSnapshot(@"..\..\..\..\..\..\..\XXYXX.Core\XXYXX", @"..\..\..\");
+                Console.WriteLine($"{SolutionMaker.ZipFileName} created successfully!");
+                return;
 
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.Green;
@@ -56,8 +58,25 @@ namespace Supermodel.Tooling.SolutionMaker.Cmd
                 SolutionMaker.CreateSupermodelShell(solutionMakerParams);
                 
                 Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine($"Solution {solutionMakerParams.SolutionName} generated successfully!");
-               
+                Console.Write($"Solution {solutionMakerParams.SolutionName} generated successfully! Open it now? (y/n): ");
+                var startSolution = Console.ReadLine();
+                if (startSolution != null && startSolution.Trim().ToLower() == "y") 
+                {
+                    //Process.Start(Path.Combine(path, $"{solutionMakerParams.SolutionName}.sln"));
+                    #pragma warning disable 1998
+                    Task.Run(async () =>
+                    #pragma warning restore 1998
+                    {
+                        new Process
+                        {
+                            StartInfo =
+                            {
+                                UseShellExecute = true, 
+                                FileName = $"{solutionMakerParams.SolutionName}.sln"
+                            }
+                        }.Start();
+                    });
+                }
             }
             catch (Exception ex)
             {

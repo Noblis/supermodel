@@ -122,6 +122,7 @@ namespace WebMonk
                     }
                 }.Start();
             });
+            #pragma warning restore 4014
         }
         
         public Task RunAsync(string? localPathUrl = null, bool autoregisterWithNetsh = true, bool autoUnregisterNetsh = true)
@@ -209,7 +210,9 @@ namespace WebMonk
         protected virtual async Task RunListenerLoopAsync(CancellationToken cancellationToken)
         {
             //Start the session state "garbage collector." This method never returns and just keeps running in the background
+            #pragma warning disable 4014
             SessionState.RemoveExpiredTasksServiceAsync(SessionTimeoutMinutes, cancellationToken);    
+            #pragma warning restore 4014
             
             while (true)
             {
@@ -260,7 +263,9 @@ namespace WebMonk
                     continue;
                 }
                 var httpListenerContextWrapper = new HttpListenerContextWrapper(httpListenerContext);
+                #pragma warning disable 4014
                 ProcessHttpRequestAsync(httpListenerContextWrapper, cancellationToken);
+                #pragma warning restore 4014
             }
         }
 
