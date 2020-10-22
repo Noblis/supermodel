@@ -11,9 +11,9 @@ namespace Supermodel.Tooling.SolutionMaker.Cmd
             try
             {
                 //Un-comment and run this once to refresh the solution zip
-                //SolutionMaker.CreateSnapshot(@"..\..\..\..\..\..\..\XXYXX.Core\XXYXX", @"..\..\..\");
-                //Console.WriteLine($"{SolutionMaker.ZipFileName} created successfully!");
-                //return;
+                SolutionMaker.CreateSnapshot(@"..\..\..\..\..\..\..\XXYXX.Core\XXYXX", @"..\..\..\");
+                Console.WriteLine($"{SolutionMaker.ZipFileName} created successfully!");
+                return;
 
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.Green;
@@ -50,7 +50,7 @@ namespace Supermodel.Tooling.SolutionMaker.Cmd
                     if (input != "y") return;
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine($"Deleting {path}...");
-                    Directory.Delete(Path.Combine(solutionMakerParams.SolutionDirectory, solutionMakerParams.SolutionName), true);
+                    Directory.Delete(SolutionMaker.CombineAndAdjustPaths(solutionMakerParams.SolutionDirectory, solutionMakerParams.SolutionName), true);
                 }
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine($"Generating new solution {solutionMakerParams.SolutionName}...");
@@ -61,13 +61,12 @@ namespace Supermodel.Tooling.SolutionMaker.Cmd
                 var startSolution = Console.ReadLine();
                 if (startSolution != null && startSolution.Trim().ToLower() == "y") 
                 {
-                    //Process.Start(Path.Combine(path, $"{solutionMakerParams.SolutionName}.sln"));
                     new Process
                     {
                         StartInfo =
                         {
                             UseShellExecute = true, 
-                            FileName = Path.Combine(path, $"{solutionMakerParams.SolutionName}.sln"),
+                            FileName = SolutionMaker.CombineAndAdjustPaths(path, $"{solutionMakerParams.SolutionName}.sln"),
                         }
                     }.Start();
                 }

@@ -28,7 +28,7 @@ namespace Supermodel.Tooling.SolutionMaker
             if (Directory.Exists(path)) throw new CreatorException($"Unable to create the new Solution.\n\nDirectory '{path}' already exists.");
             Directory.CreateDirectory(path);
             // ReSharper disable once AssignNullToNotNullAttribute
-            ZipFile.ExtractToDirectory(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), ZipFileName), path);
+            ZipFile.ExtractToDirectory(CombineAndAdjustPaths(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), ZipFileName), path);
 
             //Adjust for Xamarin.Forms UI vs Native UI
             AdjustForMobileApi(solutionMakerParams.MobileApi, path);
@@ -53,8 +53,8 @@ namespace Supermodel.Tooling.SolutionMaker
             if (solutionMakerParams.WebFramework == WebFrameworkEnum.Mvc) RegisterMvcWithNetsh(path);
 
             //Update batch files to pause after execution
-            if (solutionMakerParams.WebFramework == WebFrameworkEnum.WebMonk) UpdateBatchFileToPauseAfterExecution(Path.Combine(path, @"XXYXX\Util\ModelGeneratorWM\RegisterSiteWithNetsh.bat"));
-            if (solutionMakerParams.WebFramework == WebFrameworkEnum.Mvc) UpdateBatchFileToPauseAfterExecution(Path.Combine(path, @"XXYXX\Util\ModelGeneratorMVC\RegisterSiteWithNetsh.bat"));
+            if (solutionMakerParams.WebFramework == WebFrameworkEnum.WebMonk) UpdateBatchFileToPauseAfterExecution(CombineAndAdjustPaths(path, @"XXYXX\Util\ModelGeneratorWM\RegisterSiteWithNetsh.bat"));
+            if (solutionMakerParams.WebFramework == WebFrameworkEnum.Mvc) UpdateBatchFileToPauseAfterExecution(CombineAndAdjustPaths(path, @"XXYXX\Util\ModelGeneratorMVC\RegisterSiteWithNetsh.bat"));
 
             //Replace GUIDs
             ReplaceGuidsInDir(path);
@@ -79,30 +79,30 @@ namespace Supermodel.Tooling.SolutionMaker
             if (mobileApi == MobileApiEnum.XamarinForms)
             {
                 //Droid
-                File.Delete(Path.Combine(path, @"XXYXX\Mobile\XXYXX.Mobile.Droid\MainActivity.cs"));
-                File.Move(Path.Combine(path, @"XXYXX\Mobile\XXYXX.Mobile.Droid\MainActivity.XamarinForms.cs"), Path.Combine(path, @"XXYXX\Mobile\XXYXX.Mobile.Droid\MainActivity.cs"));
+                File.Delete(CombineAndAdjustPaths(path, @"XXYXX\Mobile\XXYXX.Mobile.Droid\MainActivity.cs"));
+                File.Move(CombineAndAdjustPaths(path, @"XXYXX\Mobile\XXYXX.Mobile.Droid\MainActivity.XamarinForms.cs"), CombineAndAdjustPaths(path, @"XXYXX\Mobile\XXYXX.Mobile.Droid\MainActivity.cs"));
 
                 //iOS
-                File.Delete(Path.Combine(path, @"XXYXX\Mobile\XXYXX.Mobile.iOS\AppDelegate.cs"));
-                File.Move(Path.Combine(path, @"XXYXX\Mobile\XXYXX.Mobile.iOS\AppDelegate.XamarinForms.cs"), Path.Combine(path, @"XXYXX\Mobile\XXYXX.Mobile.iOS\AppDelegate.cs"));
+                File.Delete(CombineAndAdjustPaths(path, @"XXYXX\Mobile\XXYXX.Mobile.iOS\AppDelegate.cs"));
+                File.Move(CombineAndAdjustPaths(path, @"XXYXX\Mobile\XXYXX.Mobile.iOS\AppDelegate.XamarinForms.cs"), CombineAndAdjustPaths(path, @"XXYXX\Mobile\XXYXX.Mobile.iOS\AppDelegate.cs"));
             }
             else
             {
                 //Droid
-                File.Delete(Path.Combine(path, @"XXYXX\Mobile\XXYXX.Mobile.Droid\MainActivity.XamarinForms.cs"));
+                File.Delete(CombineAndAdjustPaths(path, @"XXYXX\Mobile\XXYXX.Mobile.Droid\MainActivity.XamarinForms.cs"));
 
                 //iOS
-                File.Delete(Path.Combine(path, @"XXYXX\Mobile\XXYXX.Mobile.iOS\AppDelegate.XamarinForms.cs"));
+                File.Delete(CombineAndAdjustPaths(path, @"XXYXX\Mobile\XXYXX.Mobile.iOS\AppDelegate.XamarinForms.cs"));
 
                 //Mobile
-                Directory.Delete(Path.Combine(path, @"XXYXX\Mobile\XXYXX.Mobile\AppCore"), true);
-                Directory.Delete(Path.Combine(path, @"XXYXX\Mobile\XXYXX.Mobile\EmbeddedResources"), true);
-                Directory.Delete(Path.Combine(path, @"XXYXX\Mobile\XXYXX.Mobile\Models"), true);
-                Directory.Delete(Path.Combine(path, @"XXYXX\Mobile\XXYXX.Mobile\Pages"), true);
+                Directory.Delete(CombineAndAdjustPaths(path, @"XXYXX\Mobile\XXYXX.Mobile\AppCore"), true);
+                Directory.Delete(CombineAndAdjustPaths(path, @"XXYXX\Mobile\XXYXX.Mobile\EmbeddedResources"), true);
+                Directory.Delete(CombineAndAdjustPaths(path, @"XXYXX\Mobile\XXYXX.Mobile\Models"), true);
+                Directory.Delete(CombineAndAdjustPaths(path, @"XXYXX\Mobile\XXYXX.Mobile\Pages"), true);
 
                 //Remove icon as embedded resource
                 var assemblyName = typeof(SolutionMaker).Assembly.GetName().Name;
-                var xxyxxMobileProjFile = Path.Combine(path, @"XXYXX\Mobile\XXYXX.Mobile\XXYXX.Mobile.csproj");
+                var xxyxxMobileProjFile = CombineAndAdjustPaths(path, @"XXYXX\Mobile\XXYXX.Mobile\XXYXX.Mobile.csproj");
                 var xxyxxMobileProjFileContent = File.ReadAllText(xxyxxMobileProjFile);
                 
                 var snippet1 = ReadResourceTextFile($"{assemblyName}.Snippets2Delete.XXYXXMobileProjIfNativeAPI.snippet1.txt");
@@ -113,13 +113,13 @@ namespace Supermodel.Tooling.SolutionMaker
         }
         private static void AdjustForWebFramework(WebFrameworkEnum webFramework, string path)
         {
-            var solutionFile = Path.Combine(path, "XXYXX.sln");
+            var solutionFile = CombineAndAdjustPaths(path, "XXYXX.sln");
             var solutionFileContent = File.ReadAllText(solutionFile);
 
-            var webApiDataContextFile = Path.Combine(path, @"XXYXX\Mobile\XXYXX.Mobile\Supermodel\Persistence\XXYXXWebApiDataContext.cs");
+            var webApiDataContextFile = CombineAndAdjustPaths(path, @"XXYXX\Mobile\XXYXX.Mobile\Supermodel\Persistence\XXYXXWebApiDataContext.cs");
             var webApiDataContextFileContent = File.ReadAllText(webApiDataContextFile);
 
-            var mobileModelsForRuntimeFile = Path.Combine(path, @"XXYXX\Mobile\XXYXX.Mobile\Supermodel\ModelsForRuntime\Supermodel.Mobile.ModelsForRuntime.cs");
+            var mobileModelsForRuntimeFile = CombineAndAdjustPaths(path, @"XXYXX\Mobile\XXYXX.Mobile\Supermodel\ModelsForRuntime\Supermodel.Mobile.ModelsForRuntime.cs");
             var mobileModelsForRuntimeFileContent = File.ReadAllText(mobileModelsForRuntimeFile);
 
             var assemblyName = typeof(SolutionMaker).Assembly.GetName().Name;
@@ -141,9 +141,9 @@ namespace Supermodel.Tooling.SolutionMaker
                     .RemoveStrWithCheck(snippet5)
                     .RemoveStrWithCheck(snippet6);
 
-                Directory.Delete(Path.Combine(path, @"XXYXX\Server\WebMVC"), true);
-                Directory.Delete(Path.Combine(path, @"XXYXX\Server\BatchApiClientMVC"), true);
-                Directory.Delete(Path.Combine(path, @"XXYXX\Util\ModelGeneratorMVC"), true);
+                Directory.Delete(CombineAndAdjustPaths(path, @"XXYXX\Server\WebMVC"), true);
+                Directory.Delete(CombineAndAdjustPaths(path, @"XXYXX\Server\BatchApiClientMVC"), true);
+                Directory.Delete(CombineAndAdjustPaths(path, @"XXYXX\Util\ModelGeneratorMVC"), true);
 
                 //Modify XXYXXWebApiDataContext.cs to have the right web api endpoint
                 webApiDataContextFileContent = webApiDataContextFileContent.RemoveStrWithCheck(@"//public override string BaseUrl => ""http://10.211.55.9:54208/""; //this one is for MVC");
@@ -167,9 +167,9 @@ namespace Supermodel.Tooling.SolutionMaker
                     .RemoveStrWithCheck(snippet5)
                     .RemoveStrWithCheck(snippet6);
 
-                Directory.Delete(Path.Combine(path, @"XXYXX\Server\WebWM"), true);
-                Directory.Delete(Path.Combine(path, @"XXYXX\Server\BatchApiClientWM"), true);
-                Directory.Delete(Path.Combine(path, @"XXYXX\Util\ModelGeneratorWM"), true);
+                Directory.Delete(CombineAndAdjustPaths(path, @"XXYXX\Server\WebWM"), true);
+                Directory.Delete(CombineAndAdjustPaths(path, @"XXYXX\Server\BatchApiClientWM"), true);
+                Directory.Delete(CombineAndAdjustPaths(path, @"XXYXX\Util\ModelGeneratorWM"), true);
 
                 //Modify XXYXXWebApiDataContext.cs to have the right web api endpoint
                 webApiDataContextFileContent = webApiDataContextFileContent.ReplaceStrWithCheck(@"//public override string BaseUrl => ""http://10.211.55.9:54208/""; //this one is for MVC", @"public override string BaseUrl => ""http://10.211.55.9:54208/"";");
@@ -195,7 +195,7 @@ namespace Supermodel.Tooling.SolutionMaker
                 var snippet2 = ReadResourceTextFile($"{assemblyName}.Snippets2Replace.DataContextIfSqlServer.snippet2.txt");
                 var replacement2 = ReadResourceTextFile($"{assemblyName}.Snippets2Replace.DataContextIfSqlServer.replacement2.txt");
 
-                var dataContextFile = Path.Combine(path, @"XXYXX\Server\Domain\Supermodel\Persistence\DataContext.cs");
+                var dataContextFile = CombineAndAdjustPaths(path, @"XXYXX\Server\Domain\Supermodel\Persistence\DataContext.cs");
                 var dataContextFileContent = File.ReadAllText(dataContextFile);
 
                 dataContextFileContent = dataContextFileContent
@@ -210,7 +210,7 @@ namespace Supermodel.Tooling.SolutionMaker
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                var batFile = Path.Combine(path, @"XXYXX\Util\ModelGeneratorMVC\RegisterSiteWithNetsh.bat");
+                var batFile = CombineAndAdjustPaths(path, @"XXYXX\Util\ModelGeneratorMVC\RegisterSiteWithNetsh.bat");
                 
                 var info = new ProcessStartInfo("cmd.exe")
                 {
@@ -242,7 +242,7 @@ namespace Supermodel.Tooling.SolutionMaker
         }
         private static void UpdateBatchFileToPauseAfterExecution(string batchFilePath)
         {
-            var registerSiteWithIISExpressFile = Path.Combine(batchFilePath);
+            var registerSiteWithIISExpressFile = AdjustPath(batchFilePath);
             var registerSiteWithIISExpressFileContent = File.ReadAllText(registerSiteWithIISExpressFile);
             registerSiteWithIISExpressFileContent = registerSiteWithIISExpressFileContent.ReplaceStrWithCheck("rem pause", "pause");
             File.WriteAllText(registerSiteWithIISExpressFile, registerSiteWithIISExpressFileContent);
@@ -368,7 +368,7 @@ namespace Supermodel.Tooling.SolutionMaker
             Console.WriteLine("Done Deleting.");
 
             var zipFileNamePath = ZipFileName;
-            if (destinationDir != null) zipFileNamePath = Path.Combine(destinationDir, ZipFileName);
+            if (destinationDir != null) zipFileNamePath = CombineAndAdjustPaths(destinationDir, ZipFileName);
 
             if (File.Exists(zipFileNamePath)) File.Delete(zipFileNamePath);
             ZipFile.CreateFromDirectory(projectTemplateDirectory, zipFileNamePath);
@@ -494,6 +494,16 @@ namespace Supermodel.Tooling.SolutionMaker
             }
             return sb.ToString();
         }        
+        public static string AdjustPath(string path)
+        {
+            return RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? path.Replace("/", "\\") : path.Replace("\\", "/");
+        }
+        public static string CombineAndAdjustPaths(string part1, string part2)
+        {
+            part1 = AdjustPath(part1);
+            part2 = AdjustPath(part2);
+            return Path.Combine(part1, part2);
+        }
         #endregion
 
         #region Properties and Contants
