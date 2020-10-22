@@ -401,8 +401,8 @@ namespace Supermodel.Tooling.SolutionMaker
         #region Helper Methods
         private static void ReplaceInDir(string directory, string oldStr, string newStr, params string[]? ignoreFileNames)
         {
-            oldStr = oldStr.Replace("\n\r", "\n");
-            newStr = newStr.Replace("\n\r", "\n");
+            oldStr = oldStr.Replace("\r\n", "\n");
+            newStr = newStr.Replace("\r\n", "\n");
 
             //Ignore Frameworks directory
             var directoryName = Path.GetFileName(directory);
@@ -437,11 +437,11 @@ namespace Supermodel.Tooling.SolutionMaker
         }
         private static string ReplaceStrWithCheck(this string me, string str1, string str2)
         {
-            me = me.Replace("\n\r", "\n");
-            str1 = str1.Replace("\n\r", "\n");
-            str2 = str2.Replace("\n\r", "\n");
+            me = me.Replace("\r\n", "\n");
+            str1 = str1.Replace("\r\n", "\n");
+            str2 = str2.Replace("\r\n", "\n");
 
-            //if (!me.Contains(str1)) throw new Exception($"ReplaceStrWithCheck: '{str1.Substring(0, 60)}...' not found. \n" + GetStackTrace());
+            if (!me.Contains(str1)) throw new Exception($"ReplaceStrWithCheck: '{str1.Substring(0, 60)}...' not found. \n" + GetStackTrace());
             return me.Replace(str1, str2);
         }
         private static string ReadResourceTextFile(string resourceName)
