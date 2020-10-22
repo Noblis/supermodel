@@ -73,7 +73,6 @@ namespace Supermodel.Tooling.SolutionMaker
             ReplaceInDir(path, marker, solutionMakerParams.SolutionName, "SolutionMaker.cs");
         }
 
-
         private static void AdjustForMobileApi(MobileApiEnum mobileApi, string path)
         {
             if (mobileApi == MobileApiEnum.XamarinForms)
@@ -364,7 +363,7 @@ namespace Supermodel.Tooling.SolutionMaker
         public static void CreateSnapshot(string projectTemplateDirectory, string? destinationDir = null)
         {
             Console.WriteLine("Deleting files and directories...");
-            DeleteWhatWeDoNotNeedForSnapshot(projectTemplateDirectory);
+            DeleteWhatWeDoNotNeedForSnapshot(AdjustPath(projectTemplateDirectory));
             Console.WriteLine("Done Deleting.");
 
             var zipFileNamePath = ZipFileName;
@@ -402,6 +401,9 @@ namespace Supermodel.Tooling.SolutionMaker
         #region Helper Methods
         private static void ReplaceInDir(string directory, string oldStr, string newStr, params string[]? ignoreFileNames)
         {
+            oldStr = oldStr.Replace("\r\n", "\n");
+            newStr = newStr.Replace("\r\n", "\n");
+
             //Ignore Frameworks directory
             var directoryName = Path.GetFileName(directory);
             if (directoryName == "Frameworks") return;
@@ -431,11 +433,14 @@ namespace Supermodel.Tooling.SolutionMaker
         }
         private static string RemoveStrWithCheck(this string me, string str)
         {
-            if (!me.Contains(str)) throw new Exception($"RemoveStrWithCheck: '{str.Substring(0, 60)}...' not found. \n" + GetStackTrace());
-            return me.Replace(str, "");
+            return me.ReplaceStrWithCheck(str, "");
         }
         private static string ReplaceStrWithCheck(this string me, string str1, string str2)
         {
+            me = me.Replace("\r\n", "\n");
+            str1 = str1.Replace("\r\n", "\n");
+            str2 = str2.Replace("\r\n", "\n");
+
             if (!me.Contains(str1)) throw new Exception($"ReplaceStrWithCheck: '{str1.Substring(0, 60)}...' not found. \n" + GetStackTrace());
             return me.Replace(str1, str2);
         }
@@ -487,16 +492,16 @@ namespace Supermodel.Tooling.SolutionMaker
             var sb = new StringBuilder();
             if (stackFrames != null)
             {
-                for(var i = 1; i < stackFrames.Length; i++)
+                for (var i = 1; i < stackFrames.Length; i++)
                 {
                     sb.Append($"\n{stackFrames[i].GetMethod()}");
                 }
             }
             return sb.ToString();
-        }        
+        }
         public static string AdjustPath(string path)
         {
-            return RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? path.Replace("/", "\\") : path.Replace("\\", "/");
+            return RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? path.Trim().Replace("/", "\\") : path.Trim().Replace("\\", "/");
         }
         public static string CombineAndAdjustPaths(string part1, string part2)
         {

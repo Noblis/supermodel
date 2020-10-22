@@ -17,6 +17,8 @@ namespace Supermodel.Tooling.SolutionMaker.Cmd
 
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.Green;
+                Console.Clear();
+
                 Console.WriteLine("Supermodel.Core Solution Maker");
                 Console.WriteLine("Version: Beta 2.0");
 
@@ -73,7 +75,7 @@ namespace Supermodel.Tooling.SolutionMaker.Cmd
             }
             catch (Exception ex)
             {
-                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(ex);
             }
             finally
