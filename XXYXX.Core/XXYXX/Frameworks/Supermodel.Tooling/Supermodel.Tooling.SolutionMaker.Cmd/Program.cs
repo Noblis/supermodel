@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Threading.Tasks;
 
 namespace Supermodel.Tooling.SolutionMaker.Cmd
 {
@@ -63,19 +62,14 @@ namespace Supermodel.Tooling.SolutionMaker.Cmd
                 if (startSolution != null && startSolution.Trim().ToLower() == "y") 
                 {
                     //Process.Start(Path.Combine(path, $"{solutionMakerParams.SolutionName}.sln"));
-                    #pragma warning disable 1998
-                    Task.Run(async () =>
-                    #pragma warning restore 1998
+                    new Process
                     {
-                        new Process
+                        StartInfo =
                         {
-                            StartInfo =
-                            {
-                                UseShellExecute = true, 
-                                FileName = $"{solutionMakerParams.SolutionName}.sln"
-                            }
-                        }.Start();
-                    });
+                            UseShellExecute = true, 
+                            FileName = Path.Combine(path, $"{solutionMakerParams.SolutionName}.sln"),
+                        }
+                    }.Start();
                 }
             }
             catch (Exception ex)
