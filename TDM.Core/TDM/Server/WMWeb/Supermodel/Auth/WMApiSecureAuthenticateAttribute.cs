@@ -20,7 +20,7 @@ namespace WMWeb.Supermodel.Auth
         public static readonly byte[] Key = { 0xAA, 0x68, 0x12, 0xB1, 0x35, 0x22, 0x51, 0xA0, 0xB2, 0x41, 0x27, 0x5C, 0x23, 0x9C, 0xF0, 0xDD };
         public static readonly string HeaderName = "X-TDM-Authorization";
         // ReSharper disable StringLiteralTypo
-        public static readonly string SecretToken = "JHFV_jhaegvdkjHGVBKJDHgbejdfh**&@$vJHgvkzsdhfbgkb37r3t84r7glSCGO834FG{YD^%^$";
+        public static readonly string SecretToken = "[SECRET_TOKEN]";
         // ReSharper restore StringLiteralTypo
         #endregion
 

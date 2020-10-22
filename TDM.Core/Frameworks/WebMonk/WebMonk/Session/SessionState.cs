@@ -98,8 +98,8 @@ namespace WebMonk.Session
         }
         public static string GenerateNewSessionId()
         {
-            var sessionIdPt1 = Convert.ToBase64String(Hasher.ComputeHash(Encoding.Unicode.GetBytes($"{Guid.NewGuid()}{Guid.NewGuid()}")))[0..86];
-            var sessionIdPt2 = Convert.ToBase64String(Hasher.ComputeHash(Encoding.Unicode.GetBytes($"{Guid.NewGuid()}{Guid.NewGuid()}")))[0..86];
+            var sessionIdPt1 = Convert.ToBase64String(Hasher.ComputeHash(Encoding.Unicode.GetBytes($"{Guid.NewGuid()}{Guid.NewGuid()}")))[..86];
+            var sessionIdPt2 = Convert.ToBase64String(Hasher.ComputeHash(Encoding.Unicode.GetBytes($"{Guid.NewGuid()}{Guid.NewGuid()}")))[..86];
             var sessionId = sessionIdPt1 + sessionIdPt2;
 
             var chrIndex = Rnd.Next(0, 26);

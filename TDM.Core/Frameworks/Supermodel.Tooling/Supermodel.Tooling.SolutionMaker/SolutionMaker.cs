@@ -11,6 +11,7 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Supermodel.Tooling.SolutionMaker
@@ -325,7 +326,7 @@ namespace Supermodel.Tooling.SolutionMaker
         }
         private static void GenerateNewRandomEncryptionKeyForLocalStorage(string path)
         {
-            const string oldKey2Replace = @"{ 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE };";
+            const string oldKey = @"{ 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE };";
 
             var sb = new StringBuilder();
             for (var i = 0; i < 16; i++)
@@ -335,11 +336,11 @@ namespace Supermodel.Tooling.SolutionMaker
             }
             var newKey = "{ " + sb + " };";
 
-            ReplaceInDir(path, oldKey2Replace, newKey, "SolutionMaker.cs");
+            ReplaceInDir(path, oldKey, newKey, "SolutionMaker.cs");
         }
         private static void GenerateNewRandomEncryptionKeyForSecureAuth(string path)
         {
-            const string oldKey2Replace = @"{ 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };";
+            const string oldKey = @"{ 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };";
 
             var sb = new StringBuilder();
             for (var i = 0; i < 16; i++)
@@ -349,11 +350,13 @@ namespace Supermodel.Tooling.SolutionMaker
             }
             var newKey = "{ " + sb + " };";
 
-            ReplaceInDir(path, oldKey2Replace, newKey, "SolutionMaker.cs");
+            ReplaceInDir(path, oldKey, newKey, "SolutionMaker.cs");
         }
         private static void GenerateNewSecretTokenForSecureAuth(string path)
         {
-            const string oldSecretToken = "JHFV_jhaegvdkjHGVBKJDHgbejdfh**&@$vJHgvkzsdhfbgkb37r3t84r7glSCGO834FG{YD^%^$";
+            const string oldSecretToken = "[SECRET_TOKEN]";
+            var newSecretToken = Convert.ToBase64String(new SHA512CryptoServiceProvider().ComputeHash(Encoding.Unicode.GetBytes($"{Guid.NewGuid()}{Guid.NewGuid()}")))[..86];
+            ReplaceInDir(path, oldSecretToken, newSecretToken, "SolutionMaker.cs");
         }
         #endregion
 
