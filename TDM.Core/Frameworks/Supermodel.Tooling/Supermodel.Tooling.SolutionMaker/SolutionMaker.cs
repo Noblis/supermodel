@@ -496,7 +496,7 @@ namespace Supermodel.Tooling.SolutionMaker
         }        
         public static string AdjustPath(string path)
         {
-            return RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? path.Replace("/", "\\") : path.Replace("\\", "/");
+            return RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? path.Trim().Replace("/", "\\") : path.Trim().Replace("\\", "/");
         }
         public static string CombineAndAdjustPaths(string part1, string part2)
         {
