@@ -129,7 +129,7 @@ namespace Supermodel.Tooling.SolutionMaker.Cmd
                 Console.Write("Solution Directory: ");
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 var input = Console.ReadLine();
-                if (input != null && IsValidDirectory(input)) return Path.GetFullPath(input);
+                if (input != null && IsValidDirectory(input)) return Path.GetFullPath(input.Trim());
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine($"'{input}' is not a valid Solution Directory. Please re-enter.");
             }
@@ -155,7 +155,7 @@ namespace Supermodel.Tooling.SolutionMaker.Cmd
                 Console.Write("Solution Name: ");
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 var input = Console.ReadLine();
-                if (input != null && IsValidSolutionName(input)) return input;
+                if (input != null && IsValidSolutionName(input)) return input.Trim();
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine($"'{input}' is not a valid Solution Name. Please re-enter.");
             }
