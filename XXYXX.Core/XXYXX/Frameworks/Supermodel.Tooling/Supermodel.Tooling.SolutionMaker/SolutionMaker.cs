@@ -30,6 +30,10 @@ namespace Supermodel.Tooling.SolutionMaker
             // ReSharper disable once AssignNullToNotNullAttribute
             ZipFile.ExtractToDirectory(CombineAndAdjustPaths(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), ZipFileName), path);
 
+            //Adjust version
+            const string versionMarker = "Version X.YY.ZZZ";
+            ReplaceInFile(CombineAndAdjustPaths(path, @"Frameworks\Version.txt"), versionMarker, $"Version {SolutionMaker.Version}");
+
             //Adjust for Xamarin.Forms UI vs Native UI
             AdjustForMobileApi(solutionMakerParams.MobileApi, path);
 
@@ -399,6 +403,16 @@ namespace Supermodel.Tooling.SolutionMaker
         #endregion
 
         #region Helper Methods
+        private static void ReplaceInFile(string file, string oldStr, string newStr)
+        {
+            //Replace oldStr in file contents with newStr
+            var fileContents = File.ReadAllText(file);
+            if (fileContents.Contains(oldStr))
+            {
+                fileContents = fileContents.Replace(oldStr, newStr);
+                File.WriteAllText(file, fileContents);
+            }
+        }
         private static void ReplaceInDir(string directory, string oldStr, string newStr, params string[]? ignoreFileNames)
         {
             oldStr = oldStr.Replace("\r\n", "\n");
@@ -417,14 +431,8 @@ namespace Supermodel.Tooling.SolutionMaker
                 var fileName = Path.GetFileName(file);
                 if (ignoreFileNames != null && ignoreFileNames.Any(x => x == fileName)) continue;
                 
-                //Replace oldStr in file contents with newStr
-                var fileContents = File.ReadAllText(file);
-                if (fileContents.Contains(oldStr))
-                {
-                    fileContents = fileContents.Replace(oldStr, newStr);
-                    File.WriteAllText(file, fileContents);
-                }
-
+                ReplaceInFile(file, oldStr, newStr);
+                
                 //Replace marker in file name 
                 if (file.Contains(oldStr) && newStr != oldStr) File.Move(file, file.Replace(oldStr, newStr));
             }
@@ -514,6 +522,7 @@ namespace Supermodel.Tooling.SolutionMaker
         #region Properties and Contants
         public static Random Random { get; } = new Random(Guid.NewGuid().GetHashCode());
         public const string ZipFileName = "SupermodelSolutionTemplate.XXYXX.zip";
+        public const string Version = "2.00.000";
         #endregion
     }
 }

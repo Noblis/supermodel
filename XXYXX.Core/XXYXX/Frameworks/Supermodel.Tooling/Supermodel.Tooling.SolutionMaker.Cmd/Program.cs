@@ -20,7 +20,7 @@ namespace Supermodel.Tooling.SolutionMaker.Cmd
                 Console.Clear();
 
                 Console.WriteLine("Supermodel.Core Solution Maker");
-                Console.WriteLine("Version: Beta 2.0");
+                Console.WriteLine($"Version {SolutionMaker.Version}");
 
                 Console.WriteLine("Please Enter Solution Parameters");
                 var solutionMakerParams = SolutionMakerParams.ReadFromConsole();
