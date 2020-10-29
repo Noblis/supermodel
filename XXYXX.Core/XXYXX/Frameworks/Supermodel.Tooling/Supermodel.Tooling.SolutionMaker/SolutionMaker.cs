@@ -299,7 +299,7 @@ namespace Supermodel.Tooling.SolutionMaker
                     fileContents = fileContents.Replace(domainProjOldGuidStr, domainProjNewGuidStr);
                     fileContents = fileContents.Replace(domainProjOldGuidStr.ToLower(), domainProjNewGuidStr.ToLower());
 
-                    const string webMvcProjOldGuidStr = "A948AEF7-8737-49A0-A47C-0652ED858D3";
+                    const string webMvcProjOldGuidStr = "A948AEF7-8737-49A0-A47C-0652ED858D30";
                     var webMvcProjNewGuidStr = Guid.NewGuid().ToString().ToUpper();
                     fileContents = fileContents.Replace(webMvcProjOldGuidStr, webMvcProjNewGuidStr);
                     fileContents = fileContents.Replace(webMvcProjOldGuidStr.ToLower(), webMvcProjNewGuidStr.ToLower());

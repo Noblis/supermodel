@@ -129,12 +129,12 @@ namespace Supermodel.Tooling.SolutionMaker
 
             if (webFramework == WebFrameworkEnum.WebMonk)
             {
-                var snippet1 = ReadResourceTextFile($"{assemblyName}.Snippets2Delete.SolutionIfWMSelected.snippet1.txt");
-                var snippet2 = ReadResourceTextFile($"{assemblyName}.Snippets2Delete.SolutionIfWMSelected.snippet2.txt");
-                var snippet3 = ReadResourceTextFile($"{assemblyName}.Snippets2Delete.SolutionIfWMSelected.snippet3.txt");
-                var snippet4 = ReadResourceTextFile($"{assemblyName}.Snippets2Delete.SolutionIfWMSelected.snippet4.txt");
-                var snippet5 = ReadResourceTextFile($"{assemblyName}.Snippets2Delete.SolutionIfWMSelected.snippet5.txt");
-                var snippet6 = ReadResourceTextFile($"{assemblyName}.Snippets2Delete.SolutionIfWMSelected.snippet6.txt");
+                var snippet1 = ReadResourceTextFile($"{assemblyName}.Snippets2Delete.SolutionIfWM.snippet1.txt");
+                var snippet2 = ReadResourceTextFile($"{assemblyName}.Snippets2Delete.SolutionIfWM.snippet2.txt");
+                var snippet3 = ReadResourceTextFile($"{assemblyName}.Snippets2Delete.SolutionIfWM.snippet3.txt");
+                var snippet4 = ReadResourceTextFile($"{assemblyName}.Snippets2Delete.SolutionIfWM.snippet4.txt");
+                var snippet5 = ReadResourceTextFile($"{assemblyName}.Snippets2Delete.SolutionIfWM.snippet5.txt");
+                var snippet6 = ReadResourceTextFile($"{assemblyName}.Snippets2Delete.SolutionIfWM.snippet6.txt");
                 
                 solutionFileContent = solutionFileContent
                     .RemoveStrWithCheck(snippet1)
@@ -155,12 +155,12 @@ namespace Supermodel.Tooling.SolutionMaker
             }
             else
             {
-                var snippet1 = ReadResourceTextFile($"{assemblyName}.Snippets2Delete.SolutionIfMVCSelected.snippet1.txt");
-                var snippet2 = ReadResourceTextFile($"{assemblyName}.Snippets2Delete.SolutionIfMVCSelected.snippet2.txt");
-                var snippet3 = ReadResourceTextFile($"{assemblyName}.Snippets2Delete.SolutionIfMVCSelected.snippet3.txt");
-                var snippet4 = ReadResourceTextFile($"{assemblyName}.Snippets2Delete.SolutionIfMVCSelected.snippet4.txt");
-                var snippet5 = ReadResourceTextFile($"{assemblyName}.Snippets2Delete.SolutionIfMVCSelected.snippet5.txt");
-                var snippet6 = ReadResourceTextFile($"{assemblyName}.Snippets2Delete.SolutionIfMVCSelected.snippet6.txt");
+                var snippet1 = ReadResourceTextFile($"{assemblyName}.Snippets2Delete.SolutionIfMVC.snippet1.txt");
+                var snippet2 = ReadResourceTextFile($"{assemblyName}.Snippets2Delete.SolutionIfMVC.snippet2.txt");
+                var snippet3 = ReadResourceTextFile($"{assemblyName}.Snippets2Delete.SolutionIfMVC.snippet3.txt");
+                var snippet4 = ReadResourceTextFile($"{assemblyName}.Snippets2Delete.SolutionIfMVC.snippet4.txt");
+                var snippet5 = ReadResourceTextFile($"{assemblyName}.Snippets2Delete.SolutionIfMVC.snippet5.txt");
+                var snippet6 = ReadResourceTextFile($"{assemblyName}.Snippets2Delete.SolutionIfMVC.snippet6.txt");
                 
                 solutionFileContent = solutionFileContent
                     .RemoveStrWithCheck(snippet1)
@@ -188,11 +188,11 @@ namespace Supermodel.Tooling.SolutionMaker
         }
         private static void AdjustForDatabase(DatabaseEnum database, string path)
         {
-            //Sqlite is the default
+            var assemblyName = typeof(SolutionMaker).Assembly.GetName().Name;
+
+            //DataContext: Sqlite is the default for data context
             if (database == DatabaseEnum.SqlServer)
             {
-                var assemblyName = typeof(SolutionMaker).Assembly.GetName().Name;
-
                 var snippet1 = ReadResourceTextFile($"{assemblyName}.Snippets2Replace.DataContextIfSqlServer.snippet1.txt");
                 var replacement1 = ReadResourceTextFile($"{assemblyName}.Snippets2Replace.DataContextIfSqlServer.replacement1.txt");
                 var snippet2 = ReadResourceTextFile($"{assemblyName}.Snippets2Replace.DataContextIfSqlServer.snippet2.txt");
@@ -208,6 +208,20 @@ namespace Supermodel.Tooling.SolutionMaker
 
                 File.WriteAllText(dataContextFile, dataContextFileContent);
             }
+
+            //Solution file
+            string snippet;
+            if (database == DatabaseEnum.SqlServer) snippet = ReadResourceTextFile($"{assemblyName}.Snippets2Delete.SolutionIfSQLServer.snippet1.txt");
+            else if (database == DatabaseEnum.Sqlite) snippet = ReadResourceTextFile($"{assemblyName}.Snippets2Delete.SolutionIfSQLite.snippet1.txt");
+            else throw new Exception($"Unknown DatabaseEnum {database}");
+
+            var solutionFile = CombineAndAdjustPaths(path, "XXYXX.sln");
+            var solutionFileContent = File.ReadAllText(solutionFile);
+
+            solutionFileContent = solutionFileContent.RemoveStrWithCheck(snippet);
+
+            File.WriteAllText(solutionFile, solutionFileContent);
+
         }
         private static void RegisterMvcWithNetsh(string path)
         {
