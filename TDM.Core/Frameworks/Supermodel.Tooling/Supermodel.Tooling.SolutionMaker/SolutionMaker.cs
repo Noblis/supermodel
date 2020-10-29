@@ -211,11 +211,11 @@ namespace Supermodel.Tooling.SolutionMaker
 
             //Solution file
             string snippet;
-            if (database == DatabaseEnum.SqlServer) snippet = ReadResourceTextFile($"{assemblyName}.Snippets2Delete.SolutionIfSQLServer.snippet1.txt");
-            else if (database == DatabaseEnum.Sqlite) snippet = ReadResourceTextFile($"{assemblyName}.Snippets2Delete.SolutionIfSQLite.snippet1.txt");
+            if (database == DatabaseEnum.SqlServer) snippet = ReadResourceTextFile($"{assemblyName}.Snippets2Delete.DomainProjIfSQLServer.snippet1.txt");
+            else if (database == DatabaseEnum.Sqlite) snippet = ReadResourceTextFile($"{assemblyName}.Snippets2Delete.DomainProjIfSQLite.snippet1.txt");
             else throw new Exception($"Unknown DatabaseEnum {database}");
 
-            var solutionFile = CombineAndAdjustPaths(path, "XXYXX.sln");
+            var solutionFile = CombineAndAdjustPaths(path, @"XXYXX\Server\Domain\Domain.csproj");
             var solutionFileContent = File.ReadAllText(solutionFile);
 
             solutionFileContent = solutionFileContent.RemoveStrWithCheck(snippet);
