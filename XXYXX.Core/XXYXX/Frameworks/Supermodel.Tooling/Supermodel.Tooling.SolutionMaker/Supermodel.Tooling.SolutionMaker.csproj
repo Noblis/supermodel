@@ -5,12 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Snippets2Delete\SolutionIfMVCSelected\snippet1.txt" />
-    <None Remove="Snippets2Delete\SolutionIfMVCSelected\snippet2.txt" />
-    <None Remove="Snippets2Delete\SolutionIfMVCSelected\snippet3.txt" />
-    <None Remove="Snippets2Delete\SolutionIfMVCSelected\snippet4.txt" />
-    <None Remove="Snippets2Delete\SolutionIfMVCSelected\snippet5.txt" />
-    <None Remove="Snippets2Delete\SolutionIfMVCSelected\snippet6.txt" />
+    <None Remove="Snippets2Delete\SolutionIfMVC\snippet1.txt" />
+    <None Remove="Snippets2Delete\SolutionIfMVC\snippet2.txt" />
+    <None Remove="Snippets2Delete\SolutionIfMVC\snippet3.txt" />
+    <None Remove="Snippets2Delete\SolutionIfMVC\snippet4.txt" />
+    <None Remove="Snippets2Delete\SolutionIfMVC\snippet5.txt" />
+    <None Remove="Snippets2Delete\SolutionIfMVC\snippet6.txt" />
+    <None Remove="Snippets2Delete\SolutionIfSQLite\snippet1.txt" />
+    <None Remove="Snippets2Delete\SolutionIfSQLServer\snippet1.txt" />
     <None Remove="Snippets2Delete\SolutionIfWMSelected\snippet1.txt" />
     <None Remove="Snippets2Delete\SolutionIfWMSelected\snippet2.txt" />
     <None Remove="Snippets2Delete\SolutionIfWMSelected\snippet3.txt" />
@@ -23,16 +25,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Snippets2Delete\SolutionIfSQLite\snippet1.txt" />
+    <EmbeddedResource Include="Snippets2Delete\SolutionIfSQLServer\snippet1.txt" />
     <EmbeddedResource Include="Snippets2Delete\XXYXXMobileProjIfNativeAPI\snippet1.txt" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Snippets2Delete\SolutionIfMVCSelected\snippet1.txt" />
-    <EmbeddedResource Include="Snippets2Delete\SolutionIfMVCSelected\snippet2.txt" />
-    <EmbeddedResource Include="Snippets2Delete\SolutionIfMVCSelected\snippet3.txt" />
-    <EmbeddedResource Include="Snippets2Delete\SolutionIfMVCSelected\snippet4.txt" />
-    <EmbeddedResource Include="Snippets2Delete\SolutionIfMVCSelected\snippet5.txt" />
-    <EmbeddedResource Include="Snippets2Delete\SolutionIfMVCSelected\snippet6.txt" />
+    <EmbeddedResource Include="Snippets2Delete\SolutionIfMVC\snippet1.txt" />
+    <EmbeddedResource Include="Snippets2Delete\SolutionIfMVC\snippet2.txt" />
+    <EmbeddedResource Include="Snippets2Delete\SolutionIfMVC\snippet3.txt" />
+    <EmbeddedResource Include="Snippets2Delete\SolutionIfMVC\snippet4.txt" />
+    <EmbeddedResource Include="Snippets2Delete\SolutionIfMVC\snippet5.txt" />
+    <EmbeddedResource Include="Snippets2Delete\SolutionIfMVC\snippet6.txt" />
     <EmbeddedResource Include="Snippets2Delete\SolutionIfWMSelected\snippet1.txt" />
     <EmbeddedResource Include="Snippets2Delete\SolutionIfWMSelected\snippet2.txt" />
     <EmbeddedResource Include="Snippets2Delete\SolutionIfWMSelected\snippet3.txt" />
