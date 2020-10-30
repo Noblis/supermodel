@@ -54,7 +54,7 @@ namespace Supermodel.Persistence.Entities
             await using (new UnitOfWork<TDataContext>(ReadOnly.Yes))
             {
                 var repo = LinqRepoFactory.Create<TUserEntity>();
-                if (repo.Items.Any(u => u.Username == Username && u.Id != Id)) vr.AddValidationResult(this, "User with this Username already exists", x => x.Username);
+                if (repo.Items.Any(u => u.Username == Username && (Id == 0 || u.Id != Id))) vr.AddValidationResult(this, "User with this Username already exists", x => x.Username);
             }
             return vr;
         }
