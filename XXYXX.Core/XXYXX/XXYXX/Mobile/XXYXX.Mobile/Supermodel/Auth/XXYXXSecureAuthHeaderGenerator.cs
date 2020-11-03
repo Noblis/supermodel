@@ -28,7 +28,7 @@ namespace XXYXX.Mobile.Supermodel.Auth
         public static readonly byte[] Key = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
         public static readonly string HeaderName = "X-XXYXX-Authorization";
         // ReSharper disable StringLiteralTypo
-        public static readonly string SecretToken = "JHFV_jhaegvdkjHGVBKJDHgbejdfh**&@$vJHgvkzsdhfbgkb37r3t84r7glSCGO834FG{YD^%^$";
+        public static readonly string SecretToken = "[SECRET_TOKEN]";
         // ReSharper restore StringLiteralTypo
         #endregion
     }
