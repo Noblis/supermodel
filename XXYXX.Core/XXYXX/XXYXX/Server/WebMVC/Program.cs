@@ -1,5 +1,6 @@
 #nullable enable
 
+using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Domain.Supermodel.Persistence;
@@ -17,14 +18,14 @@ namespace WebMVC
             //Comment this out if you don't want to recreate and re-seed db every time you start the app in debug mode
             if (Debugger.IsAttached)
             {
-                //Console.Write("Recreating the database... ");
+                Console.Write("Recreating the database... ");
                 await using (new UnitOfWork<DataContext>())
                 {
                     await EFCoreUnitOfWorkContext.Database.EnsureDeletedAsync();
                     await EFCoreUnitOfWorkContext.Database.EnsureCreatedAsync();
                     await UnitOfWorkContext.SeedDataAsync();
                 }
-                //Console.WriteLine("Done!");
+                Console.WriteLine("Done!");
             }
 
             await CreateHostBuilder(args).Build().RunAsync();
