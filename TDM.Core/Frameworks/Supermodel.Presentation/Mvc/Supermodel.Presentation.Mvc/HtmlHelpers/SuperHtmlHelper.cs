@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Supermodel.DataAnnotations.Exceptions;
 using Supermodel.DataAnnotations.Validations.Attributes;
 using Supermodel.Presentation.Mvc.Extensions;
+using Supermodel.Presentation.Mvc.Models.Mvc;
 using Supermodel.Presentation.Mvc.Models.Mvc.Rendering;
 using Supermodel.ReflectionMapper;
 
@@ -45,7 +46,9 @@ namespace Supermodel.Presentation.Mvc.HtmlHelpers
 
             if (model is ISupermodelEditorTemplate templatedModel) 
             {
-                return templatedModel.EditorTemplate(MakeInnerHtmlHelper(modelExpression), screenOrderFrom, screenOrderTo, markerAttribute);
+                var innerHtml = MakeInnerHtmlHelper(modelExpression);
+                if (NotTypedHtml.ViewData.Model is IMvcModelForEntity iEntityModel) innerHtml.ViewContext.RouteData.Values["id"] = iEntityModel.Id;
+                return templatedModel.EditorTemplate(innerHtml, screenOrderFrom, screenOrderTo, markerAttribute);
             }
 
             //Special handling for HtmlString
@@ -72,7 +75,9 @@ namespace Supermodel.Presentation.Mvc.HtmlHelpers
 
             if (model is ISupermodelEditorTemplate templatedModel) 
             {
-                return templatedModel.EditorTemplate(MakeInnerHtmlHelper(modelExpression), screenOrderFrom, screenOrderTo, markerAttribute);
+                var innerHtml = MakeInnerHtmlHelper(modelExpression);
+                if (NotTypedHtml.ViewData.Model is IMvcModelForEntity iEntityModel) innerHtml.ViewContext.RouteData.Values["id"] = iEntityModel.Id;
+                return templatedModel.EditorTemplate(innerHtml, screenOrderFrom, screenOrderTo, markerAttribute);
             }
 
             //Special handling for HtmlString
@@ -114,7 +119,9 @@ namespace Supermodel.Presentation.Mvc.HtmlHelpers
 
             if (model is ISupermodelDisplayTemplate templatedModel) 
             {
-                return templatedModel.DisplayTemplate(MakeInnerHtmlHelper(modelExpression), screenOrderFrom, screenOrderTo, markerAttribute);
+                var innerHtml = MakeInnerHtmlHelper(modelExpression);
+                if (NotTypedHtml.ViewData.Model is IMvcModelForEntity iEntityModel) innerHtml.ViewContext.RouteData.Values["id"] = iEntityModel.Id;
+                return templatedModel.DisplayTemplate(innerHtml, screenOrderFrom, screenOrderTo, markerAttribute);
             }
 
             //Special handling for MvcHtmlString
@@ -141,7 +148,9 @@ namespace Supermodel.Presentation.Mvc.HtmlHelpers
 
             if (model is ISupermodelDisplayTemplate templatedModel) 
             {
-                return templatedModel.DisplayTemplate(MakeInnerHtmlHelper(modelExpression), screenOrderFrom, screenOrderTo, markerAttribute);
+                var innerHtml = MakeInnerHtmlHelper(modelExpression);
+                if (NotTypedHtml.ViewData.Model is IMvcModelForEntity iEntityModel) innerHtml.ViewContext.RouteData.Values["id"] = iEntityModel.Id;
+                return templatedModel.DisplayTemplate(innerHtml, screenOrderFrom, screenOrderTo, markerAttribute);
             }
 
             //Special handling for MvcHtmlString
@@ -183,7 +192,9 @@ namespace Supermodel.Presentation.Mvc.HtmlHelpers
 
             if (model is ISupermodelHiddenTemplate templatedModel)
             {
-                return templatedModel.HiddenTemplate(MakeInnerHtmlHelper(modelExpression), screenOrderFrom, screenOrderTo, markerAttribute);
+                var innerHtml = MakeInnerHtmlHelper(modelExpression);
+                if (NotTypedHtml.ViewData.Model is IMvcModelForEntity iEntityModel) innerHtml.ViewContext.RouteData.Values["id"] = iEntityModel.Id;
+                return templatedModel.HiddenTemplate(innerHtml, screenOrderFrom, screenOrderTo, markerAttribute);
             }
 
             return NotTypedHtml.Hidden(expression);
@@ -207,7 +218,9 @@ namespace Supermodel.Presentation.Mvc.HtmlHelpers
 
             if (model is ISupermodelHiddenTemplate templatedModel)
             { 
-                return templatedModel.HiddenTemplate(MakeInnerHtmlHelper(modelExpression), screenOrderFrom, screenOrderTo, markerAttribute);
+                var innerHtml = MakeInnerHtmlHelper(modelExpression);
+                if (NotTypedHtml.ViewData.Model is IMvcModelForEntity iEntityModel) innerHtml.ViewContext.RouteData.Values["id"] = iEntityModel.Id;
+                return templatedModel.HiddenTemplate(innerHtml, screenOrderFrom, screenOrderTo, markerAttribute);
             }
 
             return Html.HiddenFor(expression);

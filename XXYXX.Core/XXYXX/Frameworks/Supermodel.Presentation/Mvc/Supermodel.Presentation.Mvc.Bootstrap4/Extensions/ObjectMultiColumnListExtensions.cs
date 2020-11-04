@@ -56,7 +56,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Extensions
                     }
                     else
                     {
-                        if (propertyObj is ISupermodelDisplayTemplate) sb.Append(html.Super().Display(propertyInfo.Name).GetString());  
+                        if (propertyObj is ISupermodelDisplayTemplate) sb.Append(html.Super().Display(propertyInfo.Name).GetString());
                         else sb.Append(html.Encode(propertyObj.GetDescription()));
                     }
                 }
