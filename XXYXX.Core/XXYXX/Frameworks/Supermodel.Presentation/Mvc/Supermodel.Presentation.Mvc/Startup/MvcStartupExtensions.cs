@@ -1,5 +1,6 @@
 ﻿#nullable enable
 
+using System;
 using System.Threading.Tasks;
 using HttpBatchHandler;
 using Microsoft.AspNetCore.Authentication;
@@ -55,6 +56,9 @@ namespace Supermodel.Presentation.Mvc.Startup
                     options.Events.OnRedirectToAccessDenied = context =>
                     {
                         var controllerName = context.Request.RouteValues["controller"].ToString()!;
+
+                        //This is to correct MVC craziness, they add ReturnUrl page to the 403 error page
+                        context.RedirectUri = context.RedirectUri.Substring(0, context.RedirectUri.IndexOf("?", StringComparison.Ordinal)).Replace("%3F", "?");
 
                         if (!controllerName!.ToLower().EndsWith("api")) context.Response.Redirect(context.RedirectUri);
                         else context.Response.StatusCode = StatusCodes.Status403Forbidden;
@@ -118,6 +122,9 @@ namespace Supermodel.Presentation.Mvc.Startup
                     options.Events.OnRedirectToAccessDenied = context =>
                     {
                         var controllerName = context.Request.RouteValues["controller"].ToString()!;
+
+                        //This is to correct MVC craziness, they add ReturnUrl page to the 403 error page
+                        context.RedirectUri = context.RedirectUri.Substring(0, context.RedirectUri.IndexOf("?", StringComparison.Ordinal)).Replace("%3F", "?");
 
                         if (!controllerName!.ToLower().EndsWith("api")) context.Response.Redirect(context.RedirectUri);
                         else context.Response.StatusCode = StatusCodes.Status403Forbidden;
