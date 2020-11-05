@@ -16,9 +16,9 @@ namespace WebMonk.ValueProviders
     public class MessageBodyValueProvider : ValueProvider
     {
         #region Methods
-        public virtual async Task<IValueProvider> InitAsync(IHttpListenerRequest request)
+        public virtual async Task<IValueProvider> InitAsync(IHttpListenerRequest? request)
         {
-            if (!request.HasEntityBody) return this;
+            if (request == null || !request.HasEntityBody) return this;
             if (request.ContentType.StartsWith("multipart/mixed")) return this;
 
             if (request.ContentType == "application/x-www-form-urlencoded")
