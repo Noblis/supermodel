@@ -4,23 +4,26 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
 {
-    public class USAddressMvcModel : Bs4.ValueObjectMvcModel
+    public static partial class Bs4
     {
-        #region Properties
-        public Bs4.TextBoxMvcModel Street { get; set; } = new Bs4.TextBoxMvcModel();
-        public Bs4.TextBoxMvcModel City { get; set; } = new Bs4.TextBoxMvcModel();
-        public Bs4.TextBoxMvcModel State { get; set; } = new Bs4.TextBoxMvcModel();
-        public Bs4.TextBoxMvcModel Zip { get; set; } = new Bs4.TextBoxMvcModel();
-        #endregion
-    }
+        public class USAddressMvcModel : ValueObjectMvcModel
+        {
+            #region Properties
+            public TextBoxMvcModel Street { get; set; } = new TextBoxMvcModel();
+            public TextBoxMvcModel City { get; set; } = new TextBoxMvcModel();
+            public TextBoxMvcModel State { get; set; } = new TextBoxMvcModel();
+            public TextBoxMvcModel Zip { get; set; } = new TextBoxMvcModel();
+            #endregion
+        }
 
-    public class USAddressRequiredMvcModel : Bs4.ValueObjectMvcModel
-    {
-        #region Properties
-        [Required] public Bs4.TextBoxMvcModel Street { get; set; } = new Bs4.TextBoxMvcModel();
-        [Required] public Bs4.TextBoxMvcModel City { get; set; } = new Bs4.TextBoxMvcModel();
-        [Required] public Bs4.TextBoxMvcModel State { get; set; } = new Bs4.TextBoxMvcModel();
-        [Required] public Bs4.TextBoxMvcModel Zip { get; set; } = new Bs4.TextBoxMvcModel();
-        #endregion
+        public class USAddressRequiredMvcModel : ValueObjectMvcModel
+        {
+            #region Properties
+            [Required] public TextBoxMvcModel Street { get; set; } = new TextBoxMvcModel();
+            [Required] public TextBoxMvcModel City { get; set; } = new TextBoxMvcModel();
+            [Required] public TextBoxMvcModel State { get; set; } = new TextBoxMvcModel();
+            [Required] public TextBoxMvcModel Zip { get; set; } = new TextBoxMvcModel();
+            #endregion
+        }
     }
 }
