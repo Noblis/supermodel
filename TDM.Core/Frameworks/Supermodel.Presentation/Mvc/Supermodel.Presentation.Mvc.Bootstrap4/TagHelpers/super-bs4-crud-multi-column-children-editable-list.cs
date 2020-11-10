@@ -23,7 +23,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.TagHelpers
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
             output.TagName = null;
-            if (PageTitle != null) output.Content.SetHtmlContent(_htmlHelper.Super().Bs4().CRUDMultiColumnChildrenEditableList(Items!, TypeOfDataContext!, ChildControllerType!, ParentId, Title, SkipAddNew, SkipDelete));
+            if (PageTitle != null) output.Content.SetHtmlContent(_htmlHelper.Super().Bs4().CRUDMultiColumnChildrenEditableList(Items!, TypeOfDataContext!, ChildControllerType!, ParentId, PageTitle, SkipAddNew, SkipDelete));
             else output.Content.SetHtmlContent(_htmlHelper.Super().Bs4().CRUDMultiColumnChildrenEditableList(Items!, TypeOfDataContext!, ChildControllerType!, ParentId, (IHtmlContent?)null, SkipAddNew, SkipDelete));
         }
         #endregion
