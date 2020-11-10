@@ -476,7 +476,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
         }
         #endregion
 
-        #region ERUD Edit In Accordion
+        #region CRUD Edit In Accordion
         public IHtmlContent CRUDEditInAccordion(string accordionId, IEnumerable<Bs4.AccordionPanel> panels, string pageTitle, bool readOnly = false, bool skipBackButton = false, bool skipHeaderAndFooter = false)
         {
             return CRUDEditInAccordion(accordionId, panels, pageTitle.ToHtmlEncodedHtmlString(), readOnly, skipBackButton, skipHeaderAndFooter);

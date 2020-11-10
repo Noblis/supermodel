@@ -23,7 +23,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.TagHelpers
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
             output.TagName = null;
-            if (Title != null) output.Content.SetHtmlContent(_htmlHelper.Super().Bs4().CRUDMultiColumnChildrenEditableList(Items!, TypeOfDataContext!, ChildControllerType!, ParentId, Title, SkipAddNew, SkipDelete));
+            if (PageTitle != null) output.Content.SetHtmlContent(_htmlHelper.Super().Bs4().CRUDMultiColumnChildrenEditableList(Items!, TypeOfDataContext!, ChildControllerType!, ParentId, Title, SkipAddNew, SkipDelete));
             else output.Content.SetHtmlContent(_htmlHelper.Super().Bs4().CRUDMultiColumnChildrenEditableList(Items!, TypeOfDataContext!, ChildControllerType!, ParentId, (IHtmlContent?)null, SkipAddNew, SkipDelete));
         }
         #endregion
@@ -34,7 +34,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.TagHelpers
         public Type? ChildControllerType { get; set; } 
         public long ParentId { get; set; }
 
-        public string? Title { get; set; } 
+        public string? PageTitle { get; set; } 
         public bool SkipAddNew { get; set; }
         public bool SkipDelete { get; set; }
         #endregion
