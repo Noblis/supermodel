@@ -10,7 +10,7 @@ using Supermodel.Presentation.Mvc.Models.Mvc;
 
 namespace Supermodel.Presentation.Mvc.Bootstrap4.TagHelpers
 {
-    [HtmlTargetElement("super-bs4-crud-multi-column-children-list-no-actions", Attributes = "items, detail-controller-type, parent-id", TagStructure = TagStructure.WithoutEndTag)]
+    [HtmlTargetElement("super-bs4-crud-multi-column-children-list-no-actions", Attributes = "items", TagStructure = TagStructure.WithoutEndTag)]
     public class SuperBs4CRUDMultiColumnChildrenListNoActionsTagHelper : TagHelperDerivedFromHtmlHelperBase
     {
         #region Constructors

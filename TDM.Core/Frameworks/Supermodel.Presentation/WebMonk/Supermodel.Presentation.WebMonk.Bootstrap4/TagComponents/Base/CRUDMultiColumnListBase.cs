@@ -19,10 +19,10 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.TagComponents.Base
     public abstract class CRUDMultiColumnListBase : HtmlSnippet
     { 
         #region Constructors
-        protected CRUDMultiColumnListBase(IEnumerable<IMvcModelForEntity> items, Type? detailControllerType, IGenerateHtml? pageTitle, long? parentId, bool skipAddNew, bool skipDelete, bool viewOnly)
+        protected CRUDMultiColumnListBase(IEnumerable<IMvcModelForEntity> items, Type? childControllerType, IGenerateHtml? pageTitle, long? parentId, bool skipAddNew, bool skipDelete, bool viewOnly)
         {
-            var controllerName = detailControllerType != null ?
-                                     detailControllerType.GetMvcControllerName() :
+            var controllerName = childControllerType != null ?
+                                     childControllerType.GetMvcControllerName() :
                                      HttpContext.Current.RouteManager.GetController();
             if (controllerName == null) throw new SupermodelException("controllerName == null. this should never happen");
 

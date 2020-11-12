@@ -513,13 +513,13 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
             return CRUDMultiColumnListHelper(items, null, pageTitle, null, skipAddNew, skipDelete, viewOnly);
         }
         
-        public IHtmlContent CRUDMultiColumnChildrenList(IEnumerable<IChildMvcModelForEntity> items, Type detailControllerType, long parentId, string pageTitle, bool skipAddNew = false, bool skipDelete = false, bool viewOnly = false)
+        public IHtmlContent CRUDMultiColumnChildrenList(IEnumerable<IChildMvcModelForEntity> items, Type childControllerType, long parentId, string pageTitle, bool skipAddNew = false, bool skipDelete = false, bool viewOnly = false)
         {
-            return CRUDMultiColumnListHelper(items, detailControllerType, pageTitle.ToHtmlEncodedHtmlString(), parentId, skipAddNew, skipDelete, viewOnly);
+            return CRUDMultiColumnListHelper(items, childControllerType, pageTitle.ToHtmlEncodedHtmlString(), parentId, skipAddNew, skipDelete, viewOnly);
         }
-        public IHtmlContent CRUDMultiColumnChildrenList(IEnumerable<IChildMvcModelForEntity> items, Type detailControllerType, long parentId, IHtmlContent? pageTitle = null, bool skipAddNew = false, bool skipDelete = false, bool viewOnly = false)
+        public IHtmlContent CRUDMultiColumnChildrenList(IEnumerable<IChildMvcModelForEntity> items, Type childControllerType, long parentId, IHtmlContent? pageTitle = null, bool skipAddNew = false, bool skipDelete = false, bool viewOnly = false)
         {
-            return CRUDMultiColumnListHelper(items, detailControllerType, pageTitle, parentId, skipAddNew, skipDelete, viewOnly);
+            return CRUDMultiColumnListHelper(items, childControllerType, pageTitle, parentId, skipAddNew, skipDelete, viewOnly);
         }
 
         private IHtmlContent CRUDMultiColumnListHelper(IEnumerable<IViewModelForEntity> items, Type? detailControllerType, IHtmlContent? pageTitle, long? parentId, bool skipAddNew, bool skipDelete, bool viewOnly)
