@@ -22,7 +22,9 @@ namespace Supermodel.Presentation.Mvc.Models
             if (entityList == null) throw new ArgumentNullException(nameof(other));
             foreach (var entity in entityList.ToList())
             {
-                var mvcModel = await new TViewModelForEntity().MapFromAsync(entity);
+                var mvcModel = new TViewModelForEntity();
+                if (mvcModel is IAsyncInit iAsyncInit && !iAsyncInit.AsyncInitialized) await iAsyncInit.InitAsync();
+                mvcModel = await mvcModel.MapFromAsync(entity);
                 Add(mvcModel);
             }
         }
@@ -42,7 +44,10 @@ namespace Supermodel.Presentation.Mvc.Models
                 }
                 else
                 {
-                    var newEntity = await viewModel.MapToAsync(new TEntity());
+                    var newEntity = new TEntity();
+                    // ReSharper disable once SuspiciousTypeConversion.Global
+                    if (newEntity is IAsyncInit iAsyncInit && !iAsyncInit.AsyncInitialized) await iAsyncInit.InitAsync();
+                    newEntity = await viewModel.MapToAsync(newEntity);
                     entityList.Add(newEntity);
                 }
             }
