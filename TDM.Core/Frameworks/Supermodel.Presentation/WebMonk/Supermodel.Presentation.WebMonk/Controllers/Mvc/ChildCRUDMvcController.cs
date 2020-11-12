@@ -61,12 +61,14 @@ namespace Supermodel.Presentation.WebMonk.Controllers.Mvc
                 }
 
                 var entityItem = await GetItemAsync(id).ConfigureAwait(false);
-                mvcModelItem = await new TChildDetailMvcModel().MapFromAsync(entityItem).ConfigureAwait(false);
+                mvcModelItem = new TChildDetailMvcModel();
 
                 //Init mvc model is it requires async initialization
                 // ReSharper disable once SuspiciousTypeConversion.Global
                 if (mvcModelItem is IAsyncInit iAsyncInit && !iAsyncInit.AsyncInitialized) await iAsyncInit.InitAsync().ConfigureAwait(false);
-                
+
+                mvcModelItem = await mvcModelItem.MapFromAsync(entityItem).ConfigureAwait(false);
+
                 return new TMvcView().RenderDetail(mvcModelItem).ToHtmlResult();
             }
         }

@@ -48,21 +48,24 @@ namespace Supermodel.Presentation.Mvc.Controllers.Mvc
                 {
                     if (parentId == null) throw new SupermodelException("parentId == null when id == 0");
                     mvcModelItem = new TChildDetailMvcModel { ParentId = parentId }; //We set parentID twice, in case we may need it during MapFromObject
-                    mvcModelItem = await mvcModelItem.MapFromAsync(new TChildEntity());
-                    mvcModelItem.ParentId = parentId;
                     
                     //Init mvc model is it requires async initialization
                     if (mvcModelItem is IAsyncInit iai && !iai.AsyncInitialized) await iai.InitAsync();
                     
+                    mvcModelItem = await mvcModelItem.MapFromAsync(new TChildEntity());
+                    mvcModelItem.ParentId = parentId;
+
                     return View(mvcModelItem);
                 }
 
                 var entityItem = await GetItemAsync(id);
-                mvcModelItem = await new TChildDetailMvcModel().MapFromAsync(entityItem);
-
+                mvcModelItem = new TChildDetailMvcModel();
+                
                 //Init mvc model is it requires async initialization
                 if (mvcModelItem is IAsyncInit iAsyncInit && !iAsyncInit.AsyncInitialized) await iAsyncInit.InitAsync();
                 
+                mvcModelItem = await mvcModelItem.MapFromAsync(entityItem);
+
                 return View(mvcModelItem);
             }
         }
