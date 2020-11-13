@@ -77,31 +77,27 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.TagComponents.Base
                     var editViewDeleteQs = HttpContext.Current.HttpListenerContext.Request.QueryString.ToQueryStringDictionary();
                     if (parentId != null) editViewDeleteQs["parentId"] = parentId.ToString();
 
+                    AppendAndPush(new Td());
+                    if (!skipDelete) AppendAndPush(new Div(new { @class="btn-group" }));
                     if (viewOnly)
                     {
                         var viewLinkLabel = new Span(new { @class="oi oi-eye" });
-                        Append(new Td
-                        { 
-                            Render.ActionLink(viewLinkLabel, controllerName, "Detail", id, editViewDeleteQs, new { @class = Bs4.ScaffoldingSettings.CRUDListEditCssClass })
-                        });
+                        Append(Render.ActionLink(viewLinkLabel, controllerName, "Detail", id, editViewDeleteQs, new { @class = Bs4.ScaffoldingSettings.CRUDListEditCssClass }));
                     }
                     else
                     {
-                        AppendAndPush(new Td());
-                        if (!skipDelete) AppendAndPush(new Div(new { @class="btn-group" }));
                         
                         var editLinkLabel = new Span(new { @class="oi oi-pencil" });
                         Append(Render.ActionLink(editLinkLabel, controllerName, "Detail", id, editViewDeleteQs, new { @class = Bs4.ScaffoldingSettings.CRUDListEditCssClass }));
-
-                        if (!skipDelete)
-                        {
-                            var deleteLinkLabel = new Span(new { @class="oi oi-trash" });
-                            Append(Render.RESTfulActionLink(deleteLinkLabel, HttpMethod.Delete, controllerName, "Detail", id, editViewDeleteQs, new { @class = Bs4.ScaffoldingSettings.CRUDListDeleteCssClass }, "Are you sure?"));
-
-                            Pop<Div>();
-                        }
-                        Pop<Td>();
                     }
+                    if (!skipDelete)
+                    {
+                        var deleteLinkLabel = new Span(new { @class="oi oi-trash" });
+                        Append(Render.RESTfulActionLink(deleteLinkLabel, HttpMethod.Delete, controllerName, "Detail", id, editViewDeleteQs, new { @class = Bs4.ScaffoldingSettings.CRUDListDeleteCssClass }, "Are you sure?"));
+
+                        Pop<Div>();
+                    }
+                    Pop<Td>();
                     Pop<Tr>();
                 }
                 Pop<Tbody>();

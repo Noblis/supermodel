@@ -377,21 +377,18 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
                     routeValues.AddOrUpdateWith(newRouteValues);
 
                     result.AppendLine("<td>");
-                    if (viewOnly)
+                    if (!skipDelete) result.AppendLine("<div class='btn-group'>");
+                    
+                    if (viewOnly) result.AppendLine(SuperHtml.ActionLinkHtmlContent("<span class='oi oi-eye'></span>".ToHtmlString(), "Detail", controllerName, routeValues, HtmlHelper.AnonymousObjectToHtmlAttributes(new { @class = Bs4.ScaffoldingSettings.CRUDListEditCssClass })).GetString());
+                    else result.AppendLine(SuperHtml.ActionLinkHtmlContent("<span class='oi oi-pencil'></span>".ToHtmlString(), "Detail", controllerName, routeValues, HtmlHelper.AnonymousObjectToHtmlAttributes(new { @class = Bs4.ScaffoldingSettings.CRUDListEditCssClass })).GetString());
+
+                    if (!skipDelete)
                     {
-                        result.AppendLine(SuperHtml.ActionLinkHtmlContent("<span class='oi oi-eye'></span>".ToHtmlString(), "Detail", controllerName, routeValues, HtmlHelper.AnonymousObjectToHtmlAttributes(new { @class = Bs4.ScaffoldingSettings.CRUDListEditCssClass })).GetString());
-                    }
-                    else
-                    {
-                        if (!skipDelete) result.AppendLine("<div class='btn-group'>");
-                        result.AppendLine(SuperHtml.ActionLinkHtmlContent("<span class='oi oi-pencil'></span>".ToHtmlString(), "Detail", controllerName, routeValues, HtmlHelper.AnonymousObjectToHtmlAttributes(new { @class = Bs4.ScaffoldingSettings.CRUDListEditCssClass })).GetString());
-                        if (!skipDelete)
-                        {
-                            result.AppendLine(SuperHtml.RESTfulActionLinkHtmlContent(HttpMethod.Delete, "<span class='oi oi-trash'></span>".ToHtmlString(), "Detail", controllerName, routeValues, HtmlHelper.AnonymousObjectToHtmlAttributes(new { @class = Bs4.ScaffoldingSettings.CRUDListDeleteCssClass }), "Are you sure?").GetString());
-                            result.AppendLine("</div>");
-                        }
+                        result.AppendLine(SuperHtml.RESTfulActionLinkHtmlContent(HttpMethod.Delete, "<span class='oi oi-trash'></span>".ToHtmlString(), "Detail", controllerName, routeValues, HtmlHelper.AnonymousObjectToHtmlAttributes(new { @class = Bs4.ScaffoldingSettings.CRUDListDeleteCssClass }), "Are you sure?").GetString());
+                        result.AppendLine("</div>");
                     }
                     result.AppendLine("</td>");
+
                     result.AppendLine("</tr>");
                 }
                 result.AppendLine("</tbody>");
