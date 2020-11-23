@@ -40,7 +40,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
             }
             public virtual IEntity CreateEntity()
             {
-                return new TEntity() { Id = Id };
+                return new TEntity { Id = Id };
             }
             #endregion
         }

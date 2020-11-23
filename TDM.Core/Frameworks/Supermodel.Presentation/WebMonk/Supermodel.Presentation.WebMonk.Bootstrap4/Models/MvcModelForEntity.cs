@@ -42,7 +42,6 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
             {
                 return new TEntity() { Id = Id };
             }
-
             #endregion
         }
     }
