@@ -28,9 +28,7 @@ namespace WebWM.Api.XXYXXUserUpdatePasswordApi
         
         #region Properties
         [Required, NotRMapped] public string OldPassword { get; set; } = "";
-
-        [Required, NotRMapped]
-        public string NewPassword { get; set; } = "";
+        [Required, NotRMapped] public string NewPassword { get; set; } = "";
         #endregion
     }
 }

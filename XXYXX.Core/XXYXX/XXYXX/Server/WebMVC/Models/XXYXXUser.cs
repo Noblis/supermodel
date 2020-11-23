@@ -30,9 +30,7 @@ namespace WebMVC.Models
         
         #region Properties
         [Required, NotRMapped] public string OldPassword { get; set; } = "";
-
-        [Required, NotRMapped]
-        public string NewPassword { get; set; } = "";
+        [Required, NotRMapped] public string NewPassword { get; set; } = "";
         #endregion
     }    
     
@@ -55,12 +53,13 @@ namespace WebMVC.Models
         #endregion
 
         #region Properties
-        [Required, DataType(DataType.Password), NotRMapped] public Bs4.PasswordTextBoxMvcModel OldPassword { get; set; } = new Bs4.PasswordTextBoxMvcModel { PlaceholderBehavior = Bs4.PasswordTextBoxMvcModel.PlaceholderBehaviorEnum.ForceNoPlaceholder };
+        [Required, NotRMapped] 
+        public Bs4.PasswordTextBoxMvcModel OldPassword { get; set; } = new Bs4.PasswordTextBoxMvcModel { PlaceholderBehavior = Bs4.PasswordTextBoxMvcModel.PlaceholderBehaviorEnum.ForceNoPlaceholder };
 
-        [Required, DataType(DataType.Password), NotRMapped, MustEqualTo("ConfirmPassword", ErrorMessage = "Passwords do not match")]
+        [Required, NotRMapped, MustEqualTo(nameof(ConfirmPassword), ErrorMessage = "Passwords do not match")]
         public Bs4.PasswordTextBoxMvcModel NewPassword { get; set; } = new Bs4.PasswordTextBoxMvcModel { PlaceholderBehavior = Bs4.PasswordTextBoxMvcModel.PlaceholderBehaviorEnum.ForceNoPlaceholder };
 
-        [Required, DataType(DataType.Password), NotRMapped, MustEqualTo("NewPassword", ErrorMessage = "Passwords do not match")]
+        [Required, NotRMapped, MustEqualTo(nameof(NewPassword), ErrorMessage = "Passwords do not match")]
         public Bs4.PasswordTextBoxMvcModel ConfirmPassword { get; set; } = new Bs4.PasswordTextBoxMvcModel { PlaceholderBehavior = Bs4.PasswordTextBoxMvcModel.PlaceholderBehaviorEnum.ForceNoPlaceholder };
         #endregion
     }
