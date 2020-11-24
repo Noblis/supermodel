@@ -250,12 +250,6 @@ namespace Supermodel.Presentation.Mvc.Controllers.Mvc
             //return Task.FromResult(GoToListScreen());
         }
 
-        protected virtual async Task<TEntity> GetItemAndCacheItAsync(long id)
-        {
-            var item = await GetItemAsync(id);
-            UnitOfWorkContext.CustomValues[$"Item_{id}"] = item; //we cache this, for MvcModel validation
-            return item;
-        }
         protected virtual Task<TEntity> GetItemAsync(long id)
         {
             return GetItems().SingleAsync(x => x.Id == id);

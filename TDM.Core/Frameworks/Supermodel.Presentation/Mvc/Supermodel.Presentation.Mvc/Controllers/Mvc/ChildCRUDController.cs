@@ -235,12 +235,6 @@ namespace Supermodel.Presentation.Mvc.Controllers.Mvc
         {
             return LinqRepoFactory.Create<TChildEntity>().Items;
         }
-        protected virtual async Task<TChildEntity> GetItemAndCacheItAsync(long id)
-        {
-            var item = await GetItemAsync(id);
-            UnitOfWorkContext.CustomValues[$"Item_{id}"] = item; //we cache this, for MvcModel validation
-            return item;
-        }
         protected virtual Task<TChildEntity> GetItemAsync(long id)
         {
             return GetItems().SingleAsync(x => x.Id == id);

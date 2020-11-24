@@ -262,12 +262,6 @@ namespace Supermodel.Presentation.WebMonk.Controllers.Mvc
             return Task.FromResult(StayOnDetailScreen(id));
         }
 
-        protected virtual async Task<TEntity> GetItemAndCacheItAsync(long id)
-        {
-            var item = await GetItemAsync(id);
-            UnitOfWorkContext.CustomValues[$"Item_{id}"] = item; //we cache this, for MvcModel validation
-            return item;
-        }
         protected virtual Task<TEntity> GetItemAsync(long id)
         {
             return GetItems().SingleAsync(x => x.Id == id);

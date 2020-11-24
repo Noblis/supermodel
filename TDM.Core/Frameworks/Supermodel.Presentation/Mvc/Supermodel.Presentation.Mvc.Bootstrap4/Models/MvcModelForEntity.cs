@@ -36,8 +36,9 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
             }
             protected virtual async Task<TEntity> CreateTempValidationEntityAsync()
             {
-                var entity = (TEntity?)UnitOfWorkContext.CustomValues[$"Item_{Id}"];
-                if (entity == null) entity = IsNewModel() ? (TEntity)CreateEntityWithMyId() : await RepoFactory.Create<TEntity>().GetByIdAsync(Id);
+                var entity = IsNewModel() ? 
+                    (TEntity)CreateEntityWithMyId() : 
+                    await RepoFactory.Create<TEntity>().GetByIdAsync(Id);
 
                 var entityCopyForValidation = await entity.MapToAsync((TEntity)CreateEntityWithMyId());
                 entityCopyForValidation = await this.MapToAsync(entityCopyForValidation);
