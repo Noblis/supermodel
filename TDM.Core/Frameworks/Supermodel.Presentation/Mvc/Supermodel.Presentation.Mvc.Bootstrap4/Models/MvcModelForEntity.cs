@@ -3,10 +3,10 @@
 using System;
 using Supermodel.ReflectionMapper;
 using System.ComponentModel.DataAnnotations;
-using System.Data;
 using System.Threading.Tasks;
 using Supermodel.DataAnnotations.Validations;
 using Supermodel.Persistence.Entities;
+using Supermodel.Persistence.Repository;
 using Supermodel.Persistence.UnitOfWork;
 using Supermodel.Presentation.Mvc.Bootstrap4.Models.Base;
 using Supermodel.Presentation.Mvc.Models.Mvc;
@@ -37,13 +37,13 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
             protected virtual async Task<TEntity> CreateTempValidationEntityAsync()
             {
                 var entity = (TEntity?)UnitOfWorkContext.CustomValues[$"Item_{Id}"];
-                if (entity == null) throw new NoNullAllowedException($"UnitOfWorkContext.CustomValues[\"Item_{Id}\"] == null");
+                if (entity == null) entity = IsNewModel() ? (TEntity)CreateEntityWithMyId() : await RepoFactory.Create<TEntity>().GetByIdAsync(Id);
 
-                var entityCopyForValidation = await entity.MapToAsync((TEntity)CreateBlankEntityWithMyId());
+                var entityCopyForValidation = await entity.MapToAsync((TEntity)CreateEntityWithMyId());
                 entityCopyForValidation = await this.MapToAsync(entityCopyForValidation);
                 return entityCopyForValidation;
             }
-            public virtual IEntity CreateBlankEntityWithMyId()
+            public virtual IEntity CreateEntityWithMyId()
             {
                 return new TEntity { Id = Id };
             }

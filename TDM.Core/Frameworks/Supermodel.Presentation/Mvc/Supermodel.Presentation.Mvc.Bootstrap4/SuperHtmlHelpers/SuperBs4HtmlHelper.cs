@@ -827,7 +827,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
                 //Init mvc model if it requires async initialization
                 if (newMvcModelItem is IAsyncInit iAsyncInit && !iAsyncInit.AsyncInitialized) await iAsyncInit.InitAsync();
             
-                var newEntityItem = newMvcModelItem.CreateBlankEntityWithMyId();
+                var newEntityItem = newMvcModelItem.CreateEntityWithMyId();
                 newMvcModelItem = await newMvcModelItem.MapFromAsync(newEntityItem);
                 return newMvcModelItem;
             }

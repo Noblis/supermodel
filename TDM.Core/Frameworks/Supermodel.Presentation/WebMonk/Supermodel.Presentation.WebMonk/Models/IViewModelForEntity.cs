@@ -15,6 +15,6 @@ namespace Supermodel.Presentation.WebMonk.Models
     
     public interface IViewModelForEntity : IViewModelForAnyEntity
     {
-        IEntity CreateBlankEntityWithMyId();
+        IEntity CreateEntityWithMyId();
     }
 }

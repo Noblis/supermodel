@@ -219,7 +219,7 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.TagComponents.Base
                 //Init mvc model if it requires async initialization
                 if (newMvcModelItem is IAsyncInit iAsyncInit && !iAsyncInit.AsyncInitialized) await iAsyncInit.InitAsync().ConfigureAwait(false);
             
-                var newEntityItem = newMvcModelItem.CreateBlankEntityWithMyId();
+                var newEntityItem = newMvcModelItem.CreateEntityWithMyId();
                 newMvcModelItem = await newMvcModelItem.MapFromAsync(newEntityItem).ConfigureAwait(false);
                 return newMvcModelItem;
             }

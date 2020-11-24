@@ -15,6 +15,6 @@ namespace Supermodel.Presentation.Mvc.Models
     
     public interface IViewModelForEntity : IViewModelForAnyEntity
     {
-        IEntity CreateBlankEntityWithMyId();
+        IEntity CreateEntityWithMyId();
     }
 }
