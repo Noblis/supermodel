@@ -147,7 +147,11 @@ namespace Supermodel.Persistence.EFCore
 
         public TEntity CloneDetached<TEntity>(TEntity entity) where TEntity : class, IEntity, new()
         {
-            return (TEntity)Entry(entity).CurrentValues.Clone().ToObject() ;
+            var values = Entry(entity).CurrentValues.Clone();
+            var newEntity = new TEntity();
+            Entry(newEntity).CurrentValues.SetValues(values);
+            Entry(newEntity).State = EntityState.Detached;
+            return newEntity;
         }
         #endregion
 
