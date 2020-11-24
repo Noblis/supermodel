@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Supermodel.DataAnnotations.Validations;
 using Supermodel.Persistence.Entities;
 using Supermodel.Persistence.Repository;
-using Supermodel.Persistence.UnitOfWork;
 using Supermodel.Presentation.WebMonk.Bootstrap4.Models.Base;
 using Supermodel.Presentation.WebMonk.Models.Mvc;
 using Supermodel.ReflectionMapper;

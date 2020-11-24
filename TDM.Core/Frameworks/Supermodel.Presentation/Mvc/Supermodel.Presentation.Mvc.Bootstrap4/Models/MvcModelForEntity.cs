@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Supermodel.DataAnnotations.Validations;
 using Supermodel.Persistence.Entities;
 using Supermodel.Persistence.Repository;
-using Supermodel.Persistence.UnitOfWork;
 using Supermodel.Presentation.Mvc.Bootstrap4.Models.Base;
 using Supermodel.Presentation.Mvc.Models.Mvc;
 
