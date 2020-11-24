@@ -35,6 +35,8 @@ namespace Supermodel.Persistence.DataContext
         bool IsCompletedAndFinalized { get; }
         void MakeCompletedAndFinalized();
         ConcurrentDictionary<string, object?> CustomValues { get; }
+
+        TEntity CloneDetached<TEntity>(TEntity entity) where TEntity : class, IEntity, new();
         #endregion
     }
 }

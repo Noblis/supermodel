@@ -144,6 +144,11 @@ namespace Supermodel.Persistence.EFCore
         {
             return new EFCoreTransaction(Database.BeginTransaction());
         }
+
+        public TEntity CloneDetached<TEntity>(TEntity entity) where TEntity : class, IEntity, new()
+        {
+            return (TEntity)Entry(entity).CurrentValues.Clone().ToObject() ;
+        }
         #endregion
 
         #region Dispose Methods

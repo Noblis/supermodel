@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Supermodel.DataAnnotations.Validations;
 using Supermodel.Persistence.Entities;
 using Supermodel.Persistence.Repository;
+using Supermodel.Persistence.UnitOfWork;
 using Supermodel.Presentation.Mvc.Bootstrap4.Models.Base;
 using Supermodel.Presentation.Mvc.Models.Mvc;
 
@@ -39,7 +40,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                     (TEntity)CreateEntityWithMyId() : 
                     await RepoFactory.Create<TEntity>().GetByIdAsync(Id);
 
-                var entityCopyForValidation = await entity.MapToAsync((TEntity)CreateEntityWithMyId());
+                var entityCopyForValidation = UnitOfWorkContext.CloneDetached(entity);
                 entityCopyForValidation = await this.MapToAsync(entityCopyForValidation);
                 return entityCopyForValidation;
             }
