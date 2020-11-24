@@ -3,9 +3,11 @@
 using System;
 using Supermodel.ReflectionMapper;
 using System.ComponentModel.DataAnnotations;
+using System.Data;
 using System.Threading.Tasks;
 using Supermodel.DataAnnotations.Validations;
 using Supermodel.Persistence.Entities;
+using Supermodel.Persistence.UnitOfWork;
 using Supermodel.Presentation.Mvc.Bootstrap4.Models.Base;
 using Supermodel.Presentation.Mvc.Models.Mvc;
 
@@ -34,11 +36,14 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
             }
             protected virtual async Task<TEntity> CreateTempValidationEntityAsync()
             {
-                var entity = (TEntity)CreateEntity();
-                entity = await this.MapToAsync(entity);
-                return entity;
+                var entity = (TEntity?)UnitOfWorkContext.CustomValues[$"Item_{Id}"];
+                if (entity == null) throw new NoNullAllowedException($"UnitOfWorkContext.CustomValues[\"Item_{Id}\"] == null");
+
+                var entityCopyForValidation = await entity.MapToAsync((TEntity)CreateBlankEntityWithMyId());
+                entityCopyForValidation = await this.MapToAsync(entityCopyForValidation);
+                return entityCopyForValidation;
             }
-            public virtual IEntity CreateEntity()
+            public virtual IEntity CreateBlankEntityWithMyId()
             {
                 return new TEntity { Id = Id };
             }
