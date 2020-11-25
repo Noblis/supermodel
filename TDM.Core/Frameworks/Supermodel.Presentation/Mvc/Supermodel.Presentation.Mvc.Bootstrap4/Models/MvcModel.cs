@@ -132,7 +132,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                     result.AppendLine("</div>"); //close Div 2
                     if (showValidationSummary)
                     {
-                        result.AppendLine("<div class='col-sm-12'>");
+                        result.AppendLine($"<div class='col-sm-12 {ScaffoldingSettings.ValidationSummaryCssClass}'>");
                         result.AppendLine(html.ValidationSummary().GetString());
                         result.AppendLine("</div>");
                     }
@@ -290,7 +290,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
 
                 if (showValidationSummary)
                 {
-                    result.AppendLine("<div class='col-sm-12'>");
+                    result.AppendLine($"<div class='col-sm-12 {ScaffoldingSettings.ValidationSummaryCssClass}'>");
                     result.AppendLine(html.ValidationSummary().GetString());
                     result.AppendLine("</div>");
                 }

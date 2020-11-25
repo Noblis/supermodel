@@ -10,6 +10,7 @@ using Supermodel.DataAnnotations.Validations.Attributes;
 using Supermodel.Presentation.WebMonk.Extensions;
 using Supermodel.Presentation.WebMonk.Models.Mvc;
 using Supermodel.ReflectionMapper;
+using WebMonk.Context;
 using WebMonk.RazorSharp.HtmlTags;
 using WebMonk.RazorSharp.HtmlTags.BaseTags;
 using WebMonk.Rendering.Views;
@@ -60,6 +61,7 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                 if (NumberOfColumns != NumberOfColumnsEnum.One) return EditorTemplateForMultipleColumnsInternal(screenOrderFrom, screenOrderTo, attributes, NumberOfColumns);
 
                 var result = new HtmlStack();
+                var showValidationSummary = !HttpContext.Current.ValidationResultList.IsValid;
                 foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
                 {
                     //Div 1
@@ -102,7 +104,9 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                     if (!propertyInfo.HasAttribute<DisplayOnlyAttribute>())
                     {
                         result.Append(Render.Editor(this, propertyInfo.Name, new { @class="form-control" } ));
-                        result.Append(Render.ValidationMessage(this, propertyInfo.Name, new { @class=ScaffoldingSettings.ValidationErrorCssClass }, true));
+                        var msg = Render.ValidationMessage(this, propertyInfo.Name, new { @class=ScaffoldingSettings.ValidationErrorCssClass }, true);
+                        if (!(msg is Tags tags && tags.Count == 0)) showValidationSummary = false;
+                        result.Append(msg);
                     }
                     else
                     {
@@ -116,6 +120,12 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                     }
 
                     result.Pop<Div>(); //close Div 2
+                    if (showValidationSummary)
+                    {
+                        result.AppendAndPush(new Div(new { @class=$"col-sm-12 {ScaffoldingSettings.ValidationSummaryCssClass}" }));
+                        result.Append(Render.ValidationSummary());
+                        result.Pop<Div>();
+                    }
                     result.Pop<Div>(); //close Div 1
                 }
                 return result; 
@@ -199,6 +209,7 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                 var currentColumn = 1;
                 
                 var result = new HtmlStack();
+                var showValidationSummary = !HttpContext.Current.ValidationResultList.IsValid;
                 foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
                 {
                     //If this is a beginning of a row
@@ -239,7 +250,9 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                     if (!propertyInfo.HasAttribute<DisplayOnlyAttribute>())
                     {
                         result.Append(Render.Editor(this, propertyInfo.Name));
-                        result.Append(Render.ValidationMessage(this, propertyInfo.Name, new { @class=ScaffoldingSettings.ValidationErrorCssClass }, true));
+                        var msg = Render.ValidationMessage(this, propertyInfo.Name, new { @class=ScaffoldingSettings.ValidationErrorCssClass }, true);
+                        if (!(msg is Tags tags && tags.Count == 0)) showValidationSummary = false;
+                        result.Append(msg);
                     }
                     else
                     {
@@ -265,6 +278,14 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                         currentColumn++;
                     }
                 }
+
+                if (showValidationSummary)
+                {
+                    result.AppendAndPush(new Div(new { @class=$"col-sm-12 {ScaffoldingSettings.ValidationSummaryCssClass}" }));
+                    result.Append(Render.ValidationSummary());
+                    result.Pop<Div>();
+                }
+
                 if (currentColumn != 1) result.Pop<Div>();
 
                 return result;                 
