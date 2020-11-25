@@ -65,6 +65,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                 if (!(html.ViewData.Model is IMvcModel)) throw new InvalidCastException(ReflectionHelper.GetCurrentContext() + " is called for a model of type different from MvcModel.");
 
                 var result = new StringBuilder();
+                var showValidationSummary = !html.ViewData.ModelState.IsValid;
                 foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
                 {
                     //Div 1
@@ -104,6 +105,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                             result.AppendLine(controlHtml);
                             
                             var msg = html.ValidationMessage(propertyInfo.Name, null, new { @class=ScaffoldingSettings.ValidationErrorCssClass }).GetString();
+                            if (!msg.Contains("></span>")) showValidationSummary = false;
                             msg = msg.Replace("<span ", "<div ").Replace("</span>", "</div>");
                             result.Append(msg);
 
@@ -128,6 +130,12 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                     }
                     
                     result.AppendLine("</div>"); //close Div 2
+                    if (showValidationSummary)
+                    {
+                        result.AppendLine("<div class='col-sm-12'>");
+                        result.AppendLine(html.ValidationSummary().GetString());
+                        result.AppendLine("</div>");
+                    }
                     result.AppendLine("</div>"); //close Div 1
                 }
                 return result.ToHtmlString(); 
@@ -208,6 +216,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                 var columnSpanClass = $"class=\"form-group col-md-{12/maxColumns}\"";
                 
                 var result = new StringBuilder();
+                var showValidationSummary = !html.ViewData.ModelState.IsValid;
                 foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
                 {
                     //If this is a beginning of a row
@@ -246,6 +255,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                         if (!html.ViewData.ModelState.IsValid)
                         {
                             var msg = html.ValidationMessage(propertyInfo.Name, null, new { @class=ScaffoldingSettings.ValidationErrorCssClass }).GetString();
+                            if (!msg.Contains("></span>")) showValidationSummary = false;
                             msg = msg.Replace("<span ", "<div ").Replace("</span>", "</div>");
                             result.Append(msg);
                             
@@ -277,6 +287,14 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                         currentColumn++;
                     }
                 }
+
+                if (showValidationSummary)
+                {
+                    result.AppendLine("<div class='col-sm-12'>");
+                    result.AppendLine(html.ValidationSummary().GetString());
+                    result.AppendLine("</div>");
+                }
+
                 if (currentColumn != 1) result.AppendLine("</div>");
 
                 return result.ToHtmlString();                 
