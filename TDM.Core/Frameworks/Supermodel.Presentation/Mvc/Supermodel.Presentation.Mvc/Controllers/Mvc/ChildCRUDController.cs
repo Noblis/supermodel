@@ -77,7 +77,7 @@ namespace Supermodel.Presentation.Mvc.Controllers.Mvc
             {
                 if (id == 0) throw new SupermodelException("CRUDControllerBase.Detail[Post]: id == 0");
 
-                var entityItem = await GetItemAsync(id);
+                var entityItem = await GetItemAndCacheItAsync(id);
                 TChildDetailMvcModel mvcModelItem;
                 try
                 {
@@ -150,7 +150,7 @@ namespace Supermodel.Presentation.Mvc.Controllers.Mvc
                 long? parentId = null;
                 try
                 {
-                    entityItem = await GetItemAndCacheItAsync(id);
+                    entityItem = await GetItemAsync(id);
                     parentId = new TChildDetailMvcModel().GetParentEntity(entityItem)!.Id;
                     entityItem.Delete();
                 }
