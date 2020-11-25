@@ -25,6 +25,7 @@ namespace Supermodel.Mobile.Runtime.Common.Exceptions
                         if (existingError != null) existingError.ErrorMessages.Add(validationResult.ErrorMessage);
                         else Add(new Error (memberName, validationResult.ErrorMessage) );
                     }
+                    if (!validationResult.MemberNames.Any()) Add(new Error("", validationResult.ErrorMessage));
                 }
                 FailedAction = failedAction;
                 Message = message;

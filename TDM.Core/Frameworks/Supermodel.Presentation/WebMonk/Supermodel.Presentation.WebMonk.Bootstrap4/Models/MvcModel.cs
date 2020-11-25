@@ -120,13 +120,14 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                     }
 
                     result.Pop<Div>(); //close Div 2
-                    if (showValidationSummary)
-                    {
-                        result.AppendAndPush(new Div(new { @class=$"col-sm-12 {ScaffoldingSettings.ValidationSummaryCssClass}" }));
-                        result.Append(Render.ValidationSummary());
-                        result.Pop<Div>();
-                    }
                     result.Pop<Div>(); //close Div 1
+                }
+
+                if (showValidationSummary)
+                {
+                    result.AppendAndPush(new Div(new { @class=$"col-sm-12 {ScaffoldingSettings.ValidationSummaryCssClass}" }));
+                    result.Append(Render.ValidationSummary());
+                    result.Pop<Div>();
                 }
                 return result; 
             }
@@ -278,6 +279,7 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                         currentColumn++;
                     }
                 }
+                if (currentColumn != 1) result.Pop<Div>();
 
                 if (showValidationSummary)
                 {
@@ -285,9 +287,6 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                     result.Append(Render.ValidationSummary());
                     result.Pop<Div>();
                 }
-
-                if (currentColumn != 1) result.Pop<Div>();
-
                 return result;                 
             }
             protected virtual IGenerateHtml DisplayTemplateForMultipleColumnsInternal(int screenOrderFrom, int screenOrderTo, object? attributes, NumberOfColumnsEnum numberOfColumns)

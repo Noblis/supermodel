@@ -130,13 +130,13 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                     }
                     
                     result.AppendLine("</div>"); //close Div 2
-                    if (showValidationSummary)
-                    {
-                        result.AppendLine($"<div class='col-sm-12 {ScaffoldingSettings.ValidationSummaryCssClass}'>");
-                        result.AppendLine(html.ValidationSummary().GetString());
-                        result.AppendLine("</div>");
-                    }
                     result.AppendLine("</div>"); //close Div 1
+                }
+                if (showValidationSummary)
+                {
+                    result.AppendLine($"<div class='col-sm-12 {ScaffoldingSettings.ValidationSummaryCssClass}'>");
+                    result.AppendLine(html.ValidationSummary().GetString());
+                    result.AppendLine("</div>");
                 }
                 return result.ToHtmlString(); 
             }
@@ -287,6 +287,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                         currentColumn++;
                     }
                 }
+                if (currentColumn != 1) result.AppendLine("</div>");
 
                 if (showValidationSummary)
                 {
@@ -294,8 +295,6 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                     result.AppendLine(html.ValidationSummary().GetString());
                     result.AppendLine("</div>");
                 }
-
-                if (currentColumn != 1) result.AppendLine("</div>");
 
                 return result.ToHtmlString();                 
             }

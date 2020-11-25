@@ -75,6 +75,7 @@ namespace Supermodel.Presentation.Mvc.Controllers
                     if (string.IsNullOrEmpty(prefix)) modelState.AddModelError(memberName, validationResult.ErrorMessage);
                     else modelState.AddModelError($"{prefix}.{memberName}", validationResult.ErrorMessage);
                 }
+                if (!validationResult.MemberNames.Any()) modelState.AddModelError("", validationResult.ErrorMessage);
             }
         }
         public static string SerializeModelState(ModelStateDictionary modelState)
