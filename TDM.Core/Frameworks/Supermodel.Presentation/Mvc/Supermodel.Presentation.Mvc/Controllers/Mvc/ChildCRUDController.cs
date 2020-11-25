@@ -150,7 +150,7 @@ namespace Supermodel.Presentation.Mvc.Controllers.Mvc
                 long? parentId = null;
                 try
                 {
-                    entityItem = await GetItemAsync(id);
+                    entityItem = await GetItemAndCacheItAsync(id);
                     parentId = new TChildDetailMvcModel().GetParentEntity(entityItem)!.Id;
                     entityItem.Delete();
                 }
@@ -234,6 +234,12 @@ namespace Supermodel.Presentation.Mvc.Controllers.Mvc
         protected virtual IQueryable<TChildEntity> GetItems()
         {
             return LinqRepoFactory.Create<TChildEntity>().Items;
+        }
+        protected virtual async Task<TChildEntity> GetItemAndCacheItAsync(long id)
+        {
+            var item = await GetItemAsync(id);
+            UnitOfWorkContext.CustomValues[$"Item_{id}"] = item; //we cache this, for MvcModel validation
+            return item;
         }
         protected virtual Task<TChildEntity> GetItemAsync(long id)
         {

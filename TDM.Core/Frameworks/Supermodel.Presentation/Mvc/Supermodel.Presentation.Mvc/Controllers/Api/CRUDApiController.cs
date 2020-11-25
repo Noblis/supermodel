@@ -122,7 +122,7 @@ namespace Supermodel.Presentation.Mvc.Controllers.Api
                     return StatusCode((int)HttpStatusCode.BadRequest, "ApiCRUDController.Put: id == 0");
                 }
 
-                var entityItem = await GetItemOrDefaultAsync(id);
+                var entityItem = await GetItemOrDefaultAndCacheItAsync(id);
                 if (entityItem == null)
                 {
                     UnitOfWorkContext<TDataContext>.CurrentDataContext.CommitOnDispose = false;
@@ -188,6 +188,12 @@ namespace Supermodel.Presentation.Mvc.Controllers.Api
         protected virtual Task<TEntity?> GetItemOrDefaultAsync(long id)
         {
             return GetItems().SingleOrDefaultAsync(x => x.Id == id)!; //this exclamation point here is to pacify Resharper
+        }
+        protected virtual async Task<TEntity?> GetItemOrDefaultAndCacheItAsync(long id)
+        {
+            var item = await GetItemOrDefaultAsync(id);
+            UnitOfWorkContext.CustomValues[$"Item_{id}"] = item; //we cache this, for MvcModel validation
+            return item;
         }
         protected virtual IQueryable<TEntity> GetItems()
         {
