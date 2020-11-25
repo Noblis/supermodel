@@ -536,7 +536,7 @@ namespace Supermodel.Tooling.SolutionMaker
         #region Properties and Contants
         public static Random Random { get; } = new Random(Guid.NewGuid().GetHashCode());
         public const string ZipFileName = "SupermodelSolutionTemplate.XXYXX.zip";
-        public const string Version = "2.00.000";
+        public const string Version = "2.01.000 Beta 1";
         #endregion
     }
 }
