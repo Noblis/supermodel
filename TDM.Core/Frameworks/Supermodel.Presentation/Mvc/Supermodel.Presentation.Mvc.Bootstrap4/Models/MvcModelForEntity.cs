@@ -37,14 +37,14 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
             protected virtual async Task<TEntity> CreateTempValidationEntityAsync()
             {
                 var entity = IsNewModel() ? 
-                    (TEntity)CreateEntityWithMyId() : 
+                    (TEntity)CreateEntity() : 
                     await RepoFactory.Create<TEntity>().GetByIdAsync(Id);
 
                 var entityCopyForValidation = UnitOfWorkContext.CloneDetached(entity);
                 entityCopyForValidation = await this.MapToAsync(entityCopyForValidation);
                 return entityCopyForValidation;
             }
-            public virtual IEntity CreateEntityWithMyId()
+            public virtual IEntity CreateEntity()
             {
                 return new TEntity { Id = Id };
             }
