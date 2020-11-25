@@ -3,6 +3,7 @@
 using System;
 using Supermodel.ReflectionMapper;
 using System.ComponentModel.DataAnnotations;
+using System.Data;
 using System.Threading.Tasks;
 using Supermodel.DataAnnotations.Validations;
 using Supermodel.Persistence.Entities;
@@ -36,9 +37,19 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
             }
             protected virtual async Task<TEntity> CreateTempValidationEntityAsync()
             {
-                var entity = IsNewModel() ? 
-                    (TEntity)CreateEntity() : 
-                    await RepoFactory.Create<TEntity>().GetByIdAsync(Id);
+                TEntity? entity;
+                var key = $"Item_{Id}";
+                if (UnitOfWorkContext.CustomValues.ContainsKey(key))
+                {
+                    entity = (TEntity?)UnitOfWorkContext.CustomValues[key];
+                    if (entity == null) throw new NoNullAllowedException("UnitOfWorkContext.CustomValues[key] == null");
+                }
+                else
+                {
+                    entity = IsNewModel() ? 
+                        (TEntity)CreateEntity() : 
+                        await RepoFactory.Create<TEntity>().GetByIdAsync(Id);
+                }
 
                 var entityCopyForValidation = UnitOfWorkContext.CloneDetached(entity);
                 entityCopyForValidation = await this.MapToAsync(entityCopyForValidation);
