@@ -60,7 +60,8 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
 
                 var result = new HtmlStack();
                 
-                var showValidationSummary = !HttpContext.Current.ValidationResultList.IsValid;
+                var selectedId = ParseNullableLong(HttpContext.Current.HttpListenerContext.Request.QueryString["selectedId"]);
+                var showValidationSummary = !HttpContext.Current.ValidationResultList.IsValid && selectedId == null;
                 var validationSummaryPlaceholder = new HtmlStack();
                 result.Append(validationSummaryPlaceholder);
 
@@ -213,7 +214,8 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                 
                 var result = new HtmlStack();
                 
-                var showValidationSummary = !HttpContext.Current.ValidationResultList.IsValid;
+                var selectedId = ParseNullableLong(HttpContext.Current.HttpListenerContext.Request.QueryString["selectedId"]);
+                var showValidationSummary = !HttpContext.Current.ValidationResultList.IsValid && selectedId == null;
                 var validationSummaryPlaceholder = new HtmlStack();
                 result.Append(validationSummaryPlaceholder);
 
@@ -362,6 +364,14 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                 if (currentColumn != 1) result.Pop<Div>();
 
                 return result;                   
+            }
+            #endregion
+
+            #region Helper Methods
+            protected long? ParseNullableLong(string str)
+            {
+                if (long.TryParse(str, out var result)) return result;
+                return null;
             }
             #endregion
 
