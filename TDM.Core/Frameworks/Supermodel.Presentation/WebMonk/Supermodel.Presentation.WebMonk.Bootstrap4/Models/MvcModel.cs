@@ -61,7 +61,11 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                 if (NumberOfColumns != NumberOfColumnsEnum.One) return EditorTemplateForMultipleColumnsInternal(screenOrderFrom, screenOrderTo, attributes, NumberOfColumns);
 
                 var result = new HtmlStack();
+                
                 var showValidationSummary = !HttpContext.Current.ValidationResultList.IsValid;
+                var validationSummaryPlaceholder = new HtmlStack();
+                result.Append(validationSummaryPlaceholder);
+
                 foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
                 {
                     //Div 1
@@ -125,9 +129,9 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
 
                 if (showValidationSummary)
                 {
-                    result.AppendAndPush(new Div(new { @class=$"col-sm-12 {ScaffoldingSettings.ValidationSummaryCssClass}" }));
-                    result.Append(Render.ValidationSummary());
-                    result.Pop<Div>();
+                    validationSummaryPlaceholder.AppendAndPush(new Div(new { @class=$"col-sm-12 {ScaffoldingSettings.ValidationSummaryCssClass}" }));
+                    validationSummaryPlaceholder.Append(Render.ValidationSummary());
+                    validationSummaryPlaceholder.Pop<Div>();
                 }
                 return result; 
             }
@@ -210,7 +214,11 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                 var currentColumn = 1;
                 
                 var result = new HtmlStack();
+                
                 var showValidationSummary = !HttpContext.Current.ValidationResultList.IsValid;
+                var validationSummaryPlaceholder = new HtmlStack();
+                result.Append(validationSummaryPlaceholder);
+
                 foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
                 {
                     //If this is a beginning of a row
@@ -283,9 +291,9 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
 
                 if (showValidationSummary)
                 {
-                    result.AppendAndPush(new Div(new { @class=$"col-sm-12 {ScaffoldingSettings.ValidationSummaryCssClass}" }));
-                    result.Append(Render.ValidationSummary());
-                    result.Pop<Div>();
+                    validationSummaryPlaceholder.AppendAndPush(new Div(new { @class=$"col-sm-12 {ScaffoldingSettings.ValidationSummaryCssClass}" }));
+                    validationSummaryPlaceholder.Append(Render.ValidationSummary());
+                    validationSummaryPlaceholder.Pop<Div>();
                 }
                 return result;                 
             }
