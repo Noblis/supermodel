@@ -8,7 +8,6 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Html;
-using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Routing;
@@ -429,7 +428,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
             var model = (IViewModelForEntity)Html.ViewData.Model;
 
             //Start form
-            result.AppendLine($"<form {UtilsLib.MakeIdAttribute(Bs4.ScaffoldingSettings.EditFormId)} action='{Html.ViewContext.HttpContext.Request.GetEncodedPathAndQuery()}' method='{HtmlHelper.GetFormMethodString(FormMethod.Post)}' enctype='multipart/form-data'>");
+            result.AppendLine($"<form {UtilsLib.MakeIdAttribute(Bs4.ScaffoldingSettings.EditFormId)} action='{Html.ViewContext.HttpContext.Request.GetEncodedPathAndQueryMinusSelectedId()}' method='{HtmlHelper.GetFormMethodString(FormMethod.Post)}' enctype='multipart/form-data'>");
             result.AppendLine($"<fieldset {UtilsLib.MakeIdAttribute(Bs4.ScaffoldingSettings.EditFormFieldsetId)}>");
             
             if (!UtilsLib.IsNullOrEmpty(pageTitle)) result.AppendLine("<h2 " + UtilsLib.MakeClassAttribute(Bs4.ScaffoldingSettings.EditTitleCssClass) + ">" + pageTitle + "</h2>");
