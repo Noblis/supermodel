@@ -12,6 +12,7 @@ namespace WebMonk.Context
         string[] LocalPathParts { get; }
         string OverridenHttpMethod { get; set; }
         string LocalPathWithQueryString { get; }
+        string LocalPathWithQueryStringMinusSelectedId { get; }
 
         string GetController();
         string? GetAction();

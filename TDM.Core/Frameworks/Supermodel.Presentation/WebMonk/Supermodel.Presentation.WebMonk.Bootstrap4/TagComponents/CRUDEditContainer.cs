@@ -22,7 +22,7 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
             public CRUDEditContainer(IViewModelForEntity model, IGenerateHtml? pageTitle = null, bool readOnly = false, bool skipBackButton = false)
             {
                 //Start form
-                var formAction = HttpContext.Current.RouteManager.LocalPathWithQueryString;
+                var formAction = HttpContext.Current.RouteManager.LocalPathWithQueryStringMinusSelectedId;
                 AppendAndPush(new Form(new { id=ScaffoldingSettings.EditFormId, action = formAction, method = "post", enctype = "multipart/form-data"}));
 
                 InnerContent = AppendAndPush(new Fieldset(new { id=ScaffoldingSettings.EditFormFieldsetId }));
@@ -45,6 +45,7 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                     //make sure we keep query string
                     var qs = HttpContext.Current.HttpListenerContext.Request.QueryString;
                     if (parentId != null) qs["parentId"] = parentId.ToString();
+                    qs.Remove("selectedId");
 
                     //set up html attributes, linkLabel and controller
                     var linkLabel = new Tags

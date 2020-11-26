@@ -459,6 +459,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
                 var routeValues = SuperHtml.QueryStringRouteValues();
                 var newRouteValues = HtmlHelper.AnonymousObjectToHtmlAttributes(new { parentId });
                 routeValues.AddOrUpdateWith(newRouteValues);
+                routeValues.Remove("selectedId");
 
                 //set up html attributes
                 var htmlAttributes = HtmlHelper.AnonymousObjectToHtmlAttributes(new { id = Bs4.ScaffoldingSettings.BackButtonId, @class = Bs4.ScaffoldingSettings.BackButtonCssClass });

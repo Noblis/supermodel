@@ -1,8 +1,10 @@
 ﻿#nullable enable
 
 using System;
+using System.Collections.Specialized;
 using Supermodel.DataAnnotations.Exceptions;
 using WebMonk.Exceptions;
+using WebMonk.Extensions;
 using WebMonk.ValueProviders;
 
 namespace WebMonk.Context
@@ -48,6 +50,16 @@ namespace WebMonk.Context
         public string QueryString { get; }
         public string[] LocalPathParts { get; }
         public string LocalPathWithQueryString => LocalPath + QueryString;
+
+        public string LocalPathWithQueryStringMinusSelectedId
+        {
+            get
+            {
+                var qsCopy = new NameValueCollection(HttpContext.Current.HttpListenerContext.Request.QueryString);
+                qsCopy.Remove("selectedId");
+                return LocalPath + qsCopy.ToQueryStringDictionary().ToUrlEncodedNameValuePairs();
+            }
+        }
 
         public string GetController()
         {
