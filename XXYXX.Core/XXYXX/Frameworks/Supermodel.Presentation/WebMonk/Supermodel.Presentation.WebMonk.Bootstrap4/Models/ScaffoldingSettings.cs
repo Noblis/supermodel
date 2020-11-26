@@ -51,6 +51,9 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
             public static string? BackButtonId { get; set; }
             public static string? BackButtonCssClass { get; set; } = "btn btn-success";
 
+            public static string? ValidationSummaryCssClass { get; set; } = "invalid-feedback d-block";
+            public static string? InlineValidationSummaryCssClass { get; set; } = "invalid-feedback d-block";
+
             public static string? ValidationErrorCssClass { get; set; } = "invalid-feedback d-block";
             public static string? InlineValidationErrorCssClass { get; set; } = "invalid-feedback d-block";
 

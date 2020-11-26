@@ -1,15 +1,14 @@
 ﻿#nullable enable
 
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using Supermodel.DataAnnotations;
 using Supermodel.DataAnnotations.Validations.Attributes;
 using Supermodel.Presentation.WebMonk.Extensions;
 using Supermodel.Presentation.WebMonk.Models.Mvc;
 using Supermodel.ReflectionMapper;
+using WebMonk.Context;
 using WebMonk.RazorSharp.HtmlTags;
 using WebMonk.RazorSharp.HtmlTags.BaseTags;
 using WebMonk.Rendering.Views;
@@ -60,7 +59,13 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                 if (NumberOfColumns != NumberOfColumnsEnum.One) return EditorTemplateForMultipleColumnsInternal(screenOrderFrom, screenOrderTo, attributes, NumberOfColumns);
 
                 var result = new HtmlStack();
-                foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
+                
+                var selectedId = ParseNullableLong(HttpContext.Current.HttpListenerContext.Request.QueryString["selectedId"]);
+                var showValidationSummary = !HttpContext.Current.ValidationResultList.IsValid && selectedId == null;
+                var validationSummaryPlaceholder = new HtmlStack();
+                result.Append(validationSummaryPlaceholder);
+
+                foreach (var propertyInfo in GetType().GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
                 {
                     //Div 1
                     var htmlAttrAttribute = propertyInfo.GetAttribute<HtmlAttrAttribute>();
@@ -102,7 +107,9 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                     if (!propertyInfo.HasAttribute<DisplayOnlyAttribute>())
                     {
                         result.Append(Render.Editor(this, propertyInfo.Name, new { @class="form-control" } ));
-                        result.Append(Render.ValidationMessage(this, propertyInfo.Name, new { @class=ScaffoldingSettings.ValidationErrorCssClass }, true));
+                        var msg = Render.ValidationMessage(this, propertyInfo.Name, new { @class=ScaffoldingSettings.ValidationErrorCssClass }, true);
+                        if (!(msg is Tags tags && tags.Count == 0)) showValidationSummary = false;
+                        result.Append(msg);
                     }
                     else
                     {
@@ -118,6 +125,13 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                     result.Pop<Div>(); //close Div 2
                     result.Pop<Div>(); //close Div 1
                 }
+
+                if (showValidationSummary)
+                {
+                    validationSummaryPlaceholder.AppendAndPush(new Div(new { @class=$"col-sm-12 {ScaffoldingSettings.ValidationSummaryCssClass}" }));
+                    validationSummaryPlaceholder.Append(Render.ValidationSummary());
+                    validationSummaryPlaceholder.Pop<Div>();
+                }
                 return result; 
             }
             public virtual IGenerateHtml DisplayTemplate(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue, object? attributes = null)
@@ -125,7 +139,7 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                 if (NumberOfColumns != NumberOfColumnsEnum.One) return DisplayTemplateForMultipleColumnsInternal(screenOrderFrom, screenOrderTo, attributes, NumberOfColumns);
                 
                 var result = new HtmlStack();
-                foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
+                foreach (var propertyInfo in GetType().GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
                 {
                     //Div 1
                     var htmlAttrAttribute = propertyInfo.GetAttribute<HtmlAttrAttribute>();
@@ -179,7 +193,7 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
             public virtual IGenerateHtml HiddenTemplate(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue, object? attributes = null)
             {
                 var tags = new Tags();
-                foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
+                foreach (var propertyInfo in GetType().GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
                 {
                     var hiddenTags = Render.Hidden(this, propertyInfo.Name);
                     foreach (var tag in hiddenTags.GetTagsInOrder().Where(x => x.Name == "Input" && x.Attributes.KeyExistsAndEqualsTo("type", "hidden")))
@@ -199,7 +213,13 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                 var currentColumn = 1;
                 
                 var result = new HtmlStack();
-                foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
+                
+                var selectedId = ParseNullableLong(HttpContext.Current.HttpListenerContext.Request.QueryString["selectedId"]);
+                var showValidationSummary = !HttpContext.Current.ValidationResultList.IsValid && selectedId == null;
+                var validationSummaryPlaceholder = new HtmlStack();
+                result.Append(validationSummaryPlaceholder);
+
+                foreach (var propertyInfo in GetType().GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
                 {
                     //If this is a beginning of a row
                     if (currentColumn == 1) result.AppendAndPush(new Div(new { @class="form-row"}));
@@ -239,7 +259,9 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                     if (!propertyInfo.HasAttribute<DisplayOnlyAttribute>())
                     {
                         result.Append(Render.Editor(this, propertyInfo.Name));
-                        result.Append(Render.ValidationMessage(this, propertyInfo.Name, new { @class=ScaffoldingSettings.ValidationErrorCssClass }, true));
+                        var msg = Render.ValidationMessage(this, propertyInfo.Name, new { @class=ScaffoldingSettings.ValidationErrorCssClass }, true);
+                        if (!(msg is Tags tags && tags.Count == 0)) showValidationSummary = false;
+                        result.Append(msg);
                     }
                     else
                     {
@@ -267,6 +289,12 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                 }
                 if (currentColumn != 1) result.Pop<Div>();
 
+                if (showValidationSummary)
+                {
+                    validationSummaryPlaceholder.AppendAndPush(new Div(new { @class=$"col-sm-12 {ScaffoldingSettings.ValidationSummaryCssClass}" }));
+                    validationSummaryPlaceholder.Append(Render.ValidationSummary());
+                    validationSummaryPlaceholder.Pop<Div>();
+                }
                 return result;                 
             }
             protected virtual IGenerateHtml DisplayTemplateForMultipleColumnsInternal(int screenOrderFrom, int screenOrderTo, object? attributes, NumberOfColumnsEnum numberOfColumns)
@@ -275,7 +303,7 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                 var currentColumn = 1;
                 
                 var result = new HtmlStack();
-                foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
+                foreach (var propertyInfo in GetType().GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
                 {
                     //If this is a beginning of a row
                     if (currentColumn == 1) result.AppendAndPush(new Div(new { @class="form-row"}));
@@ -337,10 +365,13 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
 
                 return result;                   
             }
+            #endregion
 
-            protected virtual IEnumerable<PropertyInfo> GetDetailPropertyInfosInOrder(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
+            #region Helper Methods
+            protected long? ParseNullableLong(string str)
             {
-                return GetType().GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo);
+                if (long.TryParse(str, out var result)) return result;
+                return null;
             }
             #endregion
 

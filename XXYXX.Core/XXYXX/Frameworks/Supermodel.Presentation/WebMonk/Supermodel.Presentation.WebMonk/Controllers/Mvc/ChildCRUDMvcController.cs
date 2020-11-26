@@ -78,7 +78,7 @@ namespace Supermodel.Presentation.WebMonk.Controllers.Mvc
             {
                 if (id == 0) throw new SupermodelException("CRUDControllerBase.Detail[Post]: id == 0");
 
-                var entityItem = await GetItemAsync(id).ConfigureAwait(false);
+                var entityItem = await GetItemAndCacheItAsync(id).ConfigureAwait(false);
                 TChildDetailMvcModel mvcModelItem;
                 try
                 {
@@ -238,6 +238,12 @@ namespace Supermodel.Presentation.WebMonk.Controllers.Mvc
         protected virtual IQueryable<TChildEntity> GetItems()
         {
             return LinqRepoFactory.Create<TChildEntity>().Items;
+        }
+        protected virtual async Task<TChildEntity> GetItemAndCacheItAsync(long id)
+        {
+            var item = await GetItemAsync(id);
+            UnitOfWorkContext.CustomValues[$"Item_{id}"] = item; //we cache this, for MvcModel validation
+            return item;
         }
         protected virtual Task<TChildEntity> GetItemAsync(long id)
         {

@@ -115,7 +115,7 @@ namespace Supermodel.Presentation.WebMonk.Controllers.Api
                     return new JsonApiResult("ApiCRUDController.Put: id == 0", HttpStatusCode.BadRequest);
                 }
 
-                var entityItem = await GetItemOrDefaultAsync(id).ConfigureAwait(false);
+                var entityItem = await GetItemOrDefaultAndCacheItAsync(id).ConfigureAwait(false);
                 if (entityItem == null)
                 {
                     UnitOfWorkContext<TDataContext>.CurrentDataContext.CommitOnDispose = false;
@@ -189,6 +189,12 @@ namespace Supermodel.Presentation.WebMonk.Controllers.Api
         protected virtual async Task<TEntity?> GetItemOrDefaultAsync(long id)
         {
             return await GetItems().SingleOrDefaultAsync(x => x.Id == id).ConfigureAwait(false);
+        }
+        protected virtual async Task<TEntity?> GetItemOrDefaultAndCacheItAsync(long id)
+        {
+            var item = await GetItemOrDefaultAsync(id);
+            UnitOfWorkContext.CustomValues[$"Item_{id}"] = item; //we cache this, for MvcModel validation
+            return item;
         }
         protected virtual IQueryable<TEntity> GetItems()
         {

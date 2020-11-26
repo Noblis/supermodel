@@ -95,7 +95,7 @@ namespace Supermodel.Presentation.Mvc.Controllers.Mvc
             {
                 if (id == 0) throw new SupermodelException("MvcCRUDController.Detail[Put]: id == 0");
 
-                var entityItem = await GetItemAsync(id);
+                var entityItem = await GetItemAndCacheItAsync(id);
                 TDetailMvcModel mvcModelItem;
                 try
                 {
@@ -253,6 +253,12 @@ namespace Supermodel.Presentation.Mvc.Controllers.Mvc
         protected virtual Task<TEntity> GetItemAsync(long id)
         {
             return GetItems().SingleAsync(x => x.Id == id);
+        }
+        protected virtual async Task<TEntity> GetItemAndCacheItAsync(long id)
+        {
+            var item = await GetItemAsync(id);
+            UnitOfWorkContext.CustomValues[$"Item_{id}"] = item; //we cache this, for MvcModel validation
+            return item;
         }
         protected virtual IQueryable<TEntity> GetItems()
         {

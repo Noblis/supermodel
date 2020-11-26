@@ -104,6 +104,8 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Extensions
             if (!propertyInfos.Any()) throw new SupermodelException("DetailMvcModelT must have at least one property if used with Editable List");
 
             var isFirst = true;
+            var showValidationSummary = !HttpContext.Current.ValidationResultList.IsValid && selected;
+            var validationSummaryPlaceholder = new HtmlStack();
             foreach (var propertyInfo in propertyInfos)
             {
                 var idAttr = selected ? new { id="SelectedRow" } : null;
@@ -115,7 +117,6 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Extensions
                     if (parentId != null) result.Append(new Input(new { id=$"{Config.InlinePrefix}.parentId".ToHtmlId(), name = $"{Config.InlinePrefix}.parentId".ToHtmlName(), type="hidden", value = parentId })).DisableAllControlsIf(!selected);
                     result.Append(new Input(new { id="IsInline", name="IsInline", type="hidden", value="true" })).DisableAllControlsIf(!selected);
                     if (!me.IsNewModel()) result.Append(Render.HttpMethodOverride(HttpMethod.Put)).DisableAllControlsIf(!selected);
-                    isFirst = false;
                 }
                 var propertyObj = me.PropertyGet(propertyInfo.Name);
                 if (propertyObj != null)
@@ -158,8 +159,21 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Extensions
                         }
                     }
                 }
+                if (editable && isFirst)
+                {
+                    result.Append(validationSummaryPlaceholder);
+                    isFirst = false;
+                }
                 result.Pop<Td>();
             }
+
+            if (showValidationSummary)
+            {
+                validationSummaryPlaceholder.AppendAndPush(new Div(new { @class=$"col-sm-12 {Bs4.ScaffoldingSettings.ValidationSummaryCssClass}" }));
+                validationSummaryPlaceholder.Append(Render.ValidationSummary());
+                validationSummaryPlaceholder.Pop<Div>();
+            }
+
             return result;
         }
         #endregion

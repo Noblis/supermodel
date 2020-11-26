@@ -1,10 +1,8 @@
 ﻿#nullable enable
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Html;
@@ -65,7 +63,13 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                 if (!(html.ViewData.Model is IMvcModel)) throw new InvalidCastException(ReflectionHelper.GetCurrentContext() + " is called for a model of type different from MvcModel.");
 
                 var result = new StringBuilder();
-                foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
+
+                var selectedId = ParseNullableLong(html.ViewContext.HttpContext.Request.Query["selectedId"]);
+                var showValidationSummary = !html.ViewData.ModelState.IsValid && selectedId == null;
+                var validationSummaryGuidPlaceholder = Guid.NewGuid().ToString();
+                result.AppendLine(validationSummaryGuidPlaceholder);
+                
+                foreach (var propertyInfo in GetType().GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
                 {
                     //Div 1
                     var propMarkerAttribute = markerAttribute;
@@ -104,6 +108,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                             result.AppendLine(controlHtml);
                             
                             var msg = html.ValidationMessage(propertyInfo.Name, null, new { @class=ScaffoldingSettings.ValidationErrorCssClass }).GetString();
+                            if (!msg.Contains("></span>")) showValidationSummary = false;
                             msg = msg.Replace("<span ", "<div ").Replace("</span>", "</div>");
                             result.Append(msg);
 
@@ -130,6 +135,20 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                     result.AppendLine("</div>"); //close Div 2
                     result.AppendLine("</div>"); //close Div 1
                 }
+
+                if (showValidationSummary)
+                {
+                    var validationSummarySb = new StringBuilder();
+                    validationSummarySb.AppendLine($"<div class='{ScaffoldingSettings.ValidationSummaryCssClass}'>");
+                    validationSummarySb.AppendLine(html.ValidationSummary().GetString());
+                    validationSummarySb.AppendLine("</div>");
+                    result = result.Replace(validationSummaryGuidPlaceholder, validationSummarySb.ToString());
+                }
+                else
+                {
+                    result = result.Replace(validationSummaryGuidPlaceholder, "");
+                }
+                
                 return result.ToHtmlString(); 
             }
             public virtual IHtmlContent DisplayTemplate<TModel>(IHtmlHelper<TModel> html, int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue, string? markerAttribute = null)
@@ -140,7 +159,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                 if (!(html.ViewData.Model is IMvcModel)) throw new InvalidCastException(ReflectionHelper.GetCurrentContext() + " is called for a model of type different from MvcModel.");
 
                 var result = new StringBuilder();
-                foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
+                foreach (var propertyInfo in GetType().GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
                 {
                     //Div 1
                     var propMarkerAttribute = markerAttribute;
@@ -184,7 +203,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                 if (!(html.ViewData.Model is IMvcModel)) throw new InvalidCastException(ReflectionHelper.GetCurrentContext() + " is called for a model of type different from MvcModel.");
 
                 var result = new StringBuilder();
-                foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
+                foreach (var propertyInfo in GetType().GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
                 {
                     var hiddenFieldHtml = html.Super().Hidden(propertyInfo.Name).GetString();
 
@@ -208,7 +227,13 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                 var columnSpanClass = $"class=\"form-group col-md-{12/maxColumns}\"";
                 
                 var result = new StringBuilder();
-                foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
+                
+                var selectedId = ParseNullableLong(html.ViewContext.HttpContext.Request.Query["selectedId"]);
+                var showValidationSummary = !html.ViewData.ModelState.IsValid && selectedId == null;
+                var validationSummaryGuidPlaceholder = Guid.NewGuid().ToString();
+                result.AppendLine(validationSummaryGuidPlaceholder);
+
+                foreach (var propertyInfo in GetType().GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
                 {
                     //If this is a beginning of a row
                     if (currentColumn == 1) result.AppendLine("<div class='form-row'>"); 
@@ -246,6 +271,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                         if (!html.ViewData.ModelState.IsValid)
                         {
                             var msg = html.ValidationMessage(propertyInfo.Name, null, new { @class=ScaffoldingSettings.ValidationErrorCssClass }).GetString();
+                            if (!msg.Contains("></span>")) showValidationSummary = false;
                             msg = msg.Replace("<span ", "<div ").Replace("</span>", "</div>");
                             result.Append(msg);
                             
@@ -279,6 +305,19 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                 }
                 if (currentColumn != 1) result.AppendLine("</div>");
 
+                if (showValidationSummary)
+                {
+                    var validationSummarySb = new StringBuilder();
+                    validationSummarySb.AppendLine($"<div class='{ScaffoldingSettings.ValidationSummaryCssClass}'>");
+                    validationSummarySb.AppendLine(html.ValidationSummary().GetString());
+                    validationSummarySb.AppendLine("</div>");
+                    result = result.Replace(validationSummaryGuidPlaceholder, validationSummarySb.ToString());
+                }
+                else
+                {
+                    result = result.Replace(validationSummaryGuidPlaceholder, "");
+                }
+
                 return result.ToHtmlString();                 
             }
             protected virtual IHtmlContent DisplayTemplateForMultipleColumnsInternal<TModel>(IHtmlHelper<TModel> html, int screenOrderFrom, int screenOrderTo, string? markerAttribute, NumberOfColumnsEnum numberOfColumns)
@@ -291,7 +330,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                 var columnSpanClass = $"class=\"form-group col-md-{12/maxColumns}\"";
                 
                 var result = new StringBuilder();
-                foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
+                foreach (var propertyInfo in GetType().GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
                 {
                     //If this is a beginning of a row
                     if (currentColumn == 1) result.AppendLine("<div class='form-row'>"); 
@@ -341,10 +380,13 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                 
                 return result.ToHtmlString();                 
             }
+            #endregion
 
-            protected virtual IEnumerable<PropertyInfo> GetDetailPropertyInfosInOrder(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
+            #region Helper Methods
+            protected long? ParseNullableLong(string str)
             {
-                return GetType().GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo);
+                if (long.TryParse(str, out var result)) return result;
+                return null;
             }
             #endregion
 

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Supermodel.DataAnnotations.Exceptions;
 using Supermodel.DataAnnotations.LogicalContext;
 using Supermodel.Persistence.DataContext;
+using Supermodel.Persistence.Entities;
 
 namespace Supermodel.Persistence.UnitOfWork
 {
@@ -18,6 +19,10 @@ namespace Supermodel.Persistence.UnitOfWork
         #endregion
         
         #region Methods and Properties
+        public static TEntity CloneDetached<TEntity>(TEntity entity) where TEntity : class, IEntity, new()
+        {
+            return UnitOfWorkContextCore.CurrentDataContext.CloneDetached(entity);
+        }
         public static Task SeedDataAsync()
         {
             return UnitOfWorkContextCore.CurrentDataContext.SeedDataAsync();

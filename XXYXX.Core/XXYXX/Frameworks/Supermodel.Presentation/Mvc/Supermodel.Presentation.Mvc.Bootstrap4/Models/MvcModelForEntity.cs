@@ -3,9 +3,12 @@
 using System;
 using Supermodel.ReflectionMapper;
 using System.ComponentModel.DataAnnotations;
+using System.Data;
 using System.Threading.Tasks;
 using Supermodel.DataAnnotations.Validations;
 using Supermodel.Persistence.Entities;
+using Supermodel.Persistence.Repository;
+using Supermodel.Persistence.UnitOfWork;
 using Supermodel.Presentation.Mvc.Bootstrap4.Models.Base;
 using Supermodel.Presentation.Mvc.Models.Mvc;
 
@@ -34,13 +37,27 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
             }
             protected virtual async Task<TEntity> CreateTempValidationEntityAsync()
             {
-                var entity = (TEntity)CreateEntity();
-                entity = await this.MapToAsync(entity);
-                return entity;
+                TEntity? entity;
+                var key = $"Item_{Id}";
+                if (UnitOfWorkContext.CustomValues.ContainsKey(key))
+                {
+                    entity = (TEntity?)UnitOfWorkContext.CustomValues[key];
+                    if (entity == null) throw new NoNullAllowedException("UnitOfWorkContext.CustomValues[key] == null");
+                }
+                else
+                {
+                    entity = IsNewModel() ? 
+                        (TEntity)CreateEntity() : 
+                        await RepoFactory.Create<TEntity>().GetByIdAsync(Id);
+                }
+
+                var entityCopyForValidation = UnitOfWorkContext.CloneDetached(entity);
+                entityCopyForValidation = await this.MapToAsync(entityCopyForValidation);
+                return entityCopyForValidation;
             }
             public virtual IEntity CreateEntity()
             {
-                return new TEntity() { Id = Id };
+                return new TEntity { Id = Id };
             }
             #endregion
         }

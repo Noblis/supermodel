@@ -103,7 +103,7 @@ namespace Supermodel.Presentation.WebMonk.Controllers.Mvc
             {
                 if (id == 0) throw new SupermodelException("MvcCRUDController.Detail[Put]: id == 0");
 
-                var entityItem = await GetItemAsync(id).ConfigureAwait(false);
+                var entityItem = await GetItemAndCacheItAsync(id).ConfigureAwait(false);
                 TDetailMvcModel mvcModelItem;
                 try
                 {
@@ -261,7 +261,12 @@ namespace Supermodel.Presentation.WebMonk.Controllers.Mvc
             if (new TMvcView().ListMode == ListMode.EditableMultiColumn) return Task.FromResult(GoToListScreen(id));
             return Task.FromResult(StayOnDetailScreen(id));
         }
-
+        protected virtual async Task<TEntity> GetItemAndCacheItAsync(long id)
+        {
+            var item = await GetItemAsync(id);
+            UnitOfWorkContext.CustomValues[$"Item_{id}"] = item; //we cache this, for MvcModel validation
+            return item;
+        }
         protected virtual Task<TEntity> GetItemAsync(long id)
         {
             return GetItems().SingleAsync(x => x.Id == id);
