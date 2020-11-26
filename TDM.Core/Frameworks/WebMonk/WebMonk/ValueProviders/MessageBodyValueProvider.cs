@@ -18,7 +18,16 @@ namespace WebMonk.ValueProviders
         #region Methods
         public virtual async Task<IValueProvider> InitAsync(IHttpListenerRequest? request)
         {
-            if (request == null || !request.HasEntityBody) return this;
+            //this try/catch is a workaround to a likely bug in the framework
+            try
+            {
+                if (request == null || !request.HasEntityBody) return this;
+            }
+            catch (NullReferenceException)
+            {
+                return this;
+            }
+
             if (request.ContentType.StartsWith("multipart/mixed")) return this;
 
             if (request.ContentType == "application/x-www-form-urlencoded")
