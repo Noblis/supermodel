@@ -64,7 +64,8 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
 
                 var result = new StringBuilder();
 
-                var showValidationSummary = !html.ViewData.ModelState.IsValid;
+                var selectedId = ParseNullableLong(html.ViewContext.HttpContext.Request.Query["selectedId"]);
+                var showValidationSummary = !html.ViewData.ModelState.IsValid && selectedId == null;
                 var validationSummaryGuidPlaceholder = Guid.NewGuid().ToString();
                 result.AppendLine(validationSummaryGuidPlaceholder);
                 
@@ -227,7 +228,8 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                 
                 var result = new StringBuilder();
                 
-                var showValidationSummary = !html.ViewData.ModelState.IsValid;
+                var selectedId = ParseNullableLong(html.ViewContext.HttpContext.Request.Query["selectedId"]);
+                var showValidationSummary = !html.ViewData.ModelState.IsValid && selectedId == null;
                 var validationSummaryGuidPlaceholder = Guid.NewGuid().ToString();
                 result.AppendLine(validationSummaryGuidPlaceholder);
 
@@ -377,6 +379,14 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                 if (currentColumn != 1) result.AppendLine("</div>");
                 
                 return result.ToHtmlString();                 
+            }
+            #endregion
+
+            #region Helper Methods
+            protected long? ParseNullableLong(string str)
+            {
+                if (long.TryParse(str, out var result)) return result;
+                return null;
             }
             #endregion
 

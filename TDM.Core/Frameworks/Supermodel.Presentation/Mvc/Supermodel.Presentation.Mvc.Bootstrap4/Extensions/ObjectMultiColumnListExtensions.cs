@@ -1,5 +1,6 @@
 ﻿#nullable enable
 
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
@@ -104,6 +105,8 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Extensions
             if (!propertyInfos.Any()) throw new SupermodelException("DetailMvcModelT must have at least one property if used with Editable List");
 
             var isFirst = true;
+            var showValidationSummary = !html.ViewData.ModelState.IsValid && selected;
+            var validationSummaryGuidPlaceholder = Guid.NewGuid().ToString();
             foreach (var propertyInfo in propertyInfos)
             {
                 var idAttr = selected ? "id = \"SelectedRow\"" : "";
@@ -114,7 +117,6 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Extensions
                     if (parentId != null) sb.AppendLine($"<input id='{Config.InlinePrefix}_parentId' name='{Config.InlinePrefix}.parentId' type='hidden' value='{parentId}'/>".DisableAllControlsIf(!selected));
                     sb.AppendLine("<input id='IsInline' name='IsInline' type='hidden' value='true'/>".DisableAllControlsIf(!selected));
                     if (!me.IsNewModel()) sb.AppendLine(html.Super().HttpMethodOverride(HttpMethod.Put).GetString().DisableAllControlsIf(!selected));
-                    isFirst = false;
                 }
                 var propertyObj = me.PropertyGet(propertyInfo.Name);
                 if (propertyObj != null)
@@ -138,6 +140,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Extensions
                                 {
                                     //var msg = html.ValidationMessage($"{Settings.InlinePrefix}.{propertyInfo.Name}", null, new { @class=Bs4.ScaffoldingSettings.InlineValidationErrorCssClass }).GetString();
                                     var msg = html.ValidationMessage(propertyInfo.Name, null, new { @class=Bs4.ScaffoldingSettings.InlineValidationErrorCssClass }).GetString();
+                                    if (!msg.Contains("></span>")) showValidationSummary = false;
                                     msg = msg.Replace("<span ", "<div ").Replace("</span>", "</div>");
                                     sb.Append(msg);
                                     
@@ -162,8 +165,28 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Extensions
                         }
                     }
                 }
+                if (editable && isFirst)
+                {
+                    sb.AppendLine(validationSummaryGuidPlaceholder);
+                    isFirst = false;
+                }
+                
                 sb.Append("</td>");
             }
+
+            if (showValidationSummary)
+            {
+                var validationSummarySb = new StringBuilder();
+                validationSummarySb.AppendLine($"<div class='{Bs4.ScaffoldingSettings.ValidationSummaryCssClass}'>");
+                validationSummarySb.AppendLine(html.ValidationSummary().GetString());
+                validationSummarySb.AppendLine("</div>");
+                sb = sb.Replace(validationSummaryGuidPlaceholder, validationSummarySb.ToString());
+            }
+            else
+            {
+                sb = sb.Replace(validationSummaryGuidPlaceholder, "");
+            }
+
             return sb;
         }
         #endregion
