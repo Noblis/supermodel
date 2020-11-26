@@ -70,7 +70,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                 var validationSummaryGuidPlaceholder = Guid.NewGuid().ToString();
                 result.AppendLine(validationSummaryGuidPlaceholder);
                 
-                foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
+                foreach (var propertyInfo in GetType().GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
                 {
                     //Div 1
                     var propMarkerAttribute = markerAttribute;
@@ -160,7 +160,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                 if (!(html.ViewData.Model is IMvcModel)) throw new InvalidCastException(ReflectionHelper.GetCurrentContext() + " is called for a model of type different from MvcModel.");
 
                 var result = new StringBuilder();
-                foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
+                foreach (var propertyInfo in GetType().GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
                 {
                     //Div 1
                     var propMarkerAttribute = markerAttribute;
@@ -204,7 +204,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                 if (!(html.ViewData.Model is IMvcModel)) throw new InvalidCastException(ReflectionHelper.GetCurrentContext() + " is called for a model of type different from MvcModel.");
 
                 var result = new StringBuilder();
-                foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
+                foreach (var propertyInfo in GetType().GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
                 {
                     var hiddenFieldHtml = html.Super().Hidden(propertyInfo.Name).GetString();
 
@@ -233,7 +233,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                 var validationSummaryGuidPlaceholder = Guid.NewGuid().ToString();
                 result.AppendLine(validationSummaryGuidPlaceholder);
 
-                foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
+                foreach (var propertyInfo in GetType().GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
                 {
                     //If this is a beginning of a row
                     if (currentColumn == 1) result.AppendLine("<div class='form-row'>"); 
@@ -330,7 +330,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                 var columnSpanClass = $"class=\"form-group col-md-{12/maxColumns}\"";
                 
                 var result = new StringBuilder();
-                foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
+                foreach (var propertyInfo in GetType().GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
                 {
                     //If this is a beginning of a row
                     if (currentColumn == 1) result.AppendLine("<div class='form-row'>"); 
@@ -379,11 +379,6 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                 if (currentColumn != 1) result.AppendLine("</div>");
                 
                 return result.ToHtmlString();                 
-            }
-
-            protected virtual IEnumerable<PropertyInfo> GetDetailPropertyInfosInOrder(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
-            {
-                return GetType().GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo);
             }
             #endregion
 

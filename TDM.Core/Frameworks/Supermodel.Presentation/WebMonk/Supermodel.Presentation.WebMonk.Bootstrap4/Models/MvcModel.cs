@@ -66,7 +66,7 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                 var validationSummaryPlaceholder = new HtmlStack();
                 result.Append(validationSummaryPlaceholder);
 
-                foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
+                foreach (var propertyInfo in GetType().GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
                 {
                     //Div 1
                     var htmlAttrAttribute = propertyInfo.GetAttribute<HtmlAttrAttribute>();
@@ -140,7 +140,7 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                 if (NumberOfColumns != NumberOfColumnsEnum.One) return DisplayTemplateForMultipleColumnsInternal(screenOrderFrom, screenOrderTo, attributes, NumberOfColumns);
                 
                 var result = new HtmlStack();
-                foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
+                foreach (var propertyInfo in GetType().GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
                 {
                     //Div 1
                     var htmlAttrAttribute = propertyInfo.GetAttribute<HtmlAttrAttribute>();
@@ -194,7 +194,7 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
             public virtual IGenerateHtml HiddenTemplate(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue, object? attributes = null)
             {
                 var tags = new Tags();
-                foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
+                foreach (var propertyInfo in GetType().GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
                 {
                     var hiddenTags = Render.Hidden(this, propertyInfo.Name);
                     foreach (var tag in hiddenTags.GetTagsInOrder().Where(x => x.Name == "Input" && x.Attributes.KeyExistsAndEqualsTo("type", "hidden")))
@@ -219,7 +219,7 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                 var validationSummaryPlaceholder = new HtmlStack();
                 result.Append(validationSummaryPlaceholder);
 
-                foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
+                foreach (var propertyInfo in GetType().GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
                 {
                     //If this is a beginning of a row
                     if (currentColumn == 1) result.AppendAndPush(new Div(new { @class="form-row"}));
@@ -303,7 +303,7 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                 var currentColumn = 1;
                 
                 var result = new HtmlStack();
-                foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
+                foreach (var propertyInfo in GetType().GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
                 {
                     //If this is a beginning of a row
                     if (currentColumn == 1) result.AppendAndPush(new Div(new { @class="form-row"}));
@@ -364,11 +364,6 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                 if (currentColumn != 1) result.Pop<Div>();
 
                 return result;                   
-            }
-
-            protected virtual IEnumerable<PropertyInfo> GetDetailPropertyInfosInOrder(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
-            {
-                return GetType().GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo);
             }
             #endregion
 
