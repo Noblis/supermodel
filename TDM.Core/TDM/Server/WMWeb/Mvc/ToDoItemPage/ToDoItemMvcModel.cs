@@ -18,6 +18,7 @@ namespace WMWeb.Mvc.ToDoItemPage
         {
             entity.ParentToDoList = parent;
         }
+        public override NumberOfColumnsEnum NumberOfColumns { get; } = NumberOfColumnsEnum.Three;
         #endregion
 
         #region Properties
