@@ -65,7 +65,11 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                 if (!(html.ViewData.Model is IMvcModel)) throw new InvalidCastException(ReflectionHelper.GetCurrentContext() + " is called for a model of type different from MvcModel.");
 
                 var result = new StringBuilder();
+
                 var showValidationSummary = !html.ViewData.ModelState.IsValid;
+                var validationSummaryGuidPlaceholder = Guid.NewGuid().ToString();
+                result.AppendLine(validationSummaryGuidPlaceholder);
+                
                 foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
                 {
                     //Div 1
@@ -132,12 +136,20 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                     result.AppendLine("</div>"); //close Div 2
                     result.AppendLine("</div>"); //close Div 1
                 }
+
                 if (showValidationSummary)
                 {
-                    result.AppendLine($"<div class='col-sm-12 {ScaffoldingSettings.ValidationSummaryCssClass}'>");
-                    result.AppendLine(html.ValidationSummary().GetString());
-                    result.AppendLine("</div>");
+                    var validationSummarySb = new StringBuilder();
+                    validationSummarySb.AppendLine($"<div class='{ScaffoldingSettings.ValidationSummaryCssClass}'>");
+                    validationSummarySb.AppendLine(html.ValidationSummary().GetString());
+                    validationSummarySb.AppendLine("</div>");
+                    result = result.Replace(validationSummaryGuidPlaceholder, validationSummarySb.ToString());
                 }
+                else
+                {
+                    result = result.Replace(validationSummaryGuidPlaceholder, "");
+                }
+                
                 return result.ToHtmlString(); 
             }
             public virtual IHtmlContent DisplayTemplate<TModel>(IHtmlHelper<TModel> html, int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue, string? markerAttribute = null)
@@ -216,7 +228,11 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                 var columnSpanClass = $"class=\"form-group col-md-{12/maxColumns}\"";
                 
                 var result = new StringBuilder();
+                
                 var showValidationSummary = !html.ViewData.ModelState.IsValid;
+                var validationSummaryGuidPlaceholder = Guid.NewGuid().ToString();
+                result.AppendLine(validationSummaryGuidPlaceholder);
+
                 foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
                 {
                     //If this is a beginning of a row
@@ -291,9 +307,15 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
 
                 if (showValidationSummary)
                 {
-                    result.AppendLine($"<div class='col-sm-12 {ScaffoldingSettings.ValidationSummaryCssClass}'>");
-                    result.AppendLine(html.ValidationSummary().GetString());
-                    result.AppendLine("</div>");
+                    var validationSummarySb = new StringBuilder();
+                    validationSummarySb.AppendLine($"<div class='{ScaffoldingSettings.ValidationSummaryCssClass}'>");
+                    validationSummarySb.AppendLine(html.ValidationSummary().GetString());
+                    validationSummarySb.AppendLine("</div>");
+                    result = result.Replace(validationSummaryGuidPlaceholder, validationSummarySb.ToString());
+                }
+                else
+                {
+                    result = result.Replace(validationSummaryGuidPlaceholder, "");
                 }
 
                 return result.ToHtmlString();                 
