@@ -246,14 +246,14 @@ namespace WebMonk.RazorSharp.Html2RazorSharp
 
         public static Translator<string, string> CreateTextual(string html, bool sortAttributes = false, bool generateInvalidTags = false)
         { 
-            var guid = Guid.NewGuid().ToString();
+            var guid = "x-" + Guid.NewGuid();
             html = $"<{guid}>{html}</{guid}>";
             return Create(html, new TextualRazorSharpGenerator(sortAttributes, generateInvalidTags), guid);
         }
 
         public static Translator<Action<Tag>, HtmlStack> CreateMnemonic(string html, bool sortAttributes = false, bool generateInvalidTags = false)
         {
-            var guid = Guid.NewGuid().ToString();
+            var guid = "x-" + Guid.NewGuid();
             html = $"<{guid}>{html}</{guid}>";
             return Create(html, new MnemonicRazorSharpGenerator(sortAttributes, generateInvalidTags), guid);
         }
