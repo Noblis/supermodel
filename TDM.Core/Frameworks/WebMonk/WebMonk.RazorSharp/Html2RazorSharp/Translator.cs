@@ -131,7 +131,7 @@ namespace WebMonk.RazorSharp.Html2RazorSharp
                 if (pop) tagStack.Pop();
             }
 
-            else if(beTag.Name.Contains(WrapperKey))
+            else if(beTag.Name == WrapperKey || beTag.Name == "/" + WrapperKey)
             {
                 //do nothing
             }

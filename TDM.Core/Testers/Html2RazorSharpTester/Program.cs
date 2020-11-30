@@ -6,11 +6,6 @@ namespace Html2RazorSharpTester
     {
         static void Main()
         {
-            var t = TranslatorBase.CreateTextual("<x>" + "ilya<b>basin</b>" + "</x>", false, true);
-            var html = t.ToRazorSharp();
-
-            var x = 6;
-            
             //var translatorWm = new Translator(File.ReadAllText(InputWm), true);
             //File.WriteAllText(OutputWm, translatorWm.ToRazorSharp());
 
