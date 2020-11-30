@@ -1,9 +1,13 @@
-﻿namespace Html2RazorSharpTester
+﻿using WebMonk.RazorSharp.Html2RazorSharp;
+
+namespace Html2RazorSharpTester
 {
     public static class Program
     {
         static void Main()
         {
+            var translator = new Translator<,>
+            
             //var translatorWm = new Translator(File.ReadAllText(InputWm), true);
             //File.WriteAllText(OutputWm, translatorWm.ToRazorSharp());
 
