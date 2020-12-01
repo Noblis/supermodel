@@ -1,6 +1,4 @@
-﻿using WebMonk.RazorSharp.Html2RazorSharp;
-
-namespace Html2RazorSharpTester
+﻿namespace Html2RazorSharpTester
 {
     public static class Program
     {
