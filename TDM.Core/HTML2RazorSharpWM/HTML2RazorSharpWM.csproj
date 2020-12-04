@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Frameworks\Supermodel.Presentation\WebMonk\Supermodel.Presentation.WebMonk\Supermodel.Presentation.WebMonk.csproj" />
+    <ProjectReference Include="..\Frameworks\WebMonk\WebMonk.RazorSharp\WebMonk.RazorSharp.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="wwwroot\css\site.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="wwwroot\js\site.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
