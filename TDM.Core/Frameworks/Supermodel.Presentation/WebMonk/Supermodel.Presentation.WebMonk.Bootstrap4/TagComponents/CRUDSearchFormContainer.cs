@@ -1,9 +1,12 @@
 ﻿#nullable enable
 
+using Supermodel.DataAnnotations.Enums;
+using Supermodel.DataAnnotations.Exceptions;
 using Supermodel.Presentation.WebMonk.Extensions;
 using WebMonk.Context;
 using WebMonk.RazorSharp.HtmlTags;
 using WebMonk.RazorSharp.HtmlTags.BaseTags;
+using WebMonk.Rendering.Templates;
 using WebMonk.Rendering.Views;
 
 // ReSharper disable once CheckNamespace
@@ -14,11 +17,14 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
         public class CRUDSearchFormContainer : HtmlContainerSnippet
         {
             #region Constructors
-            public CRUDSearchFormContainer(string pageTitle, string? action, string? controller, bool resetButton) : 
-                this(new Txt(pageTitle), action, controller, resetButton){ }
+            public CRUDSearchFormContainer(IEditorTemplate searchModel, string pageTitle, string? action, string? controller, bool resetButton, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.IfNoVisibleErrors) : 
+                this(searchModel, new Txt(pageTitle), action, controller, resetButton, validationSummaryVisible){ }
             
-            public CRUDSearchFormContainer(IGenerateHtml? pageTitle, string? action, string? controller, bool resetButton)
+            public CRUDSearchFormContainer(IEditorTemplate searchModel, IGenerateHtml? pageTitle, string? action, string? controller, bool resetButton, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.IfNoVisibleErrors)
             {
+                var showValidationSummary = ShowValidationSummaryHelper.ShouldShowValidationSummary(searchModel, validationSummaryVisible);
+
+                
                 action ??= "List";
                 controller ??= HttpContext.Current.RouteManager.GetController();
 

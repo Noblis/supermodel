@@ -1,6 +1,7 @@
 ﻿#nullable enable
 
 using System;
+using Supermodel.DataAnnotations.Enums;
 using WebMonk.RazorSharp.HtmlTags;
 using WebMonk.RazorSharp.HtmlTags.BaseTags;
 using WebMonk.Rendering.Templates;
@@ -13,15 +14,15 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
         public class CRUDSearchForm : HtmlSnippet
         {
             #region Constructors
-            public CRUDSearchForm(IEditorTemplate searchModel, string pageTitle, string? action = null, string? controller = null, bool resetButton = false) :
-                this(searchModel, new Txt(pageTitle), action, controller, resetButton)
+            public CRUDSearchForm(IEditorTemplate searchModel, string pageTitle, string? action = null, string? controller = null, bool resetButton = false, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.IfNoVisibleErrors) :
+                this(searchModel, new Txt(pageTitle), action, controller, resetButton, validationSummaryVisible)
             { }
 
-            public CRUDSearchForm(IEditorTemplate searchModel, IGenerateHtml? pageTitle = null, string? action = null, string? controller = null, bool resetButton = false)
+            public CRUDSearchForm(IEditorTemplate searchModel, IGenerateHtml? pageTitle = null, string? action = null, string? controller = null, bool resetButton = false, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.IfNoVisibleErrors)
             {
                 if (searchModel == null) throw new ArgumentException(nameof(searchModel));
             
-                AppendAndPush(new CRUDSearchFormContainer(pageTitle, action, controller, resetButton));
+                AppendAndPush(new CRUDSearchFormContainer(searchModel, pageTitle, action, controller, resetButton, validationSummaryVisible));
                 Append(searchModel.EditorTemplate());
                 Pop<CRUDSearchFormContainer>();
             }
