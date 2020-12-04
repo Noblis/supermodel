@@ -833,11 +833,6 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
                 return newMvcModelItem;
             }
         }
-        protected long? ParseNullableLong(string str)
-        {
-            if (long.TryParse(str, out var result)) return result;
-            return null;
-        }
 
         private Type? GetBaseGenericChildCRUDControllerType(Type me)
         {
@@ -1052,6 +1047,40 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
                         </div>
                     </div>
                     ";
+        }
+        protected bool ShouldShowValidationSummary(object model, ValidationSummaryVisible validationSummaryVisible)
+        {
+            switch (validationSummaryVisible)
+            {
+                case ValidationSummaryVisible.IfNoVisibleErrors:
+                {
+                    var selectedId = ParseNullableLong(Html.ViewContext.HttpContext.Request.Query["selectedId"]);
+                    var showValidationSummary = !Html.ViewData.ModelState.IsValid && selectedId == null;
+                    foreach (var propertyInfo in model.GetType().GetDetailPropertyInfosInOrder())
+                    {
+                        var msg = Html.ValidationMessage(propertyInfo.Name).GetString();
+                        if (!msg.Contains("></span>")) showValidationSummary = false;
+                    }
+                    return showValidationSummary;
+                }
+                case ValidationSummaryVisible.Always: 
+                { 
+                    return true;
+                }
+                case ValidationSummaryVisible.Never:
+                {
+                    return false;
+                } 
+                default:
+                {
+                    throw new SupermodelException($"Invalid ValidationSummaryVisible value {validationSummaryVisible}");
+                }
+            }
+        }
+        protected static long? ParseNullableLong(string str)
+        {
+            if (long.TryParse(str, out var result)) return result;
+            return null;
         }
         #endregion
 
