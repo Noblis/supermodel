@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Routing;
 using Supermodel.DataAnnotations;
 using Supermodel.DataAnnotations.Async;
+using Supermodel.DataAnnotations.Enums;
 using Supermodel.DataAnnotations.Exceptions;
 using Supermodel.DataAnnotations.Misc;
 using Supermodel.Persistence.UnitOfWork;
@@ -56,41 +57,41 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
         #endregion
 
         #region CRUD Search Form Helpers
-        public IHtmlContent CRUDSearchFormForModel(string pageTitle, string? action = null, string? controller = null, bool resetButton = false)
+        public IHtmlContent CRUDSearchFormForModel(string pageTitle, string? action = null, string? controller = null, bool resetButton = false, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.IfNoVisibleErrors)
         {
-            return CRUDSearchFormForModel(pageTitle.ToHtmlEncodedHtmlString(), action, controller, resetButton);
+            return CRUDSearchFormForModel(pageTitle.ToHtmlEncodedHtmlString(), action, controller, resetButton, validationSummaryVisible);
         }
-        public IHtmlContent CRUDSearchFormForModel(IHtmlContent? pageTitle = null, string? action = null, string? controller = null, bool resetButton = false)
+        public IHtmlContent CRUDSearchFormForModel(IHtmlContent? pageTitle = null, string? action = null, string? controller = null, bool resetButton = false, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.IfNoVisibleErrors)
         {
-            return CRUDSearchFormHelper((Expression<Func<TModel, TModel>>?)null, pageTitle, controller, action, resetButton);
-        }
-
-        public IHtmlContent CRUDSearchFormFor<TValue>(Expression<Func<TModel, TValue>> searchByModelExpression, string pageTitle, string? action = null, string? controller = null, bool resetButton = false) where TValue : Bs4.MvcModel
-        {
-            return CRUDSearchFormFor(searchByModelExpression, pageTitle.ToHtmlEncodedHtmlString(), action, controller, resetButton);
-        }
-        public IHtmlContent CRUDSearchFormFor<TValue>(Expression<Func<TModel, TValue>> searchByModelExpression, IHtmlContent? pageTitle = null, string? action = null, string? controller = null, bool resetButton = false) where TValue : Bs4.MvcModel
-        {
-            return CRUDSearchFormHelper(searchByModelExpression, pageTitle, controller, action, resetButton);
+            return CRUDSearchFormHelper((Expression<Func<TModel, TModel>>?)null, pageTitle, controller, action, resetButton, validationSummaryVisible);
         }
 
-        public IHtmlContent CRUDSearchForm(string searchByModelExpression, string pageTitle, string? action = null, string? controller = null, bool resetButton = false)
+        public IHtmlContent CRUDSearchFormFor<TValue>(Expression<Func<TModel, TValue>> searchByModelExpression, string pageTitle, string? action = null, string? controller = null, bool resetButton = false, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.IfNoVisibleErrors) where TValue : Bs4.MvcModel
         {
-            return CRUDSearchForm(searchByModelExpression, pageTitle.ToHtmlEncodedHtmlString(), action, controller, resetButton);
+            return CRUDSearchFormFor(searchByModelExpression, pageTitle.ToHtmlEncodedHtmlString(), action, controller, resetButton, validationSummaryVisible);
         }
-        public IHtmlContent CRUDSearchForm(string searchByModelExpression, IHtmlContent? pageTitle = null, string? action = null, string? controller = null, bool resetButton = false)
+        public IHtmlContent CRUDSearchFormFor<TValue>(Expression<Func<TModel, TValue>> searchByModelExpression, IHtmlContent? pageTitle = null, string? action = null, string? controller = null, bool resetButton = false, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.IfNoVisibleErrors) where TValue : Bs4.MvcModel
         {
-            return CRUDSearchFormHelper(searchByModelExpression, pageTitle, controller, action, resetButton);
+            return CRUDSearchFormHelper(searchByModelExpression, pageTitle, controller, action, resetButton, validationSummaryVisible);
+        }
+
+        public IHtmlContent CRUDSearchForm(string searchByModelExpression, string pageTitle, string? action = null, string? controller = null, bool resetButton = false, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.IfNoVisibleErrors)
+        {
+            return CRUDSearchForm(searchByModelExpression, pageTitle.ToHtmlEncodedHtmlString(), action, controller, resetButton, validationSummaryVisible);
+        }
+        public IHtmlContent CRUDSearchForm(string searchByModelExpression, IHtmlContent? pageTitle = null, string? action = null, string? controller = null, bool resetButton = false, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.IfNoVisibleErrors)
+        {
+            return CRUDSearchFormHelper(searchByModelExpression, pageTitle, controller, action, resetButton, validationSummaryVisible);
         }
 
         //these two methods are exactly identical CreateModelExpression has overloads for both string and expression
-        private IHtmlContent CRUDSearchFormHelper(string searchByModelExpression, IHtmlContent? pageTitle, string? controller, string? action, bool resetButton)
+        private IHtmlContent CRUDSearchFormHelper(string searchByModelExpression, IHtmlContent? pageTitle, string? controller, string? action, bool resetButton, ValidationSummaryVisible validationSummaryVisible)
         {
             if (Html.ViewData.Model == null) throw new ArgumentException("Model == null");
             
             var result = new StringBuilder();
 
-            result.AppendLine(CRUDSearchFormHeader(pageTitle, action, controller).GetString());
+            result.AppendLine(CRUDSearchFormHeader(pageTitle, action, controller, validationSummaryVisible).GetString());
 
             var modelExpressionProvider = new ModelExpressionProvider(Html.MetadataProvider);
             var modelExpression = modelExpressionProvider.CreateModelExpression(Html.ViewData, searchByModelExpression);
@@ -112,13 +113,13 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
 
             return result.ToHtmlString();
         }
-        private IHtmlContent CRUDSearchFormHelper<TValue>(Expression<Func<TModel, TValue>>? searchByModelExpression, IHtmlContent? pageTitle, string? controller, string? action, bool resetButton)
+        private IHtmlContent CRUDSearchFormHelper<TValue>(Expression<Func<TModel, TValue>>? searchByModelExpression, IHtmlContent? pageTitle, string? controller, string? action, bool resetButton, ValidationSummaryVisible validationSummaryVisible)
         {
             if (Html.ViewData.Model == null) throw new ArgumentException("Model == null");
             
             var result = new StringBuilder();
 
-            result.AppendLine(CRUDSearchFormHeader(pageTitle, action, controller).GetString());
+            result.AppendLine(CRUDSearchFormHeader(pageTitle, action, controller, validationSummaryVisible).GetString());
 
             if (searchByModelExpression != null)
             {
@@ -150,41 +151,41 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
         #endregion
 
         #region CRUD Search Form In Accordion Helpers
-        public IHtmlContent CRUDSearchFormInAccordionForModel(string accordionElementId, IEnumerable<Bs4.AccordionPanel> panels, string pageTitle, string? action = null, string? controller = null, bool resetButton = false)
+        public IHtmlContent CRUDSearchFormInAccordionForModel(string accordionElementId, IEnumerable<Bs4.AccordionPanel> panels, string pageTitle, string? action = null, string? controller = null, bool resetButton = false, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.Always)
         {
-            return CRUDSearchFormInAccordionForModel(accordionElementId, panels, pageTitle.ToHtmlEncodedHtmlString(), action, controller, resetButton);
+            return CRUDSearchFormInAccordionForModel(accordionElementId, panels, pageTitle.ToHtmlEncodedHtmlString(), action, controller, resetButton, validationSummaryVisible);
         }
-        public IHtmlContent CRUDSearchFormInAccordionForModel(string accordionElementId, IEnumerable<Bs4.AccordionPanel> panels, IHtmlContent? pageTitle = null, string? action = null, string? controller = null, bool resetButton = false)
+        public IHtmlContent CRUDSearchFormInAccordionForModel(string accordionElementId, IEnumerable<Bs4.AccordionPanel> panels, IHtmlContent? pageTitle = null, string? action = null, string? controller = null, bool resetButton = false, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.Always)
         {
-            return CRUDSearchFormInAccordionHelper((Expression<Func<TModel, TModel>>?)null, accordionElementId, panels, pageTitle, controller, action, resetButton);
+            return CRUDSearchFormInAccordionHelper((Expression<Func<TModel, TModel>>?)null, accordionElementId, panels, pageTitle, controller, action, resetButton, validationSummaryVisible);
         }
         
-        public IHtmlContent CRUDSearchFormInAccordionFor<TValue>(Expression<Func<TModel, TValue>> searchByModelExpression, string accordionId, IEnumerable<Bs4.AccordionPanel> panels, string pageTitle, string? action = null, string? controller = null, bool resetButton = false) where TValue : Bs4.MvcModel
+        public IHtmlContent CRUDSearchFormInAccordionFor<TValue>(Expression<Func<TModel, TValue>> searchByModelExpression, string accordionId, IEnumerable<Bs4.AccordionPanel> panels, string pageTitle, string? action = null, string? controller = null, bool resetButton = false, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.Always) where TValue : Bs4.MvcModel
         {
-            return CRUDSearchFormInAccordionFor(searchByModelExpression, accordionId, panels, pageTitle.ToHtmlEncodedHtmlString(), action, controller, resetButton);
+            return CRUDSearchFormInAccordionFor(searchByModelExpression, accordionId, panels, pageTitle.ToHtmlEncodedHtmlString(), action, controller, resetButton, validationSummaryVisible);
         }
-        public IHtmlContent CRUDSearchFormInAccordionFor<TValue>(Expression<Func<TModel, TValue>> searchByModelExpression, string accordionId, IEnumerable<Bs4.AccordionPanel> panels, IHtmlContent? pageTitle = null, string? action = null, string? controller = null, bool resetButton = false) where TValue : Bs4.MvcModel
+        public IHtmlContent CRUDSearchFormInAccordionFor<TValue>(Expression<Func<TModel, TValue>> searchByModelExpression, string accordionId, IEnumerable<Bs4.AccordionPanel> panels, IHtmlContent? pageTitle = null, string? action = null, string? controller = null, bool resetButton = false, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.Always) where TValue : Bs4.MvcModel
         {
-            return CRUDSearchFormInAccordionHelper(searchByModelExpression, accordionId, panels, pageTitle, controller, action, resetButton);
+            return CRUDSearchFormInAccordionHelper(searchByModelExpression, accordionId, panels, pageTitle, controller, action, resetButton, validationSummaryVisible);
         }
 
-        public IHtmlContent CRUDSearchFormInAccordion(string searchByModelExpression, string accordionId, IEnumerable<Bs4.AccordionPanel> panels, string pageTitle, string? action = null, string? controller = null, bool resetButton = false)
+        public IHtmlContent CRUDSearchFormInAccordion(string searchByModelExpression, string accordionId, IEnumerable<Bs4.AccordionPanel> panels, string pageTitle, string? action = null, string? controller = null, bool resetButton = false, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.Always)
         {
-            return CRUDSearchFormInAccordion(searchByModelExpression, accordionId, panels, pageTitle.ToHtmlEncodedHtmlString(), action, controller, resetButton);
+            return CRUDSearchFormInAccordion(searchByModelExpression, accordionId, panels, pageTitle.ToHtmlEncodedHtmlString(), action, controller, resetButton, validationSummaryVisible);
         }
-        public IHtmlContent CRUDSearchFormInAccordion(string searchByModelExpression, string accordionId, IEnumerable<Bs4.AccordionPanel> panels, IHtmlContent? pageTitle = null, string? action = null, string? controller = null, bool resetButton = false)
+        public IHtmlContent CRUDSearchFormInAccordion(string searchByModelExpression, string accordionId, IEnumerable<Bs4.AccordionPanel> panels, IHtmlContent? pageTitle = null, string? action = null, string? controller = null, bool resetButton = false, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.Always)
         {
-            return CRUDSearchFormInAccordionHelper(searchByModelExpression, accordionId, panels, pageTitle, controller, action, resetButton);
+            return CRUDSearchFormInAccordionHelper(searchByModelExpression, accordionId, panels, pageTitle, controller, action, resetButton, validationSummaryVisible);
         }
 
         //these two methods are exactly identical CreateModelExpression has overloads for both string and expression
-        private IHtmlContent CRUDSearchFormInAccordionHelper(string searchByModelExpression, string accordionId, IEnumerable<Bs4.AccordionPanel> panels, IHtmlContent? pageTitle, string? controller, string? action, bool resetButton)
+        private IHtmlContent CRUDSearchFormInAccordionHelper(string searchByModelExpression, string accordionId, IEnumerable<Bs4.AccordionPanel> panels, IHtmlContent? pageTitle, string? controller, string? action, bool resetButton, ValidationSummaryVisible validationSummaryVisible)
         {
             if (Html.ViewData.Model == null) throw new ArgumentException("Model == null");
             
             var result = new StringBuilder();
 
-            result.AppendLine(CRUDSearchFormHeader(pageTitle, action, controller).GetString());
+            result.AppendLine(CRUDSearchFormHeader(pageTitle, action, controller, validationSummaryVisible).GetString());
 
             result.AppendLine($"<div class='accordion' id='{accordionId}'>");
 
@@ -216,13 +217,13 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
 
             return result.ToHtmlString();
         }
-        private IHtmlContent CRUDSearchFormInAccordionHelper<TValue>(Expression<Func<TModel, TValue>>? searchByModelExpression, string accordionId, IEnumerable<Bs4.AccordionPanel> panels, IHtmlContent? pageTitle, string? controller, string? action, bool resetButton)
+        private IHtmlContent CRUDSearchFormInAccordionHelper<TValue>(Expression<Func<TModel, TValue>>? searchByModelExpression, string accordionId, IEnumerable<Bs4.AccordionPanel> panels, IHtmlContent? pageTitle, string? controller, string? action, bool resetButton, ValidationSummaryVisible validationSummaryVisible)
         {
             if (Html.ViewData.Model == null) throw new ArgumentException("Model == null");
             
             var result = new StringBuilder();
 
-            result.AppendLine(CRUDSearchFormHeader(pageTitle, action, controller).GetString());
+            result.AppendLine(CRUDSearchFormHeader(pageTitle, action, controller, validationSummaryVisible).GetString());
 
             result.AppendLine($"<div class='accordion' id='{accordionId}'>");
 
@@ -267,11 +268,11 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
         #endregion
 
         #region CRUD Search Form Header and Footer Helpers
-        public IHtmlContent CRUDSearchFormHeader(string pageTitle, string? action, string? controller)
+        public IHtmlContent CRUDSearchFormHeader(string pageTitle, string? action, string? controller, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.IfNoVisibleErrors)
         {
-            return CRUDSearchFormHeader(pageTitle.ToHtmlEncodedHtmlString(), action, controller);
+            return CRUDSearchFormHeader(pageTitle.ToHtmlEncodedHtmlString(), action, controller, validationSummaryVisible);
         }
-        public IHtmlContent CRUDSearchFormHeader(IHtmlContent? pageTitle, string? action, string? controller)
+        public IHtmlContent CRUDSearchFormHeader(IHtmlContent? pageTitle, string? action, string? controller, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.IfNoVisibleErrors)
         {
             var result = new StringBuilder();
 
@@ -399,15 +400,15 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
         #endregion
         
         #region CRUD Edit Helpers
-        public IHtmlContent CRUDEdit(string pageTitle, bool readOnly = false, bool skipBackButton = false)
+        public IHtmlContent CRUDEdit(string pageTitle, bool readOnly = false, bool skipBackButton = false, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.IfNoVisibleErrors)
         {
-            return CRUDEdit(pageTitle.ToHtmlEncodedHtmlString(), readOnly, skipBackButton);
+            return CRUDEdit(pageTitle.ToHtmlEncodedHtmlString(), readOnly, skipBackButton, validationSummaryVisible);
         }
-        public IHtmlContent CRUDEdit(IHtmlContent? pageTitle = null, bool readOnly = false, bool skipBackButton = false)
+        public IHtmlContent CRUDEdit(IHtmlContent? pageTitle = null, bool readOnly = false, bool skipBackButton = false, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.IfNoVisibleErrors)
         {
             var result = new StringBuilder();
 
-            result.AppendLine(CRUDEditHeader(pageTitle, readOnly).GetString());
+            result.AppendLine(CRUDEditHeader(pageTitle, readOnly, validationSummaryVisible).GetString());
             result.AppendLine(SuperHtml.EditorForModel().GetString().DisableAllControlsIf(readOnly));
             result.AppendLine(CRUDEditFooter(readOnly, skipBackButton).GetString());
             result.AppendLine();
@@ -417,11 +418,11 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
         #endregion
 
         #region CRUD Edit Header & Footer Helpers
-        public IHtmlContent CRUDEditHeader(string pageTitle, bool readOnly = false)
+        public IHtmlContent CRUDEditHeader(string pageTitle, bool readOnly = false, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.IfNoVisibleErrors)
         {
-            return CRUDEditHeader(pageTitle.ToHtmlEncodedHtmlString(), readOnly);
+            return CRUDEditHeader(pageTitle.ToHtmlEncodedHtmlString(), readOnly, validationSummaryVisible);
         }
-        public IHtmlContent CRUDEditHeader(IHtmlContent? pageTitle = null, bool readOnly = false)
+        public IHtmlContent CRUDEditHeader(IHtmlContent? pageTitle = null, bool readOnly = false, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.IfNoVisibleErrors)
         {
             var result = new StringBuilder();
             if (Html.ViewData.Model == null) throw new Exception("Model is null");
@@ -474,15 +475,15 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
         #endregion
 
         #region CRUD Edit In Accordion
-        public IHtmlContent CRUDEditInAccordion(string accordionId, IEnumerable<Bs4.AccordionPanel> panels, string pageTitle, bool readOnly = false, bool skipBackButton = false, bool skipHeaderAndFooter = false)
+        public IHtmlContent CRUDEditInAccordion(string accordionId, IEnumerable<Bs4.AccordionPanel> panels, string pageTitle, bool readOnly = false, bool skipBackButton = false, bool skipHeaderAndFooter = false, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.Always)
         {
-            return CRUDEditInAccordion(accordionId, panels, pageTitle.ToHtmlEncodedHtmlString(), readOnly, skipBackButton, skipHeaderAndFooter);
+            return CRUDEditInAccordion(accordionId, panels, pageTitle.ToHtmlEncodedHtmlString(), readOnly, skipBackButton, skipHeaderAndFooter, validationSummaryVisible);
         }
-        public IHtmlContent CRUDEditInAccordion(string accordionId, IEnumerable<Bs4.AccordionPanel> panels, IHtmlContent? pageTitle = null, bool readOnly = false, bool skipBackButton = false, bool skipHeaderAndFooter = false)
+        public IHtmlContent CRUDEditInAccordion(string accordionId, IEnumerable<Bs4.AccordionPanel> panels, IHtmlContent? pageTitle = null, bool readOnly = false, bool skipBackButton = false, bool skipHeaderAndFooter = false, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.Always)
         {
             var result = new StringBuilder();
 
-            if (!skipHeaderAndFooter) result.AppendLine(CRUDEditHeader(pageTitle, readOnly).GetString());
+            if (!skipHeaderAndFooter) result.AppendLine(CRUDEditHeader(pageTitle, readOnly, validationSummaryVisible).GetString());
 
             result.AppendLine($"<div id='{accordionId}'>");
             foreach (var panel in panels)

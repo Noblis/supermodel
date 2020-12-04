@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using Supermodel.DataAnnotations.Enums;
 using Supermodel.Presentation.Mvc.Bootstrap4.Models;
 using Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers;
 using Supermodel.Presentation.Mvc.Bootstrap4.TagHelpers.Base;
@@ -22,8 +23,8 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.TagHelpers
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
             output.TagName = null;
-            if (PageTitle != null) output.Content.SetHtmlContent(_htmlHelper.Super().Bs4().CRUDSearchFormInAccordionForModel(AccordionId, Panels!, PageTitle, Action, Controller, ResetButton));
-            else output.Content.SetHtmlContent(_htmlHelper.Super().Bs4().CRUDSearchFormInAccordionForModel(AccordionId, Panels!, (IHtmlContent?)null, Action, Controller, ResetButton));
+            if (PageTitle != null) output.Content.SetHtmlContent(_htmlHelper.Super().Bs4().CRUDSearchFormInAccordionForModel(AccordionId, Panels!, PageTitle, Action, Controller, ResetButton, ValidationSummaryVisible));
+            else output.Content.SetHtmlContent(_htmlHelper.Super().Bs4().CRUDSearchFormInAccordionForModel(AccordionId, Panels!, (IHtmlContent?)null, Action, Controller, ResetButton, ValidationSummaryVisible));
         }
         #endregion
 
@@ -35,6 +36,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.TagHelpers
         public string? Controller {get; set; } = null;
         public string? Action { get; set; } = null;
         public bool ResetButton { get; set; } = false;
+        public ValidationSummaryVisible ValidationSummaryVisible { get; set; } = ValidationSummaryVisible.Always;
         #endregion
     }
 }

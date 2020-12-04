@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using Supermodel.DataAnnotations.Enums;
 using Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers;
 using Supermodel.Presentation.Mvc.Bootstrap4.TagHelpers.Base;
 using Supermodel.Presentation.Mvc.HtmlHelpers;
@@ -27,7 +28,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.TagHelpers
             if (PageTitle != null)
             {
                 output.Content.SetHtmlContent($@"
-                    {_htmlHelper.Super().Bs4().CRUDEditHeader(PageTitle, ReadOnly)}
+                    {_htmlHelper.Super().Bs4().CRUDEditHeader(PageTitle, ReadOnly, ValidationSummaryVisible)}
                     {childContent.GetContent()}
                     {_htmlHelper.Super().Bs4().CRUDEditFooter(ReadOnly, SkipBackButton)}
                 ");
@@ -35,7 +36,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.TagHelpers
             else
             {
                 output.Content.SetHtmlContent($@"
-                    {_htmlHelper.Super().Bs4().CRUDEditHeader((IHtmlContent?)null, ReadOnly)}
+                    {_htmlHelper.Super().Bs4().CRUDEditHeader((IHtmlContent?)null, ReadOnly, ValidationSummaryVisible)}
                     {childContent.GetContent()}
                     {_htmlHelper.Super().Bs4().CRUDEditFooter(ReadOnly, SkipBackButton)}
                 ");
@@ -47,6 +48,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.TagHelpers
         public string? PageTitle { get; set; } = null;
         public bool ReadOnly {get; set; } = false;
         public bool SkipBackButton { get; set; } = false;
+        public ValidationSummaryVisible ValidationSummaryVisible { get; set; } = ValidationSummaryVisible.IfNoVisibleErrors;
         #endregion
     }
 }
