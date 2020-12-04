@@ -28,7 +28,7 @@ namespace WebMonk.ValueProviders
                 return this;
             }
 
-            if (request.ContentType.StartsWith("multipart/mixed")) return this;
+            if (request.ContentType?.StartsWith("multipart/mixed") == true) return this;
 
             if (request.ContentType == "application/x-www-form-urlencoded")
             {
