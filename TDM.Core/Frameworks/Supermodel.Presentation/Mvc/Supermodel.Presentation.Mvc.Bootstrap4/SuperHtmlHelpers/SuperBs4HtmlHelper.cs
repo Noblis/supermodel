@@ -474,7 +474,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
         }
         #endregion
 
-        #region CRUD Edit In Accordion
+        #region CRUD Edit In Accordion Helpers
         public IHtmlContent CRUDEditInAccordion(string accordionId, IEnumerable<Bs4.AccordionPanel> panels, string pageTitle, bool readOnly = false, bool skipBackButton = false, bool skipHeaderAndFooter = false, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.Always)
         {
             return CRUDEditInAccordion(accordionId, panels, pageTitle.ToHtmlEncodedHtmlString(), readOnly, skipBackButton, skipHeaderAndFooter, validationSummaryVisible);
@@ -501,7 +501,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
         }
         #endregion
 
-        #region CRUD MuiliColumn List
+        #region CRUD MuiliColumn List Helpers
         public IHtmlContent CRUDMultiColumnList(IEnumerable<IViewModelForEntity> items, string pageTitle, bool skipAddNew = false, bool skipDelete = false, bool viewOnly = false)
         {
             return CRUDMultiColumnListHelper(items, null, pageTitle.ToHtmlEncodedHtmlString(), null, skipAddNew, skipDelete, viewOnly);
@@ -598,7 +598,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
         }
         #endregion
 
-        #region CRUD MuiliColumn List NoActions
+        #region CRUD MuiliColumn List NoActions Helpers
         public IHtmlContent CRUDMultiColumnListNoActions(IEnumerable<IMvcModel> items, string pageTitle)
         {
             return CRUDMultiColumnListNoActionsHelper(items, pageTitle.ToHtmlEncodedHtmlString());
@@ -650,7 +650,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
         }
         #endregion
 
-        #region CRUD Multicolumn Editable Lists
+        #region CRUD Multicolumn Editable Lists Helpers
         public IHtmlContent CRUDMultiColumnChildrenEditableList(IEnumerable<IChildMvcModelForEntity> items, Type dataContextType, Type childControllerType, long parentId, string pageTitle, bool skipAddNew = false, bool skipDelete = false)
         {
             return CRUDMultiColumnEditableListHelper(items, dataContextType, childControllerType, pageTitle.ToHtmlEncodedHtmlString(), parentId, skipAddNew, skipDelete);
@@ -852,7 +852,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
         }
         #endregion
 
-        #region New Search Action Link
+        #region New Search Action Link Helpers
         public IHtmlContent NewSearchActionLink(string? linkLabel = null)
         {
             return NewSearchActionLink(linkLabel?.ToHtmlEncodedIHtmlContent());
