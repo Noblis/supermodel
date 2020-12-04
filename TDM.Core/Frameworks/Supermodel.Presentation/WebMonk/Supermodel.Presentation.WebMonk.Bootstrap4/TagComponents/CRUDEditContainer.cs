@@ -26,8 +26,6 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                 var formAction = HttpContext.Current.RouteManager.LocalPathWithQueryStringMinusSelectedId;
                 AppendAndPush(new Form(new { id=ScaffoldingSettings.EditFormId, action = formAction, method = "post", enctype = "multipart/form-data"}));
 
-                InnerContent = AppendAndPush(new Fieldset(new { id=ScaffoldingSettings.EditFormFieldsetId }));
-                
                 if (pageTitle != null) Append(new H2(new { @class=ScaffoldingSettings.EditTitleCssClass }) { pageTitle });
 
                 //Override Http Verb if needed (if the model is not new, we put, per REST)
@@ -41,7 +39,7 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                     Pop<Div>();
                 }
 
-                Pop<Fieldset>();
+                InnerContent = Append(new Fieldset(new { id=ScaffoldingSettings.EditFormFieldsetId }));
 
                 AppendAndPush(new Div(new { @class="form-group row pt-2" }));
                 Append(new Div(new { @class="col-sm-2" }));
