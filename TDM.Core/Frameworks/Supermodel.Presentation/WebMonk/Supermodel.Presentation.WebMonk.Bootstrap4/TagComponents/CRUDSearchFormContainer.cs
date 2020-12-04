@@ -1,7 +1,6 @@
 ﻿#nullable enable
 
 using Supermodel.DataAnnotations.Enums;
-using Supermodel.DataAnnotations.Exceptions;
 using Supermodel.Presentation.WebMonk.Extensions;
 using WebMonk.Context;
 using WebMonk.RazorSharp.HtmlTags;
@@ -22,9 +21,6 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
             
             public CRUDSearchFormContainer(IEditorTemplate searchModel, IGenerateHtml? pageTitle, string? action, string? controller, bool resetButton, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.IfNoVisibleErrors)
             {
-                var showValidationSummary = ShowValidationSummaryHelper.ShouldShowValidationSummary(searchModel, validationSummaryVisible);
-
-                
                 action ??= "List";
                 controller ??= HttpContext.Current.RouteManager.GetController();
 
@@ -36,6 +32,14 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                     AppendAndPush(new H2(new { @class=ScaffoldingSettings.SearchTitleCssClass }));
                     Append(pageTitle);
                     Pop<H2>();
+                }
+
+                var showValidationSummary = ShowValidationSummaryHelper.ShouldShowValidationSummary(searchModel, validationSummaryVisible);
+                if (showValidationSummary)
+                {
+                    AppendAndPush(new Div(new { @class = $"col-sm-12 {ScaffoldingSettings.ValidationSummaryCssClass}" }));
+                    Append(Render.ValidationSummary());
+                    Pop<Div>();
                 }
 
                 Append(InnerContent = new Tags());
