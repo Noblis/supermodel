@@ -8,7 +8,6 @@ using Supermodel.DataAnnotations.Validations.Attributes;
 using Supermodel.Presentation.WebMonk.Extensions;
 using Supermodel.Presentation.WebMonk.Models.Mvc;
 using Supermodel.ReflectionMapper;
-using WebMonk.Context;
 using WebMonk.RazorSharp.HtmlTags;
 using WebMonk.RazorSharp.HtmlTags.BaseTags;
 using WebMonk.Rendering.Views;
@@ -60,10 +59,10 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
 
                 var result = new HtmlStack();
                 
-                var selectedId = ParseNullableLong(HttpContext.Current.HttpListenerContext.Request.QueryString["selectedId"]);
-                var showValidationSummary = !HttpContext.Current.ValidationResultList.IsValid && selectedId == null;
-                var validationSummaryPlaceholder = new HtmlStack();
-                result.Append(validationSummaryPlaceholder);
+                //var selectedId = ParseNullableLong(HttpContext.Current.HttpListenerContext.Request.QueryString["selectedId"]);
+                //var showValidationSummary = !HttpContext.Current.ValidationResultList.IsValid && selectedId == null;
+                //var validationSummaryPlaceholder = new HtmlStack();
+                //result.Append(validationSummaryPlaceholder);
 
                 foreach (var propertyInfo in GetType().GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
                 {
@@ -108,7 +107,7 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                     {
                         result.Append(Render.Editor(this, propertyInfo.Name, new { @class="form-control" } ));
                         var msg = Render.ValidationMessage(this, propertyInfo.Name, new { @class=ScaffoldingSettings.ValidationErrorCssClass }, true);
-                        if (!(msg is Tags tags && tags.Count == 0)) showValidationSummary = false;
+                        //if (!(msg is Tags tags && tags.Count == 0)) validationSummaryVisible = false;
                         result.Append(msg);
                     }
                     else
@@ -126,12 +125,12 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                     result.Pop<Div>(); //close Div 1
                 }
 
-                if (showValidationSummary)
-                {
-                    validationSummaryPlaceholder.AppendAndPush(new Div(new { @class=$"col-sm-12 {ScaffoldingSettings.ValidationSummaryCssClass}" }));
-                    validationSummaryPlaceholder.Append(Render.ValidationSummary());
-                    validationSummaryPlaceholder.Pop<Div>();
-                }
+                //if (showValidationSummary)
+                //{
+                //    validationSummaryPlaceholder.AppendAndPush(new Div(new { @class=$"col-sm-12 {ScaffoldingSettings.ValidationSummaryCssClass}" }));
+                //    validationSummaryPlaceholder.Append(Render.ValidationSummary());
+                //    validationSummaryPlaceholder.Pop<Div>();
+                //}
                 return result; 
             }
             public virtual IGenerateHtml DisplayTemplate(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue, object? attributes = null)
@@ -214,10 +213,10 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                 
                 var result = new HtmlStack();
                 
-                var selectedId = ParseNullableLong(HttpContext.Current.HttpListenerContext.Request.QueryString["selectedId"]);
-                var showValidationSummary = !HttpContext.Current.ValidationResultList.IsValid && selectedId == null;
-                var validationSummaryPlaceholder = new HtmlStack();
-                result.Append(validationSummaryPlaceholder);
+                //var selectedId = ParseNullableLong(HttpContext.Current.HttpListenerContext.Request.QueryString["selectedId"]);
+                //var showValidationSummary = !HttpContext.Current.ValidationResultList.IsValid && selectedId == null;
+                //var validationSummaryPlaceholder = new HtmlStack();
+                //result.Append(validationSummaryPlaceholder);
 
                 foreach (var propertyInfo in GetType().GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
                 {
@@ -260,7 +259,7 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                     {
                         result.Append(Render.Editor(this, propertyInfo.Name));
                         var msg = Render.ValidationMessage(this, propertyInfo.Name, new { @class=ScaffoldingSettings.ValidationErrorCssClass }, true);
-                        if (!(msg is Tags tags && tags.Count == 0)) showValidationSummary = false;
+                        //if (!(msg is Tags tags && tags.Count == 0)) showValidationSummary = false;
                         result.Append(msg);
                     }
                     else
@@ -289,12 +288,12 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                 }
                 if (currentColumn != 1) result.Pop<Div>();
 
-                if (showValidationSummary)
-                {
-                    validationSummaryPlaceholder.AppendAndPush(new Div(new { @class=$"col-sm-12 {ScaffoldingSettings.ValidationSummaryCssClass}" }));
-                    validationSummaryPlaceholder.Append(Render.ValidationSummary());
-                    validationSummaryPlaceholder.Pop<Div>();
-                }
+                //if (showValidationSummary)
+                //{
+                //    validationSummaryPlaceholder.AppendAndPush(new Div(new { @class=$"col-sm-12 {ScaffoldingSettings.ValidationSummaryCssClass}" }));
+                //    validationSummaryPlaceholder.Append(Render.ValidationSummary());
+                //    validationSummaryPlaceholder.Pop<Div>();
+                //}
                 return result;                 
             }
             protected virtual IGenerateHtml DisplayTemplateForMultipleColumnsInternal(int screenOrderFrom, int screenOrderTo, object? attributes, NumberOfColumnsEnum numberOfColumns)
@@ -364,14 +363,6 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                 if (currentColumn != 1) result.Pop<Div>();
 
                 return result;                   
-            }
-            #endregion
-
-            #region Helper Methods
-            protected long? ParseNullableLong(string str)
-            {
-                if (long.TryParse(str, out var result)) return result;
-                return null;
             }
             #endregion
 

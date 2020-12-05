@@ -189,7 +189,6 @@ namespace HTML2RazorSharpWinForms
             this.PerformLayout();
 
         }
-
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel TableLayoutPanel { get; set; }
