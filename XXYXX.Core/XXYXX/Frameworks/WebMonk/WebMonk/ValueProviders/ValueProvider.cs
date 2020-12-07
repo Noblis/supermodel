@@ -192,7 +192,7 @@ namespace WebMonk.ValueProviders
         #endregion
 
         #region Dangerous Value Detection
-        protected bool IsDangerousValue(object? value)
+        protected virtual bool IsDangerousValue(object? value)
         { 
             if (value == null) return false;
 

@@ -11,9 +11,17 @@ namespace Supermodel.Tooling.SolutionMaker.Cmd
             try
             {
                 //Un-comment and run this once to refresh the solution zip
-                //SolutionMaker.CreateSnapshot(@"..\..\..\..\..\..\..\XXYXX.Core\XXYXX", @"..\..\..\");
-                //Console.WriteLine($"{SolutionMaker.ZipFileName} created successfully!");
-                //return;
+                Console.Write("Deleting XXYXX\\Frameworks directory... ");
+                Directory.Delete(@"..\..\..\..\..\..\..\XXYXX.Core\XXYXX\Frameworks", true);
+                Console.WriteLine("Done!");
+
+                Console.Write("Copying Frameworks directory from TDM.Core to XXYXX... ");
+                CopyDirectory(@"..\..\..\..\..\..\Frameworks", @"..\..\..\..\..\..\..\XXYXX.Core\XXYXX\Frameworks");
+                Console.WriteLine("Done!");
+                
+                SolutionMaker.CreateSnapshot(@"..\..\..\..\..\..\..\XXYXX.Core\XXYXX", @"..\..\..\");
+                Console.WriteLine($"{SolutionMaker.ZipFileName} created successfully!");
+                return;
 
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.Green;
@@ -81,6 +89,34 @@ namespace Supermodel.Tooling.SolutionMaker.Cmd
             finally
             {
                 Console.ForegroundColor = ConsoleColor.Green;
+            }
+        }
+
+        private static void CopyDirectory(string sourceDirName, string destDirName)
+        {
+            // Get the subdirectories for the specified directory.
+            DirectoryInfo dir = new DirectoryInfo(sourceDirName);
+
+            if (!dir.Exists) throw new DirectoryNotFoundException("Source directory does not exist or could not be found: " + sourceDirName);
+
+            var dirs = dir.GetDirectories();
+        
+            // If the destination directory doesn't exist, create it.       
+            Directory.CreateDirectory(destDirName);        
+
+            // Get the files in the directory and copy them to the new location.
+            var files = dir.GetFiles();
+            foreach (var file in files)
+            {
+                string tempPath = Path.Combine(destDirName, file.Name);
+                file.CopyTo(tempPath, false);
+            }
+
+            // Copy subdirectories and their contents to new location.
+            foreach (var subDir in dirs)
+            {
+                string tempPath = Path.Combine(destDirName, subDir.Name);
+                CopyDirectory(subDir.FullName, tempPath);
             }
         }
     }

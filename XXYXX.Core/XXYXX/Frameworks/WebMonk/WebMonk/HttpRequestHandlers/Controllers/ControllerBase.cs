@@ -45,17 +45,6 @@ namespace WebMonk.HttpRequestHandlers.Controllers
         
         protected virtual async Task<IHttpRequestHandler.HttpRequestHandlerResult> RunAsyncActionAsync(MethodInfo actionMethodInfo, Dictionary<string, object> routeData, CancellationToken cancellationToken)
         {
-            #region Update Route Value Provider
-            var routeValueProvider = await new RouteValueProvider().InitAsync(routeData).ConfigureAwait(false);
-            var valueProviders = await HttpContext.Current.ValueProviderManager.GetValueProvidersListAsync().ConfigureAwait(false);
-            valueProviders.ReplaceOrInsertValueProvider(routeValueProvider, 1); //1) form-data, 2) route-data, 3) QS data
-            #endregion
-
-            #region Model Binding using value providers
-            var (bindSuccessful, parameters) = await TryBindAndValidateParametersAsync(actionMethodInfo).ConfigureAwait(false);
-            if (!bindSuccessful) return IHttpRequestHandler.HttpRequestHandlerResult.False;
-            #endregion
-
             #region Get all the filters and set up filterContext
             var globalFilters = HttpContext.Current.WebServer.GlobalFilters.OrderBy(x => x.Order).ToArray();
             var classFilters = GetType().GetCustomAttributes().Where(x => x is IActionFilter).OrderBy(x => ((IActionFilter)x).Order).ToArray();
@@ -79,6 +68,17 @@ namespace WebMonk.HttpRequestHandlers.Controllers
                 var result = await ((IActionFilter)filter).BeforeActionAsync(filterContext).ConfigureAwait(false);
                 if (result.AbortProcessing) return new IHttpRequestHandler.HttpRequestHandlerResult(result.AbortFurtherRouting, result.ExecuteResultFuncAsync);
             }
+            #endregion
+
+            #region Update Route Value Provider
+            var routeValueProvider = await new RouteValueProvider().InitAsync(routeData).ConfigureAwait(false);
+            var valueProviders = await HttpContext.Current.ValueProviderManager.GetValueProvidersListAsync().ConfigureAwait(false);
+            valueProviders.ReplaceOrInsertValueProvider(routeValueProvider, 1); //1) form-data, 2) route-data, 3) QS data
+            #endregion
+
+            #region Model Binding using value providers
+            var (bindSuccessful, parameters) = await TryBindAndValidateParametersAsync(actionMethodInfo).ConfigureAwait(false);
+            if (!bindSuccessful) return IHttpRequestHandler.HttpRequestHandlerResult.False;
             #endregion
 
             #region Execute Action Method
@@ -110,17 +110,6 @@ namespace WebMonk.HttpRequestHandlers.Controllers
         }
         protected virtual async Task<IHttpRequestHandler.HttpRequestHandlerResult> RunActionAsync(MethodInfo actionMethodInfo, Dictionary<string, object> routeData, CancellationToken cancellationToken)
         {
-            #region Update Route Value Provider
-            var routeValueProvider = await new RouteValueProvider().InitAsync(routeData).ConfigureAwait(false);
-            var valueProviders = await HttpContext.Current.ValueProviderManager.GetValueProvidersListAsync().ConfigureAwait(false);
-            valueProviders.ReplaceOrInsertValueProvider(routeValueProvider, 1); //1) form-data, 2) route-data, 3) QS data
-            #endregion
-
-            #region Model Binding using value providers
-            var (bindSuccessful, parameters) = await TryBindAndValidateParametersAsync(actionMethodInfo).ConfigureAwait(false);
-            if (!bindSuccessful) return IHttpRequestHandler.HttpRequestHandlerResult.False;
-            #endregion
-            
             #region Get all the filters and set up filterContext
             var globalFilters = HttpContext.Current.WebServer.GlobalFilters.OrderBy(x => x.Order).ToArray();
             var classFilters = GetType().GetCustomAttributes().Where(x => x is IActionFilter).OrderBy(x => ((IActionFilter)x).Order).ToArray();
@@ -146,6 +135,17 @@ namespace WebMonk.HttpRequestHandlers.Controllers
             }
             #endregion
 
+            #region Update Route Value Provider
+            var routeValueProvider = await new RouteValueProvider().InitAsync(routeData).ConfigureAwait(false);
+            var valueProviders = await HttpContext.Current.ValueProviderManager.GetValueProvidersListAsync().ConfigureAwait(false);
+            valueProviders.ReplaceOrInsertValueProvider(routeValueProvider, 1); //1) form-data, 2) route-data, 3) QS data
+            #endregion
+
+            #region Model Binding using value providers
+            var (bindSuccessful, parameters) = await TryBindAndValidateParametersAsync(actionMethodInfo).ConfigureAwait(false);
+            if (!bindSuccessful) return IHttpRequestHandler.HttpRequestHandlerResult.False;
+            #endregion
+            
             #region Execute Action Method
             var actionResult = (ActionResult)actionMethodInfo.Invoke(GetControllerInstance(), parameters);
             #endregion
