@@ -6,17 +6,25 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Frameworks\Supermodel.Presentation\WebMonk\Supermodel.Presentation.WebMonk\Supermodel.Presentation.WebMonk.csproj" />
-    <ProjectReference Include="..\Frameworks\WebMonk\WebMonk.RazorSharp\WebMonk.RazorSharp.csproj" />
+    <None Remove="wwwroot\css\site.css" />
+    <None Remove="wwwroot\js\site.js" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="wwwroot\css\site.css">
+    <Content Include="wwwroot\js\site.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="wwwroot\js\site.js">
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\css\site.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Frameworks\Supermodel.Presentation\WebMonk\Supermodel.Presentation.WebMonk\Supermodel.Presentation.WebMonk.csproj" />
+    <ProjectReference Include="..\Frameworks\WebMonk\WebMonk.RazorSharp\WebMonk.RazorSharp.csproj" />
   </ItemGroup>
 
 </Project>

@@ -4,10 +4,11 @@ using WebMonk.RazorSharp.HtmlTags;
 using WebMonk.RazorSharp.HtmlTags.BaseTags;
 using WebMonk.Rendering.Views;
 
-namespace HTML2RazorSharpWM.MainPage
+namespace HTML2RazorSharpWM.Mvc.MainPage
 {
     public class MainMvcView : MvcView
     {
+        #region Methods
         public IGenerateHtml RenderIndex()
         {
             var html = new Tags
@@ -18,7 +19,7 @@ namespace HTML2RazorSharpWM.MainPage
                     {
                         new Txt("Input (HTML)")
                     },
-                    new Textarea()
+                    new Textarea(new { id="input-text-area" })
                 },
                 new Div
                 {
@@ -26,11 +27,12 @@ namespace HTML2RazorSharpWM.MainPage
                     {
                         new Txt("Output (RazorSharp)")
                     },
-                    new Textarea()
+                    new Textarea( new { id="output-text-area", @readonly="" })
                 }
             };
 
             return ApplyToDefaultLayout(html);
         }
+        #endregion
     }
 }

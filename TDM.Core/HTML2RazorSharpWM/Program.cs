@@ -1,7 +1,7 @@
 ﻿#nullable enable
 
 using System.Threading.Tasks;
-using HTML2RazorSharpWM.Layouts;
+using HTML2RazorSharpWM.Mvc.Layouts;
 using WebMonk;
 
 namespace HTML2RazorSharpWM
