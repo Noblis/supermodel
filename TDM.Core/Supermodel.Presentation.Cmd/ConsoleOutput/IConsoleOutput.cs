@@ -2,7 +2,7 @@
 
 namespace Supermodel.Presentation.Cmd.ConsoleOutput
 {
-    interface IConsoleOutput
+    public interface IConsoleOutput
     {
         void WriteToConsole(bool writeLine);
     }

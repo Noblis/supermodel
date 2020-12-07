@@ -5,7 +5,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
     public readonly struct FBColors
     {
         #region Constructors
-        public FBColors(ConsoleColor? foregroundColor, ConsoleColor? backgroundColor)
+        public FBColors(ConsoleColor? foregroundColor, ConsoleColor? backgroundColor = null)
         {
             ForegroundColor = foregroundColor;
             BackgroundColor = backgroundColor;
