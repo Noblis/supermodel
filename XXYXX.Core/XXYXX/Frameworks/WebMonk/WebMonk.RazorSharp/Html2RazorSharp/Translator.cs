@@ -16,11 +16,12 @@ namespace WebMonk.RazorSharp.Html2RazorSharp
     public class Translator<TAttribute, TResult> : TranslatorBase where TResult : class
     {
         #region Constructors
-        internal Translator(string html, GeneratorOfIGenerateHtml<TAttribute, TResult> generator) 
+        internal Translator(string html, GeneratorOfIGenerateHtml<TAttribute, TResult> generator, string wrapperKey) 
         {
             HtmlStr = html;
             BePage = new BrowserEmulatorParser(HtmlStr);
             Generator = generator;
+            WrapperKey = wrapperKey;
             ToRazorSharp();
         }
         #endregion
@@ -89,7 +90,7 @@ namespace WebMonk.RazorSharp.Html2RazorSharp
 
         protected void AppendTag(Stack<Tuple<string, bool, int>> tagStack, AttributeList beTag, Type tagType, string text, AttributeList? futureBeTag)
         {
-            //skip doctype and comments
+            //skip doctype, comments
             if (beTag.Name.StartsWith("!--") || beTag.Name.ToUpper().StartsWith("!DOCTYPE")) return;
 
             //put together info about attributes on tag
@@ -128,6 +129,11 @@ namespace WebMonk.RazorSharp.Html2RazorSharp
                 
                 var pop = Generator.AddRecognizedNonSelfClosingTagAndPotentiallyPop(tagType, attributesAreEmpty, closesSelf, emptyTag, attributes);
                 if (pop) tagStack.Pop();
+            }
+
+            else if(beTag.Name == WrapperKey || beTag.Name == "/" + WrapperKey)
+            {
+                //do nothing
             }
 
             //handle case of invalid opening tags
@@ -189,6 +195,7 @@ namespace WebMonk.RazorSharp.Html2RazorSharp
         #region Properties
         protected string HtmlStr { get; }
         protected TResult? RazorSharp { get; set; }
+        protected string WrapperKey { get; }
         protected int ParserPoint { get; set; }
         protected BrowserEmulatorParser BePage { get; }
         protected GeneratorOfIGenerateHtml<TAttribute, TResult> Generator { get; }
@@ -238,18 +245,22 @@ namespace WebMonk.RazorSharp.Html2RazorSharp
         }
 
         public static Translator<string, string> CreateTextual(string html, bool sortAttributes = false, bool generateInvalidTags = false)
-        {
-            return Create(html, new TextualRazorSharpGenerator(sortAttributes, generateInvalidTags));
+        { 
+            var guid = "x-" + Guid.NewGuid();
+            html = $"<{guid}>{html}</{guid}>";
+            return Create(html, new TextualRazorSharpGenerator(sortAttributes, generateInvalidTags), guid);
         }
 
         public static Translator<Action<Tag>, HtmlStack> CreateMnemonic(string html, bool sortAttributes = false, bool generateInvalidTags = false)
         {
-            return Create(html, new MnemonicRazorSharpGenerator(sortAttributes, generateInvalidTags));
+            var guid = "x-" + Guid.NewGuid();
+            html = $"<{guid}>{html}</{guid}>";
+            return Create(html, new MnemonicRazorSharpGenerator(sortAttributes, generateInvalidTags), guid);
         }
 
-        public static Translator<TAttribute, TResult> Create<TAttribute, TResult>(string html, GeneratorOfIGenerateHtml<TAttribute, TResult> generator) where TResult : class
+        public static Translator<TAttribute, TResult> Create<TAttribute, TResult>(string html, GeneratorOfIGenerateHtml<TAttribute, TResult> generator, string wrapperKey) where TResult : class
         {
-            return new Translator<TAttribute, TResult>(html, generator);
+            return new Translator<TAttribute, TResult>(html, generator, wrapperKey);
         }
         #endregion
 

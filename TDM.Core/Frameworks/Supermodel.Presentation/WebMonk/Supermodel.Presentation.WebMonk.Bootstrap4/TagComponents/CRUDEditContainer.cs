@@ -1,5 +1,7 @@
 ﻿#nullable enable
 
+using Supermodel.DataAnnotations.Enums;
+using Supermodel.Presentation.WebMonk.Extensions;
 using Supermodel.Presentation.WebMonk.Models;
 using Supermodel.ReflectionMapper;
 using WebMonk.Context;
@@ -15,24 +17,29 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
         public class CRUDEditContainer : HtmlContainerSnippet
         {
             #region Constructors
-            public CRUDEditContainer(IViewModelForEntity model, string pageTitle, bool readOnly = false) :
-                this(model, new Txt(pageTitle), readOnly)
+            public CRUDEditContainer(IViewModelForEntity model, string pageTitle, bool readOnly = false, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.IfNoVisibleErrors) :
+                this(model, new Txt(pageTitle), readOnly, false, validationSummaryVisible)
             { }
-            
-            public CRUDEditContainer(IViewModelForEntity model, IGenerateHtml? pageTitle = null, bool readOnly = false, bool skipBackButton = false)
+            public CRUDEditContainer(IViewModelForEntity model, IGenerateHtml? pageTitle = null, bool readOnly = false, bool skipBackButton = false, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.IfNoVisibleErrors)
             {
                 //Start form
                 var formAction = HttpContext.Current.RouteManager.LocalPathWithQueryStringMinusSelectedId;
                 AppendAndPush(new Form(new { id=ScaffoldingSettings.EditFormId, action = formAction, method = "post", enctype = "multipart/form-data"}));
 
-                InnerContent = AppendAndPush(new Fieldset(new { id=ScaffoldingSettings.EditFormFieldsetId }));
-                
                 if (pageTitle != null) Append(new H2(new { @class=ScaffoldingSettings.EditTitleCssClass }) { pageTitle });
 
                 //Override Http Verb if needed (if the model is not new, we put, per REST)
                 if (!model.IsNewModel()) Append(Render.HttpMethodOverride(HttpMethod.Put));
 
-                Pop<Fieldset>();
+                var showValidationSummary = ShowValidationSummaryHelper.ShouldShowValidationSummary(model, validationSummaryVisible);
+                if (showValidationSummary)
+                {
+                    AppendAndPush(new Div(new { @class = $"col-sm-12 {ScaffoldingSettings.ValidationSummaryCssClass}" }));
+                    Append(Render.ValidationSummary());
+                    Pop<Div>();
+                }
+
+                InnerContent = Append(new Fieldset(new { id=ScaffoldingSettings.EditFormFieldsetId }));
 
                 AppendAndPush(new Div(new { @class="form-group row pt-2" }));
                 Append(new Div(new { @class="col-sm-2" }));

@@ -2,6 +2,7 @@
 
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using Supermodel.DataAnnotations.Enums;
 using Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers;
 using Supermodel.Presentation.Mvc.Bootstrap4.TagHelpers.Base;
 using Supermodel.Presentation.Mvc.HtmlHelpers;
@@ -19,7 +20,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.TagHelpers
         public override void Process(TagHelperContext context, TagHelperOutput output) 
         {
             output.TagName = null;
-            output.Content.SetHtmlContent(_htmlHelper.Super().Bs4().CRUDEdit(PageTitle, ReadOnly, SkipBackButton));
+            output.Content.SetHtmlContent(_htmlHelper.Super().Bs4().CRUDEdit(PageTitle, ReadOnly, SkipBackButton, ValidationSummaryVisible));
         }
         #endregion
 
@@ -27,6 +28,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.TagHelpers
         public string PageTitle { get; set; } = "";
         public bool ReadOnly {get; set; } = false;
         public bool SkipBackButton { get; set; } = false;
+        public ValidationSummaryVisible ValidationSummaryVisible { get; set; } = ValidationSummaryVisible.IfNoVisibleErrors;
         #endregion
 
     }

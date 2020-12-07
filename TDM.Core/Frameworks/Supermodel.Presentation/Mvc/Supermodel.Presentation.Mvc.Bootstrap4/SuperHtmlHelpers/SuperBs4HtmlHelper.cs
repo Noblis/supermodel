@@ -13,11 +13,11 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Routing;
 using Supermodel.DataAnnotations;
 using Supermodel.DataAnnotations.Async;
+using Supermodel.DataAnnotations.Enums;
 using Supermodel.DataAnnotations.Exceptions;
 using Supermodel.DataAnnotations.Misc;
 using Supermodel.Persistence.UnitOfWork;
 using Supermodel.Presentation.Mvc.Bootstrap4.Extensions;
-using Supermodel.Presentation.Mvc.Bootstrap4.Models;
 using Supermodel.Presentation.Mvc.Bootstrap4.Models.Base;
 using Supermodel.Presentation.Mvc.Context;
 using Supermodel.Presentation.Mvc.Controllers.Mvc;
@@ -27,6 +27,7 @@ using Supermodel.Presentation.Mvc.Models;
 using Supermodel.Presentation.Mvc.Models.Mvc;
 using Supermodel.Presentation.Mvc.Models.Mvc.Rendering;
 using Supermodel.ReflectionMapper;
+using static Supermodel.Presentation.Mvc.Bootstrap4.Models.Bs4;
 
 namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
 {
@@ -46,7 +47,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
             if (Html.ViewData.Model == null) throw new Exception("Model is null");
 
             var action = fromAction == null ? "" : $"action = '{fromAction}'";
-            result.AppendLine($"<form {UtilsLib.MakeIdAttribute(Bs4.ScaffoldingSettings.LoginFormId)} {action} method='{HtmlHelper.GetFormMethodString(FormMethod.Post)}' enctype='multipart/form-data'>");
+            result.AppendLine($"<form {UtilsLib.MakeIdAttribute(ScaffoldingSettings.LoginFormId)} {action} method='{HtmlHelper.GetFormMethodString(FormMethod.Post)}' enctype='multipart/form-data'>");
             result.AppendLine(Html.Super().EditorForModel().GetString());
             result.AppendLine("<input name='submit-button' class='btn btn-primary' type='submit' value='Log In' />");
             result.AppendLine("</form>");
@@ -56,42 +57,38 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
         #endregion
 
         #region CRUD Search Form Helpers
-        public IHtmlContent CRUDSearchFormForModel(string pageTitle, string? action = null, string? controller = null, bool resetButton = false)
+        public IHtmlContent CRUDSearchFormForModel(string pageTitle, string? action = null, string? controller = null, bool resetButton = false, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.IfNoVisibleErrors)
         {
-            return CRUDSearchFormForModel(pageTitle.ToHtmlEncodedHtmlString(), action, controller, resetButton);
+            return CRUDSearchFormForModel(pageTitle.ToHtmlEncodedHtmlString(), action, controller, resetButton, validationSummaryVisible);
         }
-        public IHtmlContent CRUDSearchFormForModel(IHtmlContent? pageTitle = null, string? action = null, string? controller = null, bool resetButton = false)
+        public IHtmlContent CRUDSearchFormForModel(IHtmlContent? pageTitle = null, string? action = null, string? controller = null, bool resetButton = false, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.IfNoVisibleErrors)
         {
-            return CRUDSearchFormHelper((Expression<Func<TModel, TModel>>?)null, pageTitle, controller, action, resetButton);
-        }
-
-        public IHtmlContent CRUDSearchFormFor<TValue>(Expression<Func<TModel, TValue>> searchByModelExpression, string pageTitle, string? action = null, string? controller = null, bool resetButton = false) where TValue : Bs4.MvcModel
-        {
-            return CRUDSearchFormFor(searchByModelExpression, pageTitle.ToHtmlEncodedHtmlString(), action, controller, resetButton);
-        }
-        public IHtmlContent CRUDSearchFormFor<TValue>(Expression<Func<TModel, TValue>> searchByModelExpression, IHtmlContent? pageTitle = null, string? action = null, string? controller = null, bool resetButton = false) where TValue : Bs4.MvcModel
-        {
-            return CRUDSearchFormHelper(searchByModelExpression, pageTitle, controller, action, resetButton);
+            return CRUDSearchFormHelper((Expression<Func<TModel, TModel>>?)null, pageTitle, controller, action, resetButton, validationSummaryVisible);
         }
 
-        public IHtmlContent CRUDSearchForm(string searchByModelExpression, string pageTitle, string? action = null, string? controller = null, bool resetButton = false)
+        public IHtmlContent CRUDSearchFormFor<TValue>(Expression<Func<TModel, TValue>> searchByModelExpression, string pageTitle, string? action = null, string? controller = null, bool resetButton = false, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.IfNoVisibleErrors) where TValue : MvcModel
         {
-            return CRUDSearchForm(searchByModelExpression, pageTitle.ToHtmlEncodedHtmlString(), action, controller, resetButton);
+            return CRUDSearchFormFor(searchByModelExpression, pageTitle.ToHtmlEncodedHtmlString(), action, controller, resetButton, validationSummaryVisible);
         }
-        public IHtmlContent CRUDSearchForm(string searchByModelExpression, IHtmlContent? pageTitle = null, string? action = null, string? controller = null, bool resetButton = false)
+        public IHtmlContent CRUDSearchFormFor<TValue>(Expression<Func<TModel, TValue>> searchByModelExpression, IHtmlContent? pageTitle = null, string? action = null, string? controller = null, bool resetButton = false, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.IfNoVisibleErrors) where TValue : MvcModel
         {
-            return CRUDSearchFormHelper(searchByModelExpression, pageTitle, controller, action, resetButton);
+            return CRUDSearchFormHelper(searchByModelExpression, pageTitle, controller, action, resetButton, validationSummaryVisible);
+        }
+
+        public IHtmlContent CRUDSearchForm(string searchByModelExpression, string pageTitle, string? action = null, string? controller = null, bool resetButton = false, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.IfNoVisibleErrors)
+        {
+            return CRUDSearchForm(searchByModelExpression, pageTitle.ToHtmlEncodedHtmlString(), action, controller, resetButton, validationSummaryVisible);
+        }
+        public IHtmlContent CRUDSearchForm(string searchByModelExpression, IHtmlContent? pageTitle = null, string? action = null, string? controller = null, bool resetButton = false, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.IfNoVisibleErrors)
+        {
+            return CRUDSearchFormHelper(searchByModelExpression, pageTitle, controller, action, resetButton, validationSummaryVisible);
         }
 
         //these two methods are exactly identical CreateModelExpression has overloads for both string and expression
-        private IHtmlContent CRUDSearchFormHelper(string searchByModelExpression, IHtmlContent? pageTitle, string? controller, string? action, bool resetButton)
+        private IHtmlContent CRUDSearchFormHelper(string searchByModelExpression, IHtmlContent? pageTitle, string? controller, string? action, bool resetButton, ValidationSummaryVisible validationSummaryVisible)
         {
             if (Html.ViewData.Model == null) throw new ArgumentException("Model == null");
             
-            var result = new StringBuilder();
-
-            result.AppendLine(CRUDSearchFormHeader(pageTitle, action, controller).GetString());
-
             var modelExpressionProvider = new ModelExpressionProvider(Html.MetadataProvider);
             var modelExpression = modelExpressionProvider.CreateModelExpression(Html.ViewData, searchByModelExpression);
             
@@ -105,6 +102,11 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
 
             if (!(modelExpression.Model is ISupermodelEditorTemplate)) throw new SupermodelException("Search Model must implement ISupermodelEditorTemplate");
             var templatedModel = (ISupermodelEditorTemplate) modelExpression.Model;
+            
+            var result = new StringBuilder();
+            
+            result.AppendLine(CRUDSearchFormHeader(templatedModel, pageTitle, action, controller, validationSummaryVisible).GetString());
+            
             var innerHtml = SuperHtml.MakeInnerHtmlHelper(modelExpression, true);
             result.AppendLine(templatedModel.EditorTemplate(innerHtml).GetString());
 
@@ -112,13 +114,11 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
 
             return result.ToHtmlString();
         }
-        private IHtmlContent CRUDSearchFormHelper<TValue>(Expression<Func<TModel, TValue>>? searchByModelExpression, IHtmlContent? pageTitle, string? controller, string? action, bool resetButton)
+        private IHtmlContent CRUDSearchFormHelper<TValue>(Expression<Func<TModel, TValue>>? searchByModelExpression, IHtmlContent? pageTitle, string? controller, string? action, bool resetButton, ValidationSummaryVisible validationSummaryVisible)
         {
             if (Html.ViewData.Model == null) throw new ArgumentException("Model == null");
             
             var result = new StringBuilder();
-
-            result.AppendLine(CRUDSearchFormHeader(pageTitle, action, controller).GetString());
 
             if (searchByModelExpression != null)
             {
@@ -135,11 +135,17 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
 
                 if (!(modelExpression.Model is ISupermodelEditorTemplate)) throw new SupermodelException("Search Model must implement ISupermodelEditorTemplate");
                 var templatedModel = (ISupermodelEditorTemplate) modelExpression.Model;
+                
+                result.AppendLine(CRUDSearchFormHeader(templatedModel, pageTitle, action, controller, validationSummaryVisible).GetString());
+                
                 var innerHtml = SuperHtml.MakeInnerHtmlHelper(modelExpression, true);
                 result.AppendLine(templatedModel.EditorTemplate(innerHtml).GetString());
             }
             else
             {
+                if (!(Html.ViewData.Model is ISupermodelEditorTemplate supermodelModelEditorTemplate)) throw new Exception("Model must implement ISupermodelEditorTemplate");
+                
+                result.AppendLine(CRUDSearchFormHeader(supermodelModelEditorTemplate, pageTitle, action, controller, validationSummaryVisible).GetString());
                 result.AppendLine(SuperHtml.EditorForModel().GetString());
             }
 
@@ -150,45 +156,38 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
         #endregion
 
         #region CRUD Search Form In Accordion Helpers
-        public IHtmlContent CRUDSearchFormInAccordionForModel(string accordionElementId, IEnumerable<Bs4.AccordionPanel> panels, string pageTitle, string? action = null, string? controller = null, bool resetButton = false)
+        public IHtmlContent CRUDSearchFormInAccordionForModel(string accordionElementId, IEnumerable<AccordionPanel> panels, string pageTitle, string? action = null, string? controller = null, bool resetButton = false, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.Always)
         {
-            return CRUDSearchFormInAccordionForModel(accordionElementId, panels, pageTitle.ToHtmlEncodedHtmlString(), action, controller, resetButton);
+            return CRUDSearchFormInAccordionForModel(accordionElementId, panels, pageTitle.ToHtmlEncodedHtmlString(), action, controller, resetButton, validationSummaryVisible);
         }
-        public IHtmlContent CRUDSearchFormInAccordionForModel(string accordionElementId, IEnumerable<Bs4.AccordionPanel> panels, IHtmlContent? pageTitle = null, string? action = null, string? controller = null, bool resetButton = false)
+        public IHtmlContent CRUDSearchFormInAccordionForModel(string accordionElementId, IEnumerable<AccordionPanel> panels, IHtmlContent? pageTitle = null, string? action = null, string? controller = null, bool resetButton = false, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.Always)
         {
-            return CRUDSearchFormInAccordionHelper((Expression<Func<TModel, TModel>>?)null, accordionElementId, panels, pageTitle, controller, action, resetButton);
+            return CRUDSearchFormInAccordionHelper((Expression<Func<TModel, TModel>>?)null, accordionElementId, panels, pageTitle, controller, action, resetButton, validationSummaryVisible);
         }
         
-        public IHtmlContent CRUDSearchFormInAccordionFor<TValue>(Expression<Func<TModel, TValue>> searchByModelExpression, string accordionId, IEnumerable<Bs4.AccordionPanel> panels, string pageTitle, string? action = null, string? controller = null, bool resetButton = false) where TValue : Bs4.MvcModel
+        public IHtmlContent CRUDSearchFormInAccordionFor<TValue>(Expression<Func<TModel, TValue>> searchByModelExpression, string accordionId, IEnumerable<AccordionPanel> panels, string pageTitle, string? action = null, string? controller = null, bool resetButton = false, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.Always) where TValue : MvcModel
         {
-            return CRUDSearchFormInAccordionFor(searchByModelExpression, accordionId, panels, pageTitle.ToHtmlEncodedHtmlString(), action, controller, resetButton);
+            return CRUDSearchFormInAccordionFor(searchByModelExpression, accordionId, panels, pageTitle.ToHtmlEncodedHtmlString(), action, controller, resetButton, validationSummaryVisible);
         }
-        public IHtmlContent CRUDSearchFormInAccordionFor<TValue>(Expression<Func<TModel, TValue>> searchByModelExpression, string accordionId, IEnumerable<Bs4.AccordionPanel> panels, IHtmlContent? pageTitle = null, string? action = null, string? controller = null, bool resetButton = false) where TValue : Bs4.MvcModel
+        public IHtmlContent CRUDSearchFormInAccordionFor<TValue>(Expression<Func<TModel, TValue>> searchByModelExpression, string accordionId, IEnumerable<AccordionPanel> panels, IHtmlContent? pageTitle = null, string? action = null, string? controller = null, bool resetButton = false, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.Always) where TValue : MvcModel
         {
-            return CRUDSearchFormInAccordionHelper(searchByModelExpression, accordionId, panels, pageTitle, controller, action, resetButton);
+            return CRUDSearchFormInAccordionHelper(searchByModelExpression, accordionId, panels, pageTitle, controller, action, resetButton, validationSummaryVisible);
         }
 
-        public IHtmlContent CRUDSearchFormInAccordion(string searchByModelExpression, string accordionId, IEnumerable<Bs4.AccordionPanel> panels, string pageTitle, string? action = null, string? controller = null, bool resetButton = false)
+        public IHtmlContent CRUDSearchFormInAccordion(string searchByModelExpression, string accordionId, IEnumerable<AccordionPanel> panels, string pageTitle, string? action = null, string? controller = null, bool resetButton = false, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.Always)
         {
-            return CRUDSearchFormInAccordion(searchByModelExpression, accordionId, panels, pageTitle.ToHtmlEncodedHtmlString(), action, controller, resetButton);
+            return CRUDSearchFormInAccordion(searchByModelExpression, accordionId, panels, pageTitle.ToHtmlEncodedHtmlString(), action, controller, resetButton, validationSummaryVisible);
         }
-        public IHtmlContent CRUDSearchFormInAccordion(string searchByModelExpression, string accordionId, IEnumerable<Bs4.AccordionPanel> panels, IHtmlContent? pageTitle = null, string? action = null, string? controller = null, bool resetButton = false)
+        public IHtmlContent CRUDSearchFormInAccordion(string searchByModelExpression, string accordionId, IEnumerable<AccordionPanel> panels, IHtmlContent? pageTitle = null, string? action = null, string? controller = null, bool resetButton = false, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.Always)
         {
-            return CRUDSearchFormInAccordionHelper(searchByModelExpression, accordionId, panels, pageTitle, controller, action, resetButton);
+            return CRUDSearchFormInAccordionHelper(searchByModelExpression, accordionId, panels, pageTitle, controller, action, resetButton, validationSummaryVisible);
         }
 
         //these two methods are exactly identical CreateModelExpression has overloads for both string and expression
-        private IHtmlContent CRUDSearchFormInAccordionHelper(string searchByModelExpression, string accordionId, IEnumerable<Bs4.AccordionPanel> panels, IHtmlContent? pageTitle, string? controller, string? action, bool resetButton)
+        private IHtmlContent CRUDSearchFormInAccordionHelper(string searchByModelExpression, string accordionId, IEnumerable<AccordionPanel> panels, IHtmlContent? pageTitle, string? controller, string? action, bool resetButton, ValidationSummaryVisible validationSummaryVisible)
         {
             if (Html.ViewData.Model == null) throw new ArgumentException("Model == null");
             
-            var result = new StringBuilder();
-
-            result.AppendLine(CRUDSearchFormHeader(pageTitle, action, controller).GetString());
-
-            result.AppendLine($"<div class='accordion' id='{accordionId}'>");
-
-
             var modelExpressionProvider = new ModelExpressionProvider(Html.MetadataProvider);
             var modelExpression = modelExpressionProvider.CreateModelExpression(Html.ViewData, searchByModelExpression);
             
@@ -202,8 +201,13 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
 
             if (!(modelExpression.Model is ISupermodelEditorTemplate)) throw new SupermodelException("Model must implement ISupermodelEditorTemplate");
             var templatedModel = (ISupermodelEditorTemplate) modelExpression.Model;
-            var innerHtml = SuperHtml.MakeInnerHtmlHelper(modelExpression, true);
+            
+            var result = new StringBuilder();
 
+            result.AppendLine(CRUDSearchFormHeader(templatedModel, pageTitle, action, controller, validationSummaryVisible).GetString());
+            result.AppendLine($"<div class='accordion' id='{accordionId}'>");
+
+            var innerHtml = SuperHtml.MakeInnerHtmlHelper(modelExpression, true);
             foreach (var panel in panels)
             {
                 var body = templatedModel.EditorTemplate(innerHtml, panel.ScreenOrderFrom, panel.ScreenOrderTo).GetString();
@@ -211,20 +215,15 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
             }
 
             result.AppendLine("</div>");
-
             result.AppendLine(CRUDSearchFormFooter(resetButton).GetString());
 
             return result.ToHtmlString();
         }
-        private IHtmlContent CRUDSearchFormInAccordionHelper<TValue>(Expression<Func<TModel, TValue>>? searchByModelExpression, string accordionId, IEnumerable<Bs4.AccordionPanel> panels, IHtmlContent? pageTitle, string? controller, string? action, bool resetButton)
+        private IHtmlContent CRUDSearchFormInAccordionHelper<TValue>(Expression<Func<TModel, TValue>>? searchByModelExpression, string accordionId, IEnumerable<AccordionPanel> panels, IHtmlContent? pageTitle, string? controller, string? action, bool resetButton, ValidationSummaryVisible validationSummaryVisible)
         {
             if (Html.ViewData.Model == null) throw new ArgumentException("Model == null");
             
             var result = new StringBuilder();
-
-            result.AppendLine(CRUDSearchFormHeader(pageTitle, action, controller).GetString());
-
-            result.AppendLine($"<div class='accordion' id='{accordionId}'>");
 
             if (searchByModelExpression != null)
             {
@@ -241,8 +240,11 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
 
                 if (!(modelExpression.Model is ISupermodelEditorTemplate)) throw new SupermodelException("Model must implement ISupermodelEditorTemplate");
                 var templatedModel = (ISupermodelEditorTemplate) modelExpression.Model;
-                var innerHtml = SuperHtml.MakeInnerHtmlHelper(modelExpression, true);
+                
+                result.AppendLine(CRUDSearchFormHeader(templatedModel, pageTitle, action, controller, validationSummaryVisible).GetString());
+                result.AppendLine($"<div class='accordion' id='{accordionId}'>");
 
+                var innerHtml = SuperHtml.MakeInnerHtmlHelper(modelExpression, true);
                 foreach (var panel in panels)
                 {
                     var body = templatedModel.EditorTemplate(innerHtml, panel.ScreenOrderFrom, panel.ScreenOrderTo).GetString();
@@ -252,6 +254,10 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
             else
             {
                 if (!(Html.ViewData.Model is ISupermodelEditorTemplate supermodelModelEditorTemplate)) throw new Exception("Model must implement ISupermodelEditorTemplate");
+
+                result.AppendLine(CRUDSearchFormHeader(supermodelModelEditorTemplate, pageTitle, action, controller, validationSummaryVisible).GetString());
+                result.AppendLine($"<div class='accordion' id='{accordionId}'>");
+
                 foreach (var panel in panels)
                 {
                     var body = supermodelModelEditorTemplate.EditorTemplate(Html, panel.ScreenOrderFrom, panel.ScreenOrderTo).GetString();
@@ -267,11 +273,11 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
         #endregion
 
         #region CRUD Search Form Header and Footer Helpers
-        public IHtmlContent CRUDSearchFormHeader(string pageTitle, string? action, string? controller)
+        public IHtmlContent CRUDSearchFormHeader(ISupermodelEditorTemplate searchModel, string pageTitle, string? action, string? controller, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.IfNoVisibleErrors)
         {
-            return CRUDSearchFormHeader(pageTitle.ToHtmlEncodedHtmlString(), action, controller);
+            return CRUDSearchFormHeader(searchModel, pageTitle.ToHtmlEncodedHtmlString(), action, controller, validationSummaryVisible);
         }
-        public IHtmlContent CRUDSearchFormHeader(IHtmlContent? pageTitle, string? action, string? controller)
+        public IHtmlContent CRUDSearchFormHeader(ISupermodelEditorTemplate searchModel, IHtmlContent? pageTitle, string? action, string? controller, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.IfNoVisibleErrors)
         {
             var result = new StringBuilder();
 
@@ -279,10 +285,19 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
             controller ??= Html.ViewContext.RouteData.Values["controller"].ToString();
 
             var url = SuperHtml.GenerateUrl(action, controller);
-            result.AppendLine($"<form {UtilsLib.MakeIdAttribute(Bs4.ScaffoldingSettings.SearchFormId)} action='{url}' method='{HtmlHelper.GetFormMethodString(FormMethod.Get)}'>");
-            result.AppendLine($"<fieldset {UtilsLib.MakeIdAttribute(Bs4.ScaffoldingSettings.SearchFormFieldsetId)}>");
+            result.AppendLine($"<form {UtilsLib.MakeIdAttribute(ScaffoldingSettings.SearchFormId)} action='{url}' method='{HtmlHelper.GetFormMethodString(FormMethod.Get)}'>");
+            
+            var showValidationSummary = ShouldShowValidationSummary(searchModel, validationSummaryVisible);
+            if (showValidationSummary)
+            {
+                result.AppendLine($"<div class='{ScaffoldingSettings.ValidationSummaryCssClass}'>");
+                result.AppendLine(Html.ValidationSummary().GetString());
+                result.AppendLine("</div>");
+            }
+            
+            result.AppendLine($"<fieldset {UtilsLib.MakeIdAttribute(ScaffoldingSettings.SearchFormFieldsetId)}>");
 
-            if (!UtilsLib.IsNullOrEmpty(pageTitle)) result.AppendLine("<h2 " + UtilsLib.MakeClassAttribute(Bs4.ScaffoldingSettings.SearchTitleCssClass) + ">" + pageTitle!.GetString() + "</h2>");
+            if (!UtilsLib.IsNullOrEmpty(pageTitle)) result.AppendLine("<h2 " + UtilsLib.MakeClassAttribute(ScaffoldingSettings.SearchTitleCssClass) + ">" + pageTitle!.GetString() + "</h2>");
 
             return result.ToHtmlString();
         }
@@ -299,8 +314,8 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
             result.AppendLine("<div class='col-sm-2'></div>");
             result.AppendLine("<div class='col-sm-10'>");
 
-            result.AppendLine("<button type='submit' " + UtilsLib.MakeIdAndClassAttributes(Bs4.ScaffoldingSettings.FindButtonId, Bs4.ScaffoldingSettings.FindButtonCssClass) + "><span class='oi oi-magnifying-glass'></span> Find&nbsp;</button>");
-            if (resetButton) result.AppendLine("<button type='reset' " + UtilsLib.MakeIdAndClassAttributes(Bs4.ScaffoldingSettings.ResetButtonId, Bs4.ScaffoldingSettings.ResetButtonCssClass) + "><span class='oi oi-action-undo'></span> Reset&nbsp;</button>");
+            result.AppendLine("<button type='submit' " + UtilsLib.MakeIdAndClassAttributes(ScaffoldingSettings.FindButtonId, ScaffoldingSettings.FindButtonCssClass) + "><span class='oi oi-magnifying-glass'></span> Find&nbsp;</button>");
+            if (resetButton) result.AppendLine("<button type='reset' " + UtilsLib.MakeIdAndClassAttributes(ScaffoldingSettings.ResetButtonId, ScaffoldingSettings.ResetButtonCssClass) + "><span class='oi oi-action-undo'></span> Reset&nbsp;</button>");
 
             //result.AppendLine("</div>");
             result.AppendLine("</div>");
@@ -342,10 +357,10 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
             {
                 if (!UtilsLib.IsNullOrEmpty(pageTitle))
                 {
-                    if (parentId == null) result.AppendLine("<h2 " + UtilsLib.MakeClassAttribute(Bs4.ScaffoldingSettings.ListTitleCssClass) + ">" + pageTitle!.GetString() + "</h2>");
-                    else result.AppendLine("<h2 " + UtilsLib.MakeClassAttribute(Bs4.ScaffoldingSettings.ChildListTitleCssClass) + ">" + pageTitle!.GetString() + "</h2>");
+                    if (parentId == null) result.AppendLine("<h2 " + UtilsLib.MakeClassAttribute(ScaffoldingSettings.ListTitleCssClass) + ">" + pageTitle!.GetString() + "</h2>");
+                    else result.AppendLine("<h2 " + UtilsLib.MakeClassAttribute(ScaffoldingSettings.ChildListTitleCssClass) + ">" + pageTitle!.GetString() + "</h2>");
                 }
-                result.AppendLine("<div" + UtilsLib.MakeIdAndClassAttributes(Bs4.ScaffoldingSettings.CRUDListTopDivId, Bs4.ScaffoldingSettings.CRUDListTopDivCssClass) + ">");
+                result.AppendLine("<div" + UtilsLib.MakeIdAndClassAttributes(ScaffoldingSettings.CRUDListTopDivId, ScaffoldingSettings.CRUDListTopDivCssClass) + ">");
                 if (!skipAddNew)
                 {
                     //make sure we keep query string
@@ -354,10 +369,10 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
                     routeValues.AddOrUpdateWith(newRouteValues);
 
                     //set up html attributes
-                    var htmlAttributes = HtmlHelper.AnonymousObjectToHtmlAttributes(new { @class = Bs4.ScaffoldingSettings.CRUDListAddNewCssClass });
+                    var htmlAttributes = HtmlHelper.AnonymousObjectToHtmlAttributes(new { @class = ScaffoldingSettings.CRUDListAddNewCssClass });
                     result.AppendLine("<p>" + SuperHtml.ActionLinkHtmlContent("<span class='oi oi-plus'></span>".ToHtmlString(), "Detail", controllerName, routeValues, htmlAttributes) + "</p>");
                 }
-                result.AppendLine("<table" + UtilsLib.MakeIdAndClassAttributes(Bs4.ScaffoldingSettings.CRUDListTableId, Bs4.ScaffoldingSettings.CRUDListTableCssClass) + ">");
+                result.AppendLine("<table" + UtilsLib.MakeIdAndClassAttributes(ScaffoldingSettings.CRUDListTableId, ScaffoldingSettings.CRUDListTableCssClass) + ">");
                 result.AppendLine("<thead>");
                 result.AppendLine("<tr>");
                 result.AppendLine("<th scope='col'>Name</th>");
@@ -378,12 +393,12 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
                     result.AppendLine("<td>");
                     if (!skipDelete) result.AppendLine("<div class='btn-group'>");
                     
-                    if (viewOnly) result.AppendLine(SuperHtml.ActionLinkHtmlContent("<span class='oi oi-eye'></span>".ToHtmlString(), "Detail", controllerName, routeValues, HtmlHelper.AnonymousObjectToHtmlAttributes(new { @class = Bs4.ScaffoldingSettings.CRUDListEditCssClass })).GetString());
-                    else result.AppendLine(SuperHtml.ActionLinkHtmlContent("<span class='oi oi-pencil'></span>".ToHtmlString(), "Detail", controllerName, routeValues, HtmlHelper.AnonymousObjectToHtmlAttributes(new { @class = Bs4.ScaffoldingSettings.CRUDListEditCssClass })).GetString());
+                    if (viewOnly) result.AppendLine(SuperHtml.ActionLinkHtmlContent("<span class='oi oi-eye'></span>".ToHtmlString(), "Detail", controllerName, routeValues, HtmlHelper.AnonymousObjectToHtmlAttributes(new { @class = ScaffoldingSettings.CRUDListEditCssClass })).GetString());
+                    else result.AppendLine(SuperHtml.ActionLinkHtmlContent("<span class='oi oi-pencil'></span>".ToHtmlString(), "Detail", controllerName, routeValues, HtmlHelper.AnonymousObjectToHtmlAttributes(new { @class = ScaffoldingSettings.CRUDListEditCssClass })).GetString());
 
                     if (!skipDelete)
                     {
-                        result.AppendLine(SuperHtml.RESTfulActionLinkHtmlContent(HttpMethod.Delete, "<span class='oi oi-trash'></span>".ToHtmlString(), "Detail", controllerName, routeValues, HtmlHelper.AnonymousObjectToHtmlAttributes(new { @class = Bs4.ScaffoldingSettings.CRUDListDeleteCssClass }), "Are you sure?").GetString());
+                        result.AppendLine(SuperHtml.RESTfulActionLinkHtmlContent(HttpMethod.Delete, "<span class='oi oi-trash'></span>".ToHtmlString(), "Detail", controllerName, routeValues, HtmlHelper.AnonymousObjectToHtmlAttributes(new { @class = ScaffoldingSettings.CRUDListDeleteCssClass }), "Are you sure?").GetString());
                         result.AppendLine("</div>");
                     }
                     result.AppendLine("</td>");
@@ -399,15 +414,15 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
         #endregion
         
         #region CRUD Edit Helpers
-        public IHtmlContent CRUDEdit(string pageTitle, bool readOnly = false, bool skipBackButton = false)
+        public IHtmlContent CRUDEdit(string pageTitle, bool readOnly = false, bool skipBackButton = false, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.IfNoVisibleErrors)
         {
-            return CRUDEdit(pageTitle.ToHtmlEncodedHtmlString(), readOnly, skipBackButton);
+            return CRUDEdit(pageTitle.ToHtmlEncodedHtmlString(), readOnly, skipBackButton, validationSummaryVisible);
         }
-        public IHtmlContent CRUDEdit(IHtmlContent? pageTitle = null, bool readOnly = false, bool skipBackButton = false)
+        public IHtmlContent CRUDEdit(IHtmlContent? pageTitle = null, bool readOnly = false, bool skipBackButton = false, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.IfNoVisibleErrors)
         {
             var result = new StringBuilder();
 
-            result.AppendLine(CRUDEditHeader(pageTitle, readOnly).GetString());
+            result.AppendLine(CRUDEditHeader(pageTitle, readOnly, validationSummaryVisible).GetString());
             result.AppendLine(SuperHtml.EditorForModel().GetString().DisableAllControlsIf(readOnly));
             result.AppendLine(CRUDEditFooter(readOnly, skipBackButton).GetString());
             result.AppendLine();
@@ -417,21 +432,30 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
         #endregion
 
         #region CRUD Edit Header & Footer Helpers
-        public IHtmlContent CRUDEditHeader(string pageTitle, bool readOnly = false)
+        public IHtmlContent CRUDEditHeader(string pageTitle, bool readOnly = false, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.IfNoVisibleErrors)
         {
-            return CRUDEditHeader(pageTitle.ToHtmlEncodedHtmlString(), readOnly);
+            return CRUDEditHeader(pageTitle.ToHtmlEncodedHtmlString(), readOnly, validationSummaryVisible);
         }
-        public IHtmlContent CRUDEditHeader(IHtmlContent? pageTitle = null, bool readOnly = false)
+        public IHtmlContent CRUDEditHeader(IHtmlContent? pageTitle = null, bool readOnly = false, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.IfNoVisibleErrors)
         {
             var result = new StringBuilder();
             if (Html.ViewData.Model == null) throw new Exception("Model is null");
             var model = (IViewModelForEntity)Html.ViewData.Model;
 
             //Start form
-            result.AppendLine($"<form {UtilsLib.MakeIdAttribute(Bs4.ScaffoldingSettings.EditFormId)} action='{Html.ViewContext.HttpContext.Request.GetEncodedPathAndQueryMinusSelectedId()}' method='{HtmlHelper.GetFormMethodString(FormMethod.Post)}' enctype='multipart/form-data'>");
-            result.AppendLine($"<fieldset {UtilsLib.MakeIdAttribute(Bs4.ScaffoldingSettings.EditFormFieldsetId)}>");
+            result.AppendLine($"<form {UtilsLib.MakeIdAttribute(ScaffoldingSettings.EditFormId)} action='{Html.ViewContext.HttpContext.Request.GetEncodedPathAndQueryMinusSelectedId()}' method='{HtmlHelper.GetFormMethodString(FormMethod.Post)}' enctype='multipart/form-data'>");
             
-            if (!UtilsLib.IsNullOrEmpty(pageTitle)) result.AppendLine("<h2 " + UtilsLib.MakeClassAttribute(Bs4.ScaffoldingSettings.EditTitleCssClass) + ">" + pageTitle + "</h2>");
+            var showValidationSummary = ShouldShowValidationSummary(model, validationSummaryVisible);
+            if (showValidationSummary)
+            {
+                result.AppendLine($"<div class='{ScaffoldingSettings.ValidationSummaryCssClass}'>");
+                result.AppendLine(Html.ValidationSummary().GetString());
+                result.AppendLine("</div>");
+            }
+
+            result.AppendLine($"<fieldset {UtilsLib.MakeIdAttribute(ScaffoldingSettings.EditFormFieldsetId)}>");
+            
+            if (!UtilsLib.IsNullOrEmpty(pageTitle)) result.AppendLine("<h2 " + UtilsLib.MakeClassAttribute(ScaffoldingSettings.EditTitleCssClass) + ">" + pageTitle + "</h2>");
 
             //Override Http Verb if needed (if the model is not new, we put, per REST)
             if (!model.IsNewModel()) result.AppendLine(SuperHtml.HttpMethodOverride(HttpMethod.Put).GetString());
@@ -452,7 +476,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
             if (!skipBackButton)
             {
                 long? parentId = null;
-                if (ReflectionHelper.IsClassADerivedFromClassB(model.GetType(), typeof(Bs4.ChildMvcModelForEntity<,>))) parentId = (long?)model.PropertyGet("ParentId");
+                if (ReflectionHelper.IsClassADerivedFromClassB(model.GetType(), typeof(ChildMvcModelForEntity<,>))) parentId = (long?)model.PropertyGet("ParentId");
 
                 //make sure we keep query string
                 var routeValues = SuperHtml.QueryStringRouteValues();
@@ -461,10 +485,10 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
                 routeValues.Remove("selectedId");
 
                 //set up html attributes
-                var htmlAttributes = HtmlHelper.AnonymousObjectToHtmlAttributes(new { id = Bs4.ScaffoldingSettings.BackButtonId, @class = Bs4.ScaffoldingSettings.BackButtonCssClass });
+                var htmlAttributes = HtmlHelper.AnonymousObjectToHtmlAttributes(new { id = ScaffoldingSettings.BackButtonId, @class = ScaffoldingSettings.BackButtonCssClass });
                 result.AppendLine(SuperHtml.ActionLinkHtmlContent("<span class='oi oi-arrow-circle-left'></span>&nbsp;&nbsp;Back".ToHtmlString(), "List", routeValues, htmlAttributes).GetString());
             }
-            if (!readOnly) result.AppendLine("<button type='submit' " + UtilsLib.MakeIdAndClassAttributes(Bs4.ScaffoldingSettings.SaveButtonId, Bs4.ScaffoldingSettings.SaveButtonCssClass) + "><span class='oi oi-circle-check'></span>&nbsp;&nbsp;Save</button>");
+            if (!readOnly) result.AppendLine("<button type='submit' " + UtilsLib.MakeIdAndClassAttributes(ScaffoldingSettings.SaveButtonId, ScaffoldingSettings.SaveButtonCssClass) + "><span class='oi oi-circle-check'></span>&nbsp;&nbsp;Save</button>");
             result.AppendLine("</div>");
             result.AppendLine("</div>");
             result.AppendLine("</form>");
@@ -473,16 +497,16 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
         }
         #endregion
 
-        #region CRUD Edit In Accordion
-        public IHtmlContent CRUDEditInAccordion(string accordionId, IEnumerable<Bs4.AccordionPanel> panels, string pageTitle, bool readOnly = false, bool skipBackButton = false, bool skipHeaderAndFooter = false)
+        #region CRUD Edit In Accordion Helpers
+        public IHtmlContent CRUDEditInAccordion(string accordionId, IEnumerable<AccordionPanel> panels, string pageTitle, bool readOnly = false, bool skipBackButton = false, bool skipHeaderAndFooter = false, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.Always)
         {
-            return CRUDEditInAccordion(accordionId, panels, pageTitle.ToHtmlEncodedHtmlString(), readOnly, skipBackButton, skipHeaderAndFooter);
+            return CRUDEditInAccordion(accordionId, panels, pageTitle.ToHtmlEncodedHtmlString(), readOnly, skipBackButton, skipHeaderAndFooter, validationSummaryVisible);
         }
-        public IHtmlContent CRUDEditInAccordion(string accordionId, IEnumerable<Bs4.AccordionPanel> panels, IHtmlContent? pageTitle = null, bool readOnly = false, bool skipBackButton = false, bool skipHeaderAndFooter = false)
+        public IHtmlContent CRUDEditInAccordion(string accordionId, IEnumerable<AccordionPanel> panels, IHtmlContent? pageTitle = null, bool readOnly = false, bool skipBackButton = false, bool skipHeaderAndFooter = false, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.Always)
         {
             var result = new StringBuilder();
 
-            if (!skipHeaderAndFooter) result.AppendLine(CRUDEditHeader(pageTitle, readOnly).GetString());
+            if (!skipHeaderAndFooter) result.AppendLine(CRUDEditHeader(pageTitle, readOnly, validationSummaryVisible).GetString());
 
             result.AppendLine($"<div id='{accordionId}'>");
             foreach (var panel in panels)
@@ -500,7 +524,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
         }
         #endregion
 
-        #region CRUD MuiliColumn List
+        #region CRUD MuiliColumn List Helpers
         public IHtmlContent CRUDMultiColumnList(IEnumerable<IViewModelForEntity> items, string pageTitle, bool skipAddNew = false, bool skipDelete = false, bool viewOnly = false)
         {
             return CRUDMultiColumnListHelper(items, null, pageTitle.ToHtmlEncodedHtmlString(), null, skipAddNew, skipDelete, viewOnly);
@@ -531,10 +555,10 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
             {
                 if (!UtilsLib.IsNullOrEmpty(pageTitle))
                 {
-                    if (parentId == null) result.AppendLine("<h2 " + UtilsLib.MakeClassAttribute(Bs4.ScaffoldingSettings.ListTitleCssClass) + ">" + pageTitle + "</h2>");
-                    else result.AppendLine("<h2 " + UtilsLib.MakeClassAttribute(Bs4.ScaffoldingSettings.ChildListTitleCssClass) + ">" + pageTitle + "</h2>");
+                    if (parentId == null) result.AppendLine("<h2 " + UtilsLib.MakeClassAttribute(ScaffoldingSettings.ListTitleCssClass) + ">" + pageTitle + "</h2>");
+                    else result.AppendLine("<h2 " + UtilsLib.MakeClassAttribute(ScaffoldingSettings.ChildListTitleCssClass) + ">" + pageTitle + "</h2>");
                 }
-                result.AppendLine("<div" + UtilsLib.MakeIdAndClassAttributes(Bs4.ScaffoldingSettings.CRUDListTopDivId, Bs4.ScaffoldingSettings.CRUDListTopDivCssClass) + ">");
+                result.AppendLine("<div" + UtilsLib.MakeIdAndClassAttributes(ScaffoldingSettings.CRUDListTopDivId, ScaffoldingSettings.CRUDListTopDivCssClass) + ">");
                 
                 if (!skipAddNew)
                 {
@@ -543,10 +567,10 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
                     var newAddRouteValues = HtmlHelper.AnonymousObjectToHtmlAttributes(new { id = 0, parentId });
                     addRouteValues.AddOrUpdateWith(newAddRouteValues);
 
-                    result.AppendLine("<p>" + SuperHtml.ActionLinkHtmlContent("<span class='oi oi-plus'></span>".ToHtmlString(), "Detail", controllerName, addRouteValues, HtmlHelper.AnonymousObjectToHtmlAttributes(new { @class = Bs4.ScaffoldingSettings.CRUDListAddNewCssClass })).GetString() + "</p>");
+                    result.AppendLine("<p>" + SuperHtml.ActionLinkHtmlContent("<span class='oi oi-plus'></span>".ToHtmlString(), "Detail", controllerName, addRouteValues, HtmlHelper.AnonymousObjectToHtmlAttributes(new { @class = ScaffoldingSettings.CRUDListAddNewCssClass })).GetString() + "</p>");
                 }
                 
-                result.AppendLine("<table" + UtilsLib.MakeIdAndClassAttributes(Bs4.ScaffoldingSettings.CRUDListTableId, Bs4.ScaffoldingSettings.CRUDListTableCssClass) + ">");
+                result.AppendLine("<table" + UtilsLib.MakeIdAndClassAttributes(ScaffoldingSettings.CRUDListTableId, ScaffoldingSettings.CRUDListTableCssClass) + ">");
                 result.AppendLine("<thead>");
                 result.AppendLine("<tr>");
                 
@@ -573,16 +597,16 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
 
                     if (viewOnly)
                     {
-                        result.AppendLine("<td>" + SuperHtml.ActionLinkHtmlContent("<span class='oi oi-eye'></span>".ToHtmlString(), "Detail", controllerName, editViewDeleteRouteValues, HtmlHelper.AnonymousObjectToHtmlAttributes(new { @class = Bs4.ScaffoldingSettings.CRUDListEditCssClass })).GetString() + "</td>");
+                        result.AppendLine("<td>" + SuperHtml.ActionLinkHtmlContent("<span class='oi oi-eye'></span>".ToHtmlString(), "Detail", controllerName, editViewDeleteRouteValues, HtmlHelper.AnonymousObjectToHtmlAttributes(new { @class = ScaffoldingSettings.CRUDListEditCssClass })).GetString() + "</td>");
                     }
                     else
                     {
                         result.AppendLine("<td>");
                         if (!skipDelete) result.AppendLine("<div class='btn-group'>");
-                        result.AppendLine(SuperHtml.ActionLinkHtmlContent("<span class='oi oi-pencil'></span>".ToHtmlString(), "Detail", controllerName, editViewDeleteRouteValues, HtmlHelper.AnonymousObjectToHtmlAttributes(new { @class = Bs4.ScaffoldingSettings.CRUDListEditCssClass })).GetString());
+                        result.AppendLine(SuperHtml.ActionLinkHtmlContent("<span class='oi oi-pencil'></span>".ToHtmlString(), "Detail", controllerName, editViewDeleteRouteValues, HtmlHelper.AnonymousObjectToHtmlAttributes(new { @class = ScaffoldingSettings.CRUDListEditCssClass })).GetString());
                         if (!skipDelete)
                         {
-                            result.AppendLine(SuperHtml.RESTfulActionLinkHtmlContent(HttpMethod.Delete, "<span class='oi oi-trash'></span>".ToHtmlString(), "Detail", controllerName, editViewDeleteRouteValues, HtmlHelper.AnonymousObjectToHtmlAttributes(new { @class = Bs4.ScaffoldingSettings.CRUDListDeleteCssClass }), "Are you sure?").GetString());
+                            result.AppendLine(SuperHtml.RESTfulActionLinkHtmlContent(HttpMethod.Delete, "<span class='oi oi-trash'></span>".ToHtmlString(), "Detail", controllerName, editViewDeleteRouteValues, HtmlHelper.AnonymousObjectToHtmlAttributes(new { @class = ScaffoldingSettings.CRUDListDeleteCssClass }), "Are you sure?").GetString());
                             result.AppendLine("</div>");
                         }
                         result.AppendLine("</td>");
@@ -597,7 +621,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
         }
         #endregion
 
-        #region CRUD MuiliColumn List NoActions
+        #region CRUD MuiliColumn List NoActions Helpers
         public IHtmlContent CRUDMultiColumnListNoActions(IEnumerable<IMvcModel> items, string pageTitle)
         {
             return CRUDMultiColumnListNoActionsHelper(items, pageTitle.ToHtmlEncodedHtmlString());
@@ -619,9 +643,9 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
         private IHtmlContent CRUDMultiColumnListNoActionsHelper(IEnumerable<IMvcModel> items, IHtmlContent? pageTitle)
         {
             var result = new StringBuilder();
-            if (!UtilsLib.IsNullOrEmpty(pageTitle)) result.AppendLine("<h2 " + UtilsLib.MakeClassAttribute(Bs4.ScaffoldingSettings.ListTitleCssClass) + ">" + pageTitle + "</h2>");
-            result.AppendLine("<div" + UtilsLib.MakeIdAndClassAttributes(Bs4.ScaffoldingSettings.CRUDListTopDivId, Bs4.ScaffoldingSettings.CRUDListTopDivCssClass) + ">");
-            result.AppendLine("<table" + UtilsLib.MakeIdAndClassAttributes(Bs4.ScaffoldingSettings.CRUDListTableId, Bs4.ScaffoldingSettings.CRUDListTableCssClass) + ">");
+            if (!UtilsLib.IsNullOrEmpty(pageTitle)) result.AppendLine("<h2 " + UtilsLib.MakeClassAttribute(ScaffoldingSettings.ListTitleCssClass) + ">" + pageTitle + "</h2>");
+            result.AppendLine("<div" + UtilsLib.MakeIdAndClassAttributes(ScaffoldingSettings.CRUDListTopDivId, ScaffoldingSettings.CRUDListTopDivCssClass) + ">");
+            result.AppendLine("<table" + UtilsLib.MakeIdAndClassAttributes(ScaffoldingSettings.CRUDListTableId, ScaffoldingSettings.CRUDListTableCssClass) + ">");
             result.AppendLine("<thead>");
             result.AppendLine("<tr>");
             
@@ -649,7 +673,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
         }
         #endregion
 
-        #region CRUD Multicolumn Editable Lists
+        #region CRUD Multicolumn Editable Lists Helpers
         public IHtmlContent CRUDMultiColumnChildrenEditableList(IEnumerable<IChildMvcModelForEntity> items, Type dataContextType, Type childControllerType, long parentId, string pageTitle, bool skipAddNew = false, bool skipDelete = false)
         {
             return CRUDMultiColumnEditableListHelper(items, dataContextType, childControllerType, pageTitle.ToHtmlEncodedHtmlString(), parentId, skipAddNew, skipDelete);
@@ -679,16 +703,16 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
             var result = new StringBuilder();
             if (parentId == null || parentId > 0)
             { 
-                if (!UtilsLib.IsNullOrEmpty(pageTitle)) result.AppendLine("<h2 " + UtilsLib.MakeClassAttribute(Bs4.ScaffoldingSettings.ListTitleCssClass) + ">" + pageTitle + "</h2>");
+                if (!UtilsLib.IsNullOrEmpty(pageTitle)) result.AppendLine("<h2 " + UtilsLib.MakeClassAttribute(ScaffoldingSettings.ListTitleCssClass) + ">" + pageTitle + "</h2>");
             
                 var query = Html.ViewContext.HttpContext.Request.Query;
                 var routeValues = query.ToRouteValueDictionary();
                 routeValues.Remove("selectedId");
                 routeValues.AddOrUpdateWith("parentId", parentId);
 
-                result.AppendLine($"<form {UtilsLib.MakeIdAttribute(Bs4.ScaffoldingSettings.EditFormId)} action='{Html.Super().GenerateUrl("Detail", controllerName, routeValues)}' method='{HtmlHelper.GetFormMethodString(FormMethod.Post)}' enctype='multipart/form-data'>");
-                result.AppendLine($"<fieldset {UtilsLib.MakeIdAttribute(Bs4.ScaffoldingSettings.EditFormFieldsetId)}>");
-                result.AppendLine("<div" + UtilsLib.MakeIdAndClassAttributes(Bs4.ScaffoldingSettings.CRUDListTopDivId, Bs4.ScaffoldingSettings.CRUDListTopDivCssClass) + ">");
+                result.AppendLine($"<form {UtilsLib.MakeIdAttribute(ScaffoldingSettings.EditFormId)} action='{Html.Super().GenerateUrl("Detail", controllerName, routeValues)}' method='{HtmlHelper.GetFormMethodString(FormMethod.Post)}' enctype='multipart/form-data'>");
+                result.AppendLine($"<fieldset {UtilsLib.MakeIdAttribute(ScaffoldingSettings.EditFormFieldsetId)}>");
+                result.AppendLine("<div" + UtilsLib.MakeIdAndClassAttributes(ScaffoldingSettings.CRUDListTopDivId, ScaffoldingSettings.CRUDListTopDivCssClass) + ">");
                 
                 //var selectedId = (long?)Html.ViewBag.SelectedId ?? ParseNullableLong(Html.ViewContext.HttpContext.Request.Query["selectedId"]);
                 var selectedId = ParseNullableLong(Html.ViewContext.HttpContext.Request.Query["selectedId"]);
@@ -707,11 +731,11 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
                     //var newAddRouteValues = HtmlHelper.AnonymousObjectToHtmlAttributes(new { id = 0 });
                     //addRouteValues.AddOrUpdateWith(newAddRouteValues);
 
-                    if (anySelected) result.AppendLine("<p><button type='button' disabled data-open-new-for-edit " + UtilsLib.MakeClassAttribute(Bs4.ScaffoldingSettings.CRUDListAddNewCssClass) + "><span class='oi oi-plus'></span></button></p>");     
-                    else result.AppendLine("<p><button type='button' data-open-new-for-edit " + UtilsLib.MakeClassAttribute(Bs4.ScaffoldingSettings.CRUDListAddNewCssClass) + "><span class='oi oi-plus'></span></button></p>");     
+                    if (anySelected) result.AppendLine("<p><button type='button' disabled data-open-new-for-edit " + UtilsLib.MakeClassAttribute(ScaffoldingSettings.CRUDListAddNewCssClass) + "><span class='oi oi-plus'></span></button></p>");     
+                    else result.AppendLine("<p><button type='button' data-open-new-for-edit " + UtilsLib.MakeClassAttribute(ScaffoldingSettings.CRUDListAddNewCssClass) + "><span class='oi oi-plus'></span></button></p>");     
                 }
                 
-                result.AppendLine("<table" + UtilsLib.MakeIdAndClassAttributes(Bs4.ScaffoldingSettings.CRUDListTableId, Bs4.ScaffoldingSettings.CRUDListTableCssClass) + ">");
+                result.AppendLine("<table" + UtilsLib.MakeIdAndClassAttributes(ScaffoldingSettings.CRUDListTableId, ScaffoldingSettings.CRUDListTableCssClass) + ">");
                 result.AppendLine("<thead>");
                 result.AppendLine("<tr>");
                 result = newItem.ToEditableHtmlTableHeader(Html, result);
@@ -781,8 +805,8 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
             sb.AppendLine("<td>");
             if (anySelected) sb.AppendLine("<div class='btn-group d-none' data-read-only-tr-buttons>");
             else sb.AppendLine("<div class='btn-group' data-read-only-tr-buttons>");
-            sb.AppendLine("<button type='button' data-open-for-edit " + UtilsLib.MakeClassAttribute(Bs4.ScaffoldingSettings.CRUDListEditCssClass) + "><span class='oi oi-pencil'></span></button>");     
-            if (!skipDelete) sb.AppendLine(SuperHtml.RESTfulActionLinkHtmlContent(HttpMethod.Delete, "<span class='oi oi-trash'></span>".ToHtmlString(), "Detail", controllerName, editViewDeleteRouteValues, HtmlHelper.AnonymousObjectToHtmlAttributes(new { @class = Bs4.ScaffoldingSettings.CRUDListDeleteCssClass }), "Are you sure?").GetString());
+            sb.AppendLine("<button type='button' data-open-for-edit " + UtilsLib.MakeClassAttribute(ScaffoldingSettings.CRUDListEditCssClass) + "><span class='oi oi-pencil'></span></button>");     
+            if (!skipDelete) sb.AppendLine(SuperHtml.RESTfulActionLinkHtmlContent(HttpMethod.Delete, "<span class='oi oi-trash'></span>".ToHtmlString(), "Detail", controllerName, editViewDeleteRouteValues, HtmlHelper.AnonymousObjectToHtmlAttributes(new { @class = ScaffoldingSettings.CRUDListDeleteCssClass }), "Are you sure?").GetString());
             sb.AppendLine("</div>");
             sb.AppendLine("</td>");
             sb.AppendLine("</tr>");
@@ -795,8 +819,8 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
             else sb.AppendLine($"<tr id='{-item.Id}' class='table-primary d-none'>");
             sb = item.ToEditableHtmlTableRow(itemInnerHtml, parentId, true, selected, sb);
             sb.AppendLine("<td><div class='btn-group'>");
-            sb.AppendLine("<button type='submit' " + UtilsLib.MakeClassAttribute(Bs4.ScaffoldingSettings.CRUDListSaveCssClass) + "><span class='oi oi-circle-check'></span></button>");     
-            sb.AppendLine("<button type='button' data-cancel-edit " + UtilsLib.MakeClassAttribute(Bs4.ScaffoldingSettings.CRUDListCancelCssClass) + "><span class='oi oi-action-undo'></span></button>");     
+            sb.AppendLine("<button type='submit' " + UtilsLib.MakeClassAttribute(ScaffoldingSettings.CRUDListSaveCssClass) + "><span class='oi oi-circle-check'></span></button>");     
+            sb.AppendLine("<button type='button' data-cancel-edit " + UtilsLib.MakeClassAttribute(ScaffoldingSettings.CRUDListCancelCssClass) + "><span class='oi oi-action-undo'></span></button>");     
             sb.AppendLine("</div></td>");
             sb.AppendLine("</tr>");
             return sb.ToString();
@@ -809,8 +833,8 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
             itemInnerHtml.ViewContext.RouteData.Values["id"] = 0;
             sb = newItem.ToEditableHtmlTableRow(itemInnerHtml, parentId, true, selected, sb);
             sb.AppendLine("<td><div class='btn-group'>");
-            sb.AppendLine("<button type='submit' " + UtilsLib.MakeClassAttribute(Bs4.ScaffoldingSettings.CRUDListSaveCssClass) + "><span class='oi oi-circle-check'></span></button>");     
-            sb.AppendLine("<button type='button' data-cancel-new-edit " + UtilsLib.MakeClassAttribute(Bs4.ScaffoldingSettings.CRUDListCancelCssClass) + "><span class='oi oi-action-undo'></span></button>");     
+            sb.AppendLine("<button type='submit' " + UtilsLib.MakeClassAttribute(ScaffoldingSettings.CRUDListSaveCssClass) + "><span class='oi oi-circle-check'></span></button>");     
+            sb.AppendLine("<button type='button' data-cancel-new-edit " + UtilsLib.MakeClassAttribute(ScaffoldingSettings.CRUDListCancelCssClass) + "><span class='oi oi-action-undo'></span></button>");     
             sb.AppendLine("</div></td>");
             sb.AppendLine("</tr>");
             return sb.ToString();
@@ -832,11 +856,6 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
                 return newMvcModelItem;
             }
         }
-        protected long? ParseNullableLong(string str)
-        {
-            if (long.TryParse(str, out var result)) return result;
-            return null;
-        }
 
         private Type? GetBaseGenericChildCRUDControllerType(Type me)
         {
@@ -851,7 +870,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
         }
         #endregion
 
-        #region New Search Action Link
+        #region New Search Action Link Helpers
         public IHtmlContent NewSearchActionLink(string? linkLabel = null)
         {
             return NewSearchActionLink(linkLabel?.ToHtmlEncodedIHtmlContent());
@@ -861,7 +880,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
             linkLabel ??= "<span class='oi oi-magnifying-glass'></span>&nbsp;New Search".ToHtmlString();
             var routeValues = SuperHtml.QueryStringRouteValues();
             var controller = Html.ViewContext.RouteData.Values["controller"].ToString();
-            var htmlAttributesDict = HtmlHelper.AnonymousObjectToHtmlAttributes(new {id = Bs4.ScaffoldingSettings.NewSearchButtonId, @class = Bs4.ScaffoldingSettings.NewSearchButtonCssClass});
+            var htmlAttributesDict = HtmlHelper.AnonymousObjectToHtmlAttributes(new {id = ScaffoldingSettings.NewSearchButtonId, @class = ScaffoldingSettings.NewSearchButtonCssClass});
             return SuperHtml.ActionLinkHtmlContent(linkLabel, "Search", controller!, routeValues, htmlAttributesDict);
         }
         #endregion
@@ -881,7 +900,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
             if (take != null && take < totalCount) //skip is never null
             {
                 result.AppendLine("<nav>");
-                result.AppendLine($"<ul class='pagination {Bs4.ScaffoldingSettings.PaginationCssClass}'>");
+                result.AppendLine($"<ul class='pagination {ScaffoldingSettings.PaginationCssClass}'>");
 
                 var currentPage = skip.Value / take.Value + 1;
 
@@ -930,15 +949,15 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
         #endregion
 
         #region SortBy Helpers
-        public IHtmlContent SortByDropdownForm(Bs4.SortByOptions sortByOptions, object? htmlAttributes = null)
+        public IHtmlContent SortByDropdownForm(SortByOptions sortByOptions, object? htmlAttributes = null)
         {
             var htmlAttributesDict = AttributesDict.AnonymousObjectToAttributesDict(htmlAttributes);
 
             var result = new StringBuilder();
 
             //begin form
-            result.AppendLine($"<form {UtilsLib.MakeIdAttribute(Bs4.ScaffoldingSettings.SortByDropdownFormId)} method='{HtmlHelper.GetFormMethodString(FormMethod.Get)}'>");
-            result.AppendLine($"<fieldset {UtilsLib.MakeIdAttribute(Bs4.ScaffoldingSettings.SortByDropdownFieldsetId)}>");
+            result.AppendLine($"<form {UtilsLib.MakeIdAttribute(ScaffoldingSettings.SortByDropdownFormId)} method='{HtmlHelper.GetFormMethodString(FormMethod.Get)}'>");
+            result.AppendLine($"<fieldset {UtilsLib.MakeIdAttribute(ScaffoldingSettings.SortByDropdownFieldsetId)}>");
 
             //Get all the query string params, except the dropdown
             var query = Html.ViewContext.HttpContext.Request.Query;
@@ -1008,7 +1027,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
                 AddOrUpdateWith("smSortBy", orderByDesc);
 
             var requiredMark = "";
-            if (requiredLabel) requiredMark = $"<sup><em class='text-danger font-weight-bold {Bs4.ScaffoldingSettings.RequiredAsteriskCssClass}'>*</em></sup>";
+            if (requiredLabel) requiredMark = $"<sup><em class='text-danger font-weight-bold {ScaffoldingSettings.RequiredAsteriskCssClass}'>*</em></sup>";
 
             if (currentSortByValue == orderBy)
             {
@@ -1034,14 +1053,14 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
         #endregion
 
         #region Private Helpers
-        protected string GetAccordionSection(string accordionId, Bs4.AccordionPanel panel, string body)
+        protected string GetAccordionSection(string accordionId, AccordionPanel panel, string body)
         {
             return $@"
                     <div class=""card"">
                         <div class=""card-header"" id=""heading_{panel.ElementId}"">
                             <h5 class=""mb-0"">
                                 <button type=""button"" class=""btn btn-link"" data-toggle=""collapse"" data-target=""#collapse_{panel.ElementId}"" aria-expanded=""{panel.Expanded}"" aria-controls=""collapse_{panel.ElementId}"">
-                                    <h5 {UtilsLib.MakeClassAttribute(Bs4.ScaffoldingSettings.AccordionSectionTitleCss)}>{panel.Title}</h5>
+                                    <h5 {UtilsLib.MakeClassAttribute(ScaffoldingSettings.AccordionSectionTitleCss)}>{panel.Title}</h5>
                                 </button>
                             </h5>
                         </div>
@@ -1051,6 +1070,40 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
                         </div>
                     </div>
                     ";
+        }
+        protected bool ShouldShowValidationSummary(object model, ValidationSummaryVisible validationSummaryVisible)
+        {
+            switch (validationSummaryVisible)
+            {
+                case ValidationSummaryVisible.IfNoVisibleErrors:
+                {
+                    var selectedId = ParseNullableLong(Html.ViewContext.HttpContext.Request.Query["selectedId"]);
+                    var showValidationSummary = !Html.ViewData.ModelState.IsValid && selectedId == null;
+                    foreach (var propertyInfo in model.GetType().GetDetailPropertyInfosInOrder())
+                    {
+                        var msg = Html.ValidationMessage(propertyInfo.Name).GetString();
+                        if (!msg.Contains("></span>")) showValidationSummary = false;
+                    }
+                    return showValidationSummary;
+                }
+                case ValidationSummaryVisible.Always: 
+                { 
+                    return true;
+                }
+                case ValidationSummaryVisible.Never:
+                {
+                    return false;
+                } 
+                default:
+                {
+                    throw new SupermodelException($"Invalid ValidationSummaryVisible value {validationSummaryVisible}");
+                }
+            }
+        }
+        protected static long? ParseNullableLong(string str)
+        {
+            if (long.TryParse(str, out var result)) return result;
+            return null;
         }
         #endregion
 

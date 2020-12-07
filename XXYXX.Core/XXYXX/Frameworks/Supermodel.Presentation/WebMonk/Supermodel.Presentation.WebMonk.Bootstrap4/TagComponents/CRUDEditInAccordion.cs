@@ -1,6 +1,7 @@
 ﻿#nullable enable
 
 using System.Collections.Generic;
+using Supermodel.DataAnnotations.Enums;
 using Supermodel.Presentation.WebMonk.Bootstrap4.TagComponents.Base;
 using Supermodel.Presentation.WebMonk.Models;
 using WebMonk.RazorSharp.HtmlTags;
@@ -15,13 +16,13 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
         public class CRUDEditInAccordion : AccordionBase
         {
             #region Constructors
-            public CRUDEditInAccordion(IEditorTemplate model, string accordionId, IEnumerable<AccordionPanel> panels, string pageTitle, bool readOnly = false, bool skipBackButton = false, bool skipHeaderAndFooter = false) :
-                this(model, accordionId, panels, new Txt(pageTitle), readOnly, skipBackButton, skipHeaderAndFooter)
+            public CRUDEditInAccordion(IEditorTemplate model, string accordionId, IEnumerable<AccordionPanel> panels, string pageTitle, bool readOnly = false, bool skipBackButton = false, bool skipHeaderAndFooter = false, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.Always) :
+                this(model, accordionId, panels, new Txt(pageTitle), readOnly, skipBackButton, skipHeaderAndFooter, validationSummaryVisible)
             { }
 
-            public CRUDEditInAccordion(IEditorTemplate model, string accordionId, IEnumerable<AccordionPanel> panels, IGenerateHtml? pageTitle = null, bool readOnly = false, bool skipBackButton = false, bool skipHeaderAndFooter = false)
+            public CRUDEditInAccordion(IEditorTemplate model, string accordionId, IEnumerable<AccordionPanel> panels, IGenerateHtml? pageTitle = null, bool readOnly = false, bool skipBackButton = false, bool skipHeaderAndFooter = false, ValidationSummaryVisible validationSummaryVisible = ValidationSummaryVisible.Always)
             {
-                if (!skipHeaderAndFooter) AppendAndPush(new CRUDEditContainer((IViewModelForEntity)model, pageTitle, readOnly, skipBackButton));
+                if (!skipHeaderAndFooter) AppendAndPush(new CRUDEditContainer((IViewModelForEntity)model, pageTitle, readOnly, skipBackButton, validationSummaryVisible));
 
                 AppendAndPush(new Div(new { id=accordionId }));
                 foreach (var panel in panels)

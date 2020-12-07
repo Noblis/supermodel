@@ -54,7 +54,7 @@ namespace HTML2RazorSharpWinForms
             {
                 if (InputTextBox.Text != string.Empty)
                 {
-                    var translator = Translator<string, string>.CreateTextual(InputTextBox.Text, SortAttributesCheckBox.Checked, GenerateInvalidTagsCheckBox.Checked);
+                    var translator = TranslatorBase.CreateTextual(InputTextBox.Text, SortAttributesCheckBox.Checked, GenerateInvalidTagsCheckBox.Checked);
                     OutputTextBox.Text = translator.ToRazorSharp();
                 }
                 else

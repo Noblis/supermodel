@@ -64,10 +64,10 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
 
                 var result = new StringBuilder();
 
-                var selectedId = ParseNullableLong(html.ViewContext.HttpContext.Request.Query["selectedId"]);
-                var showValidationSummary = !html.ViewData.ModelState.IsValid && selectedId == null;
-                var validationSummaryGuidPlaceholder = Guid.NewGuid().ToString();
-                result.AppendLine(validationSummaryGuidPlaceholder);
+                //var selectedId = ParseNullableLong(html.ViewContext.HttpContext.Request.Query["selectedId"]);
+                //var showValidationSummary = !html.ViewData.ModelState.IsValid && selectedId == null;
+                //var validationSummaryGuidPlaceholder = Guid.NewGuid().ToString();
+                //result.AppendLine(validationSummaryGuidPlaceholder);
                 
                 foreach (var propertyInfo in GetType().GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
                 {
@@ -108,7 +108,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                             result.AppendLine(controlHtml);
                             
                             var msg = html.ValidationMessage(propertyInfo.Name, null, new { @class=ScaffoldingSettings.ValidationErrorCssClass }).GetString();
-                            if (!msg.Contains("></span>")) showValidationSummary = false;
+                            //if (!msg.Contains("></span>")) showValidationSummary = false;
                             msg = msg.Replace("<span ", "<div ").Replace("</span>", "</div>");
                             result.Append(msg);
 
@@ -136,18 +136,18 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                     result.AppendLine("</div>"); //close Div 1
                 }
 
-                if (showValidationSummary)
-                {
-                    var validationSummarySb = new StringBuilder();
-                    validationSummarySb.AppendLine($"<div class='{ScaffoldingSettings.ValidationSummaryCssClass}'>");
-                    validationSummarySb.AppendLine(html.ValidationSummary().GetString());
-                    validationSummarySb.AppendLine("</div>");
-                    result = result.Replace(validationSummaryGuidPlaceholder, validationSummarySb.ToString());
-                }
-                else
-                {
-                    result = result.Replace(validationSummaryGuidPlaceholder, "");
-                }
+                //if (showValidationSummary)
+                //{
+                //    var validationSummarySb = new StringBuilder();
+                //    validationSummarySb.AppendLine($"<div class='{ScaffoldingSettings.ValidationSummaryCssClass}'>");
+                //    validationSummarySb.AppendLine(html.ValidationSummary().GetString());
+                //    validationSummarySb.AppendLine("</div>");
+                //    result = result.Replace(validationSummaryGuidPlaceholder, validationSummarySb.ToString());
+                //}
+                //else
+                //{
+                //    result = result.Replace(validationSummaryGuidPlaceholder, "");
+                //}
                 
                 return result.ToHtmlString(); 
             }
@@ -228,10 +228,10 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                 
                 var result = new StringBuilder();
                 
-                var selectedId = ParseNullableLong(html.ViewContext.HttpContext.Request.Query["selectedId"]);
-                var showValidationSummary = !html.ViewData.ModelState.IsValid && selectedId == null;
-                var validationSummaryGuidPlaceholder = Guid.NewGuid().ToString();
-                result.AppendLine(validationSummaryGuidPlaceholder);
+                //var selectedId = ParseNullableLong(html.ViewContext.HttpContext.Request.Query["selectedId"]);
+                //var showValidationSummary = !html.ViewData.ModelState.IsValid && selectedId == null;
+                //var validationSummaryGuidPlaceholder = Guid.NewGuid().ToString();
+                //result.AppendLine(validationSummaryGuidPlaceholder);
 
                 foreach (var propertyInfo in GetType().GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
                 {
@@ -271,7 +271,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                         if (!html.ViewData.ModelState.IsValid)
                         {
                             var msg = html.ValidationMessage(propertyInfo.Name, null, new { @class=ScaffoldingSettings.ValidationErrorCssClass }).GetString();
-                            if (!msg.Contains("></span>")) showValidationSummary = false;
+                            //if (!msg.Contains("></span>")) showValidationSummary = false;
                             msg = msg.Replace("<span ", "<div ").Replace("</span>", "</div>");
                             result.Append(msg);
                             
@@ -305,18 +305,18 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                 }
                 if (currentColumn != 1) result.AppendLine("</div>");
 
-                if (showValidationSummary)
-                {
-                    var validationSummarySb = new StringBuilder();
-                    validationSummarySb.AppendLine($"<div class='{ScaffoldingSettings.ValidationSummaryCssClass}'>");
-                    validationSummarySb.AppendLine(html.ValidationSummary().GetString());
-                    validationSummarySb.AppendLine("</div>");
-                    result = result.Replace(validationSummaryGuidPlaceholder, validationSummarySb.ToString());
-                }
-                else
-                {
-                    result = result.Replace(validationSummaryGuidPlaceholder, "");
-                }
+                //if (showValidationSummary)
+                //{
+                //    var validationSummarySb = new StringBuilder();
+                //    validationSummarySb.AppendLine($"<div class='{ScaffoldingSettings.ValidationSummaryCssClass}'>");
+                //    validationSummarySb.AppendLine(html.ValidationSummary().GetString());
+                //    validationSummarySb.AppendLine("</div>");
+                //    result = result.Replace(validationSummaryGuidPlaceholder, validationSummarySb.ToString());
+                //}
+                //else
+                //{
+                //    result = result.Replace(validationSummaryGuidPlaceholder, "");
+                //}
 
                 return result.ToHtmlString();                 
             }
@@ -379,14 +379,6 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                 if (currentColumn != 1) result.AppendLine("</div>");
                 
                 return result.ToHtmlString();                 
-            }
-            #endregion
-
-            #region Helper Methods
-            protected long? ParseNullableLong(string str)
-            {
-                if (long.TryParse(str, out var result)) return result;
-                return null;
             }
             #endregion
 

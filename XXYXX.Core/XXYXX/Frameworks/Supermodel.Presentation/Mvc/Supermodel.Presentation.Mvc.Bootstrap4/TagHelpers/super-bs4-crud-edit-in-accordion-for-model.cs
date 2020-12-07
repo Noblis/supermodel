@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using Supermodel.DataAnnotations.Enums;
 using Supermodel.Presentation.Mvc.Bootstrap4.Models;
 using Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers;
 using Supermodel.Presentation.Mvc.Bootstrap4.TagHelpers.Base;
@@ -32,6 +33,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.TagHelpers
         public string PageTitle { get; set; } = "";
         public bool ReadOnly {get; set; } = false;
         public bool SkipBackButton { get; set; } = false;
+        public ValidationSummaryVisible ValidationSummaryVisible { get; set; } = ValidationSummaryVisible.Always;
         #endregion
 
     }
