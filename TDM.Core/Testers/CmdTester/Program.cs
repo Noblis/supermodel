@@ -10,7 +10,7 @@ namespace CmdTester
         static void Main()
         {
             var ilya = new StringWithColor("Ilya", ConsoleColor.Red);
-            var basin = new StringWithColor("Basin", ConsoleColor.DarkCyan);
+            var basin = new StringWithColor("Basin", ConsoleColor.Blue);
 
             var ilyaBasin = ilya + " " + basin;
             ilyaBasin.WriteToConsole();
