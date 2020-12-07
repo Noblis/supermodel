@@ -3,10 +3,12 @@
 using System;
 using System.Threading.Tasks;
 using Supermodel.Presentation.WebMonk.Controllers.Api;
+using WebMonk.Filters;
 using WebMonk.RazorSharp.Html2RazorSharp;
 
 namespace HTML2RazorSharpWM.API.TranslatorApi
 {
+    [AllowDangerousValues]
     public class TranslatorApiController : CommandApiController<TranslatorInput, TranslatorOutput>
     {
         #region Methods
