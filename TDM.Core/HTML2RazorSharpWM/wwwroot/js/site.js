@@ -9,15 +9,7 @@
                 type: "POST",
                 data: JSON.stringify(
                     {
-                        method: 'POST',
-                        headers:
-                        {
-                            'Content-Type': 'application/json'
-                        },
-                        body:
-                        {
-                            "Html": input.val()
-                        }
+                        "Html": input.val()
                     }),
                 contentType: "application/json",
                 dataType: "json",
