@@ -21,6 +21,11 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             if (ForegroundColor != null) Console.ForegroundColor = ForegroundColor.Value;
             if (BackgroundColor != null) Console.ForegroundColor = BackgroundColor.Value;
         }
+        public ColorChange CloneWithOffset(int offset)
+        {
+            var index = Index + offset;
+            return new ColorChange(index, ForegroundColor, BackgroundColor);
+        }
         #endregion
 
         #region Properties
