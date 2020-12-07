@@ -11,9 +11,13 @@ namespace Supermodel.Tooling.SolutionMaker.Cmd
             try
             {
                 //Un-comment and run this once to refresh the solution zip
-                var currentDir = Directory.GetCurrentDirectory();
+                Console.Write("Deleting XXYXX\\Frameworks directory... ");
                 Directory.Delete(@"..\..\..\..\..\..\..\XXYXX.Core\XXYXX\Frameworks", true);
-                CopyDirectory(@"..\..\..\..\..\..\Frameworks", @"..\..\..\..\..\..\..\XXYXX.Core\XXYXX\Frameworks", true);
+                Console.WriteLine("Done!");
+
+                Console.Write("Copying Frameworks directory from TDM.Core to XXYXX... ");
+                CopyDirectory(@"..\..\..\..\..\..\Frameworks", @"..\..\..\..\..\..\..\XXYXX.Core\XXYXX\Frameworks");
+                Console.WriteLine("Done!");
                 
                 SolutionMaker.CreateSnapshot(@"..\..\..\..\..\..\..\XXYXX.Core\XXYXX", @"..\..\..\");
                 Console.WriteLine($"{SolutionMaker.ZipFileName} created successfully!");
@@ -88,7 +92,7 @@ namespace Supermodel.Tooling.SolutionMaker.Cmd
             }
         }
 
-        private static void CopyDirectory(string sourceDirName, string destDirName, bool copySubDirs)
+        private static void CopyDirectory(string sourceDirName, string destDirName)
         {
             // Get the subdirectories for the specified directory.
             DirectoryInfo dir = new DirectoryInfo(sourceDirName);
@@ -108,14 +112,11 @@ namespace Supermodel.Tooling.SolutionMaker.Cmd
                 file.CopyTo(tempPath, false);
             }
 
-            // If copying subdirectories, copy them and their contents to new location.
-            if (copySubDirs)
+            // Copy subdirectories and their contents to new location.
+            foreach (var subDir in dirs)
             {
-                foreach (var subDir in dirs)
-                {
-                    string tempPath = Path.Combine(destDirName, subDir.Name);
-                    CopyDirectory(subDir.FullName, tempPath, copySubDirs);
-                }
+                string tempPath = Path.Combine(destDirName, subDir.Name);
+                CopyDirectory(subDir.FullName, tempPath);
             }
         }
     }
