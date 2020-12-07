@@ -64,14 +64,14 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             foreach (var colorChange in ColorChanges)
             {
                 var strPortion = Content[currentColorChange.Index..colorChange.Index];
-                currentColorChange.SetColors();
+                currentColorChange.Colors.SetColors();
                 Console.Write(strPortion);
 
                 currentColorChange = colorChange;
             }
             
             var strEndPortion = Content[currentColorChange.Index..];
-            currentColorChange.SetColors();
+            currentColorChange.Colors.SetColors();
             Console.Write(strEndPortion);
 
             if (writeLine) Console.WriteLine();

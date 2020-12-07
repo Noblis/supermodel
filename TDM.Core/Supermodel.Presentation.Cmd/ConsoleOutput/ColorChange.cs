@@ -5,33 +5,28 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
     public readonly struct ColorChange
     {
         #region Constructors
-        public ColorChange(int index, ConsoleColor? foregroundColor, ConsoleColor? backgroundColor)
+        public ColorChange(int index, FBColors colors)
         {
-            if (index < 0) throw new ArgumentException("index < 0");            
+            if (index < 0) throw new ArgumentException("index < 0");    
             
             Index = index;
-            ForegroundColor = foregroundColor;
-            BackgroundColor = backgroundColor;
+            Colors = colors;
         }
+        public ColorChange(int index, ConsoleColor? foregroundColor, ConsoleColor? backgroundColor)
+            :this(index, new FBColors(foregroundColor, backgroundColor)) { }
         #endregion
 
         #region Methods
-        public void SetColors()
-        {
-            if (ForegroundColor != null) Console.ForegroundColor = ForegroundColor.Value;
-            if (BackgroundColor != null) Console.ForegroundColor = BackgroundColor.Value;
-        }
         public ColorChange CloneWithOffset(int offset)
         {
             var index = Index + offset;
-            return new ColorChange(index, ForegroundColor, BackgroundColor);
+            return new ColorChange(index, Colors);
         }
         #endregion
 
         #region Properties
         public int Index { get; }
-        public ConsoleColor? ForegroundColor { get; }
-        public ConsoleColor? BackgroundColor { get; }
+        public FBColors Colors { get; }
         #endregion
     }
 }
