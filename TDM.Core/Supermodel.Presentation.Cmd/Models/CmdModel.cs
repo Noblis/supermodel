@@ -16,12 +16,12 @@ namespace Supermodel.Presentation.Cmd.Models
 {
     public class CmdModel : ICmdModel
     {
-        public virtual ICmdOutput EditorTemplate<TModel>(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
+        public virtual ICmdOutput EditorTemplate(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
         {
             throw new NotImplementedException();
         }
 
-        public virtual ICmdOutput DisplayTemplate<TModel>(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
+        public virtual ICmdOutput DisplayTemplate(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
         {
             var result = new StringBuilderWithColor();
             foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
@@ -70,6 +70,5 @@ namespace Supermodel.Presentation.Cmd.Models
                                        !typeof(ICmdEditorTemplate).IsAssignableFrom(x.PropertyType) && 
                                        typeof(IEnumerable).IsAssignableFrom(x.PropertyType)));
         }
-
     }
 }
