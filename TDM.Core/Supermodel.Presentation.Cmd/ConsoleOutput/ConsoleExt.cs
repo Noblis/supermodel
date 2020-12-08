@@ -7,19 +7,22 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
 {
     public static class ConsoleExt
     {
+        #region Edit Floating Point
         public static int EditDouble(int value)
         {
-            var input = EditLine(value.ToString(), x => char.IsDigit(x) || x == '-');
+            var input = EditLine(value.ToString(), IsValidFloatingPoint);
             return int.Parse(input);
         }
-
+        #endregion
+        
+        
         #region Edit Integer
         public static ulong EditInteger(ulong value, FBColors? errorColors = null)
         {
             var valueStr = value.ToString();
             while(true)
             {
-                var input = EditLine(valueStr, char.IsDigit);
+                var input = EditLine(valueStr, IsValidUnsignedIntegerChar);
                 if (ulong.TryParse(input, out var result))
                 {
                     return result;
@@ -36,7 +39,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             var valueStr = value.ToString();
             while(true)
             {
-                var input = EditLine(valueStr, char.IsDigit);
+                var input = EditLine(valueStr, IsValidUnsignedIntegerChar);
                 if (uint.TryParse(input, out var result))
                 {
                     return result;
@@ -53,7 +56,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             var valueStr = value.ToString();
             while(true)
             {
-                var input = EditLine(valueStr, char.IsDigit);
+                var input = EditLine(valueStr, IsValidUnsignedIntegerChar);
                 if (ushort.TryParse(input, out var result))
                 {
                     return result;
@@ -70,7 +73,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             var valueStr = value.ToString();
             while(true)
             {
-                var input = EditLine(valueStr, char.IsDigit);
+                var input = EditLine(valueStr, IsValidUnsignedIntegerChar);
                 if (byte.TryParse(input, out var result))
                 {
                     return result;
@@ -88,7 +91,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             var valueStr = value.ToString();
             while(true)
             {
-                var input = EditLine(valueStr, x => char.IsDigit(x) || x == '-');
+                var input = EditLine(valueStr, IsValidIntegerChar);
                 if (long.TryParse(input, out var result))
                 {
                     return result;
@@ -105,7 +108,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             var valueStr = value.ToString();
             while(true)
             {
-                var input = EditLine(valueStr, x => char.IsDigit(x) || x == '-');
+                var input = EditLine(valueStr, IsValidIntegerChar);
                 if (int.TryParse(input, out var result))
                 {
                     return result;
@@ -122,7 +125,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             var valueStr = value.ToString();
             while(true)
             {
-                var input = EditLine(valueStr, x => char.IsDigit(x) || x == '-');
+                var input = EditLine(valueStr, IsValidIntegerChar);
                 if (short.TryParse(input, out var result))
                 {
                     return result;
@@ -207,6 +210,18 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             errorColors?.SetColors();
             Console.Write("Invalid entry. Try again: ");
             currentColors.SetColors();
+        }
+        private static bool IsValidFloatingPoint(char x)
+        {
+            return char.IsDigit(x) || x == '-' || x == '+' || x == '.' || x == 'e' || x == 'E';
+        }
+        private static bool IsValidUnsignedIntegerChar(char x)
+        {
+            return char.IsDigit(x);
+        }
+        private static bool IsValidIntegerChar(char x)
+        {
+            return char.IsDigit(x) || x == '-';
         }
         #endregion
     }
