@@ -1,11 +1,9 @@
 ﻿#nullable enable
 
-using Supermodel.Presentation.Cmd.ConsoleOutput;
-
 namespace Supermodel.Presentation.Cmd.Models.Interfaces
 {
-    interface ICmdEditorTemplate
+    public interface ICmdEditor : ICmdDisplayer, ICmdReader
     {
-        ICmdOutput EditorTemplate(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue);    
+        void Edit(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue);    
     }
 }

@@ -16,6 +16,19 @@ namespace Supermodel.Presentation.Cmd.Rendering
         #region Helper Class
         public static class Helper
         {
+            #region Write with Color
+            public static void Write(string str, FBColors? colors)
+            {
+                colors?.SetColors();
+                Console.Write(str);
+            }
+            public static void WriteLine(string str, FBColors? colors)
+            {
+                colors?.SetColors();
+                Console.WriteLine(str);
+            }
+            #endregion
+            
             #region Parsing Expressions for Routing
             // ReSharper disable once UnusedParameter.Local
             public static string GetPropertyName<TModel, TValue>(TModel model, Expression<Func<TModel, TValue>> expression)
@@ -88,16 +101,17 @@ namespace Supermodel.Presentation.Cmd.Rendering
         #endregion
 
         #region Render Label Methods
-        public static ICmdOutput LabelFor<TModel, TValue>(TModel model, Expression<Func<TModel, TValue>> propertyExpression, string? label = null, FBColors? colors = null)
+        public static void ShowLabelFor<TModel, TValue>(TModel model, Expression<Func<TModel, TValue>> propertyExpression, string? label = null, FBColors? colors = null)
         {
             var propertyName = Helper.GetPropertyName(model, propertyExpression);
-            return Label(model, propertyName, label, colors);
+            ShowLabel(model, propertyName, label, colors);
         }
-        public static ICmdOutput Label<TModel>(TModel model, string expression, string? label = null, FBColors? colors = null)
+        public static void ShowLabel<TModel>(TModel model, string expression, string? label = null, FBColors? colors = null)
         {
             if (model == null) throw new ArgumentNullException(nameof(model));
             label ??= model.GetType().GetDisplayNameForProperty(expression);
-            return new StringWithColor(label, colors);
+            colors?.SetColors();
+            Console.Write(label);
         }
         #endregion
 
@@ -318,38 +332,39 @@ namespace Supermodel.Presentation.Cmd.Rendering
         #endregion
         
         #region Render Display Methods
-        public static ICmdOutput DisplayForModel<TModel>(TModel model, FBColors? colors = null)
+        public static void DisplayForModel<TModel>(TModel model, FBColors? colors = null)
         {
-            return Display(model, "", colors);
+            Display(model, "", colors);
         }
-        public static ICmdOutput DisplayFor<TModel, TValue>(TModel model, Expression<Func<TModel, TValue>> propertyExpression, FBColors? colors = null)
+        public static void DisplayFor<TModel, TValue>(TModel model, Expression<Func<TModel, TValue>> propertyExpression, FBColors? colors = null)
         {
             var propertyName = Helper.GetPropertyName(model, propertyExpression);
-            return Display(model, propertyName, colors);
+            Display(model, propertyName, colors);
         }
-        public static ICmdOutput Display<TModel>(TModel model, string expression, FBColors? colors = null)
+        public static void Display<TModel>(TModel model, string expression, FBColors? colors = null)
         {
             if (model == null) throw new ArgumentNullException(nameof(model));
 
             var (_, propertyType, propertyValue) = model.GetPropertyInfoPropertyTypeAndValueByFullName(expression);
-            if (typeof(ICmdDisplayTemplate).IsAssignableFrom(propertyType))
+            if (typeof(ICmdDisplayer).IsAssignableFrom(propertyType))
             {
                 propertyValue ??= Activator.CreateInstance(propertyType);
 
-                if (propertyValue is ICmdDisplayTemplate template) return template.DisplayTemplate();
+                if (propertyValue is ICmdDisplayer displayer) displayer.Display();
                 else throw new SupermodelException("This should never happen: propertyValue is not IEditorTemplate");
             }
 
-            //IGenerateHtml
-            if(typeof(ICmdOutput).IsAssignableFrom(propertyType))
+            //ICmdOutput
+            else if(typeof(ICmdOutput).IsAssignableFrom(propertyType))
             {
-                return (ICmdOutput)(propertyValue ?? StringWithColor.Empty);
+                var iCmdOutput = (ICmdOutput)(propertyValue ?? StringWithColor.Empty);
+                iCmdOutput.WriteToConsole(false);
             }
 
             //strings
-            if (typeof(string).IsAssignableFrom(propertyType))
+            else if (typeof(string).IsAssignableFrom(propertyType))
             {
-                return new StringWithColor(propertyValue?.ToString() ?? "", colors);
+                Helper.Write(propertyValue?.ToString() ?? "", colors);
             }
             
             //integer types
@@ -370,7 +385,7 @@ namespace Supermodel.Presentation.Cmd.Rendering
                      typeof(sbyte).IsAssignableFrom(propertyType) ||
                      typeof(sbyte?).IsAssignableFrom(propertyType))
             {
-                return new StringWithColor(propertyValue?.ToString() ?? "", colors);
+                Helper.Write(propertyValue?.ToString() ?? "", colors);
             }
             
             //floating point types
@@ -381,46 +396,46 @@ namespace Supermodel.Presentation.Cmd.Rendering
                      typeof(decimal).IsAssignableFrom(propertyType) ||
                      typeof(decimal?).IsAssignableFrom(propertyType))
             {
-                return new StringWithColor(propertyValue?.ToString() ?? "", colors);
+                Helper.Write(propertyValue?.ToString() ?? "", colors);
             }
 
             //booleans
             else if (typeof(bool).IsAssignableFrom(propertyType) ||
                      typeof(bool?).IsAssignableFrom(propertyType))
             {
-                return new StringWithColor((bool?)propertyValue == true ? "Yes" : "No" , colors);
+                Helper.Write((bool?)propertyValue == true ? "Yes" : "No" , colors);
             }
 
             //DateTime
             else if (typeof(DateTime).IsAssignableFrom(propertyType) ||
                      typeof(DateTime?).IsAssignableFrom(propertyType))
             {
-                return new StringWithColor(propertyValue?.ToString() ?? "", colors);
+                Helper.Write(propertyValue?.ToString() ?? "", colors);
             }
 
             //enums
             else if (typeof(Enum).IsAssignableFrom(propertyType) ||
                      Nullable.GetUnderlyingType(propertyType)?.IsEnum == true)
             {
-                return new StringWithColor(propertyValue?.ToString() ?? "", colors);
+                Helper.Write(propertyValue?.ToString() ?? "", colors);
             }
 
             //Guid
             else if (typeof(Guid).IsAssignableFrom(propertyType))
             {
-                return new StringWithColor(propertyValue?.ToString() ?? "", colors);
+                Helper.Write(propertyValue?.ToString() ?? "", colors);
             }
 
             //catch-all for primitive types
             else if (propertyType.IsPrimitive)
             {
-                return new StringWithColor(propertyValue?.ToString() ?? "", colors);
+                Helper.Write(propertyValue?.ToString() ?? "", colors);
             }
 
             //catch-all for complex types
             else
             {
-                return StringWithColor.Empty;
+                //do nothing
             }
         }
         #endregion

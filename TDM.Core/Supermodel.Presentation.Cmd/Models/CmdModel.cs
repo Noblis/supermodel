@@ -14,14 +14,14 @@ using Supermodel.ReflectionMapper;
 
 namespace Supermodel.Presentation.Cmd.Models
 {
-    public class CmdModel : ICmdModel
+    public class CmdModel : ICmdEditor
     {
-        public virtual ICmdOutput EditorTemplate(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
+        #region ICmdEditor
+        public virtual void Edit(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
         {
             throw new NotImplementedException();
         }
-
-        public virtual ICmdOutput DisplayTemplate(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
+        public virtual void Display(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
         {
             var result = new StringBuilderWithColor();
             foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
@@ -56,8 +56,14 @@ namespace Supermodel.Presentation.Cmd.Models
             }
             return result.ToHtmlString();         
         }
+        public virtual void Read(int screenOrderFrom = Int32.MinValue, int screenOrderTo = Int32.MaxValue)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
 
-        private IEnumerable<PropertyInfo> GetDetailPropertyInfosInOrder(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
+        #region Protected Helper Methods
+        protected virtual IEnumerable<PropertyInfo> GetDetailPropertyInfosInOrder(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
         {
             var result = GetType().GetProperties()
                 .Where(x => x.GetCustomAttribute<ScaffoldColumnAttribute>() == null || x.GetCustomAttribute<ScaffoldColumnAttribute>()!.Scaffold)
@@ -67,8 +73,9 @@ namespace Supermodel.Presentation.Cmd.Models
         
             //By default we do not scaffold enumerations (except for strings of course and unless they implement ISupermodelEditorTemplate)
             return result.Where(x => !(x.PropertyType != typeof(string) && 
-                                       !typeof(ICmdEditorTemplate).IsAssignableFrom(x.PropertyType) && 
+                                       !typeof(ICmdEditor).IsAssignableFrom(x.PropertyType) && 
                                        typeof(IEnumerable).IsAssignableFrom(x.PropertyType)));
         }
+        #endregion
     }
 }
