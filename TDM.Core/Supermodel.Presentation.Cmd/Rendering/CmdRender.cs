@@ -320,12 +320,12 @@ namespace Supermodel.Presentation.Cmd.Rendering
         #region Render Display Methods
         public static ICmdOutput DisplayForModel<TModel>(TModel model, FBColors? colors = null)
         {
-            return Display(model, "", attributes);
+            return Display(model, "", colors);
         }
         public static ICmdOutput DisplayFor<TModel, TValue>(TModel model, Expression<Func<TModel, TValue>> propertyExpression, FBColors? colors = null)
         {
             var propertyName = Helper.GetPropertyName(model, propertyExpression);
-            return Display(model, propertyName, attributes);
+            return Display(model, propertyName, colors);
         }
         public static ICmdOutput Display<TModel>(TModel model, string expression, FBColors? colors = null)
         {
@@ -403,12 +403,6 @@ namespace Supermodel.Presentation.Cmd.Rendering
                      Nullable.GetUnderlyingType(propertyType)?.IsEnum == true)
             {
                 return new StringWithColor(propertyValue?.ToString() ?? "", colors);
-            }
-
-            //byte array
-            else if (typeof(byte[]).IsAssignableFrom(propertyType))
-            {
-                return new Tags();
             }
 
             //Guid
