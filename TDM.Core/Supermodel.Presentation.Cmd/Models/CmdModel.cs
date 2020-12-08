@@ -17,46 +17,46 @@ namespace Supermodel.Presentation.Cmd.Models
     public class CmdModel : ICmdEditor
     {
         #region ICmdEditor
-        public virtual void Edit(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
+        public virtual void Display(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
+        {
+            //var result = new StringBuilderWithColor();
+            //foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
+            //{
+            //    //Label
+            //    var hideLabelAttribute = propertyInfo.GetAttribute<HideLabelAttribute>();
+            //    if (hideLabelAttribute == null)
+            //    {
+            //        var labelHtml = html.Super().Label(propertyInfo.Name, new { @class = ScaffoldingSettings.DisplayLabelCssClass }).GetString();
+            //        if (!propertyInfo.HasAttribute<NoRequiredLabelAttribute>())
+            //        {
+            //            if (propertyInfo.HasAttribute<RequiredAttribute>() || propertyInfo.HasAttribute<ForceRequiredLabelAttribute>()) labelHtml = labelHtml.Replace("</label>", $"<sup><em class='text-danger font-weight-bold {ScaffoldingSettings.RequiredAsteriskCssClass}'>*</em></sup></label>", true, CultureInfo.InvariantCulture);
+            //        }
+            //        result.AppendLine(labelHtml);
+            //    }
+            //    else
+            //    {
+            //        if (hideLabelAttribute.KeepLabelSpace) result.AppendLine($"<div {UtilsLib.MakeClassAttribute(ScaffoldingSettings.DisplayLabelCssClass)}></div>");
+            //    }
+                
+            //    //Div 2
+            //    if (hideLabelAttribute == null || hideLabelAttribute.KeepLabelSpace) result.AppendLine("<div class='col-sm-10'>");
+            //    else result.AppendLine("<div class='col-sm-12'>");
+
+            //    //Value
+            //    result.AppendLine("<span " + UtilsLib.MakeClassAttribute(ScaffoldingSettings.DisplayCssClass) + ">");
+            //    result.AppendLine(html.Super().Display(propertyInfo.Name).GetString());
+            //    result.AppendLine("</span>");
+                
+            //    result.AppendLine("</div>"); //close Div 2
+            //    result.AppendLine("</div>"); //close Div 1
+            //}
+            //return result.ToHtmlString();         
+        }
+        public virtual void Read(int screenOrderFrom = Int32.MinValue, int screenOrderTo = Int32.MaxValue)
         {
             throw new NotImplementedException();
         }
-        public virtual void Display(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
-        {
-            var result = new StringBuilderWithColor();
-            foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
-            {
-                //Label
-                var hideLabelAttribute = propertyInfo.GetAttribute<HideLabelAttribute>();
-                if (hideLabelAttribute == null)
-                {
-                    var labelHtml = html.Super().Label(propertyInfo.Name, new { @class = ScaffoldingSettings.DisplayLabelCssClass }).GetString();
-                    if (!propertyInfo.HasAttribute<NoRequiredLabelAttribute>())
-                    {
-                        if (propertyInfo.HasAttribute<RequiredAttribute>() || propertyInfo.HasAttribute<ForceRequiredLabelAttribute>()) labelHtml = labelHtml.Replace("</label>", $"<sup><em class='text-danger font-weight-bold {ScaffoldingSettings.RequiredAsteriskCssClass}'>*</em></sup></label>", true, CultureInfo.InvariantCulture);
-                    }
-                    result.AppendLine(labelHtml);
-                }
-                else
-                {
-                    if (hideLabelAttribute.KeepLabelSpace) result.AppendLine($"<div {UtilsLib.MakeClassAttribute(ScaffoldingSettings.DisplayLabelCssClass)}></div>");
-                }
-                
-                //Div 2
-                if (hideLabelAttribute == null || hideLabelAttribute.KeepLabelSpace) result.AppendLine("<div class='col-sm-10'>");
-                else result.AppendLine("<div class='col-sm-12'>");
-
-                //Value
-                result.AppendLine("<span " + UtilsLib.MakeClassAttribute(ScaffoldingSettings.DisplayCssClass) + ">");
-                result.AppendLine(html.Super().Display(propertyInfo.Name).GetString());
-                result.AppendLine("</span>");
-                
-                result.AppendLine("</div>"); //close Div 2
-                result.AppendLine("</div>"); //close Div 1
-            }
-            return result.ToHtmlString();         
-        }
-        public virtual void Read(int screenOrderFrom = Int32.MinValue, int screenOrderTo = Int32.MaxValue)
+        public virtual void Edit(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
         {
             throw new NotImplementedException();
         }

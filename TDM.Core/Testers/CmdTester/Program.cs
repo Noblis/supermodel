@@ -13,7 +13,11 @@ namespace CmdTester
             var basin = new StringWithColor("Basin", ConsoleColor.Blue);
 
             var ilyaBasin = ilya + " " + basin;
-            ilyaBasin.WriteToConsole();
+            //ilyaBasin.WriteToConsole();
+
+            Console.Write("Edit text: ");
+            var text = ConsoleExt.EditLine("Ilya Basin");
+            Console.WriteLine(text);
         }
     }
 }
