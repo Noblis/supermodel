@@ -10,6 +10,10 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             ForegroundColor = foregroundColor;
             BackgroundColor = backgroundColor;
         }
+        public FBColors CreateFromCurrent()
+        {
+            return new FBColors(Console.ForegroundColor, Console.BackgroundColor);
+        }
         #endregion
 
         #region Equality operations
