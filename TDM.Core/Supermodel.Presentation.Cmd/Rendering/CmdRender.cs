@@ -37,14 +37,14 @@ namespace Supermodel.Presentation.Cmd.Rendering
                 {
                     var body = (MemberExpression)((UnaryExpression)expression.Body).Operand;
                     var propertyName = body.Member is PropertyInfo ? body.Member.Name : "";
-                    if (body.Expression.NodeType == ExpressionType.Parameter) return propertyName;
+                    if (body.Expression!.NodeType == ExpressionType.Parameter) return propertyName;
                     return $"{GetExpressionName(body.Expression)}.{propertyName}";
                 }
                 else if (expression.Body.NodeType == ExpressionType.MemberAccess)
                 {
                     var body = (MemberExpression)expression.Body;
                     var propertyName = body.Member is PropertyInfo ? body.Member.Name : "";
-                    if (body.Expression.NodeType == ExpressionType.Parameter) return propertyName;
+                    if (body.Expression!.NodeType == ExpressionType.Parameter) return propertyName;
                     return $"{GetExpressionName(body.Expression)}.{propertyName}";
                 }
                 else if (expression.Body.NodeType == ExpressionType.Call)
@@ -75,7 +75,7 @@ namespace Supermodel.Presentation.Cmd.Rendering
                 if (expression.NodeType == ExpressionType.MemberAccess)
                 {
                     var memberExpression = (MemberExpression)expression;
-                    return $"{GetExpressionName(memberExpression.Expression)}{memberExpression.Member.Name}";
+                    return $"{GetExpressionName(memberExpression.Expression!)}{memberExpression.Member.Name}";
                 }
 
                 if (expression.NodeType == ExpressionType.Call)

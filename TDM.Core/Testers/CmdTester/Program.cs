@@ -9,14 +9,14 @@ namespace CmdTester
     {
         static void Main()
         {
-            var ilya = new StringWithColor("Ilya", ConsoleColor.Red);
-            var basin = new StringWithColor("Basin", ConsoleColor.Blue);
+            //var ilya = new StringWithColor("Ilya", ConsoleColor.Red);
+            //var basin = new StringWithColor("Basin", ConsoleColor.Blue);
 
-            var ilyaBasin = ilya + " " + basin;
+            //var ilyaBasin = ilya + " " + basin;
             //ilyaBasin.WriteToConsole();
 
             Console.Write("Edit text: ");
-            var text = ConsoleExt.EditLine("Ilya Basin");
+            var text = ConsoleExt.EditString("Ilya Basin");
             Console.WriteLine(text);
         }
     }

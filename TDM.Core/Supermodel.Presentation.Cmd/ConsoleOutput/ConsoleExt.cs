@@ -14,51 +14,125 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
         }
 
         #region Edit Integer
-        public static ulong EditInteger(ulong value)
+        public static ulong EditInteger(ulong value, FBColors? errorColors = null)
         {
+            var valueStr = value.ToString();
             while(true)
             {
-                try
+                var input = EditLine(valueStr, char.IsDigit);
+                if (ulong.TryParse(input, out var result))
                 {
-                    var input = EditLine(value.ToString(), char.IsDigit);
-                    return ulong.Parse(input);
+                    return result;
                 }
-                catch (Exception e)
+                else
                 {
-
+                    PrintErrorMessage(errorColors);
+                    valueStr = input;
                 }
             }
         }
-        public static uint EditInteger(uint value)
+        public static uint EditInteger(uint value, FBColors? errorColors = null)
         {
-            var input = EditLine(value.ToString(), char.IsDigit);
-            return uint.Parse(input);
+            var valueStr = value.ToString();
+            while(true)
+            {
+                var input = EditLine(valueStr, char.IsDigit);
+                if (uint.TryParse(input, out var result))
+                {
+                    return result;
+                }
+                else
+                {
+                    PrintErrorMessage(errorColors);
+                    valueStr = input;
+                }
+            }
         }
-        public static ushort EditInteger(ushort value)
+        public static ushort EditInteger(ushort value, FBColors? errorColors = null)
         {
-            var input = EditLine(value.ToString(), char.IsDigit);
-            return ushort.Parse(input);
+            var valueStr = value.ToString();
+            while(true)
+            {
+                var input = EditLine(valueStr, char.IsDigit);
+                if (ushort.TryParse(input, out var result))
+                {
+                    return result;
+                }
+                else
+                {
+                    PrintErrorMessage(errorColors);
+                    valueStr = input;
+                }
+            }
         }
-        public static ushort EditInteger(byte value)
+        public static ushort EditInteger(byte value, FBColors? errorColors = null)
         {
-            var input = EditLine(value.ToString(), char.IsDigit);
-            return byte.Parse(input);
+            var valueStr = value.ToString();
+            while(true)
+            {
+                var input = EditLine(valueStr, char.IsDigit);
+                if (byte.TryParse(input, out var result))
+                {
+                    return result;
+                }
+                else
+                {
+                    PrintErrorMessage(errorColors);
+                    valueStr = input;
+                }
+            }
         }
         
-        public static long EditInteger(long value)
+        public static long EditInteger(long value, FBColors? errorColors = null)
         {
-            var input = EditLine(value.ToString(), x => char.IsDigit(x) || x == '-');
-            return long.Parse(input);
+            var valueStr = value.ToString();
+            while(true)
+            {
+                var input = EditLine(valueStr, x => char.IsDigit(x) || x == '-');
+                if (long.TryParse(input, out var result))
+                {
+                    return result;
+                }
+                else
+                {
+                    PrintErrorMessage(errorColors);
+                    valueStr = input;
+                }
+            }
         }
-        public static int EditInteger(int value)
+        public static int EditInteger(int value, FBColors? errorColors = null)
         {
-            var input = EditLine(value.ToString(), x => char.IsDigit(x) || x == '-');
-            return int.Parse(input);
+            var valueStr = value.ToString();
+            while(true)
+            {
+                var input = EditLine(valueStr, x => char.IsDigit(x) || x == '-');
+                if (int.TryParse(input, out var result))
+                {
+                    return result;
+                }
+                else
+                {
+                    PrintErrorMessage(errorColors);
+                    valueStr = input;
+                }
+            }
         }
-        public static short EditInteger(short value)
+        public static short EditInteger(short value, FBColors? errorColors = null)
         {
-            var input = EditLine(value.ToString(), x => char.IsDigit(x) || x == '-');
-            return short.Parse(input);
+            var valueStr = value.ToString();
+            while(true)
+            {
+                var input = EditLine(valueStr, x => char.IsDigit(x) || x == '-');
+                if (short.TryParse(input, out var result))
+                {
+                    return result;
+                }
+                else
+                {
+                    PrintErrorMessage(errorColors);
+                    valueStr = input;
+                }
+            }
         }
         #endregion
         
@@ -123,6 +197,16 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 }
             }
             return new string(chars.ToArray ());
+        }
+        #endregion
+
+        #region Private Helpers
+        private static void PrintErrorMessage(FBColors? errorColors = null)
+        {
+            var currentColors = FBColors.FromCurrent();
+            errorColors?.SetColors();
+            Console.Write("Invalid entry. Try again: ");
+            currentColors.SetColors();
         }
         #endregion
     }
