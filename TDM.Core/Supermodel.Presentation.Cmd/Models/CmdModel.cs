@@ -10,27 +10,22 @@ using System.Reflection;
 using Supermodel.DataAnnotations.Validations.Attributes;
 using Supermodel.Presentation.Cmd.ConsoleOutput;
 using Supermodel.Presentation.Cmd.Models.Interfaces;
+using Supermodel.ReflectionMapper;
 
 namespace Supermodel.Presentation.Cmd.Models
 {
     public class CmdModel : ICmdModel
     {
-        public virtual IConsoleOutput EditorTemplate<TModel>(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
+        public virtual ICmdOutput EditorTemplate<TModel>(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
         {
             throw new NotImplementedException();
         }
 
-        public virtual IConsoleOutput DisplayTemplate<TModel>(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
+        public virtual ICmdOutput DisplayTemplate<TModel>(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
         {
             var result = new StringBuilderWithColor();
-            foreach (var propertyInfo in GetType().GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
+            foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
             {
-                //Div 1
-                var propMarkerAttribute = markerAttribute;
-                var htmlAttrAttribute = propertyInfo.GetAttribute<HtmlAttrAttribute>();
-                if (htmlAttrAttribute != null) propMarkerAttribute += " " + htmlAttrAttribute.Attr;
-                result.AppendLine("<div class='form-group row'" + propMarkerAttribute + " >"); 
-
                 //Label
                 var hideLabelAttribute = propertyInfo.GetAttribute<HideLabelAttribute>();
                 if (hideLabelAttribute == null)
@@ -72,7 +67,7 @@ namespace Supermodel.Presentation.Cmd.Models
         
             //By default we do not scaffold enumerations (except for strings of course and unless they implement ISupermodelEditorTemplate)
             return result.Where(x => !(x.PropertyType != typeof(string) && 
-                                       !typeof(ISupermodelEditorTemplate).IsAssignableFrom(x.PropertyType) && 
+                                       !typeof(ICmdEditorTemplate).IsAssignableFrom(x.PropertyType) && 
                                        typeof(IEnumerable).IsAssignableFrom(x.PropertyType)));
         }
 

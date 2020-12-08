@@ -3,14 +3,20 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 
 namespace Supermodel.Presentation.Cmd.ConsoleOutput
 {
-    public class StringBuilderWithColor : IConsoleOutput
+    public class StringBuilderWithColor : ICmdOutput
     {
         #region Constructors
+        public StringBuilderWithColor()
+        {
+            Content = new StringBuilder();
+            ColorChanges = new List<ColorChange>();
+        }
         public StringBuilderWithColor(StringWithColor str)
         {
             Content = new StringBuilder(str.Content);
@@ -83,13 +89,20 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
         #endregion
     }
     
-    public class StringWithColor : IConsoleOutput
+    public class StringWithColor : ICmdOutput
     {
         #region Constructors
         public StringWithColor(string content, ConsoleColor foregroundColor, ConsoleColor? backgroundColor = null)
         {
             Content = content;
             ColorChanges = new [] { new ColorChange(0, foregroundColor, backgroundColor) }.ToImmutableArray();
+        }
+        public StringWithColor(string content, FBColors? colors)
+        {
+            Content = content;
+
+            if (colors == null) ColorChanges = ImmutableArray<ColorChange>.Empty;
+            else ColorChanges = new [] { new ColorChange(0, colors.Value) }.ToImmutableArray();
         }
         public StringWithColor(string content, params ColorChange[] colorChanges)
         {
@@ -180,6 +193,8 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
         #region Properties
         public string Content { get; }
         public ImmutableArray<ColorChange> ColorChanges { get; }
+
+        public static StringWithColor Empty { get; } = new StringWithColor("");
         #endregion
     }
 }

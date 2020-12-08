@@ -158,7 +158,6 @@ namespace WebMonk.Rendering.Views
                     throw new ArgumentException("Expression must describe a property or an indexer", nameof(expression));
                 }
             }
-            
             private static string GetExpressionName(Expression expression)
             {
                 if (expression.NodeType == ExpressionType.Parameter) return "";
@@ -518,7 +517,7 @@ namespace WebMonk.Rendering.Views
                 {
                     propertyValue ??= Activator.CreateInstance(propertyType);
                     if (propertyValue is IDisplayTemplate template) return template.DisplayTemplate();
-                    else throw new WebMonkException("This should never happen: propertyValue is not IEditorTemplate");
+                    else throw new WebMonkException("This should never happen: propertyValue is not IDisplayTemplate");
                 }
             }
 

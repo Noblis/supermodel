@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Frameworks\Supermodel.DataAnnotations\Supermodel.DataAnnotations.csproj" />
+    <ProjectReference Include="..\Frameworks\Supermodel.ReflectionMapper\Supermodel.ReflectionMapper.csproj" />
   </ItemGroup>
 
 </Project>
