@@ -55,7 +55,38 @@ namespace Supermodel.Presentation.Cmd.Models
         }
         public virtual object? Edit(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
         {
-            throw new NotImplementedException();
+            foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
+            {
+                //Label
+                var hideLabelAttribute = propertyInfo.GetAttribute<HideLabelAttribute>();
+                if (hideLabelAttribute == null)
+                {
+                    CmdRender.ShowLabel(this, propertyInfo.Name, null, CmdScaffoldingSettings.DisplayLabel);
+                    if (!propertyInfo.HasAttribute<NoRequiredLabelAttribute>())
+                    {
+                        var currentColors = FBColors.FromCurrent();
+                        if (propertyInfo.HasAttribute<RequiredAttribute>() || propertyInfo.HasAttribute<ForceRequiredLabelAttribute>()) 
+                        {
+                            CmdScaffoldingSettings.RequiredMarker.WriteToConsole();
+                        }
+                        currentColors.SetColors();
+                    }
+                    Console.Write(": ");
+                }
+                
+                //Value
+                if (!propertyInfo.HasAttribute<DisplayOnlyAttribute>())
+                {
+                    if (ValidationContext.ValidationResultList.GetAllErrorsFor(propertyInfo.Name).Any()) CmdScaffoldingSettings.InvalidEditValue?.SetColors();
+                    var newPropertyValue = CmdRender.Edit(this, propertyInfo.Name, CmdScaffoldingSettings.EditValue);
+                    this.PropertySet(propertyInfo.Name, newPropertyValue);
+                }
+                else
+                {
+                    CmdRender.Display(this, propertyInfo.Name, CmdScaffoldingSettings.DisplayValue);
+                }
+            }
+            return this;
         }
         #endregion
 

@@ -26,14 +26,17 @@ namespace CmdTester
             //var ilyaBasin = ilya + " " + basin;
             //ilyaBasin.WriteToConsole();
 
-            Console.Write("Edit text: ");
-            var text = ConsoleExt.ReadPasswordLine();
-            Console.WriteLine(text);
+            //Console.Write("Edit text: ");
+            //var text = ConsoleExt.ReadPasswordLine();
+            //Console.WriteLine(text);
 
             var ilya = new Student();
             ValidationContext.ValidationResultList.Clear();
             ValidationContext.ValidationResultList.AddValidationResult(ilya, "Bad First Name", x => x.FirstName);
             ValidationContext.ValidationResultList.AddValidationResult(ilya, "Bad DOB", x => x.DateOfBirth);
+            
+            CmdRender.DisplayForModel(ilya);
+            ilya = CmdRender.EditForModel(ilya);
             CmdRender.DisplayForModel(ilya);
         }
     }
