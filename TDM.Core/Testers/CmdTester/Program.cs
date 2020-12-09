@@ -2,11 +2,22 @@
 
 using System;
 using Supermodel.Presentation.Cmd.ConsoleOutput;
+using Supermodel.Presentation.Cmd.Models;
+using Supermodel.Presentation.Cmd.Rendering;
 
 namespace CmdTester
 {
     class Program
     {
+        public class Student : CmdModel
+        {
+            public string FirstName { get; set; } = "Ilya";
+            public string LastName { get; set; } = "Basin";
+            public DateTime DateOfBirth { get; set; } = DateTime.Parse("12/18/1974");
+            public int NumberOfKids { get; set; } = 2;
+            public double GPA { get; set; } = 3.8;
+        }
+        
         static void Main()
         {
             //var ilya = new StringWithColor("Ilya", ConsoleColor.Red);
@@ -16,8 +27,11 @@ namespace CmdTester
             //ilyaBasin.WriteToConsole();
 
             Console.Write("Edit text: ");
-            var text = ConsoleExt.EditString("Ilya Basin");
+            var text = ConsoleExt.ReadPasswordLine();
             Console.WriteLine(text);
+
+            var ilya = new Student();
+            CmdRender.DisplayForModel(ilya);
         }
     }
 }

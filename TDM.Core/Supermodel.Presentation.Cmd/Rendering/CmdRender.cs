@@ -7,6 +7,7 @@ using Supermodel.DataAnnotations.Exceptions;
 using Supermodel.DataAnnotations.Expressions;
 using Supermodel.DataAnnotations.Validations.Attributes;
 using Supermodel.Presentation.Cmd.ConsoleOutput;
+using Supermodel.Presentation.Cmd.Models;
 using Supermodel.Presentation.Cmd.Models.Interfaces;
 
 namespace Supermodel.Presentation.Cmd.Rendering
@@ -143,7 +144,7 @@ namespace Supermodel.Presentation.Cmd.Rendering
         //public static ICmdOutput ValidationMessage<TModel>(TModel model, string expression, object? attributes = null, bool returnDiv = false)
         //{
         //    if (HttpContext.Current.ValidationResultList.IsValid) return new Tags();
-            
+
         //    var prefix = HttpContext.Current.PrefixManager.CurrentPrefix;
 
         //    if (model == null) throw new ArgumentNullException(nameof(model));
@@ -171,64 +172,42 @@ namespace Supermodel.Presentation.Cmd.Rendering
         #endregion
 
         #region Render Editor Methods
-        //public static ICmdOutput EditorForModel<TModel>(TModel model, object? attributes = null)
+        #nullable disable
+        //public static TModel EditForModel<TModel>(TModel model, FBColors? colors = null, FBColors? invalidValueColors = null)
         //{
-        //    return Editor(model, "", attributes);
+        //    return (TModel)Edit(model, "", colors, invalidValueColors);
         //}
-        //public static ICmdOutput EditorFor<TModel, TValue>(TModel model, Expression<Func<TModel, TValue>> propertyExpression, object? attributes = null)
+        //public static TValue EditFor<TModel, TValue>(TModel model, Expression<Func<TModel, TValue>> propertyExpression, FBColors? colors = null, FBColors? invalidValueColors = null)
         //{
         //    var propertyName = Helper.GetPropertyName(model, propertyExpression);
-        //    return Editor(model, propertyName, attributes);
+        //    return (TValue)Edit(model, propertyName, colors, invalidValueColors);
         //}
-        //public static ICmdOutput Editor<TModel>(TModel model, string expression, object? attributes = null)
+        //public static object Edit<TModel>(TModel model, string expression, FBColors? colors = null, FBColors? invalidValueColors = null)
         //{
         //    if (model == null) throw new ArgumentNullException(nameof(model));
 
-        //    var prefix = HttpContext.Current.PrefixManager.CurrentPrefix;
+        //    colors?.SetColors();
 
-        //    if (!string.IsNullOrEmpty(prefix) && !string.IsNullOrEmpty(expression)) prefix = $"{prefix}.";
-        //    var id = $"{prefix}{expression}".ToHtmlId();
-        //    var name = id.ToHtmlName();
-
-        //    var (propertyInfo, propertyType, propertyValue) = model.GetPropertyInfoPropertyTypeAndValueByFullName(expression);
-        //    if (typeof(IEditorTemplate).IsAssignableFrom(propertyType))
+        //    var (_, propertyType, propertyValue) = model.GetPropertyInfoPropertyTypeAndValueByFullName(expression);
+        //    if (typeof(ICmdEditor).IsAssignableFrom(propertyType))
         //    {
-        //        using(HttpContext.Current.PrefixManager.NewPrefix(expression, model))
-        //        {
-        //            propertyValue ??= Activator.CreateInstance(propertyType);
-        //            if (propertyValue is IEditorTemplate template) return template.EditorTemplate();
-        //            else throw new WebMonkException("This should never happen: propertyValue is not IEditorTemplate");
-        //        }
+        //        propertyValue ??= Activator.CreateInstance(propertyType);
+
+        //        if (propertyValue is ICmdDisplayer displayer) displayer.Display();
+        //        else throw new SupermodelException("This should never happen: propertyValue is not ICmdEditor");
         //    }
 
-        //    //IGenerateHtml
-        //    if(typeof(IGenerateHtml).IsAssignableFrom(propertyType))
+        //    //ICmdOutput
+        //    else if(typeof(ICmdOutput).IsAssignableFrom(propertyType))
         //    {
-        //        return (IGenerateHtml)(propertyValue ?? new Tags());
+        //        var iCmdOutput = (ICmdOutput)(propertyValue ?? StringWithColor.Empty);
+        //        iCmdOutput.WriteToConsole();
         //    }
-
-        //    Tag editorTag;
-        //    Tag? hiddenInputTag = null;
 
         //    //strings
-        //    if (typeof(string).IsAssignableFrom(propertyType))
+        //    else if (typeof(string).IsAssignableFrom(propertyType))
         //    {
-        //        var attr = propertyInfo?.GetCustomAttribute<DataTypeAttribute>(true);
-        //        if (attr == null)
-        //        {
-        //            editorTag = new Input(new { type="text", id, name, value=Helper.AdjustIfInvalid(propertyValue?.ToString(), expression) });
-        //        }
-        //        else
-        //        {
-        //            switch(attr.DataType)
-        //            {
-        //                case DataType.Password: editorTag = new Input(new { type="password", id, name, value=Helper.AdjustIfInvalid(propertyValue?.ToString(), expression)}); break;
-        //                case DataType.EmailAddress: editorTag = new Input(new { type="email", id, name, value=Helper.AdjustIfInvalid(propertyValue?.ToString(), expression)}); break;
-        //                case DataType.MultilineText: editorTag = new Textarea(new { id, name}){ new Txt(Helper.AdjustIfInvalid(propertyValue?.ToString(), expression))}; break;
-        //                case DataType.PhoneNumber: editorTag = new Input(new { type="tel", id, name, value=Helper.AdjustIfInvalid(propertyValue?.ToString(), expression)}); break;
-        //                default: editorTag = new Input(new { type="text", id, name, value=Helper.AdjustIfInvalid(propertyValue?.ToString(), expression)}); break;
-        //            }
-        //        }
+        //        ConsoleExt.EditString(propertyValue?.ToString() ?? "");
         //    }
             
         //    //integer types
@@ -249,7 +228,7 @@ namespace Supermodel.Presentation.Cmd.Rendering
         //             typeof(sbyte).IsAssignableFrom(propertyType) ||
         //             typeof(sbyte?).IsAssignableFrom(propertyType))
         //    {
-        //        editorTag = new Input(new { type="number", id, name, value=Helper.AdjustIfInvalid(propertyValue?.ToString(), expression)});
+        //        ConsoleExt.EditInteger((int?)propertyValue, invalidValueColors);
         //    }
             
         //    //floating point types
@@ -260,77 +239,51 @@ namespace Supermodel.Presentation.Cmd.Rendering
         //             typeof(decimal).IsAssignableFrom(propertyType) ||
         //             typeof(decimal?).IsAssignableFrom(propertyType))
         //    {
-        //        editorTag = new Input(new { type="number", step="any", id, name, value=Helper.AdjustIfInvalid(propertyValue?.ToString(), expression)});
+        //        Helper.Write(propertyValue?.ToString() ?? "", colors);
         //    }
 
-        //    //booleans (special case)
+        //    //booleans
         //    else if (typeof(bool).IsAssignableFrom(propertyType) ||
         //             typeof(bool?).IsAssignableFrom(propertyType))
         //    {
-        //        //this preserves the attempted values for special case of bool
-        //        bool @checked;
-        //        if (!HttpContext.Current.ValidationResultList.IsValid)
-        //        {
-        //            var valueProviders = HttpContext.Current.ValueProviderManager.GetCachedValueProvidersList() ?? throw new WebMonkException("This should never happen: valueProviders == null");
-        //            var propertyValueResult = valueProviders.GetValueOrDefault<bool?>(name);
-        //            @checked = propertyValueResult.GetNewValue<bool?>() == true;
-        //        }
-        //        else
-        //        {
-        //            @checked = (bool?)propertyValue == true;
-        //        }
-
-        //        editorTag = new Input(new { type="checkbox", id, name, value="true" } );
-        //        if (@checked) editorTag.Attributes.Add("checked", "on");
-
-        //        hiddenInputTag = new Input(new { type="hidden", name, value="false" });
+        //        Helper.Write((bool?)propertyValue == true ? "Y" : "N" , colors);
         //    }
 
         //    //DateTime
         //    else if (typeof(DateTime).IsAssignableFrom(propertyType) ||
         //             typeof(DateTime?).IsAssignableFrom(propertyType))
         //    {
-        //        editorTag = new Input(new { type="datetime-local", id, name, value=Helper.AdjustIfInvalid(((DateTime?)propertyValue)?.ToString("yyyy-MM-ddTHH:mm"), expression)});
+        //        Helper.Write(propertyValue?.ToString() ?? "", colors);
         //    }
 
         //    //enums
         //    else if (typeof(Enum).IsAssignableFrom(propertyType) ||
         //             Nullable.GetUnderlyingType(propertyType)?.IsEnum == true)
         //    {
-        //        editorTag = new Input(new { type="text", id, name, value=Helper.AdjustIfInvalid(propertyValue?.ToString(), expression)});
-        //    }
-
-        //    //byte array
-        //    else if (typeof(byte[]).IsAssignableFrom(propertyType))
-        //    {
-        //        editorTag = new Input(new { type="file", id, name});
+        //        Helper.Write(propertyValue?.ToString() ?? "", colors);
         //    }
 
         //    //Guid
         //    else if (typeof(Guid).IsAssignableFrom(propertyType))
         //    {
-        //        editorTag = new Input(new { type="text", id, name, value=Helper.AdjustIfInvalid(propertyValue?.ToString(), expression)});
+        //        Helper.Write(propertyValue?.ToString() ?? "", colors);
         //    }
-            
+
         //    //catch-all for primitive types
         //    else if (propertyType.IsPrimitive)
         //    {
-        //        editorTag = new Input(new { type="text", id, name, value=Helper.AdjustIfInvalid(propertyValue?.ToString(), expression)});
+        //        Helper.Write(propertyValue?.ToString() ?? "", colors);
         //    }
-            
+
         //    //catch-all for complex types
         //    else
         //    {
-        //        return new Tags();
+        //        //do nothing
         //    }
-
-        //    editorTag.AddOrUpdateAttr(attributes);
-
-        //    if (hiddenInputTag == null) return editorTag;
-        //    else return new Tags { editorTag, hiddenInputTag };
         //}
+        #nullable enable
         #endregion
-        
+
         #region Render Display Methods
         public static void DisplayForModel<TModel>(TModel model, FBColors? colors = null)
         {
@@ -351,7 +304,7 @@ namespace Supermodel.Presentation.Cmd.Rendering
                 propertyValue ??= Activator.CreateInstance(propertyType);
 
                 if (propertyValue is ICmdDisplayer displayer) displayer.Display();
-                else throw new SupermodelException("This should never happen: propertyValue is not IEditorTemplate");
+                else throw new SupermodelException("This should never happen: propertyValue is not ICmdDisplayer");
             }
 
             //ICmdOutput

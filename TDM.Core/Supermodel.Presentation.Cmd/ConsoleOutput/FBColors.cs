@@ -43,7 +43,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
         public void SetColors()
         {
             if (ForegroundColor != null) Console.ForegroundColor = ForegroundColor.Value;
-            if (BackgroundColor != null) Console.ForegroundColor = BackgroundColor.Value;
+            if (BackgroundColor != null) Console.BackgroundColor = BackgroundColor.Value;
         }
         #endregion
 

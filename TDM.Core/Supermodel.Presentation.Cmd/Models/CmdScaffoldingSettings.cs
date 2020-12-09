@@ -13,6 +13,8 @@ namespace Supermodel.Presentation.Cmd.Models
         public static FBColors? EditValue { get; set; } = new FBColors(ConsoleColor.White, ConsoleColor.Black);
         public static FBColors? DisplayValue { get; set; } = new FBColors(ConsoleColor.White, ConsoleColor.Black);
 
+        public static FBColors? InvalidValueMessage { get; set; } = new FBColors(ConsoleColor.Red, ConsoleColor.Black);
+
         public static StringWithColor RequiredMarker { get; set; } = new StringWithColor("*", ConsoleColor.Red, ConsoleColor.Black);
     }
 }

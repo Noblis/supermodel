@@ -14,7 +14,7 @@ using Supermodel.ReflectionMapper;
 
 namespace Supermodel.Presentation.Cmd.Models
 {
-    public class CmdModel : ICmdEditor
+    public class CmdModel : ICmdEditor, ICmdDisplayer
     {
         #region ICmdEditor
         public virtual void Display(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
@@ -49,7 +49,7 @@ namespace Supermodel.Presentation.Cmd.Models
         {
             throw new NotImplementedException();
         }
-        public virtual void Edit(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
+        public virtual object? Edit(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
         {
             throw new NotImplementedException();
         }

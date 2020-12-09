@@ -2,8 +2,8 @@
 
 namespace Supermodel.Presentation.Cmd.Models.Interfaces
 {
-    public interface ICmdEditor : ICmdDisplayer, ICmdReader
+    public interface ICmdEditor
     {
-        void Edit(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue);    
+        object? Edit(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue); 
     }
 }
