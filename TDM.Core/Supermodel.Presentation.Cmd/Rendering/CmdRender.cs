@@ -172,115 +172,87 @@ namespace Supermodel.Presentation.Cmd.Rendering
 
         #region Render Editor Methods
         #nullable disable
-        //public static TModel EditForModel<TModel>(TModel model, FBColors? colors = null, FBColors? invalidValueColors = null)
-        //{
-        //    return (TModel)Edit(model, "", colors, invalidValueColors);
-        //}
-        //public static TValue EditFor<TModel, TValue>(TModel model, Expression<Func<TModel, TValue>> propertyExpression, FBColors? colors = null, FBColors? invalidValueColors = null)
-        //{
-        //    var propertyName = Helper.GetPropertyName(model, propertyExpression);
-        //    return (TValue)Edit(model, propertyName, colors, invalidValueColors);
-        //}
-        //public static object Edit<TModel>(TModel model, string expression, FBColors? colors = null, FBColors? invalidValueColors = null)
-        //{
-        //    if (model == null) throw new ArgumentNullException(nameof(model));
-
-        //    colors?.SetColors();
-
-        //    var (_, propertyType, propertyValue) = model.GetPropertyInfoPropertyTypeAndValueByFullName(expression);
-        //    if (typeof(ICmdEditor).IsAssignableFrom(propertyType))
-        //    {
-        //        propertyValue ??= Activator.CreateInstance(propertyType);
-
-        //        if (propertyValue is ICmdDisplayer displayer) displayer.Display();
-        //        else throw new SupermodelException("This should never happen: propertyValue is not ICmdEditor");
-        //    }
-
-        //    //ICmdOutput
-        //    else if(typeof(ICmdOutput).IsAssignableFrom(propertyType))
-        //    {
-        //        var iCmdOutput = (ICmdOutput)(propertyValue ?? StringWithColor.Empty);
-        //        iCmdOutput.WriteToConsole();
-        //    }
-
-        //    //strings
-        //    else if (typeof(string).IsAssignableFrom(propertyType))
-        //    {
-        //        ConsoleExt.EditString(propertyValue?.ToString() ?? "");
-        //    }
-            
-        //    //integer types
-        //    else if (typeof(int).IsAssignableFrom(propertyType) ||
-        //             typeof(int?).IsAssignableFrom(propertyType) ||
-        //             typeof(uint).IsAssignableFrom(propertyType) ||
-        //             typeof(uint?).IsAssignableFrom(propertyType) ||
-        //             typeof(long).IsAssignableFrom(propertyType) ||
-        //             typeof(long?).IsAssignableFrom(propertyType) ||
-        //             typeof(ulong).IsAssignableFrom(propertyType) ||
-        //             typeof(ulong?).IsAssignableFrom(propertyType) ||
-        //             typeof(short).IsAssignableFrom(propertyType) ||
-        //             typeof(short?).IsAssignableFrom(propertyType) ||
-        //             typeof(ushort).IsAssignableFrom(propertyType) ||
-        //             typeof(ushort?).IsAssignableFrom(propertyType) ||
-        //             typeof(byte).IsAssignableFrom(propertyType) ||
-        //             typeof(byte?).IsAssignableFrom(propertyType) ||
-        //             typeof(sbyte).IsAssignableFrom(propertyType) ||
-        //             typeof(sbyte?).IsAssignableFrom(propertyType))
-        //    {
-        //        ConsoleExt.EditInteger((int?)propertyValue, invalidValueColors);
-        //    }
-            
-        //    //floating point types
-        //    else if (typeof(double).IsAssignableFrom(propertyType) ||
-        //             typeof(double?).IsAssignableFrom(propertyType) ||
-        //             typeof(float).IsAssignableFrom(propertyType) ||
-        //             typeof(float?).IsAssignableFrom(propertyType) ||
-        //             typeof(decimal).IsAssignableFrom(propertyType) ||
-        //             typeof(decimal?).IsAssignableFrom(propertyType))
-        //    {
-        //        Helper.Write(propertyValue?.ToString() ?? "", colors);
-        //    }
-
-        //    //booleans
-        //    else if (typeof(bool).IsAssignableFrom(propertyType) ||
-        //             typeof(bool?).IsAssignableFrom(propertyType))
-        //    {
-        //        Helper.Write((bool?)propertyValue == true ? "Y" : "N" , colors);
-        //    }
-
-        //    //DateTime
-        //    else if (typeof(DateTime).IsAssignableFrom(propertyType) ||
-        //             typeof(DateTime?).IsAssignableFrom(propertyType))
-        //    {
-        //        Helper.Write(propertyValue?.ToString() ?? "", colors);
-        //    }
-
-        //    //enums
-        //    else if (typeof(Enum).IsAssignableFrom(propertyType) ||
-        //             Nullable.GetUnderlyingType(propertyType)?.IsEnum == true)
-        //    {
-        //        Helper.Write(propertyValue?.ToString() ?? "", colors);
-        //    }
-
-        //    //Guid
-        //    else if (typeof(Guid).IsAssignableFrom(propertyType))
-        //    {
-        //        Helper.Write(propertyValue?.ToString() ?? "", colors);
-        //    }
-
-        //    //catch-all for primitive types
-        //    else if (propertyType.IsPrimitive)
-        //    {
-        //        Helper.Write(propertyValue?.ToString() ?? "", colors);
-        //    }
-
-        //    //catch-all for complex types
-        //    else
-        //    {
-        //        //do nothing
-        //    }
-        //}
+        public static TModel EditForModel<TModel>(TModel model, FBColors? colors = null, FBColors? invalidValueColors = null)
+        {
+            return (TModel)Edit(model, "", colors, invalidValueColors);
+        }
+        public static TValue EditFor<TModel, TValue>(TModel model, Expression<Func<TModel, TValue>> propertyExpression, FBColors? colors = null, FBColors? invalidValueColors = null)
+        {
+            var propertyName = Helper.GetPropertyName(model, propertyExpression);
+            return (TValue)Edit(model, propertyName, colors, invalidValueColors);
+        }
         #nullable enable
+        public static object? Edit<TModel>(TModel model, string expression, FBColors? colors = null, FBColors? invalidValueColors = null)
+        {
+            if (model == null) throw new ArgumentNullException(nameof(model));
+
+            colors?.SetColors();
+
+            var (_, propertyType, propertyValue) = model.GetPropertyInfoPropertyTypeAndValueByFullName(expression);
+            if (typeof(ICmdEditor).IsAssignableFrom(propertyType))
+            {
+                propertyValue ??= Activator.CreateInstance(propertyType);
+
+                if (propertyValue is ICmdEditor editor) return editor.Edit();
+                else throw new SupermodelException("This should never happen: propertyValue is not ICmdEditor");
+            }
+
+            //ICmdOutput
+            if (typeof(ICmdOutput).IsAssignableFrom(propertyType))
+            {
+                var iCmdOutput = (ICmdOutput)(propertyValue ?? StringWithColor.Empty);
+                iCmdOutput.WriteToConsole();
+                return propertyValue;
+            }
+
+            //strings
+            if (typeof(string).IsAssignableFrom(propertyType)) return ConsoleExt.EditString(propertyValue?.ToString() ?? "");
+
+            //integer types
+            if (typeof(int).IsAssignableFrom(propertyType) || typeof(int?).IsAssignableFrom(propertyType)) return ConsoleExt.EditInteger((int?)propertyValue);
+            if (typeof(uint).IsAssignableFrom(propertyType) || typeof(uint?).IsAssignableFrom(propertyType)) return ConsoleExt.EditInteger((uint?)propertyValue);
+            if (typeof(long).IsAssignableFrom(propertyType) || typeof(long?).IsAssignableFrom(propertyType)) return ConsoleExt.EditInteger((long?)propertyValue);
+            if (typeof(ulong).IsAssignableFrom(propertyType) || typeof(ulong?).IsAssignableFrom(propertyType)) return ConsoleExt.EditInteger((ulong?)propertyValue);
+            if (typeof(short).IsAssignableFrom(propertyType) || typeof(short?).IsAssignableFrom(propertyType)) return ConsoleExt.EditInteger((short?)propertyValue);
+            if (typeof(ushort).IsAssignableFrom(propertyType) || typeof(ushort?).IsAssignableFrom(propertyType)) return ConsoleExt.EditInteger((ushort?)propertyValue);
+            if (typeof(byte).IsAssignableFrom(propertyType) || typeof(byte?).IsAssignableFrom(propertyType)) return ConsoleExt.EditInteger((byte?)propertyValue);
+            if (typeof(sbyte).IsAssignableFrom(propertyType) || typeof(sbyte?).IsAssignableFrom(propertyType)) return ConsoleExt.EditInteger((sbyte?)propertyValue);
+
+            //floating point types
+            if (typeof(double).IsAssignableFrom(propertyType) || typeof(double?).IsAssignableFrom(propertyType)) return ConsoleExt.EditFloat((double?)propertyValue);
+            if (typeof(float).IsAssignableFrom(propertyType) || typeof(float?).IsAssignableFrom(propertyType)) return ConsoleExt.EditFloat((float?)propertyValue);
+            if (typeof(decimal).IsAssignableFrom(propertyType) || typeof(decimal?).IsAssignableFrom(propertyType)) return ConsoleExt.EditFloat((decimal?)propertyValue);
+
+            //booleans
+            if (typeof(bool).IsAssignableFrom(propertyType) || typeof(bool?).IsAssignableFrom(propertyType)) return ConsoleExt.EditBool((bool?)propertyValue);
+
+            //DateTime
+            if (typeof(DateTime).IsAssignableFrom(propertyType) || typeof(DateTime?).IsAssignableFrom(propertyType)) return ConsoleExt.EditDateTime((DateTime?)propertyValue);
+
+            //enums
+            if (typeof(Enum).IsAssignableFrom(propertyType) || Nullable.GetUnderlyingType(propertyType)?.IsEnum == true)
+            {
+                Helper.Write(propertyValue?.ToString() ?? "", colors);
+                return propertyValue;
+            }
+
+            //Guid
+            if (typeof(Guid).IsAssignableFrom(propertyType))
+            {
+                Helper.Write(propertyValue?.ToString() ?? "", colors);
+                return propertyValue;
+            }
+
+            //catch-all for primitive types
+            if (propertyType.IsPrimitive) 
+            {
+                Helper.Write(propertyValue?.ToString() ?? "", colors);
+                return propertyValue;
+            }
+
+            //catch-all for complex types - do nothing
+            return propertyValue;
+        }
         #endregion
 
         #region Render Display Methods
