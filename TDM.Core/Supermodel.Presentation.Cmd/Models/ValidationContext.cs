@@ -6,6 +6,6 @@ namespace Supermodel.Presentation.Cmd.Models
 {
     public static class ValidationContext
     {
-        public static ValidationResultList? ValidationResultList { get; set; }
+        public static ValidationResultList ValidationResultList { get; set; } = new ValidationResultList();
     }
 }

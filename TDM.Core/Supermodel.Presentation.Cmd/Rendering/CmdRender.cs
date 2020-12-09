@@ -122,7 +122,7 @@ namespace Supermodel.Presentation.Cmd.Rendering
         {
             var vrl = ValidationContext.ValidationResultList;
             
-            if (vrl == null || vrl.IsValid) return;
+            if (vrl.IsValid) return;
 
             colors?.SetColors();
 
@@ -141,7 +141,7 @@ namespace Supermodel.Presentation.Cmd.Rendering
         {
             var vrl = ValidationContext.ValidationResultList;
             
-            if (vrl == null || vrl.IsValid) return;
+            if (vrl.IsValid) return;
 
             if (model == null) throw new ArgumentNullException(nameof(model));
 

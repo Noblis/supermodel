@@ -31,6 +31,9 @@ namespace CmdTester
             Console.WriteLine(text);
 
             var ilya = new Student();
+            ValidationContext.ValidationResultList.Clear();
+            ValidationContext.ValidationResultList.AddValidationResult(ilya, "Bad First Name", x => x.FirstName);
+            ValidationContext.ValidationResultList.AddValidationResult(ilya, "Bad DOB", x => x.DateOfBirth);
             CmdRender.DisplayForModel(ilya);
         }
     }

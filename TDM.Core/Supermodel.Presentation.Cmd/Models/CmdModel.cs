@@ -42,8 +42,12 @@ namespace Supermodel.Presentation.Cmd.Models
                 CmdRender.Display(this, propertyInfo.Name, CmdScaffoldingSettings.DisplayValue);
 
                 //Validation Error
-                Console.Write(" ");
-                CmdRender.ShowValidationMessage(this, propertyInfo.Name, CmdScaffoldingSettings.ValidationErrorMessage);
+                if (ValidationContext.ValidationResultList.GetAllErrorsFor(propertyInfo.Name).Any())
+                {
+                    CmdScaffoldingSettings.ValidationErrorMessage?.SetColors();
+                    Console.Write(" - ");
+                    CmdRender.ShowValidationMessage(this, propertyInfo.Name, CmdScaffoldingSettings.ValidationErrorMessage);
+                }
 
                 //New Line
                 Console.WriteLine();
