@@ -7,8 +7,54 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
 {
     public static class ConsoleExt
     {
+        //TODO: Edit enums / options list
+        
+        #region Date
+        public static DateTime? EditDate(DateTime? value, FBColors? errorColors = null)
+        {
+            var valueStr = value.ToString() ?? "";
+            while(true)
+            {
+                var input = EditLine(valueStr, IsValidUnsignedIntegerChar);
+                if (string.IsNullOrWhiteSpace(input)) return null;
+                if (DateTime.TryParse(input, out var result))
+                {
+                    return result;
+                }
+                else
+                {
+                    PrintErrorMessage(errorColors);
+                    valueStr = input;
+                }
+            }
+        }
+        #endregion
+        
         #region Edit Boolean
-        //public static bool EditBool(bool value, , FBColors? errorColors = null)
+        public static bool? EditBool(bool? value, FBColors? errorColors = null)
+        {
+            var valueStr = value == null ? "" : value.Value ? "Y" : "N";
+            while(true)
+            {
+                var input = EditLine(valueStr, IsValidUnsignedIntegerChar);
+                if (string.IsNullOrWhiteSpace(input)) return null;
+                
+                var trimmedInput = input.Trim().ToLower();
+                if (trimmedInput == "y") 
+                {
+                    return true;
+                }
+                else if (trimmedInput == "n") 
+                {
+                    return false;
+                }
+                else
+                {
+                    PrintErrorMessage(errorColors);
+                    valueStr = input;
+                }
+            }
+        }
         #endregion
 
         #region Edit Floating Point
