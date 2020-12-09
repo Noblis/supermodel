@@ -5,7 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Frameworks\Supermodel.DataAnnotations\Supermodel.DataAnnotations.csproj" />
+    <ProjectReference Include="..\Frameworks\Supermodel.Persistence\Supermodel.Persistence\Supermodel.Persistence.csproj" />
     <ProjectReference Include="..\Frameworks\Supermodel.ReflectionMapper\Supermodel.ReflectionMapper.csproj" />
   </ItemGroup>
 

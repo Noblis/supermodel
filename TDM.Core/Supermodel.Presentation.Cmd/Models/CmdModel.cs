@@ -53,7 +53,7 @@ namespace Supermodel.Presentation.Cmd.Models
                 Console.WriteLine();
             }
         }
-        public virtual object? Edit(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
+        public virtual object Edit(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
         {
             foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
             {
@@ -77,8 +77,15 @@ namespace Supermodel.Presentation.Cmd.Models
                 //Value
                 if (!propertyInfo.HasAttribute<DisplayOnlyAttribute>())
                 {
-                    if (ValidationContext.ValidationResultList.GetAllErrorsFor(propertyInfo.Name).Any()) CmdScaffoldingSettings.InvalidEditValue?.SetColors();
-                    var newPropertyValue = CmdRender.Edit(this, propertyInfo.Name, CmdScaffoldingSettings.EditValue);
+                    object? newPropertyValue;
+                    if (ValidationContext.ValidationResultList.GetAllErrorsFor(propertyInfo.Name).Any())
+                    {
+                        newPropertyValue = CmdRender.Edit(this, propertyInfo.Name, CmdScaffoldingSettings.InvalidEditValue);
+                    }
+                    else
+                    {
+                        newPropertyValue = CmdRender.Edit(this, propertyInfo.Name, CmdScaffoldingSettings.EditValue);
+                    }
                     this.PropertySet(propertyInfo.Name, newPropertyValue);
                 }
                 else

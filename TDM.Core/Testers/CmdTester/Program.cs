@@ -1,7 +1,6 @@
 ﻿#nullable enable
 
 using System;
-using Supermodel.Presentation.Cmd.ConsoleOutput;
 using Supermodel.Presentation.Cmd.Models;
 using Supermodel.Presentation.Cmd.Rendering;
 
@@ -36,7 +35,9 @@ namespace CmdTester
             ValidationContext.ValidationResultList.AddValidationResult(ilya, "Bad DOB", x => x.DateOfBirth);
             
             CmdRender.DisplayForModel(ilya);
+            Console.WriteLine();
             ilya = CmdRender.EditForModel(ilya);
+            Console.WriteLine();
             CmdRender.DisplayForModel(ilya);
         }
     }
