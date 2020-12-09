@@ -10,7 +10,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
         //TODO: Edit enums / options list
         
         #region Date
-        public static DateTime? EditDate(DateTime? value, FBColors? errorColors = null)
+        public static DateTime? EditDateTime(DateTime? value, FBColors? errorColors = null)
         {
             var valueStr = value.ToString() ?? "";
             while(true)
