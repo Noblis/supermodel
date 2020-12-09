@@ -7,7 +7,6 @@ using Supermodel.DataAnnotations.Exceptions;
 using Supermodel.DataAnnotations.Expressions;
 using Supermodel.DataAnnotations.Validations.Attributes;
 using Supermodel.Presentation.Cmd.ConsoleOutput;
-using Supermodel.Presentation.Cmd.Models;
 using Supermodel.Presentation.Cmd.Models.Interfaces;
 
 namespace Supermodel.Presentation.Cmd.Rendering

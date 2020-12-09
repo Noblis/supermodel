@@ -45,10 +45,6 @@ namespace Supermodel.Presentation.Cmd.Models
                 Console.WriteLine();
             }
         }
-        public virtual void Read(int screenOrderFrom = Int32.MinValue, int screenOrderTo = Int32.MaxValue)
-        {
-            throw new NotImplementedException();
-        }
         public virtual object? Edit(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
         {
             throw new NotImplementedException();
