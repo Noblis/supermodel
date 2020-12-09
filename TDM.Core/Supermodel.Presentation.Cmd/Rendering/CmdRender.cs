@@ -403,7 +403,7 @@ namespace Supermodel.Presentation.Cmd.Rendering
             else if (typeof(bool).IsAssignableFrom(propertyType) ||
                      typeof(bool?).IsAssignableFrom(propertyType))
             {
-                Helper.Write((bool?)propertyValue == true ? "Yes" : "No" , colors);
+                Helper.Write((bool?)propertyValue == true ? "Y" : "N" , colors);
             }
 
             //DateTime

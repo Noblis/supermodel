@@ -1,28 +1,81 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#nullable enable
 
-#nullable enable
+using System;
+using System.Collections.Generic;
 
 namespace Supermodel.Presentation.Cmd.ConsoleOutput
 {
     public static class ConsoleExt
     {
-        #region Edit Floating Point
-        public static int EditDouble(int value)
-        {
-            var input = EditLine(value.ToString(), IsValidFloatingPoint);
-            return int.Parse(input);
-        }
+        #region Edit Boolean
+        //public static bool EditBool(bool value, , FBColors? errorColors = null)
         #endregion
-        
-        
-        #region Edit Integer
-        public static ulong EditInteger(ulong value, FBColors? errorColors = null)
+
+        #region Edit Floating Point
+        public static decimal? EditFloat(decimal? value, FBColors? errorColors = null)
         {
-            var valueStr = value.ToString();
+            var valueStr = value.ToString() ?? "";
             while(true)
             {
                 var input = EditLine(valueStr, IsValidUnsignedIntegerChar);
+                if (string.IsNullOrWhiteSpace(input)) return null;
+                if (decimal.TryParse(input, out var result))
+                {
+                    return result;
+                }
+                else
+                {
+                    PrintErrorMessage(errorColors);
+                    valueStr = input;
+                }
+            }
+        }
+        public static double? EditFloat(double? value, FBColors? errorColors = null)
+        {
+            var valueStr = value.ToString() ?? "";
+            while(true)
+            {
+                var input = EditLine(valueStr, IsValidUnsignedIntegerChar);
+                if (string.IsNullOrWhiteSpace(input)) return null;
+                if (double.TryParse(input, out var result))
+                {
+                    return result;
+                }
+                else
+                {
+                    PrintErrorMessage(errorColors);
+                    valueStr = input;
+                }
+            }
+        }
+        public static float? EditFloat(float? value, FBColors? errorColors = null)
+        {
+            var valueStr = value.ToString() ?? "";
+            while(true)
+            {
+                var input = EditLine(valueStr, IsValidUnsignedIntegerChar);
+                if (string.IsNullOrWhiteSpace(input)) return null;
+                if (float.TryParse(input, out var result))
+                {
+                    return result;
+                }
+                else
+                {
+                    PrintErrorMessage(errorColors);
+                    valueStr = input;
+                }
+            }
+        }
+        #endregion
+        
+        #region Edit Integer
+        public static ulong? EditInteger(ulong? value, FBColors? errorColors = null)
+        {
+            var valueStr = value.ToString() ?? "";
+            while(true)
+            {
+                var input = EditLine(valueStr, IsValidUnsignedIntegerChar);
+                if (string.IsNullOrWhiteSpace(input)) return null;
                 if (ulong.TryParse(input, out var result))
                 {
                     return result;
@@ -34,12 +87,13 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 }
             }
         }
-        public static uint EditInteger(uint value, FBColors? errorColors = null)
+        public static uint? EditInteger(uint? value, FBColors? errorColors = null)
         {
-            var valueStr = value.ToString();
+            var valueStr = value.ToString() ?? "";
             while(true)
             {
                 var input = EditLine(valueStr, IsValidUnsignedIntegerChar);
+                if (string.IsNullOrWhiteSpace(input)) return null;
                 if (uint.TryParse(input, out var result))
                 {
                     return result;
@@ -51,12 +105,13 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 }
             }
         }
-        public static ushort EditInteger(ushort value, FBColors? errorColors = null)
+        public static ushort? EditInteger(ushort? value, FBColors? errorColors = null)
         {
-            var valueStr = value.ToString();
+            var valueStr = value.ToString() ?? "";
             while(true)
             {
                 var input = EditLine(valueStr, IsValidUnsignedIntegerChar);
+                if (string.IsNullOrWhiteSpace(input)) return null;
                 if (ushort.TryParse(input, out var result))
                 {
                     return result;
@@ -68,12 +123,13 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 }
             }
         }
-        public static ushort EditInteger(byte value, FBColors? errorColors = null)
+        public static byte? EditInteger(byte? value, FBColors? errorColors = null)
         {
-            var valueStr = value.ToString();
+            var valueStr = value.ToString() ?? "";
             while(true)
             {
                 var input = EditLine(valueStr, IsValidUnsignedIntegerChar);
+                if (string.IsNullOrWhiteSpace(input)) return null;
                 if (byte.TryParse(input, out var result))
                 {
                     return result;
@@ -86,12 +142,13 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             }
         }
         
-        public static long EditInteger(long value, FBColors? errorColors = null)
+        public static long? EditInteger(long? value, FBColors? errorColors = null)
         {
-            var valueStr = value.ToString();
+            var valueStr = value.ToString() ?? "";
             while(true)
             {
                 var input = EditLine(valueStr, IsValidIntegerChar);
+                if (string.IsNullOrWhiteSpace(input)) return null;
                 if (long.TryParse(input, out var result))
                 {
                     return result;
@@ -103,12 +160,13 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 }
             }
         }
-        public static int EditInteger(int value, FBColors? errorColors = null)
+        public static int? EditInteger(int? value, FBColors? errorColors = null)
         {
-            var valueStr = value.ToString();
+            var valueStr = value.ToString() ?? "";
             while(true)
             {
                 var input = EditLine(valueStr, IsValidIntegerChar);
+                if (string.IsNullOrWhiteSpace(input)) return null;
                 if (int.TryParse(input, out var result))
                 {
                     return result;
@@ -120,13 +178,32 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 }
             }
         }
-        public static short EditInteger(short value, FBColors? errorColors = null)
+        public static short? EditInteger(short? value, FBColors? errorColors = null)
         {
-            var valueStr = value.ToString();
+            var valueStr = value.ToString() ?? "";
             while(true)
             {
                 var input = EditLine(valueStr, IsValidIntegerChar);
+                if (string.IsNullOrWhiteSpace(input)) return null;
                 if (short.TryParse(input, out var result))
+                {
+                    return result;
+                }
+                else
+                {
+                    PrintErrorMessage(errorColors);
+                    valueStr = input;
+                }
+            }
+        }
+        public static sbyte? EditInteger(sbyte? value, FBColors? errorColors = null)
+        {
+            var valueStr = value.ToString() ?? "";
+            while(true)
+            {
+                var input = EditLine(valueStr, IsValidIntegerChar);
+                if (string.IsNullOrWhiteSpace(input)) return null;
+                if (sbyte.TryParse(input, out var result))
                 {
                     return result;
                 }
