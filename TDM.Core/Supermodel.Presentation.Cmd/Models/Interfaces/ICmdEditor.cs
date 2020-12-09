@@ -1,5 +1,7 @@
 ﻿#nullable enable
 
+using Supermodel.DataAnnotations.Validations;
+
 namespace Supermodel.Presentation.Cmd.Models.Interfaces
 {
     public interface ICmdEditor

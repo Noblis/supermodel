@@ -1,12 +1,15 @@
 ﻿#nullable enable
 
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Supermodel.DataAnnotations.Exceptions;
 using Supermodel.DataAnnotations.Expressions;
+using Supermodel.DataAnnotations.Validations;
 using Supermodel.DataAnnotations.Validations.Attributes;
 using Supermodel.Presentation.Cmd.ConsoleOutput;
+using Supermodel.Presentation.Cmd.Models;
 using Supermodel.Presentation.Cmd.Models.Interfaces;
 
 namespace Supermodel.Presentation.Cmd.Rendering
@@ -116,58 +119,41 @@ namespace Supermodel.Presentation.Cmd.Rendering
         #endregion
 
         #region Render Validation Methods
-        //public static ICmdOutput ValidationSummary(object? ulAttributes = null, object? liAttributes = null)
-        //{
-        //    if (HttpContext.Current.ValidationResultList.IsValid) return new Tags();
+        public static void ShowValidationSummary(FBColors? colors = null)
+        {
+            var vrl = ValidationContext.ValidationResultList;
+            
+            if (vrl == null || vrl.IsValid) return;
 
-        //    var ulTag = new Ul(ulAttributes)
-        //    { 
-        //        new CodeBlock(() => 
-        //        { 
-        //            var errorMessages = HttpContext.Current.ValidationResultList.Select(x => x.ErrorMessage);
-        //            var tags = new Tags();
-        //            foreach (var errorMessage in errorMessages)
-        //            {
-        //                tags.Add(new Li(liAttributes) { new Txt(errorMessage) });
-        //            }
-        //            return tags;
-        //        })
-        //    };
-        //    return ulTag;
-        //}
-        //public static ICmdOutput ValidationMessageFor<TModel, TValue>(TModel model, Expression<Func<TModel, TValue>> propertyExpression, object? attributes = null, bool returnDiv = false)
-        //{
-        //    var propertyName = Helper.GetPropertyName(model, propertyExpression);
-        //    return ValidationMessage(model, propertyName, attributes, returnDiv);
-        //}
-        //public static ICmdOutput ValidationMessage<TModel>(TModel model, string expression, object? attributes = null, bool returnDiv = false)
-        //{
-        //    if (HttpContext.Current.ValidationResultList.IsValid) return new Tags();
+            colors?.SetColors();
 
-        //    var prefix = HttpContext.Current.PrefixManager.CurrentPrefix;
+            var errorMessages = vrl.Select(x => x.ErrorMessage);
+            foreach (var errorMessage in errorMessages)
+            {
+                Console.WriteLine($" - {errorMessage}");
+            }
+        }
+        public static void ShowValidationMessageFor<TModel, TValue>(TModel model, Expression<Func<TModel, TValue>> propertyExpression, FBColors? colors = null)
+        {
+            var propertyName = Helper.GetPropertyName(model, propertyExpression);
+            ShowValidationMessage(model, propertyName, colors);
+        }
+        public static void ShowValidationMessage<TModel>(TModel model, string expression, FBColors? colors = null)
+        {
+            var vrl = ValidationContext.ValidationResultList;
+            
+            if (vrl == null || vrl.IsValid) return;
 
-        //    if (model == null) throw new ArgumentNullException(nameof(model));
+            if (model == null) throw new ArgumentNullException(nameof(model));
 
-        //    if (!string.IsNullOrEmpty(prefix) && !string.IsNullOrEmpty(expression)) prefix = $"{prefix}.";
-        //    var id = $"{prefix}{expression}".ToHtmlId();
-        //    var name = id.ToHtmlName();
+            var name = expression;
 
-        //    var errors = HttpContext.Current.ValidationResultList.GetAllErrorsFor(name);
-        //    if (!errors.Any()) return new Tags();
+            var errors = vrl.GetAllErrorsFor(name);
+            if (!errors.Any()) return;
 
-        //    if (returnDiv)
-        //    {
-        //        var divTag = new Span(new { data_valmsg_for=id }) { new Txt( errors.First()) };
-        //        divTag.AddOrUpdateAttr(attributes);
-        //        return divTag;
-        //    }
-        //    else
-        //    {
-        //        var spanTag = new Span(new { data_valmsg_for=id }) { new Txt( errors.First()) };
-        //        spanTag.AddOrUpdateAttr(attributes);
-        //        return spanTag;
-        //    }
-        //}
+            colors?.SetColors();
+            Console.Write(errors.First());
+        }
         #endregion
 
         #region Render Editor Methods

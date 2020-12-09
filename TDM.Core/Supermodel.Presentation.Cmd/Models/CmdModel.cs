@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
+using Supermodel.DataAnnotations.Validations;
 using Supermodel.DataAnnotations.Validations.Attributes;
 using Supermodel.Presentation.Cmd.ConsoleOutput;
 using Supermodel.Presentation.Cmd.Models.Interfaces;
@@ -40,6 +41,10 @@ namespace Supermodel.Presentation.Cmd.Models
 
                 //Value
                 CmdRender.Display(this, propertyInfo.Name, CmdScaffoldingSettings.DisplayValue);
+
+                //Validation Error
+                Console.Write(" ");
+                CmdRender.ShowValidationMessage(this, propertyInfo.Name, CmdScaffoldingSettings.ValidationErrorMessage);
 
                 //New Line
                 Console.WriteLine();
