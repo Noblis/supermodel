@@ -87,7 +87,15 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
         #endregion
         
         #region IConsoleOutput
-        public virtual void WriteToConsole(bool writeLine)
+        public virtual void WriteLineToConsole()
+        {
+            WriteToConsole(true);
+        }
+        public virtual void WriteToConsole()
+        {
+            WriteToConsole(false);
+        }
+        protected virtual void WriteToConsole(bool writeLine)
         {
             var currentColorChange = new ColorChange(0, null, null);
             

@@ -358,7 +358,7 @@ namespace Supermodel.Presentation.Cmd.Rendering
             else if(typeof(ICmdOutput).IsAssignableFrom(propertyType))
             {
                 var iCmdOutput = (ICmdOutput)(propertyValue ?? StringWithColor.Empty);
-                iCmdOutput.WriteToConsole(false);
+                iCmdOutput.WriteToConsole();
             }
 
             //strings

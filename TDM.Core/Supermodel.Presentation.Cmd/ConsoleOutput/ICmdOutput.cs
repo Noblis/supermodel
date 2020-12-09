@@ -4,6 +4,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
 {
     public interface ICmdOutput
     {
-        void WriteToConsole(bool writeLine);
+        void WriteToConsole();
+        void WriteLineToConsole();
     }
 }
