@@ -2,24 +2,34 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
+using Supermodel.DataAnnotations.Expressions;
 using Supermodel.Presentation.Cmd.Models;
+using Supermodel.Presentation.Cmd.Rendering;
 
 namespace Supermodel.Presentation.Cmd.ConsoleOutput
 {
     public static class ConsoleExt
     {
         #region EmbeddedTypes
-        public class Option
+        public class SelectListItem
         {
-            public Option(string value, string label, bool isDisabled = false)
+            #region Constructors
+            public SelectListItem(string value, string label)
             {
                 Value = value;
                 Label = label;
-                IsDisabled = isDisabled;
             }
+            #endregion
+
+            #region Properties
             public string Value { get; }
             public string Label { get; }
-            public bool IsDisabled { get; }
+            #endregion
+
+            #region Static constants
+            public static SelectListItem Empty { get; } = new SelectListItem("", "");
+            #endregion
         }
         #endregion
         
@@ -495,13 +505,69 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             }
             return new string(chars.ToArray ());
         }
+        #endregion
 
-        public static string EditSelect(string selectedValue, List<Option> options, FBColors selectArrowsColors, FBColors? errorColors = null)
+        #region Generic Dropdown List
+        public static string EditDropdownListForModel(string? model, IEnumerable<SelectListItem> options, FBColors? valueColors = null, FBColors? arrowColors = null)
         {
+            return EditDropdownList(model, "", options, valueColors, arrowColors);
+        }
+        public static string EditDropdownListFor<TModel, TValue>(TModel model, Expression<Func<TModel, TValue>> propertyExpression, IEnumerable<SelectListItem> options, FBColors? valueColors = null, FBColors? arrowColors = null)
+        {
+            var propertyName = CmdRender.Helper.GetPropertyName(model, propertyExpression);
+            return EditDropdownList(model, propertyName, options, valueColors, arrowColors);
+        }
+        public static string EditDropdownList<TModel>(TModel model, string expression, IEnumerable<SelectListItem> options, FBColors? valueColors = null, FBColors? arrowColors = null)
+        {
+            if (model == null && !string.IsNullOrEmpty(expression)) throw new ArgumentNullException(nameof(model));
+
+            object? propertyValue;
+            if (model == null) 
+            {
+                if (!string.IsNullOrEmpty(expression)) throw new ArgumentNullException(nameof(model));
+                propertyValue = "";
+            }
+            else 
+            {
+                (_, _, propertyValue) = model.GetPropertyInfoPropertyTypeAndValueByFullName(expression);
+            }
+            
+            var cursorLeft = Console.CursorLeft;
             var cursorTop = Console.CursorTop;
+            var currentIdx = -1;
 
+            foreach (var selectOption in options)
+            {
+                if (propertyValue?.ToString() == selectOption.Value) 
+                {
+                    valueColors?.SetColors();
+                    Console.Write(selectOption.Label);
 
+                    arrowColors?.SetColors();
+                    Console.Write('▼');
+                }
+            }
 
+            while(true)
+            {
+                var info = Console.ReadKey(true);
+                if (info.Key == ConsoleKey.Enter)
+                {
+
+                }
+                if (info.Key == ConsoleKey.Escape)
+                {
+
+                }
+                if (info.Key == ConsoleKey.DownArrow)
+                {
+
+                }
+                if (info.Key == ConsoleKey.UpArrow)
+                {
+
+                }
+            }
         }
 
         #endregion

@@ -1,9 +1,10 @@
 ﻿#nullable enable
 
 using System;
-using System.ComponentModel;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Supermodel.DataAnnotations.Validations.Attributes;
+using Supermodel.Presentation.Cmd.ConsoleOutput;
 using Supermodel.Presentation.Cmd.Models;
 using Supermodel.Presentation.Cmd.Rendering;
 
@@ -33,16 +34,26 @@ namespace CmdTester
             //var text = ConsoleExt.ReadPasswordLine();
             //Console.WriteLine(text);
 
-            var ilya = new Student();
-            CmdContext.ValidationResultList.Clear();
+            //var ilya = new Student();
+            //CmdContext.ValidationResultList.Clear();
             //CmdContext.ValidationResultList.AddValidationResult(ilya, "Bad First Name", x => x.FirstName);
-            CmdContext.ValidationResultList.AddValidationResult(ilya, "Bad DOB", x => x.DateOfBirth);
+            //CmdContext.ValidationResultList.AddValidationResult(ilya, "Bad DOB", x => x.DateOfBirth);
 
-            CmdRender.DisplayForModel(ilya);
-            Console.WriteLine();
-            ilya = CmdRender.EditForModel(ilya);
-            Console.WriteLine();
-            CmdRender.DisplayForModel(ilya);
+            //CmdRender.DisplayForModel(ilya);
+            //Console.WriteLine();
+            //ilya = CmdRender.EditForModel(ilya);
+            //Console.WriteLine();
+            //CmdRender.DisplayForModel(ilya);
+
+            var optionsList = new List<ConsoleExt.SelectListItem> 
+            { 
+                new ConsoleExt.SelectListItem("A", "Letter A"),
+                new ConsoleExt.SelectListItem("B", "Letter B"),
+                new ConsoleExt.SelectListItem("C", "Letter C"),
+                new ConsoleExt.SelectListItem("D", "Letter D"),
+
+            };
+            ConsoleExt.EditDropdownListForModel("B", optionsList, new FBColors(ConsoleColor.White), new FBColors(ConsoleColor.Blue));
         }
     }
 }
