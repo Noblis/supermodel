@@ -2,7 +2,9 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 using Supermodel.DataAnnotations.Validations.Attributes;
+using Supermodel.Presentation.Cmd.Controllers;
 using Supermodel.Presentation.Cmd.Models;
 using Supermodel.Presentation.Cmd.Rendering;
 
@@ -19,9 +21,13 @@ namespace CmdTester
             public double GPA { get; set; } = 3.8;
             [ForceRequiredLabel] public bool? Jewish { get; set; } = true;
         }
+
+        //public class StudentCmdController : CRUDCmdController<Student>
         
-        static void Main()
+        static async Task Main()
         {
+            //var controiller = new 
+            
             //var ilya = new StringWithColor("Ilya", ConsoleColor.Red);
             //var basin = new StringWithColor("Basin", ConsoleColor.Blue);
 
@@ -32,16 +38,16 @@ namespace CmdTester
             //var text = ConsoleExt.ReadPasswordLine();
             //Console.WriteLine(text);
 
-            var ilya = new Student();
-            CmdContext.ValidationResultList.Clear();
-            CmdContext.ValidationResultList.AddValidationResult(ilya, "Bad First Name", x => x.FirstName);
-            CmdContext.ValidationResultList.AddValidationResult(ilya, "Bad DOB", x => x.DateOfBirth);
+            //var ilya = new Student();
+            //CmdContext.ValidationResultList.Clear();
+            //CmdContext.ValidationResultList.AddValidationResult(ilya, "Bad First Name", x => x.FirstName);
+            //CmdContext.ValidationResultList.AddValidationResult(ilya, "Bad DOB", x => x.DateOfBirth);
 
-            CmdRender.DisplayForModel(ilya);
-            Console.WriteLine();
-            ilya = CmdRender.EditForModel(ilya);
-            Console.WriteLine();
-            CmdRender.DisplayForModel(ilya);
+            //CmdRender.DisplayForModel(ilya);
+            //Console.WriteLine();
+            //ilya = CmdRender.EditForModel(ilya);
+            //Console.WriteLine();
+            //CmdRender.DisplayForModel(ilya);
 
             //var optionsList = new List<ConsoleExt.SelectListItem> 
             //{ 
