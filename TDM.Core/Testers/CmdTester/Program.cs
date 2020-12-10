@@ -17,7 +17,7 @@ namespace CmdTester
             public DateTime DateOfBirth { get; set; } = DateTime.Parse("12/18/1974");
             public int NumberOfKids { get; set; } = 2;
             public double GPA { get; set; } = 3.8;
-            [ForceRequiredLabel] public bool Jewish { get; set; } = true;
+            [ForceRequiredLabel] public bool? Jewish { get; set; } = true;
         }
         
         static void Main()
@@ -34,7 +34,7 @@ namespace CmdTester
 
             var ilya = new Student();
             CmdContext.ValidationResultList.Clear();
-            CmdContext.ValidationResultList.AddValidationResult(ilya, "Bad First Name", x => x.FirstName);
+            //CmdContext.ValidationResultList.AddValidationResult(ilya, "Bad First Name", x => x.FirstName);
             CmdContext.ValidationResultList.AddValidationResult(ilya, "Bad DOB", x => x.DateOfBirth);
 
             CmdRender.DisplayForModel(ilya);

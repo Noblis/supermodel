@@ -21,6 +21,8 @@ namespace Supermodel.Presentation.Cmd.Models
         {
             foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
             {
+                var required = propertyInfo.HasAttribute<RequiredAttribute>();
+
                 //Label
                 var hideLabelAttribute = propertyInfo.GetAttribute<HideLabelAttribute>();
                 if (hideLabelAttribute == null)
@@ -29,7 +31,7 @@ namespace Supermodel.Presentation.Cmd.Models
                     if (!propertyInfo.HasAttribute<NoRequiredLabelAttribute>())
                     {
                         var currentColors = FBColors.FromCurrent();
-                        if (propertyInfo.HasAttribute<RequiredAttribute>() || propertyInfo.HasAttribute<ForceRequiredLabelAttribute>()) 
+                        if (required || propertyInfo.HasAttribute<ForceRequiredLabelAttribute>()) 
                         {
                             CmdScaffoldingSettings.RequiredMarker.WriteToConsole();
                         }
@@ -39,7 +41,10 @@ namespace Supermodel.Presentation.Cmd.Models
                 }
 
                 //Value
-                CmdRender.Display(this, propertyInfo.Name, CmdScaffoldingSettings.DisplayValue);
+                using(CmdContext.NewRequiredScope(required, GetType().GetDisplayNameForProperty(propertyInfo.Name)))
+                {
+                    CmdRender.Display(this, propertyInfo.Name, CmdScaffoldingSettings.DisplayValue);
+                }
 
                 //Validation Error
                 if (CmdContext.ValidationResultList.GetAllErrorsFor(propertyInfo.Name).Any())
@@ -57,6 +62,8 @@ namespace Supermodel.Presentation.Cmd.Models
         {
             foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
             {
+                var required = propertyInfo.HasAttribute<RequiredAttribute>();
+                
                 //Label
                 var hideLabelAttribute = propertyInfo.GetAttribute<HideLabelAttribute>();
                 if (hideLabelAttribute == null)
@@ -65,7 +72,7 @@ namespace Supermodel.Presentation.Cmd.Models
                     if (!propertyInfo.HasAttribute<NoRequiredLabelAttribute>())
                     {
                         var currentColors = FBColors.FromCurrent();
-                        if (propertyInfo.HasAttribute<RequiredAttribute>() || propertyInfo.HasAttribute<ForceRequiredLabelAttribute>()) 
+                        if (required || propertyInfo.HasAttribute<ForceRequiredLabelAttribute>()) 
                         {
                             CmdScaffoldingSettings.RequiredMarker.WriteToConsole();
                         }
@@ -75,22 +82,25 @@ namespace Supermodel.Presentation.Cmd.Models
                 }
                 
                 //Value
-                if (!propertyInfo.HasAttribute<DisplayOnlyAttribute>())
+                using(CmdContext.NewRequiredScope(required, GetType().GetDisplayNameForProperty(propertyInfo.Name)))
                 {
-                    object? newPropertyValue;
-                    if (CmdContext.ValidationResultList.GetAllErrorsFor(propertyInfo.Name).Any())
+                    if (!propertyInfo.HasAttribute<DisplayOnlyAttribute>())
                     {
-                        newPropertyValue = CmdRender.Edit(this, propertyInfo.Name, CmdScaffoldingSettings.InvalidEditValue);
+                        object? newPropertyValue;
+                        if (CmdContext.ValidationResultList.GetAllErrorsFor(propertyInfo.Name).Any())
+                        {
+                            newPropertyValue = CmdRender.Edit(this, propertyInfo.Name, CmdScaffoldingSettings.InvalidEditValue, CmdScaffoldingSettings.InvalidValueMessage);
+                        }
+                        else
+                        {
+                            newPropertyValue = CmdRender.Edit(this, propertyInfo.Name, CmdScaffoldingSettings.EditValue, CmdScaffoldingSettings.InvalidValueMessage);
+                        }
+                        this.PropertySet(propertyInfo.Name, newPropertyValue);
                     }
                     else
                     {
-                        newPropertyValue = CmdRender.Edit(this, propertyInfo.Name, CmdScaffoldingSettings.EditValue);
+                        CmdRender.Display(this, propertyInfo.Name, CmdScaffoldingSettings.DisplayValue);
                     }
-                    this.PropertySet(propertyInfo.Name, newPropertyValue);
-                }
-                else
-                {
-                    CmdRender.Display(this, propertyInfo.Name, CmdScaffoldingSettings.DisplayValue);
                 }
             }
             return this;

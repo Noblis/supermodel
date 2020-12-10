@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using Supermodel.Presentation.Cmd.Models;
 
 namespace Supermodel.Presentation.Cmd.ConsoleOutput
 {
@@ -16,7 +17,13 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             while(true)
             {
                 var input = EditLine(valueStr, IsValidUnsignedIntegerChar);
-                if (string.IsNullOrWhiteSpace(input)) return null;
+                if (string.IsNullOrWhiteSpace(input)) 
+                {
+                    if (!CmdContext.IsPropertyRequired) return null;
+                    PrintRequiredFieldMessage(errorColors);
+                    continue;
+                }
+
                 if (DateTime.TryParse(input, out var result))
                 {
                     return result;
@@ -37,7 +44,12 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             while(true)
             {
                 var input = EditLine(valueStr, x => x == 'Y' || x == 'y' || x == 'N' || x == 'n');
-                if (string.IsNullOrWhiteSpace(input)) return null;
+                if (string.IsNullOrWhiteSpace(input)) 
+                {
+                    if (!CmdContext.IsPropertyRequired) return null;
+                    PrintRequiredFieldMessage(errorColors);
+                    continue;
+                }
                 
                 var trimmedInput = input.Trim().ToLower();
                 if (trimmedInput == "y") 
@@ -64,7 +76,13 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             while(true)
             {
                 var input = EditLine(valueStr, IsValidUnsignedIntegerChar);
-                if (string.IsNullOrWhiteSpace(input)) return null;
+                if (string.IsNullOrWhiteSpace(input)) 
+                {
+                    if (!CmdContext.IsPropertyRequired) return null;
+                    PrintRequiredFieldMessage(errorColors);
+                    continue;
+                }
+
                 if (decimal.TryParse(input, out var result))
                 {
                     return result;
@@ -82,7 +100,13 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             while(true)
             {
                 var input = EditLine(valueStr, IsValidUnsignedIntegerChar);
-                if (string.IsNullOrWhiteSpace(input)) return null;
+                if (string.IsNullOrWhiteSpace(input)) 
+                {
+                    if (!CmdContext.IsPropertyRequired) return null;
+                    PrintRequiredFieldMessage(errorColors);
+                    continue;
+                }
+
                 if (double.TryParse(input, out var result))
                 {
                     return result;
@@ -100,7 +124,13 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             while(true)
             {
                 var input = EditLine(valueStr, IsValidUnsignedIntegerChar);
-                if (string.IsNullOrWhiteSpace(input)) return null;
+                if (string.IsNullOrWhiteSpace(input)) 
+                {
+                    if (!CmdContext.IsPropertyRequired) return null;
+                    PrintRequiredFieldMessage(errorColors);
+                    continue;
+                }
+
                 if (float.TryParse(input, out var result))
                 {
                     return result;
@@ -121,7 +151,13 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             while(true)
             {
                 var input = EditLine(valueStr, IsValidUnsignedIntegerChar);
-                if (string.IsNullOrWhiteSpace(input)) return null;
+                if (string.IsNullOrWhiteSpace(input)) 
+                {
+                    if (!CmdContext.IsPropertyRequired) return null;
+                    PrintRequiredFieldMessage(errorColors);
+                    continue;
+                }
+
                 if (ulong.TryParse(input, out var result))
                 {
                     return result;
@@ -139,7 +175,13 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             while(true)
             {
                 var input = EditLine(valueStr, IsValidUnsignedIntegerChar);
-                if (string.IsNullOrWhiteSpace(input)) return null;
+                if (string.IsNullOrWhiteSpace(input)) 
+                {
+                    if (!CmdContext.IsPropertyRequired) return null;
+                    PrintRequiredFieldMessage(errorColors);
+                    continue;
+                }
+
                 if (uint.TryParse(input, out var result))
                 {
                     return result;
@@ -157,7 +199,13 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             while(true)
             {
                 var input = EditLine(valueStr, IsValidUnsignedIntegerChar);
-                if (string.IsNullOrWhiteSpace(input)) return null;
+                if (string.IsNullOrWhiteSpace(input)) 
+                {
+                    if (!CmdContext.IsPropertyRequired) return null;
+                    PrintRequiredFieldMessage(errorColors);
+                    continue;
+                }
+
                 if (ushort.TryParse(input, out var result))
                 {
                     return result;
@@ -175,7 +223,13 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             while(true)
             {
                 var input = EditLine(valueStr, IsValidUnsignedIntegerChar);
-                if (string.IsNullOrWhiteSpace(input)) return null;
+                if (string.IsNullOrWhiteSpace(input)) 
+                {
+                    if (!CmdContext.IsPropertyRequired) return null;
+                    PrintRequiredFieldMessage(errorColors);
+                    continue;
+                }
+
                 if (byte.TryParse(input, out var result))
                 {
                     return result;
@@ -194,7 +248,13 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             while(true)
             {
                 var input = EditLine(valueStr, IsValidIntegerChar);
-                if (string.IsNullOrWhiteSpace(input)) return null;
+                if (string.IsNullOrWhiteSpace(input)) 
+                {
+                    if (!CmdContext.IsPropertyRequired) return null;
+                    PrintRequiredFieldMessage(errorColors);
+                    continue;
+                }
+
                 if (long.TryParse(input, out var result))
                 {
                     return result;
@@ -212,7 +272,13 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             while(true)
             {
                 var input = EditLine(valueStr, IsValidIntegerChar);
-                if (string.IsNullOrWhiteSpace(input)) return null;
+                if (string.IsNullOrWhiteSpace(input)) 
+                {
+                    if (!CmdContext.IsPropertyRequired) return null;
+                    PrintRequiredFieldMessage(errorColors);
+                    continue;
+                }
+
                 if (int.TryParse(input, out var result))
                 {
                     return result;
@@ -230,7 +296,13 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             while(true)
             {
                 var input = EditLine(valueStr, IsValidIntegerChar);
-                if (string.IsNullOrWhiteSpace(input)) return null;
+                if (string.IsNullOrWhiteSpace(input)) 
+                {
+                    if (!CmdContext.IsPropertyRequired) return null;
+                    PrintRequiredFieldMessage(errorColors);
+                    continue;
+                }
+
                 if (short.TryParse(input, out var result))
                 {
                     return result;
@@ -248,7 +320,13 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             while(true)
             {
                 var input = EditLine(valueStr, IsValidIntegerChar);
-                if (string.IsNullOrWhiteSpace(input)) return null;
+                if (string.IsNullOrWhiteSpace(input)) 
+                {
+                    if (!CmdContext.IsPropertyRequired) return null;
+                    PrintRequiredFieldMessage(errorColors);
+                    continue;
+                }
+
                 if (sbyte.TryParse(input, out var result))
                 {
                     return result;
@@ -263,13 +341,33 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
         #endregion
         
         #region Edit String & Password
-        public static string EditString(string value)
+        public static string EditString(string value, FBColors? errorColors = null)
         {
-            return EditLine(value, x => char.IsLetterOrDigit(x) || char.IsSymbol(x) || char.IsPunctuation(x) || char.IsSeparator(x));
+            while(true)
+            {
+                var input = EditLine(value, x => char.IsLetterOrDigit(x) || char.IsSymbol(x) || char.IsPunctuation(x) || char.IsSeparator(x));
+                if (string.IsNullOrWhiteSpace(input)) 
+                {
+                    if (!CmdContext.IsPropertyRequired) return "";
+                    PrintRequiredFieldMessage(errorColors);
+                    continue;
+                }
+                return input;
+            }
         }
-        public static string ReadPasswordLine()
+        public static string ReadPasswordLine(FBColors? errorColors = null)
         {
-            return ReadPasswordLine(x => char.IsLetterOrDigit(x) || char.IsSymbol(x) || char.IsPunctuation(x) || char.IsSeparator(x));
+            while(true)
+            {
+                var input = ReadPasswordLine(x => char.IsLetterOrDigit(x) || char.IsSymbol(x) || char.IsPunctuation(x) || char.IsSeparator(x));
+                if (string.IsNullOrWhiteSpace(input)) 
+                {
+                    if (!CmdContext.IsPropertyRequired) return "";
+                    PrintRequiredFieldMessage(errorColors);
+                    continue;
+                }
+                return input;
+            }
         }
         #endregion
 
@@ -388,6 +486,16 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
 
         #region Private Helpers
         private static void PrintErrorMessage(FBColors? errorColors = null)
+        {
+            var currentColors = FBColors.FromCurrent();
+            errorColors?.SetColors();
+
+            if (CmdContext.PropertyDisplayName != null) Console.Write($"The {CmdContext.PropertyDisplayName} is required. Try again:");
+            else Console.Write($"This field is required. Try again:");
+
+            currentColors.SetColors();
+        }
+        private static void PrintRequiredFieldMessage(FBColors? errorColors = null)
         {
             var currentColors = FBColors.FromCurrent();
             errorColors?.SetColors();

@@ -14,7 +14,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
         {
             return new FBColors(Console.ForegroundColor, Console.BackgroundColor);
         }
-        public static FBColors ReverseFromCurrent()
+        public static FBColors FromCurrentInverse()
         {
             return new FBColors(Console.BackgroundColor, Console.ForegroundColor);
         }
