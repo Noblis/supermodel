@@ -3,10 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using Supermodel.DataAnnotations.Expressions;
 using Supermodel.Presentation.Cmd.Models;
-using Supermodel.Presentation.Cmd.Rendering;
 
 namespace Supermodel.Presentation.Cmd.ConsoleOutput
 {
@@ -70,7 +67,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
         public static bool EditBool(bool? value, FBColors? arrowColors = null, FBColors? errorColors = null)
         {
             var valueStr = value == true ? "Yes" : "No";
-            var result = EditDropdownListForModel(valueStr, BoolOptions, CmdScaffoldingSettings.DropdownArrow);
+            var result = EditDropdownList(valueStr, BoolOptions, CmdScaffoldingSettings.DropdownArrow);
             return result == "Yes";
         }
         private static SelectListItem[] BoolOptions { get; } = new []{ new SelectListItem("Yes"), new SelectListItem("No")};
@@ -362,7 +359,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 return input;
             }
         }
-        public static string ReadPasswordLine(FBColors? errorColors = null)
+        public static string ReadPassword(FBColors? errorColors = null)
         {
             while(true)
             {
@@ -378,7 +375,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
         }
         #endregion
 
-        #region Generic Edit Line
+        #region Low Level Edit Line
         public static string EditLine(string value, Func<char, bool> isValidCharFunc)
         {
             var cursorLeft = Console.CursorLeft;
@@ -491,35 +488,11 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
         }
         #endregion
 
-        #region Generic Dropdown List
-        public static string EditDropdownListForModel(string? model, IEnumerable<SelectListItem> options, FBColors? arrowColors = null)
+        #region Low Level Dropdown List
+        public static string EditDropdownList(string value, IEnumerable<SelectListItem> options, FBColors? arrowColors = null)
         {
-            return EditDropdownList(model, "", options, arrowColors);
-        }
-        public static string EditDropdownListFor<TModel>(TModel model, Expression<Func<TModel, string>> propertyExpression, IEnumerable<SelectListItem> options, FBColors? arrowColors = null)
-        {
-            var propertyName = CmdRender.Helper.GetPropertyName(model, propertyExpression);
-            return EditDropdownList(model, propertyName, options, arrowColors);
-        }
-        public static string EditDropdownList<TModel>(TModel model, string expression, IEnumerable<SelectListItem> options, FBColors? arrowColors = null)
-        {
-            if (model == null && !string.IsNullOrEmpty(expression)) throw new ArgumentNullException(nameof(model));
-
-            object? objPropertyValue;
-            if (model == null) 
-            {
-                if (!string.IsNullOrEmpty(expression)) throw new ArgumentNullException(nameof(model));
-                objPropertyValue = "";
-            }
-            else 
-            {
-                (_, _, objPropertyValue) = model.GetPropertyInfoPropertyTypeAndValueByFullName(expression);
-            }
-            if (!(objPropertyValue is string)) throw new ArgumentException("Must evaluate to a string", nameof(expression));
-            var propertyValue = (string?)objPropertyValue;
-            
             var optionsArray = options.ToArray();
-            var selectedOption = optionsArray.Single(x => x.Value == propertyValue);
+            var selectedOption = optionsArray.Single(x => x.Value == value);
             bool originalValue = true;
             
             var cursorLeft = Console.CursorLeft;
@@ -540,7 +513,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 }
                 if (info.Key == ConsoleKey.Escape) 
                 {
-                    selectedOption = optionsArray.Single(x => x.Value == propertyValue);
+                    selectedOption = optionsArray.Single(x => x.Value == value);
                     PrintOption(selectedOption, maxLenPlus2, cursorLeft, cursorTop, currentColors, arrowColors);
                     Console.WriteLine(); 
                     return selectedOption!.Value;
@@ -579,7 +552,9 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 }
             }
         }
+        #endregion
 
+        #region Private Helpers
         private static void PrintOption(SelectListItem selectedOption, int maxLenPlus2, int cursorLeft, int cursorTop, FBColors? valueColors, FBColors? arrowColors)
         {
             //Erase the old value
@@ -595,9 +570,6 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             arrowColors?.SetColors();
             Console.Write('▼');
         }
-        #endregion
-
-        #region Private Helpers
         private static void PrintErrorMessage(FBColors? errorColors = null)
         {
             var currentColors = FBColors.FromCurrent();
