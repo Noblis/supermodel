@@ -1,32 +1,20 @@
 ﻿#nullable enable
 
-using System;
-using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
-using Supermodel.DataAnnotations.Validations.Attributes;
+using Domain.Entities;
+using Domain.Supermodel.Persistence;
 using Supermodel.Presentation.Cmd.Controllers;
-using Supermodel.Presentation.Cmd.Models;
-using Supermodel.Presentation.Cmd.Rendering;
 
 namespace CmdTester
 {
+    //public class TDMUserCmdController : CRUDCmdController<TDMUser, TDMUserCmdModel, DataContext> { }
+
     class Program
     {
-        public class Student : CmdModel
-        {
-            [Required/*, DisplayName("↕")*/] public string FirstName { get; set; } = "Ilya";
-            public string LastName { get; set; } = "Basin";
-            public DateTime DateOfBirth { get; set; } = DateTime.Parse("12/18/1974");
-            public int NumberOfKids { get; set; } = 2;
-            public double GPA { get; set; } = 3.8;
-            [ForceRequiredLabel] public bool? Jewish { get; set; } = true;
-        }
-
-        //public class StudentCmdController : CRUDCmdController<Student>
-        
         static async Task Main()
         {
-            //var controiller = new 
+            var controller = new CRUDCmdController<TDMUser, TDMUserCmdModel, DataContext>();
+            await controller.ShowListAsync();
             
             //var ilya = new StringWithColor("Ilya", ConsoleColor.Red);
             //var basin = new StringWithColor("Basin", ConsoleColor.Blue);

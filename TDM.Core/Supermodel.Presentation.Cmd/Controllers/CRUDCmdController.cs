@@ -15,20 +15,20 @@ using Supermodel.ReflectionMapper;
 
 namespace Supermodel.Presentation.Cmd.Controllers
 {
-    public abstract class CRUDCmdController<TEntity, TCmdModel, TDataContext> : CRUDCmdController<TEntity, TCmdModel, TCmdModel, TDataContext>
+    public class CRUDCmdController<TEntity, TCmdModel, TDataContext> : CRUDCmdController<TEntity, TCmdModel, TCmdModel, TDataContext>
         where TEntity : class, IEntity, new()
         where TCmdModel : CmdModelForEntity<TEntity>, new()
         where TDataContext : class, IDataContext, new()
     { }
 
-    public abstract class CRUDCmdController<TEntity, TDetailMvcModel, TListMvcModel, TDataContext>
+    public class CRUDCmdController<TEntity, TDetailMvcModel, TListMvcModel, TDataContext>
         where TEntity : class, IEntity, new()
         where TDetailMvcModel : CmdModelForEntity<TEntity>, new()
         where TListMvcModel : CmdModelForEntity<TEntity>, new()
         where TDataContext : class, IDataContext, new()
     {
         #region Action Methods
-        public virtual async Task ListAsync()
+        public virtual async Task ShowListAsync()
         {
             await using (new UnitOfWork<TDataContext>(ReadOnly.Yes))
             {

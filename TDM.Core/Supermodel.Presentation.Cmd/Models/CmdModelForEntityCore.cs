@@ -1,6 +1,7 @@
 ﻿#nullable enable
 
 using System.ComponentModel.DataAnnotations;
+using System.Reflection.Emit;
 using System.Threading.Tasks;
 using Supermodel.Presentation.Cmd.ConsoleOutput;
 using Supermodel.ReflectionMapper;
@@ -26,7 +27,10 @@ namespace Supermodel.Presentation.Cmd.Models
 
         #region Standard Properties for Mvc Models
         [ScaffoldColumn(false)] public virtual long Id { get; set; }
-        [ScaffoldColumn(false), NotRMapped] public abstract StringWithColor Label { get; }
+ 
+        [ScaffoldColumn(false), NotRMapped] public virtual StringWithColor Label => new StringWithColor(LabelInternal);
+        [ScaffoldColumn(false), NotRMapped] protected abstract string LabelInternal { get; }
+        
         [ScaffoldColumn(false), NotRMapped] public virtual bool IsDisabled => false;
         #endregion
     }
