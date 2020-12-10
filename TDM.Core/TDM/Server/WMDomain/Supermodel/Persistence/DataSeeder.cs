@@ -13,6 +13,9 @@ namespace WMDomain.Supermodel.Persistence
             var users = new[]
             {
                 new TDMUser { FirstName="Ilya", LastName="Basin", Username="ilya.basin@noblis.org", Password="0" },
+                new TDMUser { FirstName="Mariya", LastName="Basin", Username="mariya.basin@noblis.org", Password="0" },
+                new TDMUser { FirstName="Andrew", LastName="Basin", Username="andrew.basin@noblis.org", Password="0" },
+                new TDMUser { FirstName="Natalie", LastName="Basin", Username="natalie.basin@noblis.org", Password="0" },
             };
             foreach (var user in users) user.Add();
 

@@ -19,7 +19,11 @@ namespace Supermodel.Presentation.Cmd.Controllers
         where TEntity : class, IEntity, new()
         where TCmdModel : CmdModelForEntity<TEntity>, new()
         where TDataContext : class, IDataContext, new()
-    { }
+    { 
+        #region Constructors
+        public CRUDCmdController(string listTitle) : base(listTitle) { }
+        #endregion
+    }
 
     public class CRUDCmdController<TEntity, TDetailMvcModel, TListMvcModel, TDataContext>
         where TEntity : class, IEntity, new()
@@ -27,6 +31,13 @@ namespace Supermodel.Presentation.Cmd.Controllers
         where TListMvcModel : CmdModelForEntity<TEntity>, new()
         where TDataContext : class, IDataContext, new()
     {
+        #region Constructors
+        public CRUDCmdController(string listTitle)
+        { 
+            ListTitle = listTitle;
+        }
+        #endregion
+
         #region Action Methods
         public virtual async Task ShowListAsync()
         {
@@ -43,11 +54,13 @@ namespace Supermodel.Presentation.Cmd.Controllers
                     if (mvcModelItem is IAsyncInit iAsyncInit && !iAsyncInit.AsyncInitialized) await iAsyncInit.InitAsync().ConfigureAwait(false);
                 }
 
+                ShowListTitle();
                 foreach (var mvcModel in mvcModels)
                 {
                     CmdScaffoldingSettings.ListId?.SetColors();
-                    Console.Write($"{mvcModel.Id}: ");    
-                    mvcModel.Label.WriteToConsole();
+                    Console.Write($"{mvcModel.Id}: "); 
+                    CmdScaffoldingSettings.DefaultListLabel?.SetColors();
+                    mvcModel.Label.WriteLineToConsole();
                 }
             }
         }
@@ -242,7 +255,13 @@ namespace Supermodel.Presentation.Cmd.Controllers
         {
             var repo = (ILinqDataRepo<TEntity>)RepoFactory.Create<TEntity>();
             return repo.Items;        }
-
+        protected virtual void ShowListTitle()
+        {
+            CmdScaffoldingSettings.ListTitle?.SetColors();
+            Console.WriteLine(ListTitle);
+            CmdScaffoldingSettings.ListTitleUnderline?.SetColors();
+            Console.WriteLine("".PadRight(ListTitle.Length).Replace(" ", "="));
+        }
         //this methods will catch validation exceptions that happen during mapping from mvc to domain (when it runs validation for mvc model by creating a domain object)
         //protected virtual async Task<Tuple<TEntity, TDetailMvcModel>> TryUpdateEntityAsync(TEntity entityItem, string prefix)
         //{
@@ -271,6 +290,10 @@ namespace Supermodel.Presentation.Cmd.Controllers
         //        throw new ModelStateInvalidException(mvcModelItem);
         //    }
         //}
+        #endregion
+
+        #region Properties
+        public string ListTitle { get; set; }
         #endregion
     }
 }

@@ -7,10 +7,13 @@ namespace Supermodel.Presentation.Cmd
 {
     public static class CmdScaffoldingSettings
     {
-        public static ConsoleColor BackgroundColor = ConsoleColor.Black;
+        public static ConsoleColor BackgroundColor { get; set; } = ConsoleColor.Black;
         
-        public static FBColors? ListId { get; set; } = new FBColors(ConsoleColor.Yellow, BackgroundColor);
-        public static FBColors? DefaultListLabel { get; set; } = new FBColors(ConsoleColor.White, BackgroundColor);
+        public static FBColors? ListTitle { get; set; } = new FBColors(ConsoleColor.Cyan, BackgroundColor);
+        public static FBColors? ListTitleUnderline { get; set; } = new FBColors(ConsoleColor.Cyan, BackgroundColor);
+
+        public static FBColors? ListId { get; set; } = new FBColors(ConsoleColor.Cyan, BackgroundColor);
+        public static FBColors? DefaultListLabel { get; set; } = new FBColors(ConsoleColor.Yellow, BackgroundColor);
         
         public static FBColors? EditLabel { get; set; } = new FBColors(ConsoleColor.Green, BackgroundColor);
         public static FBColors? DisplayLabel { get; set; } = new FBColors(ConsoleColor.Green, BackgroundColor);

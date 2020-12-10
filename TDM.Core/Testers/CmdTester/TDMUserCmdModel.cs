@@ -1,8 +1,8 @@
 ﻿#nullable enable
 
-using Domain.Entities;
 using Supermodel.DataAnnotations.Validations.Attributes;
 using Supermodel.Presentation.Cmd.Models;
+using WMDomain.Entities;
 
 namespace CmdTester
 {

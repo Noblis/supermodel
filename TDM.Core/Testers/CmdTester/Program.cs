@@ -1,9 +1,11 @@
 ﻿#nullable enable
 
 using System.Threading.Tasks;
-using Domain.Entities;
-using Domain.Supermodel.Persistence;
+using Supermodel.Persistence.EFCore;
+using Supermodel.Persistence.UnitOfWork;
 using Supermodel.Presentation.Cmd.Controllers;
+using WMDomain.Entities;
+using WMDomain.Supermodel.Persistence;
 
 namespace CmdTester
 {
@@ -13,8 +15,15 @@ namespace CmdTester
     {
         static async Task Main()
         {
-            var controller = new CRUDCmdController<TDMUser, TDMUserCmdModel, DataContext>();
-            await controller.ShowListAsync();
+            //This removes and recreates the database
+            await using (new UnitOfWork<DataContext>())
+            {
+                await EFCoreUnitOfWorkContext.Database.EnsureDeletedAsync();
+                await EFCoreUnitOfWorkContext.Database.EnsureCreatedAsync();
+                await UnitOfWorkContext.SeedDataAsync();
+            }
+            
+            await new CRUDCmdController<TDMUser, TDMUserCmdModel, DataContext>("Users").ShowListAsync();
             
             //var ilya = new StringWithColor("Ilya", ConsoleColor.Red);
             //var basin = new StringWithColor("Basin", ConsoleColor.Blue);
