@@ -1,5 +1,7 @@
 ﻿#nullable enable
 
+using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Supermodel.Persistence.EFCore;
 using Supermodel.Persistence.UnitOfWork;
@@ -14,12 +16,16 @@ namespace WMWeb
     {
         static async Task Main()
         {
-            //This removes and recreates the database
-            await using (new UnitOfWork<DataContext>())
+            if (Debugger.IsAttached || !await EFCoreUnitOfWorkContext.Database.CanConnectAsync())
             {
-                await EFCoreUnitOfWorkContext.Database.EnsureDeletedAsync();
-                await EFCoreUnitOfWorkContext.Database.EnsureCreatedAsync();
-                await UnitOfWorkContext.SeedDataAsync();
+                Console.Write("Recreating the database... ");
+                await using (new UnitOfWork<DataContext>())
+                {
+                    await EFCoreUnitOfWorkContext.Database.EnsureDeletedAsync();
+                    await EFCoreUnitOfWorkContext.Database.EnsureCreatedAsync();
+                    await UnitOfWorkContext.SeedDataAsync();
+                }
+                Console.WriteLine("Done!");
             }
 
             var webServer = new WebServer(54326, "http://localhost:54326") { LoginUrl = "/Auth/Login" };

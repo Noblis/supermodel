@@ -1,6 +1,7 @@
 ﻿#nullable enable
 
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using EFCoreTester.DataContexts;
 using EFCoreTester.Entities;
@@ -23,11 +24,16 @@ namespace EFCoreTester
 
         static async Task Run<TDataContext>() where TDataContext : class, IDataContext, new()
         {
-            await using (new UnitOfWork<TDataContext>())
+            if (Debugger.IsAttached || !await EFCoreUnitOfWorkContext.Database.CanConnectAsync())
             {
-                await EFCoreUnitOfWorkContext.Database.EnsureDeletedAsync();
-                await EFCoreUnitOfWorkContext.Database.EnsureCreatedAsync();
-                await UnitOfWorkContext.SeedDataAsync();
+                Console.Write("Recreating the database... ");
+                await using (new UnitOfWork<TDataContext>())
+                {
+                    await EFCoreUnitOfWorkContext.Database.EnsureDeletedAsync();
+                    await EFCoreUnitOfWorkContext.Database.EnsureCreatedAsync();
+                    await UnitOfWorkContext.SeedDataAsync();
+                }
+                Console.WriteLine("Done!");
             }
             
             await using (new UnitOfWork<TDataContext>())

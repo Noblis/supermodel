@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Supermodel.Persistence.EFCore;
 using Supermodel.Persistence.UnitOfWork;
@@ -18,12 +19,16 @@ namespace CmdTester
     {
         static async Task Main()
         {
-            //This removes and recreates the database
-            await using (new UnitOfWork<DataContext>())
+            if (Debugger.IsAttached || !await EFCoreUnitOfWorkContext.Database.CanConnectAsync())
             {
-                await EFCoreUnitOfWorkContext.Database.EnsureDeletedAsync();
-                await EFCoreUnitOfWorkContext.Database.EnsureCreatedAsync();
-                await UnitOfWorkContext.SeedDataAsync();
+                Console.Write("Recreating the database... ");
+                await using (new UnitOfWork<DataContext>())
+                {
+                    await EFCoreUnitOfWorkContext.Database.EnsureDeletedAsync();
+                    await EFCoreUnitOfWorkContext.Database.EnsureCreatedAsync();
+                    await UnitOfWorkContext.SeedDataAsync();
+                }
+                Console.WriteLine("Done!");
             }
             
             await new CRUDCmdController<TDMUser, TDMUserCmdModel, DataContext>("Users").ShowListAsync();

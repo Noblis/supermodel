@@ -1,6 +1,8 @@
 ﻿#nullable enable
 
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Domain.Entities;
@@ -15,12 +17,16 @@ namespace Cmd
     {
         public static async Task Main(string[] args)
         {
-            //This removes and recreates the database
-            await using (new UnitOfWork<DataContext>(ReadOnly.Yes))
+            if (Debugger.IsAttached || !await EFCoreUnitOfWorkContext.Database.CanConnectAsync())
             {
-                await EFCoreUnitOfWorkContext.Database.EnsureDeletedAsync();
-                await EFCoreUnitOfWorkContext.Database.EnsureCreatedAsync();
-                await UnitOfWorkContext.SeedDataAsync();
+                Console.Write("Recreating the database... ");
+                await using (new UnitOfWork<DataContext>())
+                {
+                    await EFCoreUnitOfWorkContext.Database.EnsureDeletedAsync();
+                    await EFCoreUnitOfWorkContext.Database.EnsureCreatedAsync();
+                    await UnitOfWorkContext.SeedDataAsync();
+                }
+                Console.WriteLine("Done!");
             }
 
             await using(new UnitOfWork<DataContext>())
