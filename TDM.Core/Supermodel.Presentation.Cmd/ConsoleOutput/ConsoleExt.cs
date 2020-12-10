@@ -21,6 +21,11 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 Value = value;
                 Label = label;
             }
+            public SelectListItem(string value)
+            {
+                Value = value;
+                Label = value;
+            }
             #endregion
 
             #region Properties
@@ -62,35 +67,13 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
         #endregion
 
         #region Edit Boolean
-        public static bool? EditBool(bool? value, FBColors? errorColors = null)
+        public static bool EditBool(bool? value, FBColors? arrowColors = null, FBColors? errorColors = null)
         {
-            var valueStr = value == null ? "" : value.Value ? "Y" : "N";
-            while(true)
-            {
-                var input = EditLine(valueStr, x => x == 'Y' || x == 'y' || x == 'N' || x == 'n');
-                if (string.IsNullOrWhiteSpace(input)) 
-                {
-                    if (!CmdContext.IsPropertyRequired) return null;
-                    PrintRequiredFieldMessage(errorColors);
-                    continue;
-                }
-                
-                var trimmedInput = input.Trim().ToLower();
-                if (trimmedInput == "y") 
-                {
-                    return true;
-                }
-                else if (trimmedInput == "n") 
-                {
-                    return false;
-                }
-                else
-                {
-                    PrintErrorMessage(errorColors);
-                    valueStr = input;
-                }
-            }
+            var valueStr = value == true ? "Yes" : "No";
+            var result = EditDropdownListForModel(valueStr, BoolOptions, CmdScaffoldingSettings.DropdownArrow);
+            return result == "Yes";
         }
+        private static SelectListItem[] BoolOptions { get; } = new []{ new SelectListItem("Yes"), new SelectListItem("No")};
         #endregion
 
         #region Edit Floating Point
@@ -509,16 +492,16 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
         #endregion
 
         #region Generic Dropdown List
-        public static string EditDropdownListForModel(string? model, IEnumerable<SelectListItem> options, FBColors? valueColors = null, FBColors? arrowColors = null)
+        public static string EditDropdownListForModel(string? model, IEnumerable<SelectListItem> options, FBColors? arrowColors = null)
         {
-            return EditDropdownList(model, "", options, valueColors, arrowColors);
+            return EditDropdownList(model, "", options, arrowColors);
         }
-        public static string EditDropdownListFor<TModel>(TModel model, Expression<Func<TModel, string>> propertyExpression, IEnumerable<SelectListItem> options, FBColors? valueColors = null, FBColors? arrowColors = null)
+        public static string EditDropdownListFor<TModel>(TModel model, Expression<Func<TModel, string>> propertyExpression, IEnumerable<SelectListItem> options, FBColors? arrowColors = null)
         {
             var propertyName = CmdRender.Helper.GetPropertyName(model, propertyExpression);
-            return EditDropdownList(model, propertyName, options, valueColors, arrowColors);
+            return EditDropdownList(model, propertyName, options, arrowColors);
         }
-        public static string EditDropdownList<TModel>(TModel model, string expression, IEnumerable<SelectListItem> options, FBColors? valueColors = null, FBColors? arrowColors = null)
+        public static string EditDropdownList<TModel>(TModel model, string expression, IEnumerable<SelectListItem> options, FBColors? arrowColors = null)
         {
             if (model == null && !string.IsNullOrEmpty(expression)) throw new ArgumentNullException(nameof(model));
 
@@ -543,9 +526,11 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             var cursorTop = Console.CursorTop;
             var maxLenPlus2 = optionsArray.Select(x => x.Label.Length).Max() + 2;
 
+            var currentColors = FBColors.FromCurrent();
+
             while(true)
             {
-                PrintOption(selectedOption, maxLenPlus2, cursorLeft, cursorTop, valueColors, arrowColors);
+                PrintOption(selectedOption!, maxLenPlus2, cursorLeft, cursorTop, currentColors, arrowColors);
 
                 var info = Console.ReadKey(true);
                 if (info.Key == ConsoleKey.Enter) 
@@ -556,7 +541,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 if (info.Key == ConsoleKey.Escape) 
                 {
                     selectedOption = optionsArray.Single(x => x.Value == propertyValue);
-                    PrintOption(selectedOption, maxLenPlus2, cursorLeft, cursorTop, valueColors, arrowColors);
+                    PrintOption(selectedOption, maxLenPlus2, cursorLeft, cursorTop, currentColors, arrowColors);
                     Console.WriteLine(); 
                     return selectedOption!.Value;
                 }
@@ -564,11 +549,14 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 {
                     if (originalValue)
                     {
-                        selectedOption = optionsArray.First();
+                        var newSelectedOption = optionsArray.First();
+                        if (newSelectedOption.Value == selectedOption!.Value) newSelectedOption = optionsArray.ElementAtOrDefault(1);
+                        selectedOption = newSelectedOption;
                     }
                     else
                     {
-                        var newSelectedOption = optionsArray.SkipWhile(x => x.Value != selectedOption.Value).ElementAtOrDefault(1);
+                        var remaining = optionsArray.SkipWhile(x => x.Value != selectedOption!.Value).ToArray();
+                        var newSelectedOption = remaining.ElementAtOrDefault(1);
                         selectedOption = newSelectedOption ?? optionsArray.First();
                     }
                     originalValue = false;
@@ -577,11 +565,14 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 {
                     if (originalValue)
                     {
-                        selectedOption = optionsArray.Last();
+                        var newSelectedOption = optionsArray.Last();
+                        if (newSelectedOption.Value == selectedOption!.Value) newSelectedOption = optionsArray.Reverse().ElementAtOrDefault(1);
+                        selectedOption = newSelectedOption ?? optionsArray.First();
                     }
                     else
                     {
-                        var newSelectedOption = optionsArray.TakeWhile(x => x.Value != selectedOption.Value).LastOrDefault();
+                        var remaining = optionsArray.TakeWhile(x => x.Value != selectedOption!.Value).Reverse().ToArray();
+                        var newSelectedOption = remaining.FirstOrDefault();
                         selectedOption = newSelectedOption ?? optionsArray.Last();
                     }
                     originalValue = false;
@@ -600,7 +591,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             Console.CursorLeft = cursorLeft;
             Console.CursorTop = cursorTop;
             valueColors?.SetColors();
-            Console.Write(selectedOption?.Label);
+            Console.Write(selectedOption.Label);
             arrowColors?.SetColors();
             Console.Write('▼');
         }

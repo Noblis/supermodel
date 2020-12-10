@@ -6,7 +6,6 @@ using System.ComponentModel.DataAnnotations;
 using Supermodel.DataAnnotations.Validations.Attributes;
 using Supermodel.Presentation.Cmd.ConsoleOutput;
 using Supermodel.Presentation.Cmd.Models;
-using Supermodel.Presentation.Cmd.Rendering;
 
 namespace CmdTester
 {
@@ -53,7 +52,7 @@ namespace CmdTester
                 new ConsoleExt.SelectListItem("D", "Letter D"),
 
             };
-            var x = ConsoleExt.EditDropdownListForModel("B", optionsList, new FBColors(ConsoleColor.White), new FBColors(ConsoleColor.Blue));
+            var x = ConsoleExt.EditDropdownListForModel("A", optionsList, new FBColors(ConsoleColor.Blue));
             Console.WriteLine(x);
         }
     }
