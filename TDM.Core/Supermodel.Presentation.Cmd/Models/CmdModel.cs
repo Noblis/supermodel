@@ -42,7 +42,7 @@ namespace Supermodel.Presentation.Cmd.Models
                 CmdRender.Display(this, propertyInfo.Name, CmdScaffoldingSettings.DisplayValue);
 
                 //Validation Error
-                if (ValidationContext.ValidationResultList.GetAllErrorsFor(propertyInfo.Name).Any())
+                if (CmdContext.ValidationResultList.GetAllErrorsFor(propertyInfo.Name).Any())
                 {
                     CmdScaffoldingSettings.ValidationErrorMessage?.SetColors();
                     Console.Write(" - ");
@@ -78,7 +78,7 @@ namespace Supermodel.Presentation.Cmd.Models
                 if (!propertyInfo.HasAttribute<DisplayOnlyAttribute>())
                 {
                     object? newPropertyValue;
-                    if (ValidationContext.ValidationResultList.GetAllErrorsFor(propertyInfo.Name).Any())
+                    if (CmdContext.ValidationResultList.GetAllErrorsFor(propertyInfo.Name).Any())
                     {
                         newPropertyValue = CmdRender.Edit(this, propertyInfo.Name, CmdScaffoldingSettings.InvalidEditValue);
                     }

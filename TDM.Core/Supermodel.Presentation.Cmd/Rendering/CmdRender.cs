@@ -120,7 +120,7 @@ namespace Supermodel.Presentation.Cmd.Rendering
         #region Render Validation Methods
         public static void ShowValidationSummary(FBColors? colors = null)
         {
-            var vrl = ValidationContext.ValidationResultList;
+            var vrl = CmdContext.ValidationResultList;
             
             if (vrl.IsValid) return;
 
@@ -139,7 +139,7 @@ namespace Supermodel.Presentation.Cmd.Rendering
         }
         public static void ShowValidationMessage<TModel>(TModel model, string expression, FBColors? colors = null)
         {
-            var vrl = ValidationContext.ValidationResultList;
+            var vrl = CmdContext.ValidationResultList;
             
             if (vrl.IsValid) return;
 

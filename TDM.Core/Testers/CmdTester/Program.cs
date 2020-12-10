@@ -1,6 +1,8 @@
 ﻿#nullable enable
 
 using System;
+using System.ComponentModel.DataAnnotations;
+using Supermodel.DataAnnotations.Validations.Attributes;
 using Supermodel.Presentation.Cmd.Models;
 using Supermodel.Presentation.Cmd.Rendering;
 
@@ -10,12 +12,12 @@ namespace CmdTester
     {
         public class Student : CmdModel
         {
-            public string FirstName { get; set; } = "Ilya";
+            [Required] public string FirstName { get; set; } = "Ilya";
             public string LastName { get; set; } = "Basin";
             public DateTime DateOfBirth { get; set; } = DateTime.Parse("12/18/1974");
             public int NumberOfKids { get; set; } = 2;
             public double GPA { get; set; } = 3.8;
-            public bool Jewish { get; set; } = true;
+            [ForceRequiredLabel] public bool Jewish { get; set; } = true;
         }
         
         static void Main()
@@ -31,9 +33,9 @@ namespace CmdTester
             //Console.WriteLine(text);
 
             var ilya = new Student();
-            ValidationContext.ValidationResultList.Clear();
-            ValidationContext.ValidationResultList.AddValidationResult(ilya, "Bad First Name", x => x.FirstName);
-            ValidationContext.ValidationResultList.AddValidationResult(ilya, "Bad DOB", x => x.DateOfBirth);
+            CmdContext.ValidationResultList.Clear();
+            CmdContext.ValidationResultList.AddValidationResult(ilya, "Bad First Name", x => x.FirstName);
+            CmdContext.ValidationResultList.AddValidationResult(ilya, "Bad DOB", x => x.DateOfBirth);
 
             CmdRender.DisplayForModel(ilya);
             Console.WriteLine();
