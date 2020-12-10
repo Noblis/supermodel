@@ -36,7 +36,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             var valueStr = value == null ? "" : value.Value ? "Y" : "N";
             while(true)
             {
-                var input = EditLine(valueStr, IsValidUnsignedIntegerChar);
+                var input = EditLine(valueStr, x => x == 'Y' || x == 'y' || x == 'N' || x == 'n');
                 if (string.IsNullOrWhiteSpace(input)) return null;
                 
                 var trimmedInput = input.Trim().ToLower();
