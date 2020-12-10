@@ -491,6 +491,9 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
         #region Low Level Dropdown List
         public static string EditDropdownList(string value, IEnumerable<SelectListItem> options, FBColors? arrowColors = null)
         {
+            var savedCursorVisible = Console.CursorVisible;
+            Console.CursorVisible = false;
+            
             var optionsArray = options.ToArray();
             var selectedOption = optionsArray.Single(x => x.Value == value);
             bool originalValue = true;
@@ -509,6 +512,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 if (info.Key == ConsoleKey.Enter) 
                 {
                     Console.WriteLine(); 
+                    Console.CursorVisible = savedCursorVisible;
                     return selectedOption!.Value;
                 }
                 if (info.Key == ConsoleKey.Escape) 
@@ -516,6 +520,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                     selectedOption = optionsArray.Single(x => x.Value == value);
                     PrintOption(selectedOption, maxLenPlus2, cursorLeft, cursorTop, currentColors, arrowColors);
                     Console.WriteLine(); 
+                    Console.CursorVisible = savedCursorVisible;
                     return selectedOption!.Value;
                 }
                 if (info.Key == ConsoleKey.DownArrow)

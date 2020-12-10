@@ -313,7 +313,7 @@ namespace Supermodel.Presentation.Cmd.Rendering
                      typeof(bool?).IsAssignableFrom(propertyType))
             {
                 var boolPropertyValue = (bool?)propertyValue;
-                Helper.Write(boolPropertyValue == null ? "" : boolPropertyValue.Value ? "Y" : "N" , colors);
+                Helper.Write(boolPropertyValue == true ? "Yes" : "No" , colors);
             }
 
             //DateTime
