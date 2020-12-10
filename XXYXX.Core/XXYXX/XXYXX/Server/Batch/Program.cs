@@ -19,7 +19,7 @@ namespace Batch
             Console.ReadLine();
 
             //Comment this out if you don't want to recreate and re-seed db every time you start the app in debug mode
-            if (Debugger.IsAttached)
+            if (Debugger.IsAttached || !await EFCoreUnitOfWorkContext.Database.CanConnectAsync())
             {
                 Console.Write("Recreating the database... ");
                 await using (new UnitOfWork<DataContext>())
