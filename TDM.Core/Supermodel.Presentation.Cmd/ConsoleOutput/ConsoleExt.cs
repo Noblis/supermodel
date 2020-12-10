@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using Supermodel.DataAnnotations.Expressions;
 using Supermodel.Presentation.Cmd.Models;
@@ -512,7 +513,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
         {
             return EditDropdownList(model, "", options, valueColors, arrowColors);
         }
-        public static string EditDropdownListFor<TModel, TValue>(TModel model, Expression<Func<TModel, TValue>> propertyExpression, IEnumerable<SelectListItem> options, FBColors? valueColors = null, FBColors? arrowColors = null)
+        public static string EditDropdownListFor<TModel>(TModel model, Expression<Func<TModel, string>> propertyExpression, IEnumerable<SelectListItem> options, FBColors? valueColors = null, FBColors? arrowColors = null)
         {
             var propertyName = CmdRender.Helper.GetPropertyName(model, propertyExpression);
             return EditDropdownList(model, propertyName, options, valueColors, arrowColors);
@@ -521,55 +522,86 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
         {
             if (model == null && !string.IsNullOrEmpty(expression)) throw new ArgumentNullException(nameof(model));
 
-            object? propertyValue;
+            object? objPropertyValue;
             if (model == null) 
             {
                 if (!string.IsNullOrEmpty(expression)) throw new ArgumentNullException(nameof(model));
-                propertyValue = "";
+                objPropertyValue = "";
             }
             else 
             {
-                (_, _, propertyValue) = model.GetPropertyInfoPropertyTypeAndValueByFullName(expression);
+                (_, _, objPropertyValue) = model.GetPropertyInfoPropertyTypeAndValueByFullName(expression);
             }
+            if (!(objPropertyValue is string)) throw new ArgumentException("Must evaluate to a string", nameof(expression));
+            var propertyValue = (string?)objPropertyValue;
+            
+            var optionsArray = options.ToArray();
+            var selectedOption = optionsArray.Single(x => x.Value == propertyValue);
+            bool originalValue = true;
             
             var cursorLeft = Console.CursorLeft;
             var cursorTop = Console.CursorTop;
-            var currentIdx = -1;
-
-            foreach (var selectOption in options)
-            {
-                if (propertyValue?.ToString() == selectOption.Value) 
-                {
-                    valueColors?.SetColors();
-                    Console.Write(selectOption.Label);
-
-                    arrowColors?.SetColors();
-                    Console.Write('▼');
-                }
-            }
+            var maxLenPlus2 = optionsArray.Select(x => x.Label.Length).Max() + 2;
 
             while(true)
             {
+                PrintOption(selectedOption, maxLenPlus2, cursorLeft, cursorTop, valueColors, arrowColors);
+
                 var info = Console.ReadKey(true);
-                if (info.Key == ConsoleKey.Enter)
+                if (info.Key == ConsoleKey.Enter) 
                 {
-
+                    return selectedOption!.Value;
                 }
-                if (info.Key == ConsoleKey.Escape)
+                if (info.Key == ConsoleKey.Escape) 
                 {
-
+                    selectedOption = optionsArray.Single(x => x.Value == propertyValue);
+                    PrintOption(selectedOption, maxLenPlus2, cursorLeft, cursorTop, valueColors, arrowColors);
+                    return selectedOption!.Value;
                 }
                 if (info.Key == ConsoleKey.DownArrow)
                 {
-
+                    if (originalValue)
+                    {
+                        selectedOption = optionsArray.First();
+                    }
+                    else
+                    {
+                        var newSelectedOption = optionsArray.SkipWhile(x => x.Value != selectedOption.Value).ElementAtOrDefault(1);
+                        selectedOption = newSelectedOption ?? optionsArray.First();
+                    }
+                    originalValue = false;
                 }
                 if (info.Key == ConsoleKey.UpArrow)
                 {
-
+                    if (originalValue)
+                    {
+                        selectedOption = optionsArray.Last();
+                    }
+                    else
+                    {
+                        var newSelectedOption = optionsArray.TakeWhile(x => x.Value != selectedOption.Value).LastOrDefault();
+                        selectedOption = newSelectedOption ?? optionsArray.Last();
+                    }
+                    originalValue = false;
                 }
             }
         }
 
+        private static void PrintOption(SelectListItem selectedOption, int maxLenPlus2, int cursorLeft, int cursorTop, FBColors? valueColors, FBColors? arrowColors)
+        {
+            //Erase the old value
+            Console.CursorLeft = cursorLeft;
+            Console.CursorTop = cursorTop;
+            Console.Write("".PadRight(maxLenPlus2));
+                
+            //Print the new value
+            Console.CursorLeft = cursorLeft;
+            Console.CursorTop = cursorTop;
+            valueColors?.SetColors();
+            Console.Write(selectedOption?.Label);
+            arrowColors?.SetColors();
+            Console.Write('▼');
+        }
         #endregion
 
         #region Private Helpers
