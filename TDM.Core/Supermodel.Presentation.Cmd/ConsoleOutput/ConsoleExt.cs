@@ -575,7 +575,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             arrowColors?.SetColors();
             Console.Write('▼');
         }
-        private static void PrintErrorMessage(FBColors? errorColors = null)
+        private static void PrintRequiredFieldMessage(FBColors? errorColors = null)
         {
             var currentColors = FBColors.FromCurrent();
             errorColors?.SetColors();
@@ -585,7 +585,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
 
             currentColors.SetColors();
         }
-        private static void PrintRequiredFieldMessage(FBColors? errorColors = null)
+        private static void PrintErrorMessage(FBColors? errorColors = null)
         {
             var currentColors = FBColors.FromCurrent();
             errorColors?.SetColors();

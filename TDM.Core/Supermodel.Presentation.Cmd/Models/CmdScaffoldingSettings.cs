@@ -16,7 +16,7 @@ namespace Supermodel.Presentation.Cmd.Models
 
         public static FBColors? InvalidValueMessage { get; set; } = new FBColors(ConsoleColor.Red, ConsoleColor.Black);
         public static FBColors? ValidationErrorMessage { get; set; } = new FBColors(ConsoleColor.Red, ConsoleColor.Black);
-        public static FBColors? InvalidEditValue { get; set; } = new FBColors(ConsoleColor.Red, ConsoleColor.Black);
+        public static FBColors? InvalidEditValue { get; set; } = new FBColors(ConsoleColor.Magenta, ConsoleColor.Black);
 
         public static StringWithColor RequiredMarker { get; set; } = new StringWithColor("*", ConsoleColor.Red, ConsoleColor.Black);
     }
