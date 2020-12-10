@@ -53,7 +53,8 @@ namespace CmdTester
                 new ConsoleExt.SelectListItem("D", "Letter D"),
 
             };
-            ConsoleExt.EditDropdownListForModel("B", optionsList, new FBColors(ConsoleColor.White), new FBColors(ConsoleColor.Blue));
+            var x = ConsoleExt.EditDropdownListForModel("B", optionsList, new FBColors(ConsoleColor.White), new FBColors(ConsoleColor.Blue));
+            Console.WriteLine(x);
         }
     }
 }

@@ -427,7 +427,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 }
                 else if (info.Key == ConsoleKey.Enter) 
                 { 
-                    Console.Write(Environment.NewLine); 
+                    Console.WriteLine(); 
                     break; 
                 }
                 else if (info.Key == ConsoleKey.Escape)
@@ -550,12 +550,14 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 var info = Console.ReadKey(true);
                 if (info.Key == ConsoleKey.Enter) 
                 {
+                    Console.WriteLine(); 
                     return selectedOption!.Value;
                 }
                 if (info.Key == ConsoleKey.Escape) 
                 {
                     selectedOption = optionsArray.Single(x => x.Value == propertyValue);
                     PrintOption(selectedOption, maxLenPlus2, cursorLeft, cursorTop, valueColors, arrowColors);
+                    Console.WriteLine(); 
                     return selectedOption!.Value;
                 }
                 if (info.Key == ConsoleKey.DownArrow)
