@@ -1,12 +1,10 @@
 ﻿#nullable enable
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Supermodel.Persistence.EFCore;
 using Supermodel.Persistence.UnitOfWork;
-using Supermodel.Presentation.Cmd.ConsoleOutput;
 using Supermodel.Presentation.Cmd.Controllers;
 using WMDomain.Entities;
 using WMDomain.Supermodel.Persistence;
@@ -31,7 +29,10 @@ namespace CmdTester
                 Console.WriteLine("Done!");
             }
             
-            await new CRUDCmdController<TDMUser, TDMUserCmdModel, DataContext>("Users").ShowListAsync();
+            var controller = new CRUDCmdController<TDMUser, TDMUserCmdModel, DataContext>("Users");
+            await controller.ListAsync();
+            Console.WriteLine();
+            await controller.ViewDetailAsync(1);
 
             //var ilya = new StringWithColor("Ilya", ConsoleColor.Red);
             //var basin = new StringWithColor("Basin", ConsoleColor.Blue);
@@ -54,16 +55,16 @@ namespace CmdTester
             //Console.WriteLine();
             //CmdRender.DisplayForModel(ilya);
 
-            var optionsList = new List<ConsoleExt.SelectListItem>
-            {
-                new ConsoleExt.SelectListItem("A", "Letter A"),
-                new ConsoleExt.SelectListItem("B", "Letter B"),
-                new ConsoleExt.SelectListItem("C", "Letter C"),
-                new ConsoleExt.SelectListItem("D", "Letter D"),
+            //var optionsList = new List<ConsoleExt.SelectListItem>
+            //{
+            //    new ConsoleExt.SelectListItem("A", "Letter A"),
+            //    new ConsoleExt.SelectListItem("B", "Letter B"),
+            //    new ConsoleExt.SelectListItem("C", "Letter C"),
+            //    new ConsoleExt.SelectListItem("D", "Letter D"),
 
-            };
-            var x = ConsoleExt.EditDropdownList("A", optionsList, new FBColors(ConsoleColor.Cyan));
-            Console.WriteLine(x);
+            //};
+            //var x = ConsoleExt.EditDropdownList("A", optionsList, new FBColors(ConsoleColor.Cyan));
+            //Console.WriteLine(x);
         }
     }
 }

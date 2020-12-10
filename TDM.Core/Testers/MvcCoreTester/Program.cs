@@ -1,10 +1,5 @@
-using System;
-using System.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using MvcCoreTester.DataContexts;
-using Supermodel.Persistence.EFCore;
-using Supermodel.Persistence.UnitOfWork;
 
 namespace MvcCoreTester
 {

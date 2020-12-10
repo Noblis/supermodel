@@ -11,6 +11,7 @@ using Supermodel.Persistence.Entities;
 using Supermodel.Persistence.Repository;
 using Supermodel.Persistence.UnitOfWork;
 using Supermodel.Presentation.Cmd.Models;
+using Supermodel.Presentation.Cmd.Rendering;
 using Supermodel.ReflectionMapper;
 
 namespace Supermodel.Presentation.Cmd.Controllers
@@ -39,7 +40,7 @@ namespace Supermodel.Presentation.Cmd.Controllers
         #endregion
 
         #region Action Methods
-        public virtual async Task ShowListAsync()
+        public virtual async Task ListAsync()
         {
             await using (new UnitOfWork<TDataContext>(ReadOnly.Yes))
             {
@@ -64,36 +65,29 @@ namespace Supermodel.Presentation.Cmd.Controllers
                 }
             }
         }
-        //public virtual async Task<ActionResult> GetDetailAsync(long id)
-        //{
-        //    var modelStateJson = (string?)HttpContext.Current.TempData[Config.ModelState];
-        //    if (modelStateJson != null)
-        //    {
-        //        var modelState = SerializableModelState.CreateFromJson(modelStateJson);
-        //        await modelState.ReplaceInContextAsync().ConfigureAwait(false);
-        //    }
+        public virtual async Task ViewDetailAsync(long id)
+        {
+            await using (new UnitOfWork<TDataContext>(ReadOnly.Yes))
+            {
+                var mvcModelItem = new TDetailMvcModel();
 
-        //    await using (new UnitOfWork<TDataContext>(ReadOnly.Yes))
-        //    {
-        //        var mvcModelItem = new TDetailMvcModel();
-                
-        //        //Init mvc model if it requires async initialization
-        //        // ReSharper disable once SuspiciousTypeConversion.Global
-        //        if (mvcModelItem is IAsyncInit iAsyncInit && !iAsyncInit.AsyncInitialized) await iAsyncInit.InitAsync().ConfigureAwait(false);
+                //Init mvc model if it requires async initialization
+                // ReSharper disable once SuspiciousTypeConversion.Global
+                if (mvcModelItem is IAsyncInit iAsyncInit && !iAsyncInit.AsyncInitialized) await iAsyncInit.InitAsync().ConfigureAwait(false);
 
-        //        if (id == 0)
-        //        {
-        //            mvcModelItem = await mvcModelItem.MapFromAsync(new TEntity()).ConfigureAwait(false);
-        //        }
-        //        else
-        //        {
-        //            var entityItem = await GetItemAsync(id).ConfigureAwait(false);
-        //            mvcModelItem = await mvcModelItem.MapFromAsync(entityItem).ConfigureAwait(false);
-        //        }
+                if (id == 0)
+                {
+                    mvcModelItem = await mvcModelItem.MapFromAsync(new TEntity()).ConfigureAwait(false);
+                }
+                else
+                {
+                    var entityItem = await GetItemAsync(id).ConfigureAwait(false);
+                    mvcModelItem = await mvcModelItem.MapFromAsync(entityItem).ConfigureAwait(false);
+                }
 
-        //        return new TMvcView().RenderDetail(mvcModelItem).ToHtmlResult();
-        //    }
-        //}
+                CmdRender.DisplayForModel(mvcModelItem);
+            }
+        }
         //public virtual async Task<ActionResult> PutDetailAsync(long id, bool? isInline = null)
         //{
         //    await using (new UnitOfWork<TDataContext>())
