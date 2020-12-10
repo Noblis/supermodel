@@ -2,6 +2,7 @@
 
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using Supermodel.Presentation.Cmd.ConsoleOutput;
 using Supermodel.ReflectionMapper;
 
 namespace Supermodel.Presentation.Cmd.Models
@@ -25,7 +26,7 @@ namespace Supermodel.Presentation.Cmd.Models
 
         #region Standard Properties for Mvc Models
         [ScaffoldColumn(false)] public virtual long Id { get; set; }
-        [ScaffoldColumn(false), NotRMapped] public abstract string Label { get; }
+        [ScaffoldColumn(false), NotRMapped] public abstract StringWithColor Label { get; }
         [ScaffoldColumn(false), NotRMapped] public virtual bool IsDisabled => false;
         #endregion
     }

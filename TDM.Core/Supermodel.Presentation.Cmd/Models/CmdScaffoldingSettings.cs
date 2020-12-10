@@ -7,6 +7,8 @@ namespace Supermodel.Presentation.Cmd.Models
 {
     public static class CmdScaffoldingSettings
     {
+        public static FBColors? ListId { get; set; } = new FBColors(ConsoleColor.Yellow);
+        
         public static FBColors? EditLabel { get; set; } = new FBColors(ConsoleColor.Green, ConsoleColor.Black);
         public static FBColors? DisplayLabel { get; set; } = new FBColors(ConsoleColor.Green, ConsoleColor.Black);
 

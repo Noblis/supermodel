@@ -28,7 +28,7 @@ namespace Supermodel.Presentation.Cmd.Controllers
         where TDataContext : class, IDataContext, new()
     {
         #region Action Methods
-        public virtual async Task DisplayListAsync()
+        public virtual async Task ListAsync()
         {
             await using (new UnitOfWork<TDataContext>(ReadOnly.Yes))
             {
@@ -45,7 +45,9 @@ namespace Supermodel.Presentation.Cmd.Controllers
 
                 foreach (var mvcModel in mvcModels)
                 {
-                    Console.WriteLine($"{mvcModel.Id}: {mvcModel.Label}");
+                    CmdScaffoldingSettings.ListId?.SetColors();
+                    Console.Write($"{mvcModel.Id}: ");    
+                    mvcModel.Label.WriteToConsole();
                 }
             }
         }
