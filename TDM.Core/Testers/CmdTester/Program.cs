@@ -1,6 +1,7 @@
 ﻿#nullable enable
 
 using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Supermodel.DataAnnotations.Validations.Attributes;
 using Supermodel.Presentation.Cmd.Models;
@@ -12,7 +13,7 @@ namespace CmdTester
     {
         public class Student : CmdModel
         {
-            [Required] public string FirstName { get; set; } = "Ilya";
+            [Required/*, DisplayName("↕")*/] public string FirstName { get; set; } = "Ilya";
             public string LastName { get; set; } = "Basin";
             public DateTime DateOfBirth { get; set; } = DateTime.Parse("12/18/1974");
             public int NumberOfKids { get; set; } = 2;

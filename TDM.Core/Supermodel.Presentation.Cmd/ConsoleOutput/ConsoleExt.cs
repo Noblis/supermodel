@@ -8,7 +8,20 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
 {
     public static class ConsoleExt
     {
-        //TODO: Edit enums / options list
+        #region EmbeddedTypes
+        public class Option
+        {
+            public Option(string value, string label, bool isDisabled = false)
+            {
+                Value = value;
+                Label = label;
+                IsDisabled = isDisabled;
+            }
+            public string Value { get; }
+            public string Label { get; }
+            public bool IsDisabled { get; }
+        }
+        #endregion
         
         #region Date
         public static DateTime? EditDateTime(DateTime? value, FBColors? errorColors = null)
@@ -36,7 +49,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             }
         }
         #endregion
-        
+
         #region Edit Boolean
         public static bool? EditBool(bool? value, FBColors? errorColors = null)
         {
@@ -482,6 +495,15 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             }
             return new string(chars.ToArray ());
         }
+
+        public static string EditSelect(string selectedValue, List<Option> options, FBColors selectArrowsColors, FBColors? errorColors = null)
+        {
+            var cursorTop = Console.CursorTop;
+
+
+
+        }
+
         #endregion
 
         #region Private Helpers
