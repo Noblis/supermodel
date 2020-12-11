@@ -96,61 +96,11 @@ namespace Supermodel.Presentation.Cmd.Controllers
         }
         public virtual async Task EditDetailAsync(long id)
         {
-            TDetailMvcModel mvcModelItem;
-            await using (new UnitOfWork<TDataContext>(ReadOnly.Yes))
-            {
-                if (id == 0) throw new SupermodelException("CmdCRUDController.Detail[Put]: id == 0");
 
-                var entityItem = await GetItemAndCacheItAsync(id).ConfigureAwait(false);
-                mvcModelItem = await new TDetailMvcModel().MapFromAsync(entityItem).ConfigureAwait(false);
-
-                if (mvcModelItem is IAsyncInit iAsyncInit && !iAsyncInit.AsyncInitialized) await iAsyncInit.InitAsync().ConfigureAwait(false);
-                mvcModelItem = await new TDetailMvcModel().MapFromAsync(entityItem).ConfigureAwait(false);
-
-            }
-
-            //mvcModelItem = CmdRender.EditForModel(mvcModelItem, CmdScaffoldingSettings.EditValue, CmdScaffoldingSettings.InvalidValueMessage);
-
-            await using (new UnitOfWork<TDataContext>())
-            {
-                if (id == 0) throw new SupermodelException("MvcCRUDController.Detail[Put]: id == 0");
-
-                var entityItem = await GetItemAndCacheItAsync(id).ConfigureAwait(false);
-                try
-                {
-                    (_, _) = await TryUpdateEntityAsync(entityItem).ConfigureAwait(false);
-                }
-                catch (ModelStateInvalidException ex)
-                {
-                    UnitOfWorkContext<TDataContext>.CurrentDataContext.CommitOnDispose = false; //rollback the transaction
-
-                    //Init ex.Model is it requires async initialization
-                    if (ex.Model is IAsyncInit iai && !iai.AsyncInitialized) await iai.InitAsync().ConfigureAwait(false);
-
-                    CmdRender.DisplayForModel((TDetailMvcModel)ex.Model);
-                }
-            }
         }
         public virtual async Task NewDetailAsync()
         {
-            await using (new UnitOfWork<TDataContext>())
-            {
-                var entityItem = new TEntity();
-                try
-                {
-                    (entityItem, _) = await TryUpdateEntityAsync(entityItem).ConfigureAwait(false);
-                }
-                catch (ModelStateInvalidException ex)
-                {
-                    UnitOfWorkContext<TDataContext>.CurrentDataContext.CommitOnDispose = false; //rollback the transaction
 
-                    //Init ex.Model fs it requires async initialization
-                    if (ex.Model is IAsyncInit iai && !iai.AsyncInitialized) await iai.InitAsync().ConfigureAwait(false);
-
-                    CmdRender.DisplayForModel((TDetailMvcModel)ex.Model);
-                }
-                entityItem.Add();
-            }
         }
         public virtual async Task DeleteDetailAsync(long id)
         {
@@ -228,27 +178,30 @@ namespace Supermodel.Presentation.Cmd.Controllers
             Console.WriteLine("".PadRight(title.Length).Replace(" ", "="));
         }
         //this methods will catch validation exceptions that happen during mapping from mvc to domain (when it runs validation for mvc model by creating a domain object)
-        protected virtual async Task<TDetailMvcModel> TryUpdateMvcModelAsync(TDetailMvcModel mvcModelItem)
+        protected virtual async Task<Tuple<TEntity, TDetailMvcModel>> TryUpdateEntityAsync(TEntity entityItem)
         {
-            // ReSharper disable once SuspiciousTypeConversion.Global
-            if (mvcModelItem is IAsyncInit iAsyncInit && !iAsyncInit.AsyncInitialized) await iAsyncInit.InitAsync().ConfigureAwait(false);
-            mvcModelItem = await new TDetailMvcModel().MapFromAsync(entityItem).ConfigureAwait(false);
+            var mvcModelItem = new TDetailMvcModel();
+            if (mvcModelItem is IAsyncInit iAsyncInit && !iAsyncInit.AsyncInitialized) await iAsyncInit.InitAsync();
+            mvcModelItem = await mvcModelItem.MapFromAsync(entityItem);
 
             try
             {
-                CmdRender.EditForModel(mvcModelItem);
+                CmdR
+                await TryUpdateModelAsync(mvcModelItem);
+                if (ModelState.IsValid != true) throw new ModelStateInvalidException(mvcModelItem);
 
-                entityItem = await mvcModelItem.MapToAsync(entityItem).ConfigureAwait(false);
-                if (CmdContext.ValidationResultList.IsValid != true) throw new ModelStateInvalidException(mvcModelItem);
+                entityItem = await mvcModelItem.MapToAsync(entityItem);
+                if (ModelState.IsValid != true) throw new ModelStateInvalidException(mvcModelItem);
 
-                await AsyncValidator.TryValidateObjectAsync(mvcModelItem, new ValidationContext(mvcModelItem), CmdContext.ValidationResultList);
-                if (CmdContext.ValidationResultList.Count != 0) throw new ValidationResultException(CmdContext.ValidationResultList);
+                //Validation: we only run ValidateAsync() here because attribute-based validation is already picked up by the framework
+                var vrl = await mvcModelItem.ValidateAsync(new ValidationContext(mvcModelItem));
+                if (vrl.Count != 0) throw new ValidationResultException(vrl);
 
                 return Tuple.Create(entityItem, mvcModelItem);
             }
             catch (ValidationResultException ex)
             {
-                CmdContext.ValidationResultList.AddValidationResultList(ex.ValidationResultList);
+                ModelState.AddValidationResultList(ex.ValidationResultList, prefix);
                 throw new ModelStateInvalidException(mvcModelItem);
             }
         }
