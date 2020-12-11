@@ -49,10 +49,13 @@ namespace Supermodel.Presentation.Cmd.Controllers
         #region Action Methods
         public virtual async Task RunCRUD()
         {
-            await ListAsync();
-            Console.Write("Pick View, Edit, Add, or Delete, then ID: ");
-            // ReSharper disable once StringLiteralTypo
-            var input = ConsoleExt.EditLine("", x => char.IsDigit(x) || "VEAD".Contains(char.ToUpper(x)));
+            while(true)
+            {
+                await ListAsync();
+                Console.Write("Pick View, Edit, Add, Delete, or Quit: ");
+                // ReSharper disable once StringLiteralTypo
+                var input = ConsoleExt.EditLine("", x => char.IsDigit(x) || "VEADQ".Contains(char.ToUpper(x)));
+            }
         }
         public virtual async Task ListAsync()
         {
@@ -157,7 +160,7 @@ namespace Supermodel.Presentation.Cmd.Controllers
                 {
                     UnitOfWorkContext<TDataContext>.CurrentDataContext.CommitOnDispose = false; //rollback the transaction
                     CmdScaffoldingSettings.InvalidValueMessage?.SetColors();
-                    Console.WriteLine(ex.Message); fix this
+                    Console.WriteLine(ex.Message); //TODO: fix this
                 }
                 catch (Exception)
                 {
