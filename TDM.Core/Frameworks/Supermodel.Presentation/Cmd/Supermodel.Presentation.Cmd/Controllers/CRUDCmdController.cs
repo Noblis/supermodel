@@ -157,13 +157,13 @@ namespace Supermodel.Presentation.Cmd.Controllers
                 {
                     UnitOfWorkContext<TDataContext>.CurrentDataContext.CommitOnDispose = false; //rollback the transaction
                     CmdScaffoldingSettings.InvalidValueMessage?.SetColors();
-                    Console.WriteLine(ex.Message);
+                    Console.WriteLine(ex.Message); fix this
                 }
                 catch (Exception)
                 {
                     UnitOfWorkContext<TDataContext>.CurrentDataContext.CommitOnDispose = false; //rollback the transaction
                     CmdScaffoldingSettings.InvalidValueMessage?.SetColors();
-                    Console.WriteLine("PROBLEM: Unable to delete. Most likely reason: references from other entities.");
+                    Console.WriteLine("Unable to delete. Most likely reason: references from other entities.");
                 }
                 if (entityItem == null) throw new SupermodelException("CmdCRUDController.Detail[Delete]: entityItem == null: this should never happen");
             }
