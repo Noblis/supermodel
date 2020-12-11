@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Supermodel.DataAnnotations;
+using Supermodel.DataAnnotations.Exceptions;
 using Supermodel.Persistence.DataContext;
 using Supermodel.Persistence.Entities;
 using Supermodel.Persistence.Repository;
@@ -88,41 +89,52 @@ namespace Supermodel.Presentation.Cmd.Controllers
                 CmdRender.DisplayForModel(mvcModelItem);
             }
         }
-        //public virtual async Task<ActionResult> PutDetailAsync(long id, bool? isInline = null)
-        //{
-        //    await using (new UnitOfWork<TDataContext>())
-        //    {
-        //        if (id == 0) throw new SupermodelException("MvcCRUDController.Detail[Put]: id == 0");
+        public virtual async Task EditDetailAsync(long id)
+        {
+            TDetailMvcModel mvcModelItem;
+            await using (new UnitOfWork<TDataContext>(ReadOnly.Yes))
+            {
+                if (id == 0) throw new SupermodelException("CmdCRUDController.Detail[Put]: id == 0");
 
-        //        var entityItem = await GetItemAndCacheItAsync(id).ConfigureAwait(false);
-        //        TDetailMvcModel mvcModelItem;
-        //        try
-        //        {
-        //            var prefix = isInline == true ? Config.InlinePrefix : "";
-        //            (entityItem, mvcModelItem) = await TryUpdateEntityAsync(entityItem, prefix).ConfigureAwait(false);
-        //        }
-        //        catch (ModelStateInvalidException ex)
-        //        {
-        //            UnitOfWorkContext<TDataContext>.CurrentDataContext.CommitOnDispose = false; //rollback the transaction
+                var entityItem = await GetItemAndCacheItAsync(id).ConfigureAwait(false);
+                mvcModelItem = await new TDetailMvcModel().MapFromAsync(entityItem).ConfigureAwait(false);
+            }
 
-        //            //Init ex.Model is it requires async initialization
-        //            if (ex.Model is IAsyncInit iai && !iai.AsyncInitialized) await iai.InitAsync().ConfigureAwait(false);
+            mvcModelItem = CmdRender.EditForModel(mvcModelItem, CmdScaffoldingSettings.EditValue, CmdScaffoldingSettings.InvalidValueMessage);
 
-        //            if (isInline == true)
-        //            {
-        //                var modelState = await SerializableModelState.CreateFromContextAsync().ConfigureAwait(false);
-        //                HttpContext.Current.TempData[Config.ModelState] = modelState.SerializeToJson();
-        //                return GoToListScreen(id);
-        //            }
-        //            else
-        //            {
-        //                return new TMvcView().RenderDetail((TDetailMvcModel)ex.Model).ToHtmlResult();
-        //            }
-        //        }
+            await using (new UnitOfWork<TDataContext>())
+            {
 
-        //        return await AfterUpdateAsync(id, entityItem, mvcModelItem).ConfigureAwait(false);
-        //    }
-        //}
+            }
+
+            //    TDetailMvcModel mvcModelItem;
+            //    try
+            //    {
+            //        var prefix = isInline == true ? Config.InlinePrefix : "";
+            //        (entityItem, mvcModelItem) = await TryUpdateEntityAsync(entityItem, prefix).ConfigureAwait(false);
+            //    }
+            //    catch (ModelStateInvalidException ex)
+            //    {
+            //        UnitOfWorkContext<TDataContext>.CurrentDataContext.CommitOnDispose = false; //rollback the transaction
+
+            //        //Init ex.Model is it requires async initialization
+            //        if (ex.Model is IAsyncInit iai && !iai.AsyncInitialized) await iai.InitAsync().ConfigureAwait(false);
+
+            //        if (isInline == true)
+            //        {
+            //            var modelState = await SerializableModelState.CreateFromContextAsync().ConfigureAwait(false);
+            //            HttpContext.Current.TempData[Config.ModelState] = modelState.SerializeToJson();
+            //            return GoToListScreen(id);
+            //        }
+            //        else
+            //        {
+            //            return new TMvcView().RenderDetail((TDetailMvcModel)ex.Model).ToHtmlResult();
+            //        }
+            //    }
+
+            //    return await AfterUpdateAsync(id, entityItem, mvcModelItem).ConfigureAwait(false);
+            //}
+        }
         //public virtual async Task<ActionResult> PostDetailAsync(long id, bool? isInline = null)
         //{
         //    await using (new UnitOfWork<TDataContext>())
@@ -184,44 +196,6 @@ namespace Supermodel.Presentation.Cmd.Controllers
         //        return await AfterDeleteAsync(id, entityItem).ConfigureAwait(false);
         //    }
         //}
-
-        //public virtual async Task<ActionResult> GetBinaryFileAsync(long id, string pn)
-        //{
-        //    await using (new UnitOfWork<TDataContext>(ReadOnly.Yes))
-        //    {
-        //        var mvcModelItem = await new TDetailMvcModel().MapFromAsync(await GetItemAsync(id)).ConfigureAwait(false);
-
-        //        var file = (BinaryFileModelBase?)mvcModelItem.PropertyGet(pn);
-        //        if (file == null || file.IsEmpty) return new StatusCodeResult(HttpStatusCode.NotFound);
-        //        return new BinaryFileResult(file.BinaryContent!, file.FileName!);
-        //    }
-        //}
-        //public virtual async Task<ActionResult> DeleteBinaryFileAsync(long id, string pn)
-        //{
-        //    await using (new UnitOfWork<TDataContext>())
-        //    {
-        //        var entityItem = await GetItemAsync(id).ConfigureAwait(false);
-        //        var mvcModelItem = await new TDetailMvcModel().MapFromAsync(entityItem).ConfigureAwait(false);
-
-        //        //see if pn is a required property
-        //        var propInfo = typeof(TDetailMvcModel).GetProperty(pn) ?? throw new SupermodelException("GetProperty(pn) == null");
-        //        if (Attribute.GetCustomAttribute(propInfo, typeof(RequiredAttribute), true) != null)
-        //        {
-        //            HttpContext.Current.TempData.Super().NextPageModalMessage = "Cannot delete required field";
-        //            return StayOnDetailScreen(id);
-        //        }
-
-        //        var file = (BinaryFileModelBase?)mvcModelItem.PropertyGet(pn);
-        //        if (file == null) throw new SystemException("file == null");
-
-        //        file.Empty();
-        //        entityItem = await mvcModelItem.MapToAsync(entityItem).ConfigureAwait(false);
-
-        //        var result = await AfterBinaryDeleteAsync(id, entityItem, mvcModelItem).ConfigureAwait(false);
-        //        await UnitOfWorkContext<TDataContext>.CurrentDataContext.FinalSaveChangesAsync().ConfigureAwait(false);
-        //        return result;
-        //    }
-        //}
         #endregion
 
         #region Overrides
@@ -257,33 +231,33 @@ namespace Supermodel.Presentation.Cmd.Controllers
             Console.WriteLine("".PadRight(ListTitle.Length).Replace(" ", "="));
         }
         //this methods will catch validation exceptions that happen during mapping from mvc to domain (when it runs validation for mvc model by creating a domain object)
-        //protected virtual async Task<Tuple<TEntity, TDetailMvcModel>> TryUpdateEntityAsync(TEntity entityItem, string prefix)
-        //{
-        //    var mvcModelItem = new TDetailMvcModel();
-        //    // ReSharper disable once SuspiciousTypeConversion.Global
-        //    if (mvcModelItem is IAsyncInit iAsyncInit && !iAsyncInit.AsyncInitialized) await iAsyncInit.InitAsync().ConfigureAwait(false);
-        //    mvcModelItem = await new TDetailMvcModel().MapFromAsync(entityItem).ConfigureAwait(false);
+        protected virtual async Task<Tuple<TEntity, TDetailMvcModel>> TryUpdateEntityAsync(TEntity entityItem, string prefix)
+        {
+            var mvcModelItem = new TDetailMvcModel();
+            // ReSharper disable once SuspiciousTypeConversion.Global
+            if (mvcModelItem is IAsyncInit iAsyncInit && !iAsyncInit.AsyncInitialized) await iAsyncInit.InitAsync().ConfigureAwait(false);
+            mvcModelItem = await new TDetailMvcModel().MapFromAsync(entityItem).ConfigureAwait(false);
 
-        //    try
-        //    {
-        //        await TryUpdateModelAsync(mvcModelItem, prefix).ConfigureAwait(false);
-        //        if (HttpContext.Current.ValidationResultList.IsValid != true) throw new ModelStateInvalidException(mvcModelItem);
+            try
+            {
+                await TryUpdateModelAsync(mvcModelItem, prefix).ConfigureAwait(false);
+                if (HttpContext.Current.ValidationResultList.IsValid != true) throw new ModelStateInvalidException(mvcModelItem);
 
-        //        entityItem = await mvcModelItem.MapToAsync(entityItem).ConfigureAwait(false);
-        //        if (HttpContext.Current.ValidationResultList.IsValid != true) throw new ModelStateInvalidException(mvcModelItem);
+                entityItem = await mvcModelItem.MapToAsync(entityItem).ConfigureAwait(false);
+                if (HttpContext.Current.ValidationResultList.IsValid != true) throw new ModelStateInvalidException(mvcModelItem);
 
-        //        //Validation: we only run ValidateAsync() here because attribute-based validation is already picked up by the framework
-        //        var vrl = await mvcModelItem.ValidateAsync(new ValidationContext(mvcModelItem)).ConfigureAwait(false);
-        //        if (vrl.Count != 0) throw new ValidationResultException(vrl);
+                //Validation: we only run ValidateAsync() here because attribute-based validation is already picked up by the framework
+                var vrl = await mvcModelItem.ValidateAsync(new ValidationContext(mvcModelItem)).ConfigureAwait(false);
+                if (vrl.Count != 0) throw new ValidationResultException(vrl);
 
-        //        return Tuple.Create(entityItem, mvcModelItem);
-        //    }
-        //    catch (ValidationResultException ex)
-        //    {
-        //        HttpContext.Current.ValidationResultList.AddValidationResultList(ex.ValidationResultList, prefix);
-        //        throw new ModelStateInvalidException(mvcModelItem);
-        //    }
-        //}
+                return Tuple.Create(entityItem, mvcModelItem);
+            }
+            catch (ValidationResultException ex)
+            {
+                HttpContext.Current.ValidationResultList.AddValidationResultList(ex.ValidationResultList, prefix);
+                throw new ModelStateInvalidException(mvcModelItem);
+            }
+        }
         #endregion
 
         #region Properties
