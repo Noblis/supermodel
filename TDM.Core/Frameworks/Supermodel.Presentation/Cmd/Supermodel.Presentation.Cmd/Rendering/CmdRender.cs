@@ -163,7 +163,9 @@ namespace Supermodel.Presentation.Cmd.Rendering
                 invalidFieldColors?.SetColors();
                 Console.Write(": ");
                 validationErrorColors?.SetColors();
-                Console.WriteLine(vr.ErrorMessage);
+                Console.Write(vr.ErrorMessage);
+                numbersColors?.SetColors();
+                Console.WriteLine(";");
             }
         }
         public static void ShowValidationMessageFor<TModel, TValue>(TModel model, Expression<Func<TModel, TValue>> propertyExpression, FBColors? colors = null)

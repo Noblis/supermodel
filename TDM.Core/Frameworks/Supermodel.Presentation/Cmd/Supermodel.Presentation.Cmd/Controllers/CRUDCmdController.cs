@@ -248,6 +248,7 @@ namespace Supermodel.Presentation.Cmd.Controllers
             {
                 CmdRender.EditForModel(mvcModelItem);
                 
+                CmdContext.ValidationResultList.Clear();
                 var vrl = new ValidationResultList();
                 if (!await AsyncValidator.TryValidateObjectAsync(mvcModelItem, new ValidationContext(mvcModelItem), vrl).ConfigureAwait(false)) CmdContext.ValidationResultList.AddValidationResultList(vrl);
                 if (CmdContext.ValidationResultList.IsValid != true) throw new ModelStateInvalidException(mvcModelItem);
