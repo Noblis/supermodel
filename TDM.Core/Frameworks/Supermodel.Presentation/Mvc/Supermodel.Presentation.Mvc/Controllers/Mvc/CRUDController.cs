@@ -275,7 +275,7 @@ namespace Supermodel.Presentation.Mvc.Controllers.Mvc
         {
             var mvcModelItem = new TDetailMvcModel();
             if (mvcModelItem is IAsyncInit iAsyncInit && !iAsyncInit.AsyncInitialized) await iAsyncInit.InitAsync();
-            mvcModelItem = await new TDetailMvcModel().MapFromAsync(entityItem);
+            mvcModelItem = await mvcModelItem.MapFromAsync(entityItem);
 
             try
             {

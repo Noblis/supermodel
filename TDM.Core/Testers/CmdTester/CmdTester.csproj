@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Frameworks\Supermodel.Presentation\Cmd\Supermodel.Presentation.Cmd\Supermodel.Presentation.Cmd.csproj" />
     <ProjectReference Include="..\..\TDM\Server\WMDomain\WMDomain.csproj" />
   </ItemGroup>
 

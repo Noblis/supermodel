@@ -29,7 +29,7 @@ namespace CmdTester
                 Console.WriteLine("Done!");
             }
             
-            var controller = new CRUDCmdController<TDMUser, TDMUserCmdModel, DataContext>("Users");
+            var controller = new CRUDCmdController<TDMUser, TDMUserCmdModel, DataContext>("User");
             await controller.ListAsync();
             Console.WriteLine();
             await controller.ViewDetailAsync(1);

@@ -54,7 +54,7 @@ namespace Supermodel.Persistence.EFCore
                     if (typeof(IEntity).IsAssignableFrom(type) && !IsDbSetTypeAProxy(type)) 
                     {
                         var etb = modelBuilder.Entity(type);
-                        etb.ToTable( pluralizer.Pluralize(type.Name));
+                        etb.ToTable(pluralizer.Pluralize(type.Name));
 
                         //Add unique username index for classes that derive from UserEntity
                         if (ReflectionHelper.IsClassADerivedFromClassB(type, typeof(UserEntity<,>))) etb.HasIndex("Username").IsUnique();
