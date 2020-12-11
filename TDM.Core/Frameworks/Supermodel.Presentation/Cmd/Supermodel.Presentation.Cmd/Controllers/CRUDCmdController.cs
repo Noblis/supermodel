@@ -15,6 +15,7 @@ using Supermodel.Persistence.DataContext;
 using Supermodel.Persistence.Entities;
 using Supermodel.Persistence.Repository;
 using Supermodel.Persistence.UnitOfWork;
+using Supermodel.Presentation.Cmd.ConsoleOutput;
 using Supermodel.Presentation.Cmd.Models;
 using Supermodel.Presentation.Cmd.Rendering;
 using Supermodel.ReflectionMapper;
@@ -46,6 +47,13 @@ namespace Supermodel.Presentation.Cmd.Controllers
         #endregion
 
         #region Action Methods
+        public virtual async Task RunCRUD()
+        {
+            await ListAsync();
+            Console.Write("Pick View, Edit, Add, or Delete, then ID: ");
+            // ReSharper disable once StringLiteralTypo
+            var input = ConsoleExt.EditLine("", x => char.IsDigit(x) || "VEAD".Contains(char.ToUpper(x)));
+        }
         public virtual async Task ListAsync()
         {
             await using (new UnitOfWork<TDataContext>(ReadOnly.Yes))
