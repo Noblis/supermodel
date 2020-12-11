@@ -298,8 +298,8 @@ namespace Supermodel.Presentation.WebMonk.Controllers.Mvc
                 if (HttpContext.Current.ValidationResultList.IsValid != true) throw new ModelStateInvalidException(mvcModelItem);
 
                 //Validation: we only run ValidateAsync() here because attribute-based validation is already picked up by the framework
-                var vrl = await mvcModelItem.ValidateAsync(new ValidationContext(mvcModelItem)).ConfigureAwait(false);
-                if (vrl.Count != 0) throw new ValidationResultException(vrl);
+                //var vrl = await mvcModelItem.ValidateAsync(new ValidationContext(mvcModelItem)).ConfigureAwait(false);
+                //if (vrl.Count != 0) throw new ValidationResultException(vrl);
 
                 return Tuple.Create(entityItem, mvcModelItem);
             }
