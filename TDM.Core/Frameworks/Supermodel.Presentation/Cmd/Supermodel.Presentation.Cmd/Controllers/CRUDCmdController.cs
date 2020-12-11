@@ -79,45 +79,59 @@ namespace Supermodel.Presentation.Cmd.Controllers
         }
         public virtual async Task EditDetailAsync(long id)
         {
+            ShowEditDetailTitle(id);
             var mvcModelItem = await CreateMvcModelAsync(id);
 
-            await using (new UnitOfWork<TDataContext>())
+            while(true)
             {
-                try
+                await using (new UnitOfWork<TDataContext>())
                 {
-                    (_, _) = await EditMvcModelAsync(mvcModelItem).ConfigureAwait(false);
-                }
-                catch (ModelStateInvalidException ex)
-                {
-                    UnitOfWorkContext<TDataContext>.CurrentDataContext.CommitOnDispose = false; //rollback the transaction
+                    try
+                    {
+                        await EditMvcModelAsync(mvcModelItem).ConfigureAwait(false);
+                        return;
+                    }
+                    catch (ModelStateInvalidException ex)
+                    {
+                        UnitOfWorkContext<TDataContext>.CurrentDataContext.CommitOnDispose = false; //rollback the transaction
 
-                    //Init ex.Model fs it requires async initialization
-                    if (ex.Model is IAsyncInit iai && !iai.AsyncInitialized) await iai.InitAsync().ConfigureAwait(false);
+                        //Init ex.Model fs it requires async initialization
+                        if (ex.Model is IAsyncInit iai && !iai.AsyncInitialized) await iai.InitAsync().ConfigureAwait(false);
 
-                    CmdRender.ShowValidationSummary((TDetailMvcModel)ex.Model, CmdScaffoldingSettings.ValidationErrorMessage, CmdScaffoldingSettings.InvalidEditValue);
-                    await EditMvcModelAsync((TDetailMvcModel)ex.Model);
+                        CmdScaffoldingSettings.PleaseFixValidationErrors?.SetColors();
+                        Console.WriteLine("Please fix the following validation errors:");
+                        mvcModelItem = (TDetailMvcModel)ex.Model;
+                        CmdRender.ShowValidationSummary(mvcModelItem, CmdScaffoldingSettings.ValidationErrorMessage, CmdScaffoldingSettings.InvalidValueDisplayLabel, CmdScaffoldingSettings.PleaseFixValidationErrors);
+                    }
                 }
             }
         }
         public virtual async Task AddDetailAsync()
         {
+            ShowAddDetailTitle();
             var mvcModelItem = await CreateMvcModelAsync(0);
 
-            await using (new UnitOfWork<TDataContext>())
+            while (true)
             {
-                try
+                await using (new UnitOfWork<TDataContext>())
                 {
-                    (_, _) = await EditMvcModelAsync(mvcModelItem).ConfigureAwait(false);
-                }
-                catch (ModelStateInvalidException ex)
-                {
-                    UnitOfWorkContext<TDataContext>.CurrentDataContext.CommitOnDispose = false; //rollback the transaction
+                    try
+                    {
+                        await EditMvcModelAsync(mvcModelItem).ConfigureAwait(false);
+                        return;
+                    }
+                    catch (ModelStateInvalidException ex)
+                    {
+                        UnitOfWorkContext<TDataContext>.CurrentDataContext.CommitOnDispose = false; //rollback the transaction
 
-                    //Init ex.Model fs it requires async initialization
-                    if (ex.Model is IAsyncInit iai && !iai.AsyncInitialized) await iai.InitAsync().ConfigureAwait(false);
+                        //Init ex.Model fs it requires async initialization
+                        if (ex.Model is IAsyncInit iai && !iai.AsyncInitialized) await iai.InitAsync().ConfigureAwait(false);
 
-                    CmdRender.ShowValidationSummary((TDetailMvcModel)ex.Model, CmdScaffoldingSettings.ValidationErrorMessage, CmdScaffoldingSettings.InvalidEditValue);
-                    await EditMvcModelAsync((TDetailMvcModel)ex.Model);
+                        CmdScaffoldingSettings.PleaseFixValidationErrors?.SetColors();
+                        Console.WriteLine("Please fix the following validation errors:");
+                        mvcModelItem = (TDetailMvcModel)ex.Model;
+                        CmdRender.ShowValidationSummary(mvcModelItem, CmdScaffoldingSettings.ValidationErrorMessage, CmdScaffoldingSettings.InvalidValueDisplayLabel, CmdScaffoldingSettings.PleaseFixValidationErrors);
+                    }
                 }
             }
         }
@@ -196,7 +210,7 @@ namespace Supermodel.Presentation.Cmd.Controllers
             CmdScaffoldingSettings.ListTitleUnderline?.SetColors();
             Console.WriteLine("".PadRight(title.Length).Replace(" ", "="));
         }
-        protected virtual void ShowNewDetailTitle()
+        protected virtual void ShowAddDetailTitle()
         {
             CmdScaffoldingSettings.DetailTitle?.SetColors();
             var title = $"New {DetailTitle}";
@@ -232,9 +246,6 @@ namespace Supermodel.Presentation.Cmd.Controllers
         {
             try
             {
-                if (mvcModelItem.IsNewModel()) ShowNewDetailTitle();
-                else ShowEditDetailTitle(mvcModelItem.Id);
-
                 CmdRender.EditForModel(mvcModelItem);
                 
                 var vrl = new ValidationResultList();

@@ -29,11 +29,11 @@ namespace Supermodel.Presentation.Cmd.Models
                 {
                     if (CmdContext.ValidationResultList.GetAllErrorsFor(propertyInfo.Name).Any())
                     {
-                        CmdRender.ShowLabel(this, propertyInfo.Name, null, CmdScaffoldingSettings.DisplayLabel);
+                        CmdRender.ShowLabel(this, propertyInfo.Name, null, CmdScaffoldingSettings.InvalidValueDisplayLabel);
                     }
                     else
                     {
-                        CmdRender.ShowLabel(this, propertyInfo.Name, null, CmdScaffoldingSettings.InvalidValueDisplayLabel);
+                        CmdRender.ShowLabel(this, propertyInfo.Name, null, CmdScaffoldingSettings.DisplayLabel);
                     }
 
                     if (!propertyInfo.HasAttribute<NoRequiredLabelAttribute>())
@@ -78,11 +78,11 @@ namespace Supermodel.Presentation.Cmd.Models
                 {
                     if (CmdContext.ValidationResultList.GetAllErrorsFor(propertyInfo.Name).Any())
                     {
-                        CmdRender.ShowLabel(this, propertyInfo.Name, null, CmdScaffoldingSettings.DisplayLabel);
+                        CmdRender.ShowLabel(this, propertyInfo.Name, null, CmdScaffoldingSettings.InvalidValueDisplayLabel);
                     }
                     else
                     {
-                        CmdRender.ShowLabel(this, propertyInfo.Name, null, CmdScaffoldingSettings.InvalidValueDisplayLabel);
+                        CmdRender.ShowLabel(this, propertyInfo.Name, null, CmdScaffoldingSettings.DisplayLabel);
                     }
                     
                     if (!propertyInfo.HasAttribute<NoRequiredLabelAttribute>())

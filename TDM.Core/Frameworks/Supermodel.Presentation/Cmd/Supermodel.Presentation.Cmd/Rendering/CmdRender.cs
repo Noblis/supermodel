@@ -118,15 +118,17 @@ namespace Supermodel.Presentation.Cmd.Rendering
         #endregion
 
         #region Render Validation Methods
-        public static void ShowValidationSummary<TModel>(TModel model, FBColors? validationErrorColors, FBColors? invalidFieldColors)
+        public static void ShowValidationSummary<TModel>(TModel model, FBColors? validationErrorColors, FBColors? invalidFieldColors, FBColors? numbersColors)
         {
             if (model == null) throw new ArgumentNullException(nameof(model));
             
             var vrl = CmdContext.ValidationResultList;
             if (vrl.IsValid) return;
 
-            foreach (var vr in vrl)
+            for (var i = 0; i < vrl.Count; i++)
             {
+                var vr = vrl[i];
+
                 var first = true;
                 foreach (var memberName in vr.MemberNames)
                 {
@@ -139,6 +141,9 @@ namespace Supermodel.Presentation.Cmd.Rendering
                     {
                         fieldName = memberName;
                     }
+
+                    numbersColors?.SetColors();
+                    Console.Write($"{i + 1}) ");
 
                     if (first) 
                     {
@@ -156,8 +161,9 @@ namespace Supermodel.Presentation.Cmd.Rendering
                     }
                 }
                 invalidFieldColors?.SetColors();
+                Console.Write(": ");
                 validationErrorColors?.SetColors();
-                Console.WriteLine($": {vr.ErrorMessage}");
+                Console.WriteLine(vr.ErrorMessage);
             }
         }
         public static void ShowValidationMessageFor<TModel, TValue>(TModel model, Expression<Func<TModel, TValue>> propertyExpression, FBColors? colors = null)
