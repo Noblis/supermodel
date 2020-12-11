@@ -2,11 +2,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Supermodel.DataAnnotations;
 using Supermodel.DataAnnotations.Exceptions;
+using Supermodel.DataAnnotations.Validations;
+using Supermodel.Persistence;
 using Supermodel.Persistence.DataContext;
 using Supermodel.Persistence.Entities;
 using Supermodel.Persistence.Repository;
@@ -135,67 +138,64 @@ namespace Supermodel.Presentation.Cmd.Controllers
             //    return await AfterUpdateAsync(id, entityItem, mvcModelItem).ConfigureAwait(false);
             //}
         }
-        //public virtual async Task<ActionResult> PostDetailAsync(long id, bool? isInline = null)
-        //{
-        //    await using (new UnitOfWork<TDataContext>())
-        //    {
-        //        if (id != 0) throw new SupermodelException("CRUDControllerBase.Detail[Post]: id != 0");
+        public virtual async Task NewDetailAsync()
+        {
+            await using (new UnitOfWork<TDataContext>())
+            {
+                //var entityItem = new TEntity();
+                //TDetailMvcModel mvcModelItem;
+                //try
+                //{
+                //    var prefix = isInline == true ? Config.InlinePrefix : "";
+                //    (entityItem, mvcModelItem) = await TryUpdateEntityAsync(entityItem, prefix).ConfigureAwait(false);
+                //}
+                //catch (ModelStateInvalidException ex)
+                //{
+                //    UnitOfWorkContext<TDataContext>.CurrentDataContext.CommitOnDispose = false; //rollback the transaction
 
-        //        var entityItem = new TEntity();
-        //        TDetailMvcModel mvcModelItem;
-        //        try
-        //        {
-        //            var prefix = isInline == true ? Config.InlinePrefix : "";
-        //            (entityItem, mvcModelItem) = await TryUpdateEntityAsync(entityItem, prefix).ConfigureAwait(false);
-        //        }
-        //        catch (ModelStateInvalidException ex)
-        //        {
-        //            UnitOfWorkContext<TDataContext>.CurrentDataContext.CommitOnDispose = false; //rollback the transaction
+                //    //Init ex.Model fs it requires async initialization
+                //    if (ex.Model is IAsyncInit iai && !iai.AsyncInitialized) await iai.InitAsync().ConfigureAwait(false);
 
-        //            //Init ex.Model fs it requires async initialization
-        //            if (ex.Model is IAsyncInit iai && !iai.AsyncInitialized) await iai.InitAsync().ConfigureAwait(false);
+                //    if (isInline == true)
+                //    {
+                //        var modelState = await SerializableModelState.CreateFromContextAsync().ConfigureAwait(false);
+                //        HttpContext.Current.TempData[Config.ModelState] = modelState.SerializeToJson();
+                //        return GoToListScreen(id);
+                //    }
+                //    else
+                //    {
+                //        return new TMvcView().RenderDetail((TDetailMvcModel)ex.Model).ToHtmlResult();
+                //    }
+                //}
+                //entityItem.Add();
 
-        //            if (isInline == true)
-        //            {
-        //                var modelState = await SerializableModelState.CreateFromContextAsync().ConfigureAwait(false);
-        //                HttpContext.Current.TempData[Config.ModelState] = modelState.SerializeToJson();
-        //                return GoToListScreen(id);
-        //            }
-        //            else
-        //            {
-        //                return new TMvcView().RenderDetail((TDetailMvcModel)ex.Model).ToHtmlResult();
-        //            }
-        //        }
-        //        entityItem.Add();
+                //return await AfterCreateAsync(id, entityItem, mvcModelItem).ConfigureAwait(false);
+            }
+        }
+        public virtual async Task DeleteDetailAsync(long id)
+        {
+            await using (new UnitOfWork<TDataContext>())
+            {
+                TEntity? entityItem = null;
+                try
+                {
+                    entityItem = await GetItemAsync(id).ConfigureAwait(false);
+                    entityItem.Delete();
+                }
+                catch (UnableToDeleteException ex)
+                {
+                    UnitOfWorkContext<TDataContext>.CurrentDataContext.CommitOnDispose = false; //rollback the transaction
+                    HttpContext.Current.TempData.Super().NextPageModalMessage = ex.Message;
+                }
+                catch (Exception)
+                {
+                    UnitOfWorkContext<TDataContext>.CurrentDataContext.CommitOnDispose = false; //rollback the transaction
+                    HttpContext.Current.TempData.Super().NextPageModalMessage = "PROBLEM!!!\\n\\nUnable to delete. Most likely reason: references from other entities.";
+                }
 
-        //        return await AfterCreateAsync(id, entityItem, mvcModelItem).ConfigureAwait(false);
-        //    }
-        //}
-        //public virtual async Task<ActionResult> DeleteDetailAsync(long id)
-        //{
-        //    await using (new UnitOfWork<TDataContext>())
-        //    {
-        //        TEntity? entityItem = null;
-        //        try
-        //        {
-        //            entityItem = await GetItemAsync(id).ConfigureAwait(false);
-        //            entityItem.Delete();
-        //        }
-        //        catch (UnableToDeleteException ex)
-        //        {
-        //            UnitOfWorkContext<TDataContext>.CurrentDataContext.CommitOnDispose = false; //rollback the transaction
-        //            HttpContext.Current.TempData.Super().NextPageModalMessage = ex.Message;
-        //        }
-        //        catch (Exception)
-        //        {
-        //            UnitOfWorkContext<TDataContext>.CurrentDataContext.CommitOnDispose = false; //rollback the transaction
-        //            HttpContext.Current.TempData.Super().NextPageModalMessage = "PROBLEM!!!\\n\\nUnable to delete. Most likely reason: references from other entities.";
-        //        }
-
-        //        if (entityItem == null) throw new SupermodelException("MvcCRUDController.Detail[Delete]: entityItem == null: this should never happen");
-        //        return await AfterDeleteAsync(id, entityItem).ConfigureAwait(false);
-        //    }
-        //}
+                if (entityItem == null) throw new SupermodelException("CmdCRUDController.Detail[Delete]: entityItem == null: this should never happen");
+            }
+        }
         #endregion
 
         #region Overrides
