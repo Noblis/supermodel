@@ -33,6 +33,11 @@ namespace CmdTester
             await controller.ListAsync();
             Console.WriteLine();
             await controller.ViewDetailAsync(1);
+            Console.WriteLine();
+            await controller.AddDetailAsync();
+            Console.WriteLine();
+            await controller.ListAsync();
+
 
             //var ilya = new StringWithColor("Ilya", ConsoleColor.Red);
             //var basin = new StringWithColor("Basin", ConsoleColor.Blue);

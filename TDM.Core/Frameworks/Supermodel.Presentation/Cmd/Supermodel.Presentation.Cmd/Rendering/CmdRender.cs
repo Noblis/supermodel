@@ -118,18 +118,46 @@ namespace Supermodel.Presentation.Cmd.Rendering
         #endregion
 
         #region Render Validation Methods
-        public static void ShowValidationSummary(FBColors? colors = null)
+        public static void ShowValidationSummary<TModel>(TModel model, FBColors? validationErrorColors, FBColors? invalidFieldColors)
         {
-            var vrl = CmdContext.ValidationResultList;
+            if (model == null) throw new ArgumentNullException(nameof(model));
             
+            var vrl = CmdContext.ValidationResultList;
             if (vrl.IsValid) return;
 
-            colors?.SetColors();
-
-            var errorMessages = vrl.Select(x => x.ErrorMessage);
-            foreach (var errorMessage in errorMessages)
+            foreach (var vr in vrl)
             {
-                Console.WriteLine($" - {errorMessage}");
+                var first = true;
+                foreach (var memberName in vr.MemberNames)
+                {
+                    string fieldName;
+                    try
+                    {
+                        fieldName = model.GetType().GetDisplayNameForProperty(memberName);
+                    }
+                    catch (Exception)
+                    {
+                        fieldName = memberName;
+                    }
+
+                    if (first) 
+                    {
+                        invalidFieldColors?.SetColors();
+                        Console.Write(fieldName);
+                        first = false;
+                    }
+                    else
+                    {
+                        validationErrorColors?.SetColors();
+                        Console.Write(", ");
+                        invalidFieldColors?.SetColors();
+                        Console.Write(fieldName);
+
+                    }
+                }
+                invalidFieldColors?.SetColors();
+                validationErrorColors?.SetColors();
+                Console.WriteLine($": {vr.ErrorMessage}");
             }
         }
         public static void ShowValidationMessageFor<TModel, TValue>(TModel model, Expression<Func<TModel, TValue>> propertyExpression, FBColors? colors = null)

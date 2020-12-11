@@ -27,7 +27,15 @@ namespace Supermodel.Presentation.Cmd.Models
                 var hideLabelAttribute = propertyInfo.GetAttribute<HideLabelAttribute>();
                 if (hideLabelAttribute == null)
                 {
-                    CmdRender.ShowLabel(this, propertyInfo.Name, null, CmdScaffoldingSettings.DisplayLabel);
+                    if (CmdContext.ValidationResultList.GetAllErrorsFor(propertyInfo.Name).Any())
+                    {
+                        CmdRender.ShowLabel(this, propertyInfo.Name, null, CmdScaffoldingSettings.DisplayLabel);
+                    }
+                    else
+                    {
+                        CmdRender.ShowLabel(this, propertyInfo.Name, null, CmdScaffoldingSettings.InvalidValueDisplayLabel);
+                    }
+
                     if (!propertyInfo.HasAttribute<NoRequiredLabelAttribute>())
                     {
                         var currentColors = FBColors.FromCurrent();
@@ -68,7 +76,15 @@ namespace Supermodel.Presentation.Cmd.Models
                 var hideLabelAttribute = propertyInfo.GetAttribute<HideLabelAttribute>();
                 if (hideLabelAttribute == null)
                 {
-                    CmdRender.ShowLabel(this, propertyInfo.Name, null, CmdScaffoldingSettings.DisplayLabel);
+                    if (CmdContext.ValidationResultList.GetAllErrorsFor(propertyInfo.Name).Any())
+                    {
+                        CmdRender.ShowLabel(this, propertyInfo.Name, null, CmdScaffoldingSettings.DisplayLabel);
+                    }
+                    else
+                    {
+                        CmdRender.ShowLabel(this, propertyInfo.Name, null, CmdScaffoldingSettings.InvalidValueDisplayLabel);
+                    }
+                    
                     if (!propertyInfo.HasAttribute<NoRequiredLabelAttribute>())
                     {
                         var currentColors = FBColors.FromCurrent();
@@ -86,15 +102,7 @@ namespace Supermodel.Presentation.Cmd.Models
                 {
                     if (!propertyInfo.HasAttribute<DisplayOnlyAttribute>())
                     {
-                        object? newPropertyValue;
-                        if (CmdContext.ValidationResultList.GetAllErrorsFor(propertyInfo.Name).Any())
-                        {
-                            newPropertyValue = CmdRender.Edit(this, propertyInfo.Name, CmdScaffoldingSettings.InvalidEditValue, CmdScaffoldingSettings.InvalidValueMessage);
-                        }
-                        else
-                        {
-                            newPropertyValue = CmdRender.Edit(this, propertyInfo.Name, CmdScaffoldingSettings.EditValue, CmdScaffoldingSettings.InvalidValueMessage);
-                        }
+                        var newPropertyValue = CmdRender.Edit(this, propertyInfo.Name, CmdScaffoldingSettings.EditValue, CmdScaffoldingSettings.InvalidValueMessage);
                         this.PropertySet(propertyInfo.Name, newPropertyValue);
                     }
                     else
