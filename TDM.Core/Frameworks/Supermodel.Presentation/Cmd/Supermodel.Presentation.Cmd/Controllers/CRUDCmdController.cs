@@ -26,7 +26,7 @@ namespace Supermodel.Presentation.Cmd.Controllers
         where TDataContext : class, IDataContext, new()
     { 
         #region Constructors
-        public CRUDCmdController(string listTitle) : base(listTitle) { }
+        public CRUDCmdController(string listTitle, string detailTitle) : base(listTitle, detailTitle) { }
         #endregion
     }
 
@@ -37,9 +37,10 @@ namespace Supermodel.Presentation.Cmd.Controllers
         where TDataContext : class, IDataContext, new()
     {
         #region Constructors
-        public CRUDCmdController(string listTitle)
+        public CRUDCmdController(string listTitle, string detailTitle)
         { 
             ListTitle = listTitle;
+            DetailTitle = detailTitle;
         }
         #endregion
 
@@ -185,14 +186,15 @@ namespace Supermodel.Presentation.Cmd.Controllers
                 catch (UnableToDeleteException ex)
                 {
                     UnitOfWorkContext<TDataContext>.CurrentDataContext.CommitOnDispose = false; //rollback the transaction
-                    HttpContext.Current.TempData.Super().NextPageModalMessage = ex.Message;
+                    CmdScaffoldingSettings.InvalidValueMessage?.SetColors();
+                    Console.WriteLine(ex.Message);
                 }
                 catch (Exception)
                 {
                     UnitOfWorkContext<TDataContext>.CurrentDataContext.CommitOnDispose = false; //rollback the transaction
-                    HttpContext.Current.TempData.Super().NextPageModalMessage = "PROBLEM!!!\\n\\nUnable to delete. Most likely reason: references from other entities.";
+                    CmdScaffoldingSettings.InvalidValueMessage?.SetColors();
+                    Console.WriteLine("PROBLEM: Unable to delete. Most likely reason: references from other entities.");
                 }
-
                 if (entityItem == null) throw new SupermodelException("CmdCRUDController.Detail[Delete]: entityItem == null: this should never happen");
             }
         }
@@ -230,6 +232,22 @@ namespace Supermodel.Presentation.Cmd.Controllers
             CmdScaffoldingSettings.ListTitleUnderline?.SetColors();
             Console.WriteLine("".PadRight(ListTitle.Length).Replace(" ", "="));
         }
+        protected virtual void ShowEditDetailTitle()
+        {
+            CmdScaffoldingSettings.DetailTitle?.SetColors();
+            var title = $"Edit {DetailTitle}";
+            Console.WriteLine(title);
+            CmdScaffoldingSettings.ListTitleUnderline?.SetColors();
+            Console.WriteLine("".PadRight(title.Length).Replace(" ", "="));
+        }
+        protected virtual void ShowNewDetailTitle()
+        {
+            CmdScaffoldingSettings.DetailTitle?.SetColors();
+            var title = $"New {DetailTitle}";
+            Console.WriteLine(title);
+            CmdScaffoldingSettings.ListTitleUnderline?.SetColors();
+            Console.WriteLine("".PadRight(title.Length).Replace(" ", "="));
+        }
         //this methods will catch validation exceptions that happen during mapping from mvc to domain (when it runs validation for mvc model by creating a domain object)
         protected virtual async Task<Tuple<TEntity, TDetailMvcModel>> TryUpdateEntityAsync(TEntity entityItem, string prefix)
         {
@@ -240,11 +258,13 @@ namespace Supermodel.Presentation.Cmd.Controllers
 
             try
             {
-                await TryUpdateModelAsync(mvcModelItem, prefix).ConfigureAwait(false);
-                if (HttpContext.Current.ValidationResultList.IsValid != true) throw new ModelStateInvalidException(mvcModelItem);
+                CmdRender.EditForModel(mvcModelItem);
+                //CmdContext.ValidationResultList = 
+
+                if (CmdContext.ValidationResultList.IsValid != true) throw new ModelStateInvalidException(mvcModelItem);
 
                 entityItem = await mvcModelItem.MapToAsync(entityItem).ConfigureAwait(false);
-                if (HttpContext.Current.ValidationResultList.IsValid != true) throw new ModelStateInvalidException(mvcModelItem);
+                if (CmdContext.ValidationResultList.IsValid != true) throw new ModelStateInvalidException(mvcModelItem);
 
                 //Validation: we only run ValidateAsync() here because attribute-based validation is already picked up by the framework
                 var vrl = await mvcModelItem.ValidateAsync(new ValidationContext(mvcModelItem)).ConfigureAwait(false);
@@ -262,6 +282,7 @@ namespace Supermodel.Presentation.Cmd.Controllers
 
         #region Properties
         public string ListTitle { get; set; }
+        public string DetailTitle { get; set; }
         #endregion
     }
 }

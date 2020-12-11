@@ -3,7 +3,7 @@
 using System;
 using Supermodel.Presentation.Cmd.ConsoleOutput;
 
-namespace Supermodel.Presentation.Cmd
+namespace Supermodel.Presentation.Cmd.Models
 {
     public static class CmdScaffoldingSettings
     {
@@ -11,9 +11,10 @@ namespace Supermodel.Presentation.Cmd
         
         public static FBColors? ListTitle { get; set; } = new FBColors(ConsoleColor.Cyan, BackgroundColor);
         public static FBColors? ListTitleUnderline { get; set; } = new FBColors(ConsoleColor.Cyan, BackgroundColor);
-
         public static FBColors? ListId { get; set; } = new FBColors(ConsoleColor.Cyan, BackgroundColor);
         public static FBColors? DefaultListLabel { get; set; } = new FBColors(ConsoleColor.Yellow, BackgroundColor);
+        
+        public static FBColors? DetailTitle { get; set; } = new FBColors(ConsoleColor.Cyan, BackgroundColor);
         
         public static FBColors? EditLabel { get; set; } = new FBColors(ConsoleColor.Green, BackgroundColor);
         public static FBColors? DisplayLabel { get; set; } = new FBColors(ConsoleColor.Green, BackgroundColor);
