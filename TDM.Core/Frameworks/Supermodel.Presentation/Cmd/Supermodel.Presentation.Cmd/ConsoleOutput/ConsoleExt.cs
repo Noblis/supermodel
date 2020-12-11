@@ -46,7 +46,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 if (string.IsNullOrWhiteSpace(input)) 
                 {
                     if (!CmdContext.IsPropertyRequired) return null;
-                    PrintRequiredFieldMessage(errorColors);
+                    PrintRequiredFieldMessage(errorColors, CmdScaffoldingSettings.PleaseFixValidationErrors);
                     continue;
                 }
 
@@ -56,7 +56,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 }
                 else
                 {
-                    PrintErrorMessage(errorColors);
+                    PrintErrorMessage(errorColors, CmdScaffoldingSettings.PleaseFixValidationErrors);
                     valueStr = input;
                 }
             }
@@ -83,7 +83,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 if (string.IsNullOrWhiteSpace(input)) 
                 {
                     if (!CmdContext.IsPropertyRequired) return null;
-                    PrintRequiredFieldMessage(errorColors);
+                    PrintRequiredFieldMessage(errorColors, CmdScaffoldingSettings.PleaseFixValidationErrors);
                     continue;
                 }
 
@@ -93,7 +93,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 }
                 else
                 {
-                    PrintErrorMessage(errorColors);
+                    PrintErrorMessage(errorColors, CmdScaffoldingSettings.PleaseFixValidationErrors);
                     valueStr = input;
                 }
             }
@@ -107,7 +107,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 if (string.IsNullOrWhiteSpace(input)) 
                 {
                     if (!CmdContext.IsPropertyRequired) return null;
-                    PrintRequiredFieldMessage(errorColors);
+                    PrintRequiredFieldMessage(errorColors, CmdScaffoldingSettings.PleaseFixValidationErrors);
                     continue;
                 }
 
@@ -117,7 +117,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 }
                 else
                 {
-                    PrintErrorMessage(errorColors);
+                    PrintErrorMessage(errorColors, CmdScaffoldingSettings.PleaseFixValidationErrors);
                     valueStr = input;
                 }
             }
@@ -131,7 +131,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 if (string.IsNullOrWhiteSpace(input)) 
                 {
                     if (!CmdContext.IsPropertyRequired) return null;
-                    PrintRequiredFieldMessage(errorColors);
+                    PrintRequiredFieldMessage(errorColors, CmdScaffoldingSettings.PleaseFixValidationErrors);
                     continue;
                 }
 
@@ -141,7 +141,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 }
                 else
                 {
-                    PrintErrorMessage(errorColors);
+                    PrintErrorMessage(errorColors, CmdScaffoldingSettings.PleaseFixValidationErrors);
                     valueStr = input;
                 }
             }
@@ -158,7 +158,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 if (string.IsNullOrWhiteSpace(input)) 
                 {
                     if (!CmdContext.IsPropertyRequired) return null;
-                    PrintRequiredFieldMessage(errorColors);
+                    PrintRequiredFieldMessage(errorColors, CmdScaffoldingSettings.PleaseFixValidationErrors);
                     continue;
                 }
 
@@ -168,7 +168,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 }
                 else
                 {
-                    PrintErrorMessage(errorColors);
+                    PrintErrorMessage(errorColors, CmdScaffoldingSettings.PleaseFixValidationErrors);
                     valueStr = input;
                 }
             }
@@ -182,7 +182,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 if (string.IsNullOrWhiteSpace(input)) 
                 {
                     if (!CmdContext.IsPropertyRequired) return null;
-                    PrintRequiredFieldMessage(errorColors);
+                    PrintRequiredFieldMessage(errorColors, CmdScaffoldingSettings.PleaseFixValidationErrors);
                     continue;
                 }
 
@@ -192,7 +192,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 }
                 else
                 {
-                    PrintErrorMessage(errorColors);
+                    PrintErrorMessage(errorColors, CmdScaffoldingSettings.PleaseFixValidationErrors);
                     valueStr = input;
                 }
             }
@@ -206,7 +206,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 if (string.IsNullOrWhiteSpace(input)) 
                 {
                     if (!CmdContext.IsPropertyRequired) return null;
-                    PrintRequiredFieldMessage(errorColors);
+                    PrintRequiredFieldMessage(errorColors, CmdScaffoldingSettings.PleaseFixValidationErrors);
                     continue;
                 }
 
@@ -216,7 +216,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 }
                 else
                 {
-                    PrintErrorMessage(errorColors);
+                    PrintErrorMessage(errorColors, CmdScaffoldingSettings.PleaseFixValidationErrors);
                     valueStr = input;
                 }
             }
@@ -230,7 +230,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 if (string.IsNullOrWhiteSpace(input)) 
                 {
                     if (!CmdContext.IsPropertyRequired) return null;
-                    PrintRequiredFieldMessage(errorColors);
+                    PrintRequiredFieldMessage(errorColors, CmdScaffoldingSettings.PleaseFixValidationErrors);
                     continue;
                 }
 
@@ -240,7 +240,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 }
                 else
                 {
-                    PrintErrorMessage(errorColors);
+                    PrintErrorMessage(errorColors, CmdScaffoldingSettings.PleaseFixValidationErrors);
                     valueStr = input;
                 }
             }
@@ -255,7 +255,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 if (string.IsNullOrWhiteSpace(input)) 
                 {
                     if (!CmdContext.IsPropertyRequired) return null;
-                    PrintRequiredFieldMessage(errorColors);
+                    PrintRequiredFieldMessage(errorColors, CmdScaffoldingSettings.PleaseFixValidationErrors);
                     continue;
                 }
 
@@ -265,7 +265,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 }
                 else
                 {
-                    PrintErrorMessage(errorColors);
+                    PrintErrorMessage(errorColors, CmdScaffoldingSettings.PleaseFixValidationErrors);
                     valueStr = input;
                 }
             }
@@ -279,7 +279,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 if (string.IsNullOrWhiteSpace(input)) 
                 {
                     if (!CmdContext.IsPropertyRequired) return null;
-                    PrintRequiredFieldMessage(errorColors);
+                    PrintRequiredFieldMessage(errorColors, CmdScaffoldingSettings.PleaseFixValidationErrors);
                     continue;
                 }
 
@@ -289,7 +289,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 }
                 else
                 {
-                    PrintErrorMessage(errorColors);
+                    PrintErrorMessage(errorColors, CmdScaffoldingSettings.PleaseFixValidationErrors);
                     valueStr = input;
                 }
             }
@@ -303,7 +303,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 if (string.IsNullOrWhiteSpace(input)) 
                 {
                     if (!CmdContext.IsPropertyRequired) return null;
-                    PrintRequiredFieldMessage(errorColors);
+                    PrintRequiredFieldMessage(errorColors, CmdScaffoldingSettings.PleaseFixValidationErrors);
                     continue;
                 }
 
@@ -313,7 +313,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 }
                 else
                 {
-                    PrintErrorMessage(errorColors);
+                    PrintErrorMessage(errorColors, CmdScaffoldingSettings.PleaseFixValidationErrors);
                     valueStr = input;
                 }
             }
@@ -327,7 +327,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 if (string.IsNullOrWhiteSpace(input)) 
                 {
                     if (!CmdContext.IsPropertyRequired) return null;
-                    PrintRequiredFieldMessage(errorColors);
+                    PrintRequiredFieldMessage(errorColors, CmdScaffoldingSettings.PleaseFixValidationErrors);
                     continue;
                 }
 
@@ -337,7 +337,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 }
                 else
                 {
-                    PrintErrorMessage(errorColors);
+                    PrintErrorMessage(errorColors, CmdScaffoldingSettings.PleaseFixValidationErrors);
                     valueStr = input;
                 }
             }
@@ -353,7 +353,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 if (string.IsNullOrWhiteSpace(input)) 
                 {
                     if (!CmdContext.IsPropertyRequired) return "";
-                    PrintRequiredFieldMessage(errorColors);
+                    PrintRequiredFieldMessage(errorColors, CmdScaffoldingSettings.PleaseFixValidationErrors);
                     continue;
                 }
                 return input;
@@ -367,7 +367,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 if (string.IsNullOrWhiteSpace(input)) 
                 {
                     if (!CmdContext.IsPropertyRequired) return "";
-                    PrintRequiredFieldMessage(errorColors);
+                    PrintRequiredFieldMessage(errorColors, CmdScaffoldingSettings.PleaseFixValidationErrors);
                     continue;
                 }
                 return input;
@@ -575,21 +575,28 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             arrowColors?.SetColors();
             Console.Write('▼');
         }
-        private static void PrintRequiredFieldMessage(FBColors? errorColors = null)
+        private static void PrintRequiredFieldMessage(FBColors? errorColors, FBColors? tryAgainColors)
         {
             var currentColors = FBColors.FromCurrent();
             errorColors?.SetColors();
 
-            if (CmdContext.PropertyDisplayName != null) Console.Write($"The {CmdContext.PropertyDisplayName} is required. Try again:");
-            else Console.Write($"This field is required. Try again:");
+            if (CmdContext.PropertyDisplayName != null) Console.Write($"The {CmdContext.PropertyDisplayName} is required. ");
+            else Console.Write("This field is required. ");
+
+            tryAgainColors?.SetColors();
+            Console.Write("Try again: ");
 
             currentColors.SetColors();
         }
-        private static void PrintErrorMessage(FBColors? errorColors = null)
+        private static void PrintErrorMessage(FBColors? errorColors, FBColors? tryAgainColors)
         {
             var currentColors = FBColors.FromCurrent();
+            
             errorColors?.SetColors();
-            Console.Write("Invalid entry. Try again: ");
+            Console.Write("Invalid entry. ");
+            tryAgainColors?.SetColors();
+            Console.Write("Try again: ");
+
             currentColors.SetColors();
         }
         private static bool IsValidFloatingPoint(char x)
