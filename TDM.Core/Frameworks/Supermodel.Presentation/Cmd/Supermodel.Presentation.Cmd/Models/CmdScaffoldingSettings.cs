@@ -9,6 +9,9 @@ namespace Supermodel.Presentation.Cmd.Models
     {
         public static ConsoleColor BackgroundColor { get; set; } = ConsoleColor.Black;
         
+        public static FBColors? Prompt1 { get; set; } = new FBColors(ConsoleColor.Cyan, BackgroundColor);
+        public static FBColors? Prompt2 { get; set; } = new FBColors(ConsoleColor.Magenta, BackgroundColor);
+
         public static FBColors? ListTitle { get; set; } = new FBColors(ConsoleColor.Cyan, BackgroundColor);
         public static FBColors? ListTitleUnderline { get; set; } = new FBColors(ConsoleColor.Cyan, BackgroundColor);
         public static FBColors? ListId { get; set; } = new FBColors(ConsoleColor.Cyan, BackgroundColor);

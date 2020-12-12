@@ -486,6 +486,64 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             }
             return new string(chars.ToArray ());
         }
+        public static string EditLineAllCaps(string value, Func<char, bool> isValidCharFunc)
+        {
+            value = value.ToUpper();
+            
+            var cursorLeft = Console.CursorLeft;
+            var cursorTop = Console.CursorTop;
+
+            Console.Write(value);
+            var chars = new List<char>();
+            if (!string.IsNullOrEmpty(value)) chars.AddRange(value.ToCharArray());
+
+            while (true)
+            {
+                var info = Console.ReadKey(true);
+                var infoKeyChar = char.ToUpper(info.KeyChar);
+
+                if (info.Key == ConsoleKey.Backspace && (Console.CursorLeft > cursorLeft || Console.CursorTop != cursorTop))
+                {
+                    chars.RemoveAt(chars.Count - 1);
+                    
+                    var newCursorLeft = Console.CursorLeft - 1;
+                    var newCursorTop = Console.CursorTop;
+                    if (Console.CursorLeft == 0 && Console.CursorTop > cursorTop)
+                    {
+                        newCursorTop = Console.CursorTop-1;
+                        newCursorLeft = Console.WindowWidth-1;
+                    }
+                    Console.CursorTop = newCursorTop;
+                    Console.CursorLeft = newCursorLeft;
+                    Console.Write(' ');
+                    Console.CursorTop = newCursorTop;
+                    Console.CursorLeft = newCursorLeft;
+                }
+                else if (info.Key == ConsoleKey.Enter) 
+                { 
+                    Console.WriteLine(); 
+                    break; 
+                }
+                else if (info.Key == ConsoleKey.Escape)
+                {
+                    Console.CursorTop = cursorTop;
+                    Console.CursorLeft = cursorLeft;
+                    Console.Write("".PadRight(chars.Count));
+
+                    Console.CursorTop = cursorTop;
+                    Console.CursorLeft = cursorLeft;
+                    Console.WriteLine(value);
+
+                    return value;
+                }
+                else if (isValidCharFunc.Invoke(infoKeyChar))
+                {
+                    Console.Write(infoKeyChar);
+                    chars.Add(infoKeyChar);
+                }
+            }
+            return new string(chars.ToArray ());
+        }
         #endregion
 
         #region Low Level Dropdown List

@@ -3,10 +3,12 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading.Tasks;
 using Domain.Supermodel.Persistence;
 using Supermodel.DataAnnotations.Validations;
 using Supermodel.DataAnnotations.Validations.Attributes;
+using Supermodel.Persistence;
 using Supermodel.Persistence.Entities;
 using Supermodel.Presentation.Mvc.Bootstrap4.Models;
 using Supermodel.Presentation.Mvc.Models.Api;
@@ -69,6 +71,14 @@ namespace Domain.Entities
 
     public class TDMUser : UserEntity<TDMUser, DataContext>
     {
+        #region Overrides
+        protected override void DeleteInternal()
+        {
+            if (ToDoLists.Any()) throw new UnableToDeleteException("User contains To Do Lists"); 
+            base.DeleteInternal();
+        }
+        #endregion
+
         #region Properties
         public string FirstName { get; set; } = "";
         public string LastName { get; set; } = "";

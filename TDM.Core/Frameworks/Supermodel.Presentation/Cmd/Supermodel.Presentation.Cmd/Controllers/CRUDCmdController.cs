@@ -47,15 +47,19 @@ namespace Supermodel.Presentation.Cmd.Controllers
         #endregion
 
         #region Action Methods
-        public virtual async Task RunCRUD()
+        public virtual async Task RunCRUDAsync()
         {
+            var currentColors = FBColors.FromCurrent();
+
             while(true)
             {
                 await ListAsync();
-                Console.Write("Pick View, Edit, Add, Delete, or Quit: ");
-                // ReSharper disable once StringLiteralTypo
-                var input = ConsoleExt.EditLine("", x => char.IsDigit(x) || "VEADQ".Contains(char.ToUpper(x)));
+                
+                //method returns true if we quit
+                if (await TryShowPromptAndProcessActionAsync()) break; 
             }
+
+            currentColors.SetColors();
         }
         public virtual async Task ListAsync()
         {
@@ -173,16 +177,6 @@ namespace Supermodel.Presentation.Cmd.Controllers
         }
         #endregion
 
-        #region Overrides
-        //protected override async Task<(bool, object?[])> TryBindAndValidateParametersAsync(MethodInfo actionMethodInfo)
-        //{
-        //    await using (new UnitOfWorkIfNoAmbientContext<TDataContext>(MustBeWritable.No))
-        //    {
-        //        return await base.TryBindAndValidateParametersAsync(actionMethodInfo).ConfigureAwait(false);
-        //    }
-        //}
-        #endregion
-
         #region Protected Methods & Properties
         protected virtual async Task<TEntity> GetItemAndCacheItAsync(long id)
         {
@@ -198,6 +192,91 @@ namespace Supermodel.Presentation.Cmd.Controllers
         {
             var repo = (ILinqDataRepo<TEntity>)RepoFactory.Create<TEntity>();
             return repo.Items;        }
+        
+        //this method return true if we quit
+        protected virtual async Task<bool> TryShowPromptAndProcessActionAsync()
+        {
+            ShowActionPrompt();
+            while (true)
+            {
+                CmdScaffoldingSettings.Prompt2?.SetColors();
+                var input = ConsoleExt.EditLineAllCaps("", x => char.IsDigit(x) || "VEADQ".Contains(x)).Trim().ToUpper();
+                if (input == "A")
+                {
+                    Console.WriteLine();
+                    await AddDetailAsync();
+                    return false;
+                }
+                if (input.StartsWith("V"))
+                {
+                    long id;
+                    if (input.Length == 1)
+                    {
+                        CmdScaffoldingSettings.Prompt1?.SetColors();
+                        Console.Write("View Selected. Enter ID: ");
+                        using(CmdContext.NewRequiredScope(true, "ID"))
+                        {
+                            id = ConsoleExt.EditInteger((long?)null) ?? throw new Exception("ID == null: this should never happen!");
+                        }
+                    }
+                    else
+                    {
+                        if (!long.TryParse(input[1..].Trim(), out id))
+                        {
+                            Console.WriteLine("Invalid command. Please try again: ");
+                            continue;
+                        }
+                    }
+                    Console.WriteLine();
+                    await ViewDetailAsync(id);
+                    return false;
+                }
+                
+                if (input == "Q") 
+                {
+                    CmdScaffoldingSettings.Prompt1?.SetColors();
+                    Console.WriteLine($"Quitting {ListTitle}...");
+                    return true;
+                }
+            }
+        }
+
+        protected virtual void ShowActionPrompt()
+        {
+            CmdScaffoldingSettings.Prompt1?.SetColors();
+            Console.Write("Pick ");
+
+            CmdScaffoldingSettings.Prompt2?.SetColors();
+            Console.Write("V");
+
+            CmdScaffoldingSettings.Prompt1?.SetColors();
+            Console.Write("iew, ");
+
+            CmdScaffoldingSettings.Prompt2?.SetColors();
+            Console.Write("E");
+
+            CmdScaffoldingSettings.Prompt1?.SetColors();
+            Console.Write("dit, ");
+
+            CmdScaffoldingSettings.Prompt2?.SetColors();
+            Console.Write("A");
+
+            CmdScaffoldingSettings.Prompt1?.SetColors();
+            Console.Write("dd, ");
+
+            CmdScaffoldingSettings.Prompt2?.SetColors();
+            Console.Write("D");
+
+            CmdScaffoldingSettings.Prompt1?.SetColors();
+            // ReSharper disable once StringLiteralTypo
+            Console.Write("elete, or ");
+
+            CmdScaffoldingSettings.Prompt2?.SetColors();
+            Console.Write("Q");
+
+            CmdScaffoldingSettings.Prompt1?.SetColors();
+            Console.Write("uit: ");
+        }
         protected virtual void ShowListTitle()
         {
             CmdScaffoldingSettings.ListTitle?.SetColors();
