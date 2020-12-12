@@ -206,29 +206,36 @@ namespace Supermodel.Presentation.Cmd.Controllers
             {
                 CmdScaffoldingSettings.Prompt2?.SetColors();
                 var input = ConsoleExt.EditLineAllCaps("", x => char.IsDigit(x) || "VEADQ".Contains(x)).Trim().ToUpper();
-                if (input == "A")
-                {
-                    Console.WriteLine();
-                    await AddDetailAsync();
-                    Console.WriteLine();
-                    return false;
-                }
                 if (input.StartsWith("V"))
                 {
                     var id = GetIdForCommand(input);
                     if (id == null)
                     {
-                        CmdScaffoldingSettings.InvalidCommand?.SetColors();
-                        Console.Write($"Invalid command. ");
-
-                        CmdScaffoldingSettings.PleaseFixValidationErrors?.SetColors();
-                        Console.Write("Pick again: ");
-
+                        PrintInvalidCommandTryAgain();
                         continue;
                     }
-                    
                     Console.WriteLine();
                     await ViewDetailAsync(id.Value);
+                    Console.WriteLine();
+                    return false;
+                }
+                if (input.StartsWith("E"))
+                {
+                    var id = GetIdForCommand(input);
+                    if (id == null)
+                    {
+                        PrintInvalidCommandTryAgain();
+                        continue;
+                    }
+                    Console.WriteLine();
+                    await EditDetailAsync(id.Value);
+                    Console.WriteLine();
+                    return false;
+                }
+                if (input == "A")
+                {
+                    Console.WriteLine();
+                    await AddDetailAsync();
                     Console.WriteLine();
                     return false;
                 }
@@ -240,11 +247,7 @@ namespace Supermodel.Presentation.Cmd.Controllers
                     return true;
                 }
 
-                CmdScaffoldingSettings.InvalidCommand?.SetColors();
-                Console.Write($"Invalid command. ");
-
-                CmdScaffoldingSettings.PleaseFixValidationErrors?.SetColors();
-                Console.Write("Pick again: ");
+                PrintInvalidCommandTryAgain();
             }
         }
 
@@ -254,7 +257,7 @@ namespace Supermodel.Presentation.Cmd.Controllers
             if (input.Length == 1)
             {
                 CmdScaffoldingSettings.Prompt1?.SetColors();
-                Console.Write("View Selected. Enter ID: ");
+                Console.Write("Pick ID: ");
                 using(CmdContext.NewRequiredScope(true, "ID"))
                 {
                     id = ConsoleExt.EditInteger((long?)null) ?? throw new Exception("ID == null: this should never happen!");
@@ -302,6 +305,14 @@ namespace Supermodel.Presentation.Cmd.Controllers
 
             CmdScaffoldingSettings.Prompt1?.SetColors();
             Console.Write("uit): ");
+        }
+        protected virtual void PrintInvalidCommandTryAgain()
+        {
+            CmdScaffoldingSettings.InvalidCommand?.SetColors();
+            Console.Write("Invalid command. ");
+
+            CmdScaffoldingSettings.PleaseFixValidationErrors?.SetColors();
+            Console.Write("Pick again: ");
         }
 
         protected virtual void ShowListTitle()
