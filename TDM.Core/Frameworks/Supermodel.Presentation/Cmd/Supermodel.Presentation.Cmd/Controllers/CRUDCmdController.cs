@@ -215,26 +215,20 @@ namespace Supermodel.Presentation.Cmd.Controllers
                 }
                 if (input.StartsWith("V"))
                 {
-                    long id;
-                    if (input.Length == 1)
+                    var id = GetIdForCommand(input);
+                    if (id == null)
                     {
-                        CmdScaffoldingSettings.Prompt1?.SetColors();
-                        Console.Write("View Selected. Enter ID: ");
-                        using(CmdContext.NewRequiredScope(true, "ID"))
-                        {
-                            id = ConsoleExt.EditInteger((long?)null) ?? throw new Exception("ID == null: this should never happen!");
-                        }
+                        CmdScaffoldingSettings.InvalidValueDisplayLabel?.SetColors();
+                        Console.Write($"Invalid command '{input}'. ");
+
+                        CmdScaffoldingSettings.PleaseFixValidationErrors?.SetColors();
+                        Console.Write("Pick again: ");
+
+                        continue;
                     }
-                    else
-                    {
-                        if (!long.TryParse(input[1..].Trim(), out id))
-                        {
-                            Console.WriteLine("Invalid command. Please try again: ");
-                            continue;
-                        }
-                    }
+                    
                     Console.WriteLine();
-                    await ViewDetailAsync(id);
+                    await ViewDetailAsync(id.Value);
                     Console.WriteLine();
                     return false;
                 }
@@ -245,13 +239,38 @@ namespace Supermodel.Presentation.Cmd.Controllers
                     Console.WriteLine($"Quitting {ListTitle}...");
                     return true;
                 }
+
+                CmdScaffoldingSettings.InvalidValueDisplayLabel?.SetColors();
+                Console.Write($"Invalid command '{input}'. ");
+
+                CmdScaffoldingSettings.PleaseFixValidationErrors?.SetColors();
+                Console.Write("Pick again: ");
             }
         }
 
+        protected virtual long? GetIdForCommand(string input)
+        {
+            long? id;
+            if (input.Length == 1)
+            {
+                CmdScaffoldingSettings.Prompt1?.SetColors();
+                Console.Write("View Selected. Enter ID: ");
+                using(CmdContext.NewRequiredScope(true, "ID"))
+                {
+                    id = ConsoleExt.EditInteger((long?)null) ?? throw new Exception("ID == null: this should never happen!");
+                }
+            }
+            else
+            {
+                if (long.TryParse(input[1..].Trim(), out var tmpId)) id = tmpId;
+                else id = null;
+            }
+            return id;
+        }
         protected virtual void ShowActionPrompt()
         {
             CmdScaffoldingSettings.Prompt1?.SetColors();
-            Console.Write("Pick Command (");
+            Console.Write("Pick a command (");
 
             CmdScaffoldingSettings.Prompt2?.SetColors();
             Console.Write("V");
@@ -284,6 +303,7 @@ namespace Supermodel.Presentation.Cmd.Controllers
             CmdScaffoldingSettings.Prompt1?.SetColors();
             Console.Write("uit): ");
         }
+
         protected virtual void ShowListTitle()
         {
             CmdScaffoldingSettings.ListTitle?.SetColors();
