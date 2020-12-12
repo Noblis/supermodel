@@ -247,6 +247,15 @@ namespace Supermodel.Presentation.Cmd.Controllers
                         PrintInvalidCommandTryAgain();
                         continue;
                     }
+                    CmdScaffoldingSettings.EditLabel?.SetColors();
+                    Console.Write($"Are you sure you want to delete {DetailTitle} with ID = {id}? ");
+                    CmdScaffoldingSettings.EditValue?.SetColors();
+                    if (!ConsoleExt.EditBool(false, CmdScaffoldingSettings.DropdownArrow, CmdScaffoldingSettings.InvalidValueMessage)) 
+                    {
+                        Console.WriteLine();
+                        return false;
+                    }
+
                     Console.WriteLine();
                     await DeleteDetailAsync(id.Value);
                     Console.WriteLine();
