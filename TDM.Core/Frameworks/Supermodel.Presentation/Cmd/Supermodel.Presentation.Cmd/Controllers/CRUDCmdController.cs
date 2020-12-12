@@ -239,7 +239,19 @@ namespace Supermodel.Presentation.Cmd.Controllers
                     Console.WriteLine();
                     return false;
                 }
-                
+                if (input.StartsWith("D"))
+                {
+                    var id = GetIdForCommand(input);
+                    if (id == null)
+                    {
+                        PrintInvalidCommandTryAgain();
+                        continue;
+                    }
+                    Console.WriteLine();
+                    await DeleteDetailAsync(id.Value);
+                    Console.WriteLine();
+                    return false;
+                }
                 if (input == "Q") 
                 {
                     CmdScaffoldingSettings.Prompt1?.SetColors();
