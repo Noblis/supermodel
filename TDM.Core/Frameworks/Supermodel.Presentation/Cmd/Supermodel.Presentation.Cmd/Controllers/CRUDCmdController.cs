@@ -91,6 +91,11 @@ namespace Supermodel.Presentation.Cmd.Controllers
             var mvcModelItem = await CreateMvcModelAsync(id);
             ShowViewDetailTitle(id);
             CmdRender.DisplayForModel(mvcModelItem);
+            
+            CmdScaffoldingSettings.Prompt1?.SetColors();
+            Console.WriteLine("Press any key...");
+            while(!Console.KeyAvailable) { /* do nothing */ }
+            Console.ReadKey(true);
         }
         public virtual async Task EditDetailAsync(long id)
         {
@@ -205,6 +210,7 @@ namespace Supermodel.Presentation.Cmd.Controllers
                 {
                     Console.WriteLine();
                     await AddDetailAsync();
+                    Console.WriteLine();
                     return false;
                 }
                 if (input.StartsWith("V"))
@@ -229,6 +235,7 @@ namespace Supermodel.Presentation.Cmd.Controllers
                     }
                     Console.WriteLine();
                     await ViewDetailAsync(id);
+                    Console.WriteLine();
                     return false;
                 }
                 
@@ -244,7 +251,7 @@ namespace Supermodel.Presentation.Cmd.Controllers
         protected virtual void ShowActionPrompt()
         {
             CmdScaffoldingSettings.Prompt1?.SetColors();
-            Console.Write("Pick ");
+            Console.Write("Pick Command (");
 
             CmdScaffoldingSettings.Prompt2?.SetColors();
             Console.Write("V");
@@ -275,7 +282,7 @@ namespace Supermodel.Presentation.Cmd.Controllers
             Console.Write("Q");
 
             CmdScaffoldingSettings.Prompt1?.SetColors();
-            Console.Write("uit: ");
+            Console.Write("uit): ");
         }
         protected virtual void ShowListTitle()
         {
