@@ -218,8 +218,8 @@ namespace Supermodel.Presentation.Cmd.Controllers
                     var id = GetIdForCommand(input);
                     if (id == null)
                     {
-                        CmdScaffoldingSettings.InvalidValueDisplayLabel?.SetColors();
-                        Console.Write($"Invalid command '{input}'. ");
+                        CmdScaffoldingSettings.InvalidCommand?.SetColors();
+                        Console.Write($"Invalid command. ");
 
                         CmdScaffoldingSettings.PleaseFixValidationErrors?.SetColors();
                         Console.Write("Pick again: ");
@@ -240,8 +240,8 @@ namespace Supermodel.Presentation.Cmd.Controllers
                     return true;
                 }
 
-                CmdScaffoldingSettings.InvalidValueDisplayLabel?.SetColors();
-                Console.Write($"Invalid command '{input}'. ");
+                CmdScaffoldingSettings.InvalidCommand?.SetColors();
+                Console.Write($"Invalid command. ");
 
                 CmdScaffoldingSettings.PleaseFixValidationErrors?.SetColors();
                 Console.Write("Pick again: ");

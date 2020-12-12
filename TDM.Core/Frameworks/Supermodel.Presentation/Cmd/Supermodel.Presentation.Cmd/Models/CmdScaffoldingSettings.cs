@@ -11,6 +11,8 @@ namespace Supermodel.Presentation.Cmd.Models
         
         public static FBColors? Prompt1 { get; set; } = new FBColors(ConsoleColor.Cyan, BackgroundColor);
         public static FBColors? Prompt2 { get; set; } = new FBColors(ConsoleColor.Magenta, BackgroundColor);
+        public static FBColors? InvalidCommand { get; set; } = new FBColors(ConsoleColor.Red, BackgroundColor);
+
 
         public static FBColors? ListTitle { get; set; } = new FBColors(ConsoleColor.Cyan, BackgroundColor);
         public static FBColors? ListTitleUnderline { get; set; } = new FBColors(ConsoleColor.Cyan, BackgroundColor);
