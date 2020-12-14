@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Supermodel.Persistence.EFCore;
 using Supermodel.Persistence.UnitOfWork;
-using Supermodel.Presentation.Cmd.ConsoleOutput;
 using Supermodel.Presentation.Cmd.Controllers;
 using WMDomain.Entities;
 using WMDomain.Supermodel.Persistence;
