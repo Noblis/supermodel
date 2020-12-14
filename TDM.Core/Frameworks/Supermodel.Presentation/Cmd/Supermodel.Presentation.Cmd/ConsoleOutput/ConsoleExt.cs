@@ -401,6 +401,22 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                     SetCursorPosition();
                     Console.CursorVisible = true;
                 }
+                else if (info.Key == ConsoleKey.LeftArrow && cursorIdx > 0)
+                { 
+                    cursorIdx--;
+
+                    Console.CursorVisible = false;
+                    SetCursorPosition();
+                    Console.CursorVisible = true;
+                }
+                else if (info.Key == ConsoleKey.RightArrow && cursorIdx < chars.Count)
+                { 
+                    cursorIdx++;
+
+                    Console.CursorVisible = false;
+                    SetCursorPosition();
+                    Console.CursorVisible = true;
+                }
                 else if (info.Key == ConsoleKey.Enter) 
                 { 
                     Console.WriteLine(); 
