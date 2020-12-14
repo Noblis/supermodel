@@ -380,6 +380,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
         {
             if (value.Contains('\n')) throw new ArgumentException("Cannot contain new line", nameof(value));
             
+            var cursorIdx = value.Length;
             var cursorLeft = Console.CursorLeft;
             var cursorTop = Console.CursorTop;
 
@@ -390,22 +391,15 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             while (true)
             {
                 var info = Console.ReadKey(true);
-                if (info.Key == ConsoleKey.Backspace && (Console.CursorLeft > cursorLeft || Console.CursorTop != cursorTop))
+                if (info.Key == ConsoleKey.Backspace && cursorIdx > 0)
                 {
-                    chars.RemoveAt(chars.Count - 1);
+                    cursorIdx--;
+                    chars.RemoveAt(cursorIdx);
                     
-                    var newCursorLeft = Console.CursorLeft - 1;
-                    var newCursorTop = Console.CursorTop;
-                    if (Console.CursorLeft == 0 && Console.CursorTop > cursorTop)
-                    {
-                        newCursorTop = Console.CursorTop-1;
-                        newCursorLeft = Console.WindowWidth-1;
-                    }
-                    Console.CursorTop = newCursorTop;
-                    Console.CursorLeft = newCursorLeft;
-                    Console.Write(' ');
-                    Console.CursorTop = newCursorTop;
-                    Console.CursorLeft = newCursorLeft;
+                    Console.CursorVisible = false;
+                    UpdateText();
+                    SetCursorPosition();
+                    Console.CursorVisible = true;
                 }
                 else if (info.Key == ConsoleKey.Enter) 
                 { 
@@ -424,15 +418,37 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                     Console.CursorLeft = cursorLeft;
                     Console.WriteLine(value);
 
-                    return value;
+                    chars.Clear();
+                    if (!string.IsNullOrEmpty(value)) chars.AddRange(value.ToCharArray());
+                    break;
                 }
                 else if (isValidCharFunc.Invoke(info.KeyChar))
                 {
-                    Console.Write(info.KeyChar);
-                    chars.Add(info.KeyChar);
+                    chars.Insert(cursorIdx, info.KeyChar);
+                    cursorIdx++;
+
+                    Console.CursorVisible = false;
+                    UpdateText();
+                    SetCursorPosition();
+                    Console.CursorVisible = true;
                 }
             }
-            return new string(chars.ToArray ());
+            return new string(chars.ToArray());
+
+            void UpdateText()
+            {
+                Console.CursorTop = cursorTop;
+                Console.CursorLeft = cursorLeft;
+                var newValue = new string(chars!.ToArray());
+                Console.Write(newValue);
+                Console.Write(' ');
+            }
+
+            void SetCursorPosition()
+            {
+                Console.CursorLeft = (cursorLeft + cursorIdx) % Console.WindowWidth;
+                Console.CursorTop = cursorTop + (cursorLeft + cursorIdx) / Console.WindowWidth;
+            }
         }
         public static string ReadPasswordLine(Func<char, bool> isValidCharFunc)
         {

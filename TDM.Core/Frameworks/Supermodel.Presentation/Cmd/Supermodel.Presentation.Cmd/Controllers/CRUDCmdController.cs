@@ -400,7 +400,7 @@ namespace Supermodel.Presentation.Cmd.Controllers
         }
         protected virtual void ShowEditDetailTitle(long id)
         {
-            ShowTitle($"Edit {DetailTitle} with ID = {id}", CmdScaffoldingSettings.Title);
+            ShowTitle($"Edit {DetailTitle} with ID = {id} (shift-esc to cancel)", CmdScaffoldingSettings.Title);
         }
         protected virtual void ShowViewDetailTitle(long id)
         {
@@ -408,7 +408,7 @@ namespace Supermodel.Presentation.Cmd.Controllers
         }
         protected virtual void ShowAddDetailTitle()
         {
-            ShowTitle($"Add New {DetailTitle}", CmdScaffoldingSettings.Title);
+            ShowTitle($"Add New {DetailTitle} (shift-esc to cancel)", CmdScaffoldingSettings.Title);
         }
         protected virtual async Task<TDetailMvcModel> CreateMvcModelAsync(long id)
         {
