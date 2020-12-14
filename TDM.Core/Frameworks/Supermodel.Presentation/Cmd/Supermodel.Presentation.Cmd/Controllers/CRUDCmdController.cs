@@ -128,6 +128,8 @@ namespace Supermodel.Presentation.Cmd.Controllers
             {
                 await using (new UnitOfWork<TDataContext>())
                 {
+                    var savedCtrlEscEnabled = CmdContext.CtrlEscEnabled;
+                    CmdContext.CtrlEscEnabled = true;
                     try
                     {
                         await EditMvcModelAsync(mvcModelItem).ConfigureAwait(false);
@@ -147,6 +149,19 @@ namespace Supermodel.Presentation.Cmd.Controllers
                         Console.WriteLine();
                         CmdRender.ShowValidationSummary(mvcModelItem, CmdScaffoldingSettings.ValidationErrorMessage, CmdScaffoldingSettings.Label, CmdScaffoldingSettings.Prompt);
                         Console.WriteLine();
+                    }
+                    catch (ShiftEscException)
+                    {
+                        CmdScaffoldingSettings.Prompt?.SetColors();
+                        Console.WriteLine();
+                        Console.Write("Operation cancelled. ");
+                        if (ClearScreenOnList) PressAnyKey();
+                        else Console.WriteLine();
+                        return;
+                    }
+                    finally
+                    {
+                        CmdContext.CtrlEscEnabled = savedCtrlEscEnabled;
                     }
                 }
             }
@@ -161,6 +176,8 @@ namespace Supermodel.Presentation.Cmd.Controllers
             {
                 await using (new UnitOfWork<TDataContext>())
                 {
+                    var savedCtrlEscEnabled = CmdContext.CtrlEscEnabled;
+                    CmdContext.CtrlEscEnabled = true;
                     try
                     {
                         await EditMvcModelAsync(mvcModelItem).ConfigureAwait(false);
@@ -180,6 +197,19 @@ namespace Supermodel.Presentation.Cmd.Controllers
                         Console.WriteLine();
                         CmdRender.ShowValidationSummary(mvcModelItem, CmdScaffoldingSettings.ValidationErrorMessage, CmdScaffoldingSettings.Label, CmdScaffoldingSettings.Prompt);
                         Console.WriteLine();
+                    }
+                    catch (ShiftEscException)
+                    {
+                        CmdScaffoldingSettings.Prompt?.SetColors();
+                        Console.WriteLine();
+                        Console.Write("Operation cancelled. ");
+                        if (ClearScreenOnList) PressAnyKey();
+                        else Console.WriteLine();
+                        return;
+                    }
+                    finally
+                    {
+                        CmdContext.CtrlEscEnabled = savedCtrlEscEnabled;
                     }
                 }
             }

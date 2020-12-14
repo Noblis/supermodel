@@ -48,8 +48,11 @@ namespace Supermodel.Presentation.Cmd.Models
         #region Properties
         public static ValidationResultList ValidationResultList 
         { 
-            get => _validationResultList.Value!;
-            set => _validationResultList.Value = value;
+            get 
+            {
+                _validationResultList.Value ??= new ValidationResultList();
+                return _validationResultList.Value;
+            }
         }
         private static readonly AsyncLocal<ValidationResultList> _validationResultList = new AsyncLocal<ValidationResultList> { Value = new ValidationResultList() };
 
@@ -58,15 +61,22 @@ namespace Supermodel.Presentation.Cmd.Models
             get => _propertyDisplayName.Value!;
             set => _propertyDisplayName.Value = value;
         }
-        private static readonly AsyncLocal<string?> _propertyDisplayName = new AsyncLocal<string?> { Value = null };
+        private static readonly AsyncLocal<string?> _propertyDisplayName = new AsyncLocal<string?>();
 
         public static bool IsPropertyRequired
         {
             get => _isPropertyRequired.Value!;
             set => _isPropertyRequired.Value = value;
         }
-        private static readonly AsyncLocal<bool> _isPropertyRequired = new AsyncLocal<bool> { Value = false };
+        private static readonly AsyncLocal<bool> _isPropertyRequired = new AsyncLocal<bool>();
         
+        public static bool CtrlEscEnabled
+        {
+            get => _ctrlEscEnabled.Value!;
+            set => _ctrlEscEnabled.Value = value;
+        }
+        private static readonly AsyncLocal<bool> _ctrlEscEnabled = new AsyncLocal<bool>();
+
         // ReSharper disable once UnusedAutoPropertyAccessor.Local
         private static RequiredState CurrentRequiredState { get; set; } //this is to store it away from GC
         #endregion

@@ -412,6 +412,8 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 }
                 else if (info.Key == ConsoleKey.Escape)
                 {
+                    if (CmdContext.CtrlEscEnabled && info.Modifiers.HasFlag(ConsoleModifiers.Shift)) throw new ShiftEscException();
+                    
                     Console.CursorTop = cursorTop;
                     Console.CursorLeft = cursorLeft;
                     Console.Write("".PadRight(chars.Count));
@@ -468,6 +470,8 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 }
                 else if (info.Key == ConsoleKey.Escape)
                 {
+                    if (CmdContext.CtrlEscEnabled && info.Modifiers.HasFlag(ConsoleModifiers.Shift)) throw new ShiftEscException();
+                    
                     Console.CursorTop = cursorTop;
                     Console.CursorLeft = cursorLeft;
                     Console.Write("".PadRight(chars.Count));
@@ -526,6 +530,8 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 }
                 else if (info.Key == ConsoleKey.Escape)
                 {
+                    if (CmdContext.CtrlEscEnabled && info.Modifiers.HasFlag(ConsoleModifiers.Shift)) throw new ShiftEscException();
+                    
                     Console.CursorTop = cursorTop;
                     Console.CursorLeft = cursorLeft;
                     Console.Write("".PadRight(chars.Count));
@@ -575,6 +581,8 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 }
                 if (info.Key == ConsoleKey.Escape) 
                 {
+                    if (CmdContext.CtrlEscEnabled && info.Modifiers.HasFlag(ConsoleModifiers.Shift)) throw new ShiftEscException();
+                    
                     selectedOption = optionsArray.Single(x => x.Value == value);
                     PrintOption(selectedOption, maxLenPlus2, cursorLeft, cursorTop, currentColors, arrowColors);
                     Console.WriteLine(); 
