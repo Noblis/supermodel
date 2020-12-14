@@ -378,6 +378,8 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
         #region Low Level Edit Line
         public static string EditLine(string value, Func<char, bool> isValidCharFunc)
         {
+            if (value.Contains('\n')) throw new ArgumentException("Cannot contain new line", nameof(value));
+            
             var cursorLeft = Console.CursorLeft;
             var cursorTop = Console.CursorTop;
 
@@ -492,6 +494,8 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
         }
         public static string EditLineAllCaps(string value, Func<char, bool> isValidCharFunc)
         {
+            if (value.Contains('\n')) throw new ArgumentException("Cannot contain new line", nameof(value));
+            
             value = value.ToUpper();
             
             var cursorLeft = Console.CursorLeft;
