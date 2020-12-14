@@ -11,8 +11,6 @@ using WMDomain.Supermodel.Persistence;
 
 namespace CmdTester
 {
-    //public class TDMUserCmdController : CRUDCmdController<TDMUser, TDMUserCmdModel, DataContext> { }
-
     class Program
     {
         static async Task Main()

@@ -146,7 +146,6 @@ namespace Supermodel.Presentation.Cmd.Controllers
                         CmdScaffoldingSettings.Prompt?.SetColors();
                         Console.WriteLine("Please fix the following validation errors:");
                         mvcModelItem = (TDetailMvcModel)ex.Model;
-                        Console.WriteLine();
                         CmdRender.ShowValidationSummary(mvcModelItem, CmdScaffoldingSettings.ValidationErrorMessage, CmdScaffoldingSettings.Label, CmdScaffoldingSettings.Prompt);
                         Console.WriteLine();
                     }
@@ -194,7 +193,6 @@ namespace Supermodel.Presentation.Cmd.Controllers
                         CmdScaffoldingSettings.Prompt?.SetColors();
                         Console.WriteLine("Please fix the following validation errors:");
                         mvcModelItem = (TDetailMvcModel)ex.Model;
-                        Console.WriteLine();
                         CmdRender.ShowValidationSummary(mvcModelItem, CmdScaffoldingSettings.ValidationErrorMessage, CmdScaffoldingSettings.Label, CmdScaffoldingSettings.Prompt);
                         Console.WriteLine();
                     }
