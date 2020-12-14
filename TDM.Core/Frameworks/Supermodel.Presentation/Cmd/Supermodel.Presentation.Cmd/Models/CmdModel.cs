@@ -102,7 +102,7 @@ namespace Supermodel.Presentation.Cmd.Models
                 {
                     if (!propertyInfo.HasAttribute<DisplayOnlyAttribute>())
                     {
-                        var newPropertyValue = CmdRender.Edit(this, propertyInfo.Name, CmdScaffoldingSettings.EditValue, CmdScaffoldingSettings.InvalidValueMessage);
+                        var newPropertyValue = CmdRender.Edit(this, propertyInfo.Name, CmdScaffoldingSettings.EditValue, CmdScaffoldingSettings.InvalidValueMessage, CmdScaffoldingSettings.Prompt);
                         this.PropertySet(propertyInfo.Name, newPropertyValue);
                     }
                     else

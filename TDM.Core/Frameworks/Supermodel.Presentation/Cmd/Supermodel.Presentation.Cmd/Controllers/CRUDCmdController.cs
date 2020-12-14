@@ -80,7 +80,7 @@ namespace Supermodel.Presentation.Cmd.Controllers
                 ShowListTitle();
                 foreach (var mvcModel in mvcModels)
                 {
-                    CmdScaffoldingSettings.ListId?.SetColors();
+                    CmdScaffoldingSettings.ListEntityId?.SetColors();
                     Console.Write($"{mvcModel.Id}: "); 
                     CmdScaffoldingSettings.DefaultListLabel?.SetColors();
                     mvcModel.Label.WriteLineToConsole();
@@ -116,10 +116,10 @@ namespace Supermodel.Presentation.Cmd.Controllers
                         //Init ex.Model fs it requires async initialization
                         if (ex.Model is IAsyncInit iai && !iai.AsyncInitialized) await iai.InitAsync().ConfigureAwait(false);
 
-                        CmdScaffoldingSettings.PleaseFixValidationErrors?.SetColors();
+                        CmdScaffoldingSettings.Prompt?.SetColors();
                         Console.WriteLine("Please fix the following validation errors:");
                         mvcModelItem = (TDetailMvcModel)ex.Model;
-                        CmdRender.ShowValidationSummary(mvcModelItem, CmdScaffoldingSettings.ValidationErrorMessage, CmdScaffoldingSettings.InvalidValueDisplayLabel, CmdScaffoldingSettings.PleaseFixValidationErrors);
+                        CmdRender.ShowValidationSummary(mvcModelItem, CmdScaffoldingSettings.ValidationErrorMessage, CmdScaffoldingSettings.InvalidValueDisplayLabel, CmdScaffoldingSettings.Prompt); //TODO: check
                     }
                 }
             }
@@ -146,10 +146,10 @@ namespace Supermodel.Presentation.Cmd.Controllers
                         //Init ex.Model fs it requires async initialization
                         if (ex.Model is IAsyncInit iai && !iai.AsyncInitialized) await iai.InitAsync().ConfigureAwait(false);
 
-                        CmdScaffoldingSettings.PleaseFixValidationErrors?.SetColors();
+                        CmdScaffoldingSettings.Prompt?.SetColors();
                         Console.WriteLine("Please fix the following validation errors:");
                         mvcModelItem = (TDetailMvcModel)ex.Model;
-                        CmdRender.ShowValidationSummary(mvcModelItem, CmdScaffoldingSettings.ValidationErrorMessage, CmdScaffoldingSettings.InvalidValueDisplayLabel, CmdScaffoldingSettings.PleaseFixValidationErrors);
+                        CmdRender.ShowValidationSummary(mvcModelItem, CmdScaffoldingSettings.ValidationErrorMessage, CmdScaffoldingSettings.InvalidValueDisplayLabel, CmdScaffoldingSettings.Prompt); //TODO: check
                     }
                 }
             }
@@ -202,7 +202,7 @@ namespace Supermodel.Presentation.Cmd.Controllers
             ShowActionPrompt();
             while (true)
             {
-                CmdScaffoldingSettings.Prompt2?.SetColors();
+                CmdScaffoldingSettings.CommandValue?.SetColors();
                 var input = ConsoleExt.EditLineAllCaps("", x => char.IsDigit(x) || "VEADQ".Contains(x)).Trim().ToUpper();
                 if (input.StartsWith("V"))
                 {
@@ -261,7 +261,7 @@ namespace Supermodel.Presentation.Cmd.Controllers
                 }
                 if (input == "Q") 
                 {
-                    CmdScaffoldingSettings.Prompt1?.SetColors();
+                    CmdScaffoldingSettings.Prompt?.SetColors();
                     Console.WriteLine($"Quitting {ListTitle}...");
                     return true;
                 }
@@ -275,7 +275,7 @@ namespace Supermodel.Presentation.Cmd.Controllers
             long? id;
             if (input.Length == 1)
             {
-                CmdScaffoldingSettings.Prompt1?.SetColors();
+                CmdScaffoldingSettings.Prompt?.SetColors();
                 Console.Write("Pick ID: ");
                 using(CmdContext.NewRequiredScope(true, "ID"))
                 {
@@ -291,38 +291,38 @@ namespace Supermodel.Presentation.Cmd.Controllers
         }
         protected virtual void ShowActionPrompt()
         {
-            CmdScaffoldingSettings.Prompt1?.SetColors();
+            CmdScaffoldingSettings.Prompt?.SetColors();
             Console.Write("Pick a command (");
 
-            CmdScaffoldingSettings.Prompt2?.SetColors();
+            CmdScaffoldingSettings.CommandValue?.SetColors();
             Console.Write("V");
 
-            CmdScaffoldingSettings.Prompt1?.SetColors();
+            CmdScaffoldingSettings.Prompt?.SetColors();
             Console.Write("iew, ");
 
-            CmdScaffoldingSettings.Prompt2?.SetColors();
+            CmdScaffoldingSettings.CommandValue?.SetColors();
             Console.Write("E");
 
-            CmdScaffoldingSettings.Prompt1?.SetColors();
+            CmdScaffoldingSettings.Prompt?.SetColors();
             Console.Write("dit, ");
 
-            CmdScaffoldingSettings.Prompt2?.SetColors();
+            CmdScaffoldingSettings.CommandValue?.SetColors();
             Console.Write("A");
 
-            CmdScaffoldingSettings.Prompt1?.SetColors();
+            CmdScaffoldingSettings.Prompt?.SetColors();
             Console.Write("dd, ");
 
-            CmdScaffoldingSettings.Prompt2?.SetColors();
+            CmdScaffoldingSettings.CommandValue?.SetColors();
             Console.Write("D");
 
-            CmdScaffoldingSettings.Prompt1?.SetColors();
+            CmdScaffoldingSettings.Prompt?.SetColors();
             // ReSharper disable once StringLiteralTypo
             Console.Write("elete, or ");
 
-            CmdScaffoldingSettings.Prompt2?.SetColors();
+            CmdScaffoldingSettings.CommandValue?.SetColors();
             Console.Write("Q");
 
-            CmdScaffoldingSettings.Prompt1?.SetColors();
+            CmdScaffoldingSettings.Prompt?.SetColors();
             Console.Write("uit): ");
         }
         protected virtual void PrintInvalidCommandTryAgain()
@@ -330,25 +330,25 @@ namespace Supermodel.Presentation.Cmd.Controllers
             CmdScaffoldingSettings.InvalidCommand?.SetColors();
             Console.Write("Invalid command. ");
 
-            CmdScaffoldingSettings.PleaseFixValidationErrors?.SetColors();
+            CmdScaffoldingSettings.Prompt?.SetColors();
             Console.Write("Pick again: ");
         }
 
         protected virtual void ShowListTitle()
         {
-            ShowTitle($"List of {ListTitle}", CmdScaffoldingSettings.DetailTitle);
+            ShowTitle($"List of {ListTitle}", CmdScaffoldingSettings.Title);
         }
         protected virtual void ShowEditDetailTitle(long id)
         {
-            ShowTitle($"Edit {DetailTitle} with ID = {id}", CmdScaffoldingSettings.DetailTitle);
+            ShowTitle($"Edit {DetailTitle} with ID = {id}", CmdScaffoldingSettings.Title);
         }
         protected virtual void ShowViewDetailTitle(long id)
         {
-            ShowTitle($"View {DetailTitle} with ID = {id}", CmdScaffoldingSettings.DetailTitle);
+            ShowTitle($"View {DetailTitle} with ID = {id}", CmdScaffoldingSettings.Title);
         }
         protected virtual void ShowAddDetailTitle()
         {
-            ShowTitle($"Add New {DetailTitle}", CmdScaffoldingSettings.DetailTitle);
+            ShowTitle($"Add New {DetailTitle}", CmdScaffoldingSettings.Title);
         }
         protected virtual async Task<TDetailMvcModel> CreateMvcModelAsync(long id)
         {
@@ -413,7 +413,7 @@ namespace Supermodel.Presentation.Cmd.Controllers
         }
         protected virtual void PressAnyKey()
         {
-            CmdScaffoldingSettings.Prompt1?.SetColors();
+            CmdScaffoldingSettings.Prompt?.SetColors();
             Console.WriteLine("Press any key...");
             while(!Console.KeyAvailable) { /* do nothing */ }
             Console.ReadKey(true);

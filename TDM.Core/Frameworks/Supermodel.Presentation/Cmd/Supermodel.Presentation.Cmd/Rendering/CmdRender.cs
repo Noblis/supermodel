@@ -193,17 +193,17 @@ namespace Supermodel.Presentation.Cmd.Rendering
 
         #region Render Editor Methods
         #nullable disable
-        public static TModel EditForModel<TModel>(TModel model, FBColors? colors = null, FBColors? invalidValueColors = null)
+        public static TModel EditForModel<TModel>(TModel model, FBColors? colors = null, FBColors? invalidValueColors = null, FBColors? promptColors = null)
         {
-            return (TModel)Edit(model, "", colors, invalidValueColors);
+            return (TModel)Edit(model, "", colors, invalidValueColors, promptColors);
         }
-        public static TValue EditFor<TModel, TValue>(TModel model, Expression<Func<TModel, TValue>> propertyExpression, FBColors? colors = null, FBColors? invalidValueColors = null)
+        public static TValue EditFor<TModel, TValue>(TModel model, Expression<Func<TModel, TValue>> propertyExpression, FBColors? colors = null, FBColors? invalidValueColors = null, FBColors? promptColors = null)
         {
             var propertyName = Helper.GetPropertyName(model, propertyExpression);
-            return (TValue)Edit(model, propertyName, colors, invalidValueColors);
+            return (TValue)Edit(model, propertyName, colors, invalidValueColors, promptColors);
         }
         #nullable enable
-        public static object? Edit<TModel>(TModel model, string expression, FBColors? colors = null, FBColors? invalidValueColors = null)
+        public static object? Edit<TModel>(TModel model, string expression, FBColors? colors = null, FBColors? invalidValueColors = null, FBColors? promptColors = null)
         {
             if (model == null) throw new ArgumentNullException(nameof(model));
 
@@ -227,28 +227,28 @@ namespace Supermodel.Presentation.Cmd.Rendering
             }
 
             //strings
-            if (typeof(string).IsAssignableFrom(propertyType)) return ConsoleExt.EditString(propertyValue?.ToString() ?? "", invalidValueColors);
+            if (typeof(string).IsAssignableFrom(propertyType)) return ConsoleExt.EditString(propertyValue?.ToString() ?? "", invalidValueColors, promptColors);
 
             //integer types
-            if (typeof(int).IsAssignableFrom(propertyType) || typeof(int?).IsAssignableFrom(propertyType)) return ConsoleExt.EditInteger((int?)propertyValue, invalidValueColors);
-            if (typeof(uint).IsAssignableFrom(propertyType) || typeof(uint?).IsAssignableFrom(propertyType)) return ConsoleExt.EditInteger((uint?)propertyValue, invalidValueColors);
-            if (typeof(long).IsAssignableFrom(propertyType) || typeof(long?).IsAssignableFrom(propertyType)) return ConsoleExt.EditInteger((long?)propertyValue, invalidValueColors);
-            if (typeof(ulong).IsAssignableFrom(propertyType) || typeof(ulong?).IsAssignableFrom(propertyType)) return ConsoleExt.EditInteger((ulong?)propertyValue, invalidValueColors);
-            if (typeof(short).IsAssignableFrom(propertyType) || typeof(short?).IsAssignableFrom(propertyType)) return ConsoleExt.EditInteger((short?)propertyValue, invalidValueColors);
-            if (typeof(ushort).IsAssignableFrom(propertyType) || typeof(ushort?).IsAssignableFrom(propertyType)) return ConsoleExt.EditInteger((ushort?)propertyValue, invalidValueColors);
-            if (typeof(byte).IsAssignableFrom(propertyType) || typeof(byte?).IsAssignableFrom(propertyType)) return ConsoleExt.EditInteger((byte?)propertyValue, invalidValueColors);
-            if (typeof(sbyte).IsAssignableFrom(propertyType) || typeof(sbyte?).IsAssignableFrom(propertyType)) return ConsoleExt.EditInteger((sbyte?)propertyValue, invalidValueColors);
+            if (typeof(int).IsAssignableFrom(propertyType) || typeof(int?).IsAssignableFrom(propertyType)) return ConsoleExt.EditInteger((int?)propertyValue, invalidValueColors, promptColors);
+            if (typeof(uint).IsAssignableFrom(propertyType) || typeof(uint?).IsAssignableFrom(propertyType)) return ConsoleExt.EditInteger((uint?)propertyValue, invalidValueColors, promptColors);
+            if (typeof(long).IsAssignableFrom(propertyType) || typeof(long?).IsAssignableFrom(propertyType)) return ConsoleExt.EditInteger((long?)propertyValue, invalidValueColors, promptColors);
+            if (typeof(ulong).IsAssignableFrom(propertyType) || typeof(ulong?).IsAssignableFrom(propertyType)) return ConsoleExt.EditInteger((ulong?)propertyValue, invalidValueColors, promptColors);
+            if (typeof(short).IsAssignableFrom(propertyType) || typeof(short?).IsAssignableFrom(propertyType)) return ConsoleExt.EditInteger((short?)propertyValue, invalidValueColors, promptColors);
+            if (typeof(ushort).IsAssignableFrom(propertyType) || typeof(ushort?).IsAssignableFrom(propertyType)) return ConsoleExt.EditInteger((ushort?)propertyValue, invalidValueColors, promptColors);
+            if (typeof(byte).IsAssignableFrom(propertyType) || typeof(byte?).IsAssignableFrom(propertyType)) return ConsoleExt.EditInteger((byte?)propertyValue, invalidValueColors, promptColors);
+            if (typeof(sbyte).IsAssignableFrom(propertyType) || typeof(sbyte?).IsAssignableFrom(propertyType)) return ConsoleExt.EditInteger((sbyte?)propertyValue, invalidValueColors, promptColors);
 
             //floating point types
-            if (typeof(double).IsAssignableFrom(propertyType) || typeof(double?).IsAssignableFrom(propertyType)) return ConsoleExt.EditFloat((double?)propertyValue, invalidValueColors);
-            if (typeof(float).IsAssignableFrom(propertyType) || typeof(float?).IsAssignableFrom(propertyType)) return ConsoleExt.EditFloat((float?)propertyValue, invalidValueColors);
-            if (typeof(decimal).IsAssignableFrom(propertyType) || typeof(decimal?).IsAssignableFrom(propertyType)) return ConsoleExt.EditFloat((decimal?)propertyValue, invalidValueColors);
+            if (typeof(double).IsAssignableFrom(propertyType) || typeof(double?).IsAssignableFrom(propertyType)) return ConsoleExt.EditFloat((double?)propertyValue, invalidValueColors, promptColors);
+            if (typeof(float).IsAssignableFrom(propertyType) || typeof(float?).IsAssignableFrom(propertyType)) return ConsoleExt.EditFloat((float?)propertyValue, invalidValueColors, promptColors);
+            if (typeof(decimal).IsAssignableFrom(propertyType) || typeof(decimal?).IsAssignableFrom(propertyType)) return ConsoleExt.EditFloat((decimal?)propertyValue, invalidValueColors, promptColors);
 
             //booleans
-            if (typeof(bool).IsAssignableFrom(propertyType) || typeof(bool?).IsAssignableFrom(propertyType)) return ConsoleExt.EditBool((bool?)propertyValue, invalidValueColors);
+            if (typeof(bool).IsAssignableFrom(propertyType) || typeof(bool?).IsAssignableFrom(propertyType)) return ConsoleExt.EditBool((bool?)propertyValue, invalidValueColors, promptColors);
 
             //DateTime
-            if (typeof(DateTime).IsAssignableFrom(propertyType) || typeof(DateTime?).IsAssignableFrom(propertyType)) return ConsoleExt.EditDateTime((DateTime?)propertyValue, invalidValueColors);
+            if (typeof(DateTime).IsAssignableFrom(propertyType) || typeof(DateTime?).IsAssignableFrom(propertyType)) return ConsoleExt.EditDateTime((DateTime?)propertyValue, invalidValueColors, promptColors);
 
             //enums
             if (typeof(Enum).IsAssignableFrom(propertyType) || Nullable.GetUnderlyingType(propertyType)?.IsEnum == true)
