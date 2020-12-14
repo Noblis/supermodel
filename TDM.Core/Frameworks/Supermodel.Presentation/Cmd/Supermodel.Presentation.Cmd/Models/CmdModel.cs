@@ -29,11 +29,11 @@ namespace Supermodel.Presentation.Cmd.Models
                 {
                     if (CmdContext.ValidationResultList.GetAllErrorsFor(propertyInfo.Name).Any())
                     {
-                        CmdRender.ShowLabel(this, propertyInfo.Name, null, CmdScaffoldingSettings.InvalidValueDisplayLabel);
+                        CmdRender.ShowLabel(this, propertyInfo.Name, null, CmdScaffoldingSettings.Label);
                     }
                     else
                     {
-                        CmdRender.ShowLabel(this, propertyInfo.Name, null, CmdScaffoldingSettings.DisplayLabel);
+                        CmdRender.ShowLabel(this, propertyInfo.Name, null, CmdScaffoldingSettings.Label);
                     }
 
                     if (!propertyInfo.HasAttribute<NoRequiredLabelAttribute>())
@@ -51,7 +51,7 @@ namespace Supermodel.Presentation.Cmd.Models
                 //Value
                 using(CmdContext.NewRequiredScope(required, GetType().GetDisplayNameForProperty(propertyInfo.Name)))
                 {
-                    CmdRender.Display(this, propertyInfo.Name, CmdScaffoldingSettings.DisplayValue);
+                    CmdRender.Display(this, propertyInfo.Name, CmdScaffoldingSettings.Value);
                 }
 
                 //Validation Error
@@ -78,11 +78,11 @@ namespace Supermodel.Presentation.Cmd.Models
                 {
                     if (CmdContext.ValidationResultList.GetAllErrorsFor(propertyInfo.Name).Any())
                     {
-                        CmdRender.ShowLabel(this, propertyInfo.Name, null, CmdScaffoldingSettings.InvalidValueDisplayLabel);
+                        CmdRender.ShowLabel(this, propertyInfo.Name, null, CmdScaffoldingSettings.Label);
                     }
                     else
                     {
-                        CmdRender.ShowLabel(this, propertyInfo.Name, null, CmdScaffoldingSettings.DisplayLabel);
+                        CmdRender.ShowLabel(this, propertyInfo.Name, null, CmdScaffoldingSettings.Label);
                     }
                     
                     if (!propertyInfo.HasAttribute<NoRequiredLabelAttribute>())
@@ -102,12 +102,12 @@ namespace Supermodel.Presentation.Cmd.Models
                 {
                     if (!propertyInfo.HasAttribute<DisplayOnlyAttribute>())
                     {
-                        var newPropertyValue = CmdRender.Edit(this, propertyInfo.Name, CmdScaffoldingSettings.EditValue, CmdScaffoldingSettings.InvalidValueMessage, CmdScaffoldingSettings.Prompt);
+                        var newPropertyValue = CmdRender.Edit(this, propertyInfo.Name, CmdScaffoldingSettings.Value, CmdScaffoldingSettings.InvalidValueMessage, CmdScaffoldingSettings.Prompt);
                         this.PropertySet(propertyInfo.Name, newPropertyValue);
                     }
                     else
                     {
-                        CmdRender.Display(this, propertyInfo.Name, CmdScaffoldingSettings.DisplayValue);
+                        CmdRender.Display(this, propertyInfo.Name, CmdScaffoldingSettings.Value);
                     }
                 }
             }

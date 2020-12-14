@@ -119,7 +119,7 @@ namespace Supermodel.Presentation.Cmd.Controllers
                         CmdScaffoldingSettings.Prompt?.SetColors();
                         Console.WriteLine("Please fix the following validation errors:");
                         mvcModelItem = (TDetailMvcModel)ex.Model;
-                        CmdRender.ShowValidationSummary(mvcModelItem, CmdScaffoldingSettings.ValidationErrorMessage, CmdScaffoldingSettings.InvalidValueDisplayLabel, CmdScaffoldingSettings.Prompt); //TODO: check
+                        CmdRender.ShowValidationSummary(mvcModelItem, CmdScaffoldingSettings.ValidationErrorMessage, CmdScaffoldingSettings.Label, CmdScaffoldingSettings.Prompt);
                     }
                 }
             }
@@ -149,7 +149,7 @@ namespace Supermodel.Presentation.Cmd.Controllers
                         CmdScaffoldingSettings.Prompt?.SetColors();
                         Console.WriteLine("Please fix the following validation errors:");
                         mvcModelItem = (TDetailMvcModel)ex.Model;
-                        CmdRender.ShowValidationSummary(mvcModelItem, CmdScaffoldingSettings.ValidationErrorMessage, CmdScaffoldingSettings.InvalidValueDisplayLabel, CmdScaffoldingSettings.Prompt); //TODO: check
+                        CmdRender.ShowValidationSummary(mvcModelItem, CmdScaffoldingSettings.ValidationErrorMessage, CmdScaffoldingSettings.Label, CmdScaffoldingSettings.Prompt);
                     }
                 }
             }
@@ -245,9 +245,9 @@ namespace Supermodel.Presentation.Cmd.Controllers
                         PrintInvalidCommandTryAgain();
                         continue;
                     }
-                    CmdScaffoldingSettings.EditLabel?.SetColors();
+                    CmdScaffoldingSettings.Label?.SetColors();
                     Console.Write($"Are you sure you want to delete {DetailTitle} with ID = {id}? ");
-                    CmdScaffoldingSettings.EditValue?.SetColors();
+                    CmdScaffoldingSettings.Value?.SetColors();
                     if (!ConsoleExt.EditBool(false, CmdScaffoldingSettings.DropdownArrow, CmdScaffoldingSettings.InvalidValueMessage)) 
                     {
                         Console.WriteLine();
@@ -279,7 +279,10 @@ namespace Supermodel.Presentation.Cmd.Controllers
                 Console.Write("Pick ID: ");
                 using(CmdContext.NewRequiredScope(true, "ID"))
                 {
-                    id = ConsoleExt.EditInteger((long?)null) ?? throw new Exception("ID == null: this should never happen!");
+                    CmdScaffoldingSettings.CommandValue?.SetColors();
+                    id = ConsoleExt.EditInteger((long?)null, 
+                             CmdScaffoldingSettings.ValidationErrorMessage, 
+                             CmdScaffoldingSettings.Prompt) ?? throw new Exception("ID == null: this should never happen!");
                 }
             }
             else

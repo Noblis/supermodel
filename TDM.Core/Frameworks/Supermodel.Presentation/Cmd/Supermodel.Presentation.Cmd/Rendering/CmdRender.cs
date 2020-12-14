@@ -118,7 +118,7 @@ namespace Supermodel.Presentation.Cmd.Rendering
         #endregion
 
         #region Render Validation Methods
-        public static void ShowValidationSummary<TModel>(TModel model, FBColors? validationErrorColors, FBColors? invalidFieldColors, FBColors? numbersColors)
+        public static void ShowValidationSummary<TModel>(TModel model, FBColors? validationErrorColors, FBColors? invalidFieldLabelColors, FBColors? numbersColors)
         {
             if (model == null) throw new ArgumentNullException(nameof(model));
             
@@ -147,7 +147,7 @@ namespace Supermodel.Presentation.Cmd.Rendering
 
                     if (first) 
                     {
-                        invalidFieldColors?.SetColors();
+                        invalidFieldLabelColors?.SetColors();
                         Console.Write(fieldName);
                         first = false;
                     }
@@ -155,12 +155,12 @@ namespace Supermodel.Presentation.Cmd.Rendering
                     {
                         validationErrorColors?.SetColors();
                         Console.Write(", ");
-                        invalidFieldColors?.SetColors();
+                        invalidFieldLabelColors?.SetColors();
                         Console.Write(fieldName);
 
                     }
                 }
-                invalidFieldColors?.SetColors();
+                invalidFieldLabelColors?.SetColors();
                 Console.Write(": ");
                 validationErrorColors?.SetColors();
                 Console.Write(vr.ErrorMessage);
