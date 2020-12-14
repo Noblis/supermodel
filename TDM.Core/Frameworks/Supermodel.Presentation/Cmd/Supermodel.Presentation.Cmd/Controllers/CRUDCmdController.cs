@@ -62,6 +62,8 @@ namespace Supermodel.Presentation.Cmd.Controllers
         }
         public virtual async Task ListAsync()
         {
+            if (ClearScreenOnList) Console.Clear();
+
             await using (new UnitOfWork<TDataContext>(ReadOnly.Yes))
             {
                 var entities = await GetItems().ToListAsync().ConfigureAwait(false);
@@ -90,11 +92,7 @@ namespace Supermodel.Presentation.Cmd.Controllers
             var mvcModelItem = await CreateMvcModelAsync(id);
             ShowViewDetailTitle(id);
             CmdRender.DisplayForModel(mvcModelItem);
-            
-            CmdScaffoldingSettings.Prompt1?.SetColors();
-            Console.WriteLine("Press any key...");
-            while(!Console.KeyAvailable) { /* do nothing */ }
-            Console.ReadKey(true);
+            PressAnyKey();
         }
         public virtual async Task EditDetailAsync(long id)
         {
@@ -108,6 +106,7 @@ namespace Supermodel.Presentation.Cmd.Controllers
                     try
                     {
                         await EditMvcModelAsync(mvcModelItem).ConfigureAwait(false);
+                        if (ClearScreenOnList) PressAnyKey();
                         return;
                     }
                     catch (ModelStateInvalidException ex)
@@ -137,6 +136,7 @@ namespace Supermodel.Presentation.Cmd.Controllers
                     try
                     {
                         await EditMvcModelAsync(mvcModelItem).ConfigureAwait(false);
+                        if (ClearScreenOnList) PressAnyKey();
                         return;
                     }
                     catch (ModelStateInvalidException ex)
@@ -336,34 +336,19 @@ namespace Supermodel.Presentation.Cmd.Controllers
 
         protected virtual void ShowListTitle()
         {
-            CmdScaffoldingSettings.ListTitle?.SetColors();
-            Console.WriteLine(ListTitle);
-            CmdScaffoldingSettings.ListTitleUnderline?.SetColors();
-            Console.WriteLine("".PadRight(ListTitle.Length).Replace(" ", "="));
+            ShowTitle($"List of {ListTitle}", CmdScaffoldingSettings.DetailTitle);
         }
         protected virtual void ShowEditDetailTitle(long id)
         {
-            CmdScaffoldingSettings.DetailTitle?.SetColors();
-            var title = $"Edit {DetailTitle} with ID = {id}";
-            Console.WriteLine(title);
-            CmdScaffoldingSettings.ListTitleUnderline?.SetColors();
-            Console.WriteLine("".PadRight(title.Length).Replace(" ", "="));
+            ShowTitle($"Edit {DetailTitle} with ID = {id}", CmdScaffoldingSettings.DetailTitle);
         }
         protected virtual void ShowViewDetailTitle(long id)
         {
-            CmdScaffoldingSettings.DetailTitle?.SetColors();
-            var title = $"View {DetailTitle} with ID = {id}";
-            Console.WriteLine(title);
-            CmdScaffoldingSettings.ListTitleUnderline?.SetColors();
-            Console.WriteLine("".PadRight(title.Length).Replace(" ", "="));
+            ShowTitle($"View {DetailTitle} with ID = {id}", CmdScaffoldingSettings.DetailTitle);
         }
         protected virtual void ShowAddDetailTitle()
         {
-            CmdScaffoldingSettings.DetailTitle?.SetColors();
-            var title = $"New {DetailTitle}";
-            Console.WriteLine(title);
-            CmdScaffoldingSettings.ListTitleUnderline?.SetColors();
-            Console.WriteLine("".PadRight(title.Length).Replace(" ", "="));
+            ShowTitle($"Add New {DetailTitle}", CmdScaffoldingSettings.DetailTitle);
         }
         protected virtual async Task<TDetailMvcModel> CreateMvcModelAsync(long id)
         {
@@ -426,41 +411,25 @@ namespace Supermodel.Presentation.Cmd.Controllers
                 throw new ModelStateInvalidException(mvcModelItem);
             }
         }
-        //protected virtual async Task<Tuple<TEntity, TDetailMvcModel>> TryUpdateEntityAsync(TEntity entityItem)
-        //{
-        //    var mvcModelItem = new TDetailMvcModel();
-        //    // ReSharper disable once SuspiciousTypeConversion.Global
-        //    if (mvcModelItem is IAsyncInit iAsyncInit && !iAsyncInit.AsyncInitialized) await iAsyncInit.InitAsync();
-        //    mvcModelItem = await mvcModelItem.MapFromAsync(entityItem);
-
-        //    try
-        //    {
-        //        CmdRender.EditForModel(mvcModelItem);
-                
-        //        var vrl = new ValidationResultList();
-        //        if (!await AsyncValidator.TryValidateObjectAsync(mvcModelItem, new ValidationContext(mvcModelItem), vrl).ConfigureAwait(false)) CmdContext.ValidationResultList.AddValidationResultList(vrl);
-        //        if (CmdContext.ValidationResultList.IsValid != true) throw new ModelStateInvalidException(mvcModelItem);
-
-        //        entityItem = await mvcModelItem.MapToAsync(entityItem);
-        //        if (CmdContext.ValidationResultList.IsValid != true) throw new ModelStateInvalidException(mvcModelItem);
-
-        //        //Validation: we only run ValidateAsync() here because attribute-based validation is already picked up by the framework
-        //        //vrl = await mvcModelItem.ValidateAsync(new ValidationContext(mvcModelItem));
-        //        //if (vrl.Count != 0) throw new ValidationResultException(vrl);
-
-        //        return Tuple.Create(entityItem, mvcModelItem);
-        //    }
-        //    catch (ValidationResultException ex)
-        //    {
-        //        CmdContext.ValidationResultList.AddValidationResultList(ex.ValidationResultList);
-        //        throw new ModelStateInvalidException(mvcModelItem);
-        //    }
-        //}
+        protected virtual void PressAnyKey()
+        {
+            CmdScaffoldingSettings.Prompt1?.SetColors();
+            Console.WriteLine("Press any key...");
+            while(!Console.KeyAvailable) { /* do nothing */ }
+            Console.ReadKey(true);
+        }
+        protected virtual void ShowTitle(string title, FBColors? colors)
+        {
+            colors?.SetColors();
+            Console.WriteLine(title);
+            Console.WriteLine("".PadRight(title.Length).Replace(" ", "="));
+        }
         #endregion
 
         #region Properties
         public string ListTitle { get; set; }
         public string DetailTitle { get; set; }
+        public bool ClearScreenOnList { get; set; } = true;
         #endregion
     }
 }
