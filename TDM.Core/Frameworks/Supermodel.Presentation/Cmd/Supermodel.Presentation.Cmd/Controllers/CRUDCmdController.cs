@@ -89,16 +89,41 @@ namespace Supermodel.Presentation.Cmd.Controllers
         }
         public virtual async Task ViewDetailAsync(long id)
         {
-            var mvcModelItem = await CreateMvcModelAsync(id);
+            TDetailMvcModel? mvcModelItem;            
+            try
+            {
+                mvcModelItem = await CreateMvcModelAsync(id);
+            }
+            catch (Exception)
+            {
+                CmdScaffoldingSettings.InvalidValueMessage?.SetColors();
+                Console.WriteLine($"ERROR: {DetailTitle} with ID={id} does not exist.");
+                PressAnyKey();
+                return;
+            }
+            
+            Console.WriteLine();
             ShowViewDetailTitle(id);
             CmdRender.DisplayForModel(mvcModelItem);
             PressAnyKey();
         }
         public virtual async Task EditDetailAsync(long id)
         {
-            ShowEditDetailTitle(id);
-            var mvcModelItem = await CreateMvcModelAsync(id);
+            TDetailMvcModel? mvcModelItem;            
+            try
+            {
+                mvcModelItem = await CreateMvcModelAsync(id);
+            }
+            catch (Exception)
+            {
+                CmdScaffoldingSettings.InvalidValueMessage?.SetColors();
+                Console.WriteLine($"ERROR: {DetailTitle} with ID={id} does not exist.");
+                PressAnyKey();
+                return;
+            }
 
+            Console.WriteLine();
+            ShowEditDetailTitle(id);
             while(true)
             {
                 await using (new UnitOfWork<TDataContext>())
@@ -119,13 +144,16 @@ namespace Supermodel.Presentation.Cmd.Controllers
                         CmdScaffoldingSettings.Prompt?.SetColors();
                         Console.WriteLine("Please fix the following validation errors:");
                         mvcModelItem = (TDetailMvcModel)ex.Model;
+                        Console.WriteLine();
                         CmdRender.ShowValidationSummary(mvcModelItem, CmdScaffoldingSettings.ValidationErrorMessage, CmdScaffoldingSettings.Label, CmdScaffoldingSettings.Prompt);
+                        Console.WriteLine();
                     }
                 }
             }
         }
         public virtual async Task AddDetailAsync()
         {
+            Console.WriteLine();
             ShowAddDetailTitle();
             var mvcModelItem = await CreateMvcModelAsync(0);
 
@@ -149,7 +177,9 @@ namespace Supermodel.Presentation.Cmd.Controllers
                         CmdScaffoldingSettings.Prompt?.SetColors();
                         Console.WriteLine("Please fix the following validation errors:");
                         mvcModelItem = (TDetailMvcModel)ex.Model;
+                        Console.WriteLine();
                         CmdRender.ShowValidationSummary(mvcModelItem, CmdScaffoldingSettings.ValidationErrorMessage, CmdScaffoldingSettings.Label, CmdScaffoldingSettings.Prompt);
+                        Console.WriteLine();
                     }
                 }
             }
@@ -168,6 +198,7 @@ namespace Supermodel.Presentation.Cmd.Controllers
                     UnitOfWorkContext<TDataContext>.CurrentDataContext.CommitOnDispose = false; //rollback the transaction
                     CmdScaffoldingSettings.InvalidValueMessage?.SetColors();
                     Console.WriteLine($"ERROR: {ex.Message}");
+                    PressAnyKey();
                 }
                 catch (Exception)
                 {
@@ -175,6 +206,7 @@ namespace Supermodel.Presentation.Cmd.Controllers
                     CmdScaffoldingSettings.InvalidValueMessage?.SetColors();
                     
                     Console.WriteLine("ERROR: Unable to delete. Most likely reason: references from other entities.");
+                    PressAnyKey();
                 }
             }
         }
@@ -212,7 +244,6 @@ namespace Supermodel.Presentation.Cmd.Controllers
                         PrintInvalidCommandTryAgain();
                         continue;
                     }
-                    Console.WriteLine();
                     await ViewDetailAsync(id.Value);
                     Console.WriteLine();
                     return false;
@@ -225,14 +256,12 @@ namespace Supermodel.Presentation.Cmd.Controllers
                         PrintInvalidCommandTryAgain();
                         continue;
                     }
-                    Console.WriteLine();
                     await EditDetailAsync(id.Value);
                     Console.WriteLine();
                     return false;
                 }
                 if (input == "A")
                 {
-                    Console.WriteLine();
                     await AddDetailAsync();
                     Console.WriteLine();
                     return false;
@@ -253,8 +282,6 @@ namespace Supermodel.Presentation.Cmd.Controllers
                         Console.WriteLine();
                         return false;
                     }
-
-                    Console.WriteLine();
                     await DeleteDetailAsync(id.Value);
                     Console.WriteLine();
                     return false;

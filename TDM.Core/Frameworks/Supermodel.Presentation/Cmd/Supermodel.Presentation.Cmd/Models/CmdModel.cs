@@ -68,8 +68,14 @@ namespace Supermodel.Presentation.Cmd.Models
         }
         public virtual object Edit(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
         {
-            foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
+            var propertyInfosInOrder = GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo).ToArray();
+            var showOnlyErrorFields = !CmdContext.ValidationResultList.IsValid && propertyInfosInOrder.Any(x => CmdContext.ValidationResultList.GetAllErrorsFor(x.Name).Count > 0);
+
+            foreach (var propertyInfo in propertyInfosInOrder)
             {
+                //if we have errors, only allow user to edit error fields
+                if (showOnlyErrorFields && !CmdContext.ValidationResultList.GetAllErrorsFor(propertyInfo.Name).Any()) continue;
+                
                 var required = propertyInfo.HasAttribute<RequiredAttribute>();
                 
                 //Label
