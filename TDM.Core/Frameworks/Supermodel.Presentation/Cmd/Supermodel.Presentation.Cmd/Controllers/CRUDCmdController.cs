@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Pluralize.NET.Core;
 using Supermodel.DataAnnotations;
-using Supermodel.DataAnnotations.Exceptions;
 using Supermodel.DataAnnotations.Validations;
 using Supermodel.Persistence;
 using Supermodel.Persistence.DataContext;
@@ -159,25 +158,24 @@ namespace Supermodel.Presentation.Cmd.Controllers
         {
             await using (new UnitOfWork<TDataContext>())
             {
-                TEntity? entityItem = null;
                 try
                 {
-                    entityItem = await GetItemAsync(id).ConfigureAwait(false);
+                    var entityItem = await GetItemAsync(id).ConfigureAwait(false);
                     entityItem.Delete();
                 }
                 catch (UnableToDeleteException ex)
                 {
                     UnitOfWorkContext<TDataContext>.CurrentDataContext.CommitOnDispose = false; //rollback the transaction
                     CmdScaffoldingSettings.InvalidValueMessage?.SetColors();
-                    Console.WriteLine(ex.Message); //TODO: fix this
+                    Console.WriteLine($"ERROR: {ex.Message}");
                 }
                 catch (Exception)
                 {
                     UnitOfWorkContext<TDataContext>.CurrentDataContext.CommitOnDispose = false; //rollback the transaction
                     CmdScaffoldingSettings.InvalidValueMessage?.SetColors();
-                    Console.WriteLine("Unable to delete. Most likely reason: references from other entities.");
+                    
+                    Console.WriteLine("ERROR: Unable to delete. Most likely reason: references from other entities.");
                 }
-                if (entityItem == null) throw new SupermodelException("CmdCRUDController.Detail[Delete]: entityItem == null: this should never happen");
             }
         }
         #endregion
