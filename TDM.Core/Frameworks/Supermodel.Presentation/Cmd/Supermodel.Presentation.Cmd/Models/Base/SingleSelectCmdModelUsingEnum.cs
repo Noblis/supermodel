@@ -7,9 +7,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Supermodel.ReflectionMapper;
 
-namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models.Base
+namespace Supermodel.Presentation.Cmd.Models.Base
 {
-    public abstract class SingleSelectMvcModelUsingEnum<TEnum> : SingleSelectMvcModel where TEnum : struct, IConvertible
+    public abstract class SingleSelectCmdModelUsingEnum<TEnum> : SingleSelectCmdModel where TEnum : struct, IConvertible
     {
         #region Nested Options class
         public class EnumOption : Option
@@ -21,7 +21,7 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models.Base
         #endregion
         
         #region Constructors
-        protected SingleSelectMvcModelUsingEnum()
+        protected SingleSelectCmdModelUsingEnum()
         {
             var enumValues = new List<object>();
             foreach (var item in Enum.GetValues(typeof(TEnum))) enumValues.Add(item!);
@@ -31,7 +31,7 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models.Base
             SelectedValue = null;
         }
 
-        protected SingleSelectMvcModelUsingEnum(TEnum selectedEnum) : this()
+        protected SingleSelectCmdModelUsingEnum(TEnum selectedEnum) : this()
         {
             SelectedEnum = selectedEnum;
         }
