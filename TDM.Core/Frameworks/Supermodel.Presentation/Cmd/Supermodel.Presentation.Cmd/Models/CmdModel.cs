@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
-using Supermodel.DataAnnotations.Validations.Attributes;
+using Supermodel.DataAnnotations.Attributes;
 using Supermodel.Presentation.Cmd.ConsoleOutput;
 using Supermodel.Presentation.Cmd.Models.Interfaces;
 using Supermodel.Presentation.Cmd.Rendering;
@@ -17,55 +17,6 @@ namespace Supermodel.Presentation.Cmd.Models
     public class CmdModel : ICmdEditor, ICmdDisplayer
     {
         #region ICmdEditor
-        public virtual void Display(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
-        {
-            foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
-            {
-                var required = propertyInfo.HasAttribute<RequiredAttribute>();
-
-                //Label
-                var hideLabelAttribute = propertyInfo.GetAttribute<HideLabelAttribute>();
-                if (hideLabelAttribute == null)
-                {
-                    if (CmdContext.ValidationResultList.GetAllErrorsFor(propertyInfo.Name).Any())
-                    {
-                        CmdRender.ShowLabel(this, propertyInfo.Name, null, CmdScaffoldingSettings.Label);
-                    }
-                    else
-                    {
-                        CmdRender.ShowLabel(this, propertyInfo.Name, null, CmdScaffoldingSettings.Label);
-                    }
-
-                    if (!propertyInfo.HasAttribute<NoRequiredLabelAttribute>())
-                    {
-                        var currentColors = FBColors.FromCurrent();
-                        if (required || propertyInfo.HasAttribute<ForceRequiredLabelAttribute>()) 
-                        {
-                            CmdScaffoldingSettings.RequiredMarker.WriteToConsole();
-                        }
-                        currentColors.SetColors();
-                    }
-                    Console.Write(": ");
-                }
-
-                //Value
-                using(CmdContext.NewRequiredScope(required, GetType().GetDisplayNameForProperty(propertyInfo.Name)))
-                {
-                    CmdRender.Display(this, propertyInfo.Name, CmdScaffoldingSettings.Value);
-                }
-
-                //Validation Error
-                if (CmdContext.ValidationResultList.GetAllErrorsFor(propertyInfo.Name).Any())
-                {
-                    CmdScaffoldingSettings.ValidationErrorMessage?.SetColors();
-                    Console.Write(" - ");
-                    CmdRender.ShowValidationMessage(this, propertyInfo.Name, CmdScaffoldingSettings.ValidationErrorMessage);
-                }
-
-                //New Line
-                Console.WriteLine();
-            }
-        }
         public virtual object Edit(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
         {
             var propertyInfosInOrder = GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo).ToArray();
@@ -73,6 +24,9 @@ namespace Supermodel.Presentation.Cmd.Models
 
             foreach (var propertyInfo in propertyInfosInOrder)
             {
+                //skip if this property is not for edit
+                if (propertyInfo.HasAttribute<SkipForEditAttribute>()) continue;
+                
                 //if we have errors, only allow user to edit error fields
                 if (showOnlyErrorFields && !CmdContext.ValidationResultList.GetAllErrorsFor(propertyInfo.Name).Any()) continue;
                 
@@ -118,6 +72,61 @@ namespace Supermodel.Presentation.Cmd.Models
                 }
             }
             return this;
+        }
+        #endregion
+
+        #region ICmdDisplay
+        public virtual void Display(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
+        {
+            foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
+            {
+                //skip if this property is not for display
+                if (propertyInfo.HasAttribute<SkipForDisplayAttribute>()) continue;
+
+                var required = propertyInfo.HasAttribute<RequiredAttribute>();
+
+                //Label
+                var hideLabelAttribute = propertyInfo.GetAttribute<HideLabelAttribute>();
+                if (hideLabelAttribute == null)
+                {
+                    if (CmdContext.ValidationResultList.GetAllErrorsFor(propertyInfo.Name).Any())
+                    {
+                        CmdRender.ShowLabel(this, propertyInfo.Name, null, CmdScaffoldingSettings.Label);
+                    }
+                    else
+                    {
+                        CmdRender.ShowLabel(this, propertyInfo.Name, null, CmdScaffoldingSettings.Label);
+                    }
+
+                    if (!propertyInfo.HasAttribute<NoRequiredLabelAttribute>())
+                    {
+                        var currentColors = FBColors.FromCurrent();
+                        if (required || propertyInfo.HasAttribute<ForceRequiredLabelAttribute>()) 
+                        {
+                            CmdScaffoldingSettings.RequiredMarker.WriteToConsole();
+                        }
+                        currentColors.SetColors();
+                    }
+                    Console.Write(": ");
+                }
+
+                //Value
+                using(CmdContext.NewRequiredScope(required, GetType().GetDisplayNameForProperty(propertyInfo.Name)))
+                {
+                    CmdRender.Display(this, propertyInfo.Name, CmdScaffoldingSettings.Value);
+                }
+
+                //Validation Error
+                if (CmdContext.ValidationResultList.GetAllErrorsFor(propertyInfo.Name).Any())
+                {
+                    CmdScaffoldingSettings.ValidationErrorMessage?.SetColors();
+                    Console.Write(" - ");
+                    CmdRender.ShowValidationMessage(this, propertyInfo.Name, CmdScaffoldingSettings.ValidationErrorMessage);
+                }
+
+                //New Line
+                Console.WriteLine();
+            }
         }
         #endregion
 

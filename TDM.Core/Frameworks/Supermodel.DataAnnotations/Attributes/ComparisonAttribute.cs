@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Supermodel.DataAnnotations.Exceptions;
 
-namespace Supermodel.DataAnnotations.Validations.Attributes
+namespace Supermodel.DataAnnotations.Attributes
 {
     [AttributeUsage(AttributeTargets.Property)]
     public abstract class ComparisonAttribute : ValidationAttribute

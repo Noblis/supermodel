@@ -2,7 +2,7 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace Supermodel.DataAnnotations.Validations.Attributes
+namespace Supermodel.DataAnnotations.Attributes
 {
     public class EmailAttribute : RegularExpressionAttribute 
     {

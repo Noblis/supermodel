@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using CsvMaker.Attributes;
 using CsvMaker.Interfaces;
-using Supermodel.DataAnnotations.Validations.Attributes;
+using Supermodel.DataAnnotations.Attributes;
 using Supermodel.ReflectionMapper;
 
 namespace CsvMaker.Extensions

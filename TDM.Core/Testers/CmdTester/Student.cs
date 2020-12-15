@@ -2,7 +2,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
-using Supermodel.DataAnnotations.Validations.Attributes;
+using Supermodel.DataAnnotations.Attributes;
 using Supermodel.Presentation.Cmd.Models;
 
 namespace CmdTester

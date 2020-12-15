@@ -8,8 +8,8 @@ using Supermodel.Mobile.Runtime.Common.Exceptions;
 using Supermodel.Mobile.Runtime.Common.Models;
 using Supermodel.Mobile.Runtime.Common.Repository;
 using System.Reflection;
+using Supermodel.DataAnnotations.Attributes;
 using Supermodel.DataAnnotations.Exceptions;
-using Supermodel.DataAnnotations.Validations.Attributes;
 
 namespace Supermodel.Mobile.Runtime.Common.DataContext.Core
 {

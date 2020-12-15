@@ -2,7 +2,7 @@
 
 using System;
 
-namespace Supermodel.DataAnnotations.Validations.Attributes
+namespace Supermodel.DataAnnotations.Attributes
 {
     [AttributeUsage(AttributeTargets.Property)]
     public class DisplayOnlyAttribute : Attribute { }

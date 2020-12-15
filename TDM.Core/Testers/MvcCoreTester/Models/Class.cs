@@ -1,7 +1,7 @@
 ﻿#nullable enable
 
 using System.ComponentModel.DataAnnotations;
-using Supermodel.DataAnnotations.Validations.Attributes;
+using Supermodel.DataAnnotations.Attributes;
 using Supermodel.Persistence.Entities;
 using Supermodel.Presentation.Mvc.Bootstrap4.Models;
 using Supermodel.Presentation.Mvc.Models.Api;

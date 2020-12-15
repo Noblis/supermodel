@@ -8,7 +8,7 @@ using System.Text;
 using System.Web;
 using Supermodel.DataAnnotations.Misc;
 
-namespace Supermodel.DataAnnotations.Validations.Attributes
+namespace Supermodel.DataAnnotations.Attributes
 {
     [AttributeUsage(AttributeTargets.Property)]
     public class HtmlAttrAttribute : Attribute

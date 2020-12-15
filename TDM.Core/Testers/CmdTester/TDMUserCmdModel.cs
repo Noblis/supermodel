@@ -2,7 +2,7 @@
 
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
-using Supermodel.DataAnnotations.Validations.Attributes;
+using Supermodel.DataAnnotations.Attributes;
 using Supermodel.Presentation.Cmd.Models;
 using Supermodel.ReflectionMapper;
 using WMDomain.Entities;
@@ -26,10 +26,10 @@ namespace CmdTester
         [Required] public TextBoxCmdModel LastName { get; set; } = new TextBoxCmdModel();
         [Email, Required] public TextBoxCmdModel Username { get; set; } = new TextBoxCmdModel();
 
-        [ForceRequiredLabel, NotRMapped, MustEqualTo(nameof(ConfirmPassword), ErrorMessage = "Passwords do not match")]
+        [SkipForDisplay, ForceRequiredLabel, NotRMapped, MustEqualTo(nameof(ConfirmPassword), ErrorMessage = "Passwords do not match")]
         public PasswordTextBoxCmdModel NewPassword { get; set; } = new PasswordTextBoxCmdModel();
 
-        [ForceRequiredLabel, NotRMapped, MustEqualTo(nameof(NewPassword), ErrorMessage = "Passwords do not match")]
+        [SkipForDisplay, ForceRequiredLabel, NotRMapped, MustEqualTo(nameof(NewPassword), ErrorMessage = "Passwords do not match")]
         public PasswordTextBoxCmdModel ConfirmPassword { get; set; } = new PasswordTextBoxCmdModel();
         #endregion
     }

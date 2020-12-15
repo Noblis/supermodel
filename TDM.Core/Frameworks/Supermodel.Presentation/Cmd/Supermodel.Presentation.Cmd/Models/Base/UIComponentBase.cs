@@ -2,7 +2,7 @@
 
 using System;
 using System.Threading.Tasks;
-using Supermodel.DataAnnotations.Validations.Attributes;
+using Supermodel.DataAnnotations.Attributes;
 using Supermodel.Presentation.Cmd.Models.Interfaces;
 using Supermodel.ReflectionMapper;
 

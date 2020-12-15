@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using Supermodel.DataAnnotations.Expressions;
 
-namespace Supermodel.DataAnnotations.Validations.Attributes
+namespace Supermodel.DataAnnotations.Attributes
 {
     public static class DisplayNameHelper
     {

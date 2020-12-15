@@ -6,7 +6,7 @@ using System.Reflection;
 using CsvMaker.Attributes;
 using CsvMaker.CsvString;
 using CsvMaker.Interfaces;
-using Supermodel.DataAnnotations.Validations.Attributes;
+using Supermodel.DataAnnotations.Attributes;
 using Supermodel.ReflectionMapper;
 
 namespace CsvMaker.Extensions
