@@ -3,6 +3,7 @@
 using System;
 using System.Threading.Tasks;
 using Supermodel.DataAnnotations.Validations;
+using Supermodel.Presentation.Cmd.ConsoleOutput;
 using Supermodel.Presentation.Cmd.Models.Base;
 using Supermodel.Presentation.Cmd.Rendering;
 using Supermodel.ReflectionMapper;
@@ -82,32 +83,32 @@ namespace Supermodel.Presentation.Cmd.Models
         #endregion
 
         #region ICmdEditor implemtation
-        public override object? Edit(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
+        public override object Edit(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
         {
-            if (Type == typeof(string)) { Value = CmdRender.EditForModel(Value); return this; }
+            if (Type == typeof(string)) { Value = ConsoleExt.EditString(Value); return this; }
             
-            if (Type == typeof(int) || Type == typeof(int?)) { IntValue = CmdRender.EditForModel(IntValue); return this; }
-            if (Type == typeof(uint) || Type == typeof(uint?)) { UIntValue = CmdRender.EditForModel(UIntValue); return this; }
+            if (Type == typeof(int) || Type == typeof(int?)) { IntValue = ConsoleExt.EditInteger(IntValue); return this; }
+            if (Type == typeof(uint) || Type == typeof(uint?)) { UIntValue = ConsoleExt.EditInteger(UIntValue); return this; }
             
-            if (Type == typeof(long) || Type == typeof(long?)) { LongValue = CmdRender.EditForModel(LongValue); return this; }
-            if (Type == typeof(ulong) || Type == typeof(ulong?)) { ULongValue = CmdRender.EditForModel(ULongValue); return this; }
+            if (Type == typeof(long) || Type == typeof(long?)) { LongValue = ConsoleExt.EditInteger(LongValue); return this; }
+            if (Type == typeof(ulong) || Type == typeof(ulong?)) { ULongValue = ConsoleExt.EditInteger(ULongValue); return this; }
             
-            if (Type == typeof(short) || Type == typeof(short?)) { ShortValue = CmdRender.EditForModel(ShortValue); return this; }
-            if (Type == typeof(ushort) || Type == typeof(ushort?)) { UShortValue = CmdRender.EditForModel(UShortValue); return this; }
+            if (Type == typeof(short) || Type == typeof(short?)) { ShortValue = ConsoleExt.EditInteger(ShortValue); return this; }
+            if (Type == typeof(ushort) || Type == typeof(ushort?)) { UShortValue = ConsoleExt.EditInteger(UShortValue); return this; }
 
-            if (Type == typeof(byte) || Type == typeof(byte?)) { ByteValue = CmdRender.EditForModel(ByteValue); return this; }
-            if (Type == typeof(sbyte) || Type == typeof(sbyte?)) { SByteValue = CmdRender.EditForModel(SByteValue); return this; }
+            if (Type == typeof(byte) || Type == typeof(byte?)) { ByteValue = ConsoleExt.EditInteger(ByteValue); return this; }
+            if (Type == typeof(sbyte) || Type == typeof(sbyte?)) { SByteValue = ConsoleExt.EditInteger(SByteValue); return this; }
 
-            if (Type == typeof(double) || Type == typeof(double?)) { DoubleValue = CmdRender.EditForModel(DoubleValue); return this; }
-            if (Type == typeof(float) || Type == typeof(float?)) { FloatValue = CmdRender.EditForModel(FloatValue); return this; }
-            if (Type == typeof(decimal) || Type == typeof(decimal?)) { DecimalValue = CmdRender.EditForModel(DecimalValue); return this; }
+            if (Type == typeof(double) || Type == typeof(double?)) { DoubleValue = ConsoleExt.EditFloat(DoubleValue); return this; }
+            if (Type == typeof(float) || Type == typeof(float?)) { FloatValue = ConsoleExt.EditFloat(FloatValue); return this; }
+            if (Type == typeof(decimal) || Type == typeof(decimal?)) { DecimalValue = ConsoleExt.EditFloat(DecimalValue); return this; }
 
             throw new Exception($"TextBoxCmdModel.Edit: Unknown type {Type?.GetTypeFriendlyDescription()}");
         }
         #endregion
 
         #region ICmdDisplay implementation
-        public override void Display(int screenOrderFrom = Int32.MinValue, int screenOrderTo = Int32.MaxValue)
+        public override void Display(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
         {
             CmdRender.DisplayForModel(Value);
         }

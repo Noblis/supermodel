@@ -16,7 +16,7 @@ namespace CmdTester
         public override Task<T> MapToCustomAsync<T>(T other)
         {
             var user = CastToEntity(other);
-            if (!string.IsNullOrEmpty(NewPassword)) user.Password = NewPassword;
+            if (!string.IsNullOrEmpty(NewPassword.Value)) user.Password = NewPassword.Value;
             return base.MapToCustomAsync(other);
         }
         #endregion
@@ -27,10 +27,10 @@ namespace CmdTester
         [Email, Required] public TextBoxCmdModel Username { get; set; } = new TextBoxCmdModel();
 
         [ForceRequiredLabel, NotRMapped, MustEqualTo(nameof(ConfirmPassword), ErrorMessage = "Passwords do not match")]
-        public string NewPassword { get; set; } = "";
+        public PasswordTextBoxCmdModel NewPassword { get; set; } = new PasswordTextBoxCmdModel();
 
         [ForceRequiredLabel, NotRMapped, MustEqualTo(nameof(NewPassword), ErrorMessage = "Passwords do not match")]
-        public string ConfirmPassword { get; set; } = "";
+        public PasswordTextBoxCmdModel ConfirmPassword { get; set; } = new PasswordTextBoxCmdModel();
         #endregion
     }
 }
