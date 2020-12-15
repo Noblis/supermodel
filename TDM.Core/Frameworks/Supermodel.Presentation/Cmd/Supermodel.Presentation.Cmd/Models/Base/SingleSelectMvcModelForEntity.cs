@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Threading.Tasks;
 using Supermodel.Persistence.Entities;
 using Supermodel.Persistence.Repository;
+using Supermodel.Presentation.Cmd.Extensions;
 using Supermodel.ReflectionMapper;
 
 namespace Supermodel.Presentation.Cmd.Models.Base
