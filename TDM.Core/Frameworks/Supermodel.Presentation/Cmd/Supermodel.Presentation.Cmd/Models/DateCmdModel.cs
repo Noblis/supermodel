@@ -19,7 +19,7 @@ namespace Supermodel.Presentation.Cmd.Models
         #region ICmdEditor
         public override object Edit(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
         {
-            DateTimeValue = ConsoleExt.EditDate(DateTimeValue, Placeholder);
+            DateTimeValue = ConsoleExt.EditDate(DateTimeValue, Placeholder, CmdScaffoldingSettings.InvalidValueMessage, CmdScaffoldingSettings.Prompt);
             return this;            
         }
         #endregion
@@ -27,7 +27,8 @@ namespace Supermodel.Presentation.Cmd.Models
         #region ICmdDisplay
         public override void Display(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
         {
-            Console.WriteLine(Value);
+            if (DateTimeValue != null) Console.WriteLine(DateTimeValue.Value.ToString("MM/dd/yyyy"));
+            else Console.WriteLine();
         }
         #endregion
 
@@ -42,7 +43,7 @@ namespace Supermodel.Presentation.Cmd.Models
         #endregion
 
         #region Properties
-        protected static StringWithColor Placeholder { get; } = new StringWithColor("MM/dd/YYYY");
+        protected static StringWithColor Placeholder { get; } = new StringWithColor("MM/dd/YYYY", ConsoleColor.DarkYellow);
         #endregion
     }
 }

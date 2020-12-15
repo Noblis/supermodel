@@ -41,7 +41,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
         {
             placeholder ??= StringWithColor.Empty;
             
-            var valueStr = value.ToString() ?? "";
+            var valueStr = value != null ? value.Value.ToString("MM/dd/yyyy") : "";
             while(true)
             {
                 var input = EditLine(valueStr, placeholder, IsValidDateChar);
@@ -466,9 +466,19 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             {
                 Console.CursorTop = cursorTop;
                 Console.CursorLeft = cursorLeft;
-                var newValue = new string(chars!.ToArray());
-                Console.Write(newValue);
-                Console.Write(' ');
+                if (chars.Count > 0)
+                {
+                    var newValue = new string(chars!.ToArray());
+                    Console.Write(newValue);
+                }
+                else
+                {
+                    var currentColors = FBColors.FromCurrent();
+                    placeholder.WriteToConsole();
+                    currentColors.SetColors();
+                }
+                var padding = Math.Max(placeholder.Content.Length - chars.Count + 1, 1);
+                Console.Write("".PadRight(padding));
             }
 
             void SetCursorPosition()

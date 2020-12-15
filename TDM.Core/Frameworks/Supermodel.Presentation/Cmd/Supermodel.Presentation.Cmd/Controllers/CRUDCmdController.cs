@@ -385,7 +385,7 @@ namespace Supermodel.Presentation.Cmd.Controllers
         }
         protected virtual void PrintInvalidCommandTryAgain()
         {
-            CmdScaffoldingSettings.InvalidCommand?.SetColors();
+            CmdScaffoldingSettings.InvalidCommandMessage?.SetColors();
             Console.Write("Invalid command. ");
 
             CmdScaffoldingSettings.Prompt?.SetColors();
