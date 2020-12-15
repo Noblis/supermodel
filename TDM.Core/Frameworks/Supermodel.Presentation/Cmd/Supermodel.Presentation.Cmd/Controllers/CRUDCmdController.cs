@@ -436,7 +436,7 @@ namespace Supermodel.Presentation.Cmd.Controllers
         {
             try
             {
-                CmdRender.EditForModel(mvcModelItem);
+                mvcModelItem = CmdRender.EditForModel(mvcModelItem);
                 
                 CmdContext.ValidationResultList.Clear();
                 var vrl = new ValidationResultList();

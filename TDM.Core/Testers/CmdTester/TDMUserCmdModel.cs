@@ -22,9 +22,9 @@ namespace CmdTester
         #endregion
 
         #region Properties
-        [Required] public string FirstName { get; set; } = "";
-        [Required] public string LastName { get; set; } = "";
-        [Email, Required] public string Username { get; set; } = "";
+        [Required] public TextBoxCmdModel FirstName { get; set; } = new TextBoxCmdModel();
+        [Required] public TextBoxCmdModel LastName { get; set; } = new TextBoxCmdModel();
+        [Email, Required] public TextBoxCmdModel Username { get; set; } = new TextBoxCmdModel();
 
         [ForceRequiredLabel, NotRMapped, MustEqualTo(nameof(ConfirmPassword), ErrorMessage = "Passwords do not match")]
         public string NewPassword { get; set; } = "";

@@ -113,7 +113,9 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
 
                 return inputTag;
             }
+            #endregion
 
+            #region IDisplayTemplate implemtation
             public override IGenerateHtml DisplayTemplate(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue, object? attributes = null)
             {
                 var value = Value;
@@ -156,6 +158,7 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                     if (int.TryParse(Value, out var val)) return val;
                     return null;
                 }
+                set => Value = value?.ToString() ?? "";
             }
             public uint? UIntValue 
             { 
@@ -164,6 +167,7 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                     if (uint.TryParse(Value, out var val)) return val;
                     return null;
                 }
+                set => Value = value?.ToString() ?? "";
             }
             public long? LongValue 
             { 
@@ -172,6 +176,7 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                     if (long.TryParse(Value, out var val)) return val;
                     return null;
                 }
+                set => Value = value?.ToString() ?? "";
             }
             public ulong? ULongValue 
             { 
@@ -180,6 +185,7 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                     if (ulong.TryParse(Value, out var val)) return val;
                     return null;
                 }
+                set => Value = value?.ToString() ?? "";
             }
             public short? ShortValue 
             { 
@@ -188,6 +194,7 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                     if (short.TryParse(Value, out var val)) return val;
                     return null;
                 }
+                set => Value = value?.ToString() ?? "";
             }
             public ushort? UShortValue 
             { 
@@ -196,6 +203,7 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                     if (ushort.TryParse(Value, out var val)) return val;
                     return null;
                 }
+                set => Value = value?.ToString() ?? "";
             }
             public byte? ByteValue 
             { 
@@ -204,6 +212,7 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                     if (byte.TryParse(Value, out var val)) return val;
                     return null;
                 }
+                set => Value = value?.ToString() ?? "";
             }
             public sbyte? SByteValue 
             { 
@@ -212,6 +221,7 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                     if (sbyte.TryParse(Value, out var val)) return val;
                     return null;
                 }
+                set => Value = value?.ToString() ?? "";
             }
             public double? DoubleValue 
             { 
@@ -220,6 +230,7 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                     if (double.TryParse(Value, out var val)) return val;
                     return null;
                 }
+                set => Value = value?.ToString() ?? "";
             }
             public float? FloatValue 
             { 
@@ -228,6 +239,7 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                     if (float.TryParse(Value, out var val)) return val;
                     return null;
                 }
+                set => Value = value?.ToString() ?? "";
             }
             public decimal? DecimalValue 
             { 
@@ -236,6 +248,7 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                     if (decimal.TryParse(Value, out var val)) return val;
                     return null;
                 }
+                set => Value = value?.ToString() ?? "";
             }
 
             public string? Type { get; set; }
