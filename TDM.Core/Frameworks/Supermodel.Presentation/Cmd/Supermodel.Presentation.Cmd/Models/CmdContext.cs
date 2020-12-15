@@ -51,6 +51,8 @@ namespace Supermodel.Presentation.Cmd.Models
         public static bool IsPropertyRequired { get; set; }
 
         public static bool CtrlEscEnabled { get; set; }
+
+        public static object? RootParent { get; set; }
         
         //public static ValidationResultList ValidationResultList 
         //{ 

@@ -19,6 +19,8 @@ namespace Supermodel.Presentation.Cmd.Models
         #region ICmdEditor
         public virtual object Edit(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
         {
+            CmdContext.RootParent = this;
+            
             var propertyInfosInOrder = GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo).ToArray();
             var showOnlyErrorFields = !CmdContext.ValidationResultList.IsValid && propertyInfosInOrder.Any(x => CmdContext.ValidationResultList.GetAllErrorsFor(x.Name).Count > 0);
 
@@ -71,6 +73,8 @@ namespace Supermodel.Presentation.Cmd.Models
                     }
                 }
             }
+            
+            CmdContext.RootParent = null;
             return this;
         }
         #endregion
@@ -78,6 +82,8 @@ namespace Supermodel.Presentation.Cmd.Models
         #region ICmdDisplay
         public virtual void Display(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
         {
+            CmdContext.RootParent = this;
+            
             foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
             {
                 //skip if this property is not for display
@@ -127,6 +133,8 @@ namespace Supermodel.Presentation.Cmd.Models
                 //New Line
                 Console.WriteLine();
             }
+
+            CmdContext.RootParent = null;
         }
         #endregion
 

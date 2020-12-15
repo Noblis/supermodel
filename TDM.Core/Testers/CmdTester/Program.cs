@@ -16,10 +16,10 @@ namespace CmdTester
     {
         static async Task Main()
         {
-            Console.Write("Enter Password: ");
-            var pwd = ConsoleExt.ReadPassword(new StringWithColor("*******", ConsoleColor.DarkYellow));
-            Console.WriteLine(pwd);
-            Console.ReadLine();
+            //Console.Write("Enter Password: ");
+            //var pwd = ConsoleExt.ReadPassword(new StringWithColor("*******", ConsoleColor.DarkYellow));
+            //Console.WriteLine(pwd);
+            //Console.ReadLine();
             
             if (Debugger.IsAttached || !await EFCoreUnitOfWorkContext.Database.CanConnectAsync())
             {

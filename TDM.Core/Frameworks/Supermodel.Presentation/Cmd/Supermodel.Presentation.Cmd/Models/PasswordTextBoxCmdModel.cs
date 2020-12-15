@@ -44,9 +44,18 @@ namespace Supermodel.Presentation.Cmd.Models
         #region IEditor implemtation
         public override object Edit(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
         {
-            if (Type == typeof(string)) { Value = ConsoleExt.ReadPassword(); return this; }
+            if (Type != typeof(string)) throw new Exception($"TextBoxCmdModel.Edit: Unknown type {Type?.GetTypeFriendlyDescription()}");
+            
+            if (CmdContext.RootParent is CmdModelForEntityCore model && !model.IsNewModel() && PlaceholderBehavior != PlaceholderBehaviorEnum.ForceNoPlaceholder || PlaceholderBehavior == PlaceholderBehaviorEnum.ForceDotDotDotPlaceholder)
+            {
+                Value = ConsoleExt.ReadPassword(DotDotDot); 
+            }
+            else
+            {
+                Value = ConsoleExt.ReadPassword(); 
+            }
 
-            throw new Exception($"TextBoxCmdModel.Edit: Unknown type {Type?.GetTypeFriendlyDescription()}");
+            return this; 
         }
         #endregion
 
@@ -59,7 +68,7 @@ namespace Supermodel.Presentation.Cmd.Models
 
         #region Properties
         public PlaceholderBehaviorEnum PlaceholderBehavior { get; set; } = PlaceholderBehaviorEnum.Default;
-        protected const string DotDotDot = "*******";
+        protected static StringWithColor DotDotDot { get; } = new StringWithColor("*******", CmdScaffoldingSettings.Placeholder);
         #endregion
     }
 }
