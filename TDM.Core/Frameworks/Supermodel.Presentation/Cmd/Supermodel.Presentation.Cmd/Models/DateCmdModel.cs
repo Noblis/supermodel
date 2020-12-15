@@ -27,8 +27,7 @@ namespace Supermodel.Presentation.Cmd.Models
         #region ICmdDisplay
         public override void Display(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
         {
-            if (DateTimeValue != null) Console.WriteLine(DateTimeValue.Value.ToString("MM/dd/yyyy"));
-            else Console.WriteLine();
+            if (DateTimeValue != null) Console.Write(DateTimeValue.Value.ToString("MM/dd/yyyy"));
         }
         #endregion
 
