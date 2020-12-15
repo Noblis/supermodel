@@ -290,6 +290,8 @@ namespace Supermodel.Presentation.Cmd.Rendering
         {
             if (model == null) throw new ArgumentNullException(nameof(model));
 
+            colors?.SetColors();
+
             var (_, propertyType, propertyValue) = model.GetPropertyInfoPropertyTypeAndValueByFullName(expression);
             if (typeof(ICmdDisplayer).IsAssignableFrom(propertyType))
             {

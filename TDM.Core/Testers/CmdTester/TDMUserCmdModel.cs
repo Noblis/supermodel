@@ -1,5 +1,6 @@
 ﻿#nullable enable
 
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Supermodel.DataAnnotations.Attributes;
@@ -25,6 +26,7 @@ namespace CmdTester
         [Required] public TextBoxCmdModel FirstName { get; set; } = new TextBoxCmdModel();
         [Required] public TextBoxCmdModel LastName { get; set; } = new TextBoxCmdModel();
         [Email, Required] public TextBoxCmdModel Username { get; set; } = new TextBoxCmdModel();
+        [Required, NotRMapped] public DateTimeCmdModel DOB { get; set; } = new DateTimeCmdModel { DateTimeValue = DateTime.Today };
 
         [SkipForDisplay, ForceRequiredLabel, NotRMapped, MustEqualTo(nameof(ConfirmPassword), ErrorMessage = "Passwords do not match")]
         public PasswordTextBoxCmdModel NewPassword { get; set; } = new PasswordTextBoxCmdModel();

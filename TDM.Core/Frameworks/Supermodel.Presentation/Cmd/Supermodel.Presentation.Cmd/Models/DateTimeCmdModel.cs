@@ -1,16 +1,17 @@
 ﻿#nullable enable
 
 using System;
+using System.Globalization;
 using System.Threading.Tasks;
 using Supermodel.Presentation.Cmd.ConsoleOutput;
 using Supermodel.Presentation.Cmd.Models.Base;
 
 namespace Supermodel.Presentation.Cmd.Models
 {
-    public class DateTimeMvcModel : DateTimeCmdModelCore
+    public class DateTimeCmdModel : DateTimeCmdModelCore
     {
         #region Constructors
-        public DateTimeMvcModel()
+        public DateTimeCmdModel()
         {
             Type = typeof(DateTime);
         }
@@ -27,7 +28,7 @@ namespace Supermodel.Presentation.Cmd.Models
         #region ICmdDisplay
         public override void Display(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
         {
-            Console.WriteLine(DateTimeValue.ToString());
+            Console.WriteLine(Value);
         }
         #endregion
 
@@ -37,7 +38,7 @@ namespace Supermodel.Presentation.Cmd.Models
             await base.MapFromCustomAsync(other).ConfigureAwait(false);
                 
             //Set correct format
-            if (DateTimeValue != null) Value = DateTimeValue.Value.ToString("yyyy-MM-ddTHH:mm");
+            if (DateTimeValue != null) Value = DateTimeValue.Value.ToString(CultureInfo.InvariantCulture);
         }
         #endregion
     }
