@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Supermodel.Presentation.Cmd.ConsoleOutput;
 
 namespace Supermodel.Presentation.Cmd.Models.Base
 {
@@ -25,24 +26,21 @@ namespace Supermodel.Presentation.Cmd.Models.Base
         #endregion
 
         #region Static Dropdown and Radio helpers
-        //public virtual object? CommonDropdownEditorTemplate(SingleSelectMvcModel singleSelect, AttributesDict? attributesDict)
-        //{
-        //    attributesDict ??= new AttributesDict();
-        //    attributesDict.AddOrAppendCssClass("form-control");
-
-        //    var selectListItemList = new List<ConsoleExt.SelectListItem> { ConsoleExt.SelectListItem.Empty };
-        //    foreach (var option in singleSelect.Options)
-        //    {
-        //        var isSelectedOption = singleSelect.SelectedValue != null && string.CompareOrdinal(singleSelect.SelectedValue, option.Value) == 0;
-        //        if (isSelectedOption || !option.IsDisabled)
-        //        {
-        //            var item = new ConsoleExt.SelectListItem(option.Value, !option.IsDisabled ? option.Label : option.Label + DisabledSuffix);
-        //            selectListItemList.Add(item);
-        //        }
-        //    }
-        //    var result = Render.DropdownListForModel(singleSelect.SelectedValue, selectListItemList, attributesDict);
-        //    return result;
-        //}
+        public virtual object CommonDropdownEditorTemplate(SingleSelectCmdModel singleSelect)
+        {
+            var selectListItemList = new List<ConsoleExt.SelectListItem> { ConsoleExt.SelectListItem.Empty };
+            foreach (var option in singleSelect.Options)
+            {
+                var isSelectedOption = singleSelect.SelectedValue != null && string.CompareOrdinal(singleSelect.SelectedValue, option.Value) == 0;
+                if (isSelectedOption || !option.IsDisabled)
+                {
+                    var item = new ConsoleExt.SelectListItem(option.Value, !option.IsDisabled ? option.Label : option.Label + DisabledSuffix);
+                    selectListItemList.Add(item);
+                }
+            }
+            var result = ConsoleExt.EditDropdownList(singleSelect.SelectedValue ?? "", selectListItemList, CmdScaffoldingSettings.DropdownArrow);
+            return result;
+        }
         #endregion
 
         #region IUIComponentWithValue implemetation
