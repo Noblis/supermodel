@@ -1,17 +1,16 @@
 ﻿#nullable enable
 
 using System;
-using System.Globalization;
 using System.Threading.Tasks;
 using Supermodel.Presentation.Cmd.ConsoleOutput;
 using Supermodel.Presentation.Cmd.Models.Base;
 
 namespace Supermodel.Presentation.Cmd.Models
 {
-    public class DateTimeCmdModel : DateTimeCmdModelCore
+    public class DateCmdModel : DateTimeCmdModelCore
     {
         #region Constructors
-        public DateTimeCmdModel()
+        public DateCmdModel()
         {
             Type = typeof(DateTime);
         }
@@ -20,7 +19,7 @@ namespace Supermodel.Presentation.Cmd.Models
         #region ICmdEditor
         public override object Edit(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
         {
-            DateTimeValue = ConsoleExt.EditDateTime(DateTimeValue);
+            DateTimeValue = ConsoleExt.EditDate(DateTimeValue, Placeholder);
             return this;            
         }
         #endregion
@@ -38,8 +37,12 @@ namespace Supermodel.Presentation.Cmd.Models
             await base.MapFromCustomAsync(other).ConfigureAwait(false);
                 
             //Set correct format
-            if (DateTimeValue != null) Value = DateTimeValue.Value.ToString(CultureInfo.InvariantCulture);
+            if (DateTimeValue != null) Value = DateTimeValue.Value.ToString("MM/dd/yyyy");
         }
+        #endregion
+
+        #region Properties
+        protected static StringWithColor Placeholder { get; } = new StringWithColor("MM/dd/YYYY");
         #endregion
     }
 }

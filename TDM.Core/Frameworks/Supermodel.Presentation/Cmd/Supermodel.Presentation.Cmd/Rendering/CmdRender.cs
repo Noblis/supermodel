@@ -248,7 +248,7 @@ namespace Supermodel.Presentation.Cmd.Rendering
             if (typeof(bool).IsAssignableFrom(propertyType) || typeof(bool?).IsAssignableFrom(propertyType)) return ConsoleExt.EditBool((bool?)propertyValue, invalidValueColors, promptColors);
 
             //DateTime
-            if (typeof(DateTime).IsAssignableFrom(propertyType) || typeof(DateTime?).IsAssignableFrom(propertyType)) return ConsoleExt.EditDateTime((DateTime?)propertyValue, invalidValueColors, promptColors);
+            if (typeof(DateTime).IsAssignableFrom(propertyType) || typeof(DateTime?).IsAssignableFrom(propertyType)) return ConsoleExt.EditDate((DateTime?)propertyValue, StringWithColor.Empty, invalidValueColors, promptColors);
 
             //enums
             if (typeof(Enum).IsAssignableFrom(propertyType) || Nullable.GetUnderlyingType(propertyType)?.IsEnum == true)

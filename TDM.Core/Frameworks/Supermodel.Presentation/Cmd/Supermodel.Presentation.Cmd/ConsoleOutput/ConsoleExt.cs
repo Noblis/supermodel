@@ -37,12 +37,14 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
         #endregion
         
         #region Date
-        public static DateTime? EditDateTime(DateTime? value, FBColors? errorColors = null, FBColors? promptColors = null)
+        public static DateTime? EditDate(DateTime? value, StringWithColor? placeholder, FBColors? errorColors = null, FBColors? promptColors = null)
         {
+            placeholder ??= StringWithColor.Empty;
+            
             var valueStr = value.ToString() ?? "";
             while(true)
             {
-                var input = EditLine(valueStr, IsValidUnsignedIntegerChar);
+                var input = EditLine(valueStr, placeholder, IsValidDateChar);
                 if (string.IsNullOrWhiteSpace(input)) 
                 {
                     if (!CmdContext.IsPropertyRequired) return null;
@@ -79,7 +81,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             var valueStr = value.ToString() ?? "";
             while(true)
             {
-                var input = EditLine(valueStr, IsValidUnsignedIntegerChar);
+                var input = EditLine(valueStr, StringWithColor.Empty, IsValidFloatingPoint);
                 if (string.IsNullOrWhiteSpace(input)) 
                 {
                     if (!CmdContext.IsPropertyRequired) return null;
@@ -103,7 +105,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             var valueStr = value.ToString() ?? "";
             while(true)
             {
-                var input = EditLine(valueStr, IsValidUnsignedIntegerChar);
+                var input = EditLine(valueStr, StringWithColor.Empty, IsValidFloatingPoint);
                 if (string.IsNullOrWhiteSpace(input)) 
                 {
                     if (!CmdContext.IsPropertyRequired) return null;
@@ -127,7 +129,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             var valueStr = value.ToString() ?? "";
             while(true)
             {
-                var input = EditLine(valueStr, IsValidUnsignedIntegerChar);
+                var input = EditLine(valueStr, StringWithColor.Empty, IsValidFloatingPoint);
                 if (string.IsNullOrWhiteSpace(input)) 
                 {
                     if (!CmdContext.IsPropertyRequired) return null;
@@ -154,7 +156,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             var valueStr = value.ToString() ?? "";
             while(true)
             {
-                var input = EditLine(valueStr, IsValidUnsignedIntegerChar);
+                var input = EditLine(valueStr, StringWithColor.Empty, IsValidUnsignedIntegerChar);
                 if (string.IsNullOrWhiteSpace(input)) 
                 {
                     if (!CmdContext.IsPropertyRequired) return null;
@@ -178,7 +180,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             var valueStr = value.ToString() ?? "";
             while(true)
             {
-                var input = EditLine(valueStr, IsValidUnsignedIntegerChar);
+                var input = EditLine(valueStr, StringWithColor.Empty, IsValidUnsignedIntegerChar);
                 if (string.IsNullOrWhiteSpace(input)) 
                 {
                     if (!CmdContext.IsPropertyRequired) return null;
@@ -202,7 +204,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             var valueStr = value.ToString() ?? "";
             while(true)
             {
-                var input = EditLine(valueStr, IsValidUnsignedIntegerChar);
+                var input = EditLine(valueStr, StringWithColor.Empty, IsValidUnsignedIntegerChar);
                 if (string.IsNullOrWhiteSpace(input)) 
                 {
                     if (!CmdContext.IsPropertyRequired) return null;
@@ -226,7 +228,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             var valueStr = value.ToString() ?? "";
             while(true)
             {
-                var input = EditLine(valueStr, IsValidUnsignedIntegerChar);
+                var input = EditLine(valueStr, StringWithColor.Empty, IsValidUnsignedIntegerChar);
                 if (string.IsNullOrWhiteSpace(input)) 
                 {
                     if (!CmdContext.IsPropertyRequired) return null;
@@ -251,7 +253,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             var valueStr = value.ToString() ?? "";
             while(true)
             {
-                var input = EditLine(valueStr, IsValidIntegerChar);
+                var input = EditLine(valueStr, StringWithColor.Empty, IsValidIntegerChar);
                 if (string.IsNullOrWhiteSpace(input)) 
                 {
                     if (!CmdContext.IsPropertyRequired) return null;
@@ -275,7 +277,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             var valueStr = value.ToString() ?? "";
             while(true)
             {
-                var input = EditLine(valueStr, IsValidIntegerChar);
+                var input = EditLine(valueStr, StringWithColor.Empty, IsValidIntegerChar);
                 if (string.IsNullOrWhiteSpace(input)) 
                 {
                     if (!CmdContext.IsPropertyRequired) return null;
@@ -299,7 +301,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             var valueStr = value.ToString() ?? "";
             while(true)
             {
-                var input = EditLine(valueStr, IsValidIntegerChar);
+                var input = EditLine(valueStr, StringWithColor.Empty, IsValidIntegerChar);
                 if (string.IsNullOrWhiteSpace(input)) 
                 {
                     if (!CmdContext.IsPropertyRequired) return null;
@@ -323,7 +325,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             var valueStr = value.ToString() ?? "";
             while(true)
             {
-                var input = EditLine(valueStr, IsValidIntegerChar);
+                var input = EditLine(valueStr, StringWithColor.Empty, IsValidIntegerChar);
                 if (string.IsNullOrWhiteSpace(input)) 
                 {
                     if (!CmdContext.IsPropertyRequired) return null;
@@ -349,7 +351,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
         {
             while(true)
             {
-                var input = EditLine(value, x => char.IsLetterOrDigit(x) || char.IsSymbol(x) || char.IsPunctuation(x) || char.IsSeparator(x));
+                var input = EditLine(value, StringWithColor.Empty, x => char.IsLetterOrDigit(x) || char.IsSymbol(x) || char.IsPunctuation(x) || char.IsSeparator(x));
                 if (string.IsNullOrWhiteSpace(input)) 
                 {
                     if (!CmdContext.IsPropertyRequired) return "";
@@ -378,7 +380,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
         #endregion
 
         #region Low Level Edit Line
-        public static string EditLine(string value, Func<char, bool> isValidCharFunc)
+        public static string EditLine(string value, StringWithColor placeholder, Func<char, bool> isValidCharFunc)
         {
             if (value.Contains('\n')) throw new ArgumentException("Cannot contain new line", nameof(value));
             
@@ -386,36 +388,43 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             var cursorLeft = Console.CursorLeft;
             var cursorTop = Console.CursorTop;
 
-            Console.Write(value);
+            if (!string.IsNullOrEmpty(value)) Console.Write(value);
+            else placeholder.WriteToConsole();
+
             var chars = new List<char>();
             if (!string.IsNullOrEmpty(value)) chars.AddRange(value.ToCharArray());
 
             while (true)
             {
                 var info = Console.ReadKey(true);
-                if (info.Key == ConsoleKey.Backspace && cursorIdx > 0)
+                if (info.Key == ConsoleKey.Backspace)
                 {
-                    cursorIdx--;
-                    chars.RemoveAt(cursorIdx);
-                    
+                    if (cursorIdx > 0)
+                    {
+                        cursorIdx--;
+                        chars.RemoveAt(cursorIdx);
+                    }
+
                     Console.CursorVisible = false;
                     UpdateText();
                     SetCursorPosition();
                     Console.CursorVisible = true;
                 }
-                else if (info.Key == ConsoleKey.LeftArrow && cursorIdx > 0)
-                { 
-                    cursorIdx--;
+                else if (info.Key == ConsoleKey.LeftArrow)
+                {
+                    if (cursorIdx > 0) cursorIdx--;
 
                     Console.CursorVisible = false;
+                    if (cursorIdx <= 0) UpdateText();
                     SetCursorPosition();
                     Console.CursorVisible = true;
                 }
-                else if (info.Key == ConsoleKey.RightArrow && cursorIdx < chars.Count)
-                { 
-                    cursorIdx++;
+                else if (info.Key == ConsoleKey.RightArrow)
+                {
+                    if (cursorIdx < chars.Count) cursorIdx++;
 
                     Console.CursorVisible = false;
+                    if (cursorIdx >= chars.Count) UpdateText();
                     SetCursorPosition();
                     Console.CursorVisible = true;
                 }
@@ -783,6 +792,10 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
         private static bool IsValidIntegerChar(char x)
         {
             return char.IsDigit(x) || x == '-';
+        }
+        private static bool IsValidDateChar(char x)
+        {
+            return char.IsDigit(x) || x == '/';
         }
         #endregion
     }
