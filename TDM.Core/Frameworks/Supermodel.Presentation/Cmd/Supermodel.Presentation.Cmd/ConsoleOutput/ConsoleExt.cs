@@ -359,11 +359,13 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 return input;
             }
         }
-        public static string ReadPassword(FBColors? errorColors = null, FBColors? promptColors = null )
+        public static string ReadPassword(StringWithColor? placeholder = null, FBColors? errorColors = null, FBColors? promptColors = null )
         {
+            placeholder ??= StringWithColor.Empty;
+            
             while(true)
             {
-                var input = ReadPasswordLine(x => char.IsLetterOrDigit(x) || char.IsSymbol(x) || char.IsPunctuation(x) || char.IsSeparator(x));
+                var input = ReadPasswordLine(placeholder, x => char.IsLetterOrDigit(x) || char.IsSymbol(x) || char.IsPunctuation(x) || char.IsSeparator(x));
                 if (string.IsNullOrWhiteSpace(input)) 
                 {
                     if (!CmdContext.IsPropertyRequired) return "";
@@ -466,7 +468,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 Console.CursorTop = cursorTop + (cursorLeft + cursorIdx) / Console.WindowWidth;
             }
         }
-        public static string ReadPasswordLine(Func<char, bool> isValidCharFunc)
+        public static string ReadPasswordLine(StringWithColor placeholder, Func<char, bool> isValidCharFunc)
         {
             var value = "";
 
@@ -474,36 +476,41 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             var cursorLeft = Console.CursorLeft;
             var cursorTop = Console.CursorTop;
 
-            Console.Write(value);
+            placeholder.WriteToConsole();
             var chars = new List<char>();
             if (!string.IsNullOrEmpty(value)) chars.AddRange(value.ToCharArray());
 
             while (true)
             {
                 var info = Console.ReadKey(true);
-                if (info.Key == ConsoleKey.Backspace && cursorIdx > 0)
+                if (info.Key == ConsoleKey.Backspace)
                 {
-                    cursorIdx--;
-                    chars.RemoveAt(cursorIdx);
+                    if (cursorIdx > 0)
+                    {
+                        cursorIdx--;
+                        chars.RemoveAt(cursorIdx);
+                    }
 
                     Console.CursorVisible = false;
                     UpdateText();
                     SetCursorPosition();
                     Console.CursorVisible = true;
                 }
-                else if (info.Key == ConsoleKey.LeftArrow && cursorIdx > 0)
+                else if (info.Key == ConsoleKey.LeftArrow)
                 {
-                    cursorIdx--;
+                    if (cursorIdx > 0) cursorIdx--;
 
                     Console.CursorVisible = false;
+                    if (cursorIdx <= 0) UpdateText();
                     SetCursorPosition();
                     Console.CursorVisible = true;
                 }
-                else if (info.Key == ConsoleKey.RightArrow && cursorIdx < chars.Count)
+                else if (info.Key == ConsoleKey.RightArrow)
                 {
-                    cursorIdx++;
+                    if (cursorIdx < chars.Count) cursorIdx++;
 
                     Console.CursorVisible = false;
+                    if (cursorIdx >= chars.Count) UpdateText();
                     SetCursorPosition();
                     Console.CursorVisible = true;
                 }
@@ -546,7 +553,8 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 Console.CursorTop = cursorTop;
                 Console.CursorLeft = cursorLeft;
                 for (var i = 0; i < chars.Count; i++) Console.Write('*');
-                Console.Write(' ');
+                var padding = Math.Max(placeholder.Content.Length - chars.Count + 1, 1);
+                Console.Write("".PadRight(padding));
             }
 
             void SetCursorPosition()

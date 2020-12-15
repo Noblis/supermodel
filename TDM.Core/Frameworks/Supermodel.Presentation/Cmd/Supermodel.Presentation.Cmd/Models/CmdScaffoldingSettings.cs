@@ -19,6 +19,7 @@ namespace Supermodel.Presentation.Cmd.Models
         
         public static FBColors? Label { get; set; } = new FBColors(ConsoleColor.White, BackgroundColor);
         public static FBColors? Value { get; set; } = new FBColors(ConsoleColor.Yellow, BackgroundColor);
+        public static FBColors? Placeholder { get; set; } = new FBColors(ConsoleColor.DarkYellow, BackgroundColor);
         public static FBColors? DropdownArrow { get; set; } = new FBColors(ConsoleColor.Cyan, BackgroundColor);
 
         public static FBColors? InvalidValueMessage { get; set; } = new FBColors(ConsoleColor.DarkMagenta, BackgroundColor);

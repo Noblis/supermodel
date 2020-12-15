@@ -53,12 +53,13 @@ namespace Supermodel.Presentation.Cmd.Models
         #region IDisplayer implemetation
         public override void Display(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
         {
-            CmdRender.DisplayForModel("*******");
+            CmdRender.DisplayForModel(DotDotDot);
         }
         #endregion
 
         #region Properties
         public PlaceholderBehaviorEnum PlaceholderBehavior { get; set; } = PlaceholderBehaviorEnum.Default;
+        protected const string DotDotDot = "*******";
         #endregion
     }
 }

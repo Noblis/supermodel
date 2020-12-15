@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Supermodel.Persistence.EFCore;
 using Supermodel.Persistence.UnitOfWork;
+using Supermodel.Presentation.Cmd.ConsoleOutput;
 using Supermodel.Presentation.Cmd.Controllers;
 using WMDomain.Entities;
 using WMDomain.Supermodel.Persistence;
@@ -15,6 +16,11 @@ namespace CmdTester
     {
         static async Task Main()
         {
+            Console.Write("Enter Password: ");
+            var pwd = ConsoleExt.ReadPassword(new StringWithColor("*******", ConsoleColor.DarkYellow));
+            Console.WriteLine(pwd);
+            Console.ReadLine();
+            
             if (Debugger.IsAttached || !await EFCoreUnitOfWorkContext.Database.CanConnectAsync())
             {
                 Console.Write("Recreating the database... ");
