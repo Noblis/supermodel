@@ -9,10 +9,10 @@ using Supermodel.ReflectionMapper;
 
 namespace Supermodel.Presentation.Cmd.Models.Base
 {
-    public abstract class SingleSelectMvcModelForEntity : SingleSelectCmdModel
+    public abstract class SingleSelectCmdModelForEntity : SingleSelectCmdModel
     {
         #region ICustomMapper implemtation
-#nullable disable
+        #nullable disable
         public override Task MapFromCustomAsync<T>(T other)
         {
             var otherType = typeof(T);
