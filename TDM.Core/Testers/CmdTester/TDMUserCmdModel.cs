@@ -30,7 +30,7 @@ namespace CmdTester
         [Email, Required] public TextBoxCmdModel Username { get; set; } = new TextBoxCmdModel();
         
         [Required, NotRMapped] public DateCmdModel DOB { get; set; } = new DateCmdModel { DateTimeValue = DateTime.Today };
-        [NotRMapped] public CheckboxCmdModel Jewish {get; set; } = new CheckboxCmdModel();
+        [NotRMapped] public CheckboxCmdModel Admin {get; set; } = new CheckboxCmdModel();
         [Required, NotRMapped] public DropdownCmdModelUsingEnum<GenderEnum> Sex { get; set; } = new DropdownCmdModelUsingEnum<GenderEnum>();
 
         [SkipForDisplay, ForceRequiredLabel, NotRMapped, MustEqualTo(nameof(ConfirmPassword), ErrorMessage = "Passwords do not match")]
