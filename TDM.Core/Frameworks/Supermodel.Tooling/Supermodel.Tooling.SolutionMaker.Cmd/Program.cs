@@ -18,7 +18,7 @@ namespace Supermodel.Tooling.SolutionMaker.Cmd
                 //Console.Write("Copying Frameworks directory from TDM.Core to XXYXX... ");
                 //CopyDirectory(@"..\..\..\..\..\..\Frameworks", @"..\..\..\..\..\..\..\XXYXX.Core\XXYXX\Frameworks");
                 //Console.WriteLine("Done!");
-                
+
                 //SolutionMaker.CreateSnapshot(@"..\..\..\..\..\..\..\XXYXX.Core\XXYXX", @"..\..\..\");
                 //Console.WriteLine($"{SolutionMaker.ZipFileName} created successfully!");
                 //return;
