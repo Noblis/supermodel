@@ -263,7 +263,11 @@ namespace Supermodel.Presentation.Cmd.Controllers
             while (true)
             {
                 CmdScaffoldingSettings.CommandValue?.SetColors();
-                var input = ConsoleExt.EditLineAllCaps("", x => char.IsDigit(x) || "VEADQ".Contains(x)).Trim().ToUpper();
+                
+                string input;
+                if (AllowQuit) input = ConsoleExt.EditLineAllCaps("", x => char.IsDigit(x) || "VEADQ".Contains(x)).Trim().ToUpper();
+                else input = ConsoleExt.EditLineAllCaps("", x => char.IsDigit(x) || "VEAD".Contains(x)).Trim().ToUpper();
+                
                 if (input.StartsWith("V"))
                 {
                     var id = GetIdForCommand(input);
@@ -314,7 +318,7 @@ namespace Supermodel.Presentation.Cmd.Controllers
                     Console.WriteLine();
                     return false;
                 }
-                if (input == "Q") 
+                if (AllowQuit && input == "Q") 
                 {
                     CmdScaffoldingSettings.Prompt?.SetColors();
                     Console.WriteLine($"Quitting {ListTitle}...");
@@ -365,21 +369,36 @@ namespace Supermodel.Presentation.Cmd.Controllers
             CmdScaffoldingSettings.CommandValue?.SetColors();
             Console.Write("A");
 
-            CmdScaffoldingSettings.Prompt?.SetColors();
-            Console.Write("dd, ");
+            if (AllowQuit)
+            {
+                CmdScaffoldingSettings.Prompt?.SetColors();
+                Console.Write("dd, ");
 
-            CmdScaffoldingSettings.CommandValue?.SetColors();
-            Console.Write("D");
+                CmdScaffoldingSettings.CommandValue?.SetColors();
+                Console.Write("D");
 
-            CmdScaffoldingSettings.Prompt?.SetColors();
-            // ReSharper disable once StringLiteralTypo
-            Console.Write("elete, or ");
+                CmdScaffoldingSettings.Prompt?.SetColors();
+                // ReSharper disable once StringLiteralTypo
+                Console.Write("elete, or ");
 
-            CmdScaffoldingSettings.CommandValue?.SetColors();
-            Console.Write("Q");
+                CmdScaffoldingSettings.CommandValue?.SetColors();
+                Console.Write("Q");
 
-            CmdScaffoldingSettings.Prompt?.SetColors();
-            Console.Write("uit): ");
+                CmdScaffoldingSettings.Prompt?.SetColors();
+                Console.Write("uit): ");
+            }
+            else
+            {
+                CmdScaffoldingSettings.Prompt?.SetColors();
+                Console.Write("dd, or ");
+
+                CmdScaffoldingSettings.CommandValue?.SetColors();
+                Console.Write("D");
+
+                CmdScaffoldingSettings.Prompt?.SetColors();
+                // ReSharper disable once StringLiteralTypo
+                Console.Write("elete): ");
+            }
         }
         protected virtual void PrintInvalidCommandTryAgain()
         {
@@ -486,6 +505,7 @@ namespace Supermodel.Presentation.Cmd.Controllers
         public string ListTitle { get; set; }
         public string DetailTitle { get; set; }
         public bool ClearScreenOnList { get; set; } = true;
+        public bool AllowQuit { get; set; } = true;
         #endregion
     }
 }
