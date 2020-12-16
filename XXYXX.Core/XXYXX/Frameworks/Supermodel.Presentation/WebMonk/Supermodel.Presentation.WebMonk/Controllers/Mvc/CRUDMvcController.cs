@@ -287,7 +287,7 @@ namespace Supermodel.Presentation.WebMonk.Controllers.Mvc
             var mvcModelItem = new TDetailMvcModel();
             // ReSharper disable once SuspiciousTypeConversion.Global
             if (mvcModelItem is IAsyncInit iAsyncInit && !iAsyncInit.AsyncInitialized) await iAsyncInit.InitAsync().ConfigureAwait(false);
-            mvcModelItem = await new TDetailMvcModel().MapFromAsync(entityItem).ConfigureAwait(false);
+            mvcModelItem = await mvcModelItem.MapFromAsync(entityItem).ConfigureAwait(false);
 
             try
             {

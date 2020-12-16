@@ -8,8 +8,8 @@ using System.Linq;
 using System.Reflection;
 using Supermodel.Mobile.Runtime.Common.XForms.UIComponents.Base;
 using System.Threading.Tasks;
+using Supermodel.DataAnnotations.Attributes;
 using Supermodel.DataAnnotations.Validations;
-using Supermodel.DataAnnotations.Validations.Attributes;
 
 namespace Supermodel.Mobile.Runtime.Common.XForms.ViewModels
 {

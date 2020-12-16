@@ -7,8 +7,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
+using Supermodel.DataAnnotations.Attributes;
 using Supermodel.DataAnnotations.Exceptions;
-using Supermodel.DataAnnotations.Validations.Attributes;
 using Supermodel.Persistence.Entities;
 using Supermodel.Presentation.Mvc.Models.Mvc.Rendering;
 

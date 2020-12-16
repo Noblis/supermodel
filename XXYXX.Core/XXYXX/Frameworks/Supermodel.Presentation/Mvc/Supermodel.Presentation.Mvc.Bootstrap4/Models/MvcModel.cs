@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Supermodel.DataAnnotations;
-using Supermodel.DataAnnotations.Validations.Attributes;
+using Supermodel.DataAnnotations.Attributes;
 using Supermodel.Presentation.Mvc.Extensions;
 using Supermodel.Presentation.Mvc.HtmlHelpers;
 using Supermodel.Presentation.Mvc.Models.Mvc;
@@ -71,6 +71,9 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                 
                 foreach (var propertyInfo in GetType().GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
                 {
+                    //skip if this property is not for edit
+                    if (propertyInfo.HasAttribute<SkipForEditAttribute>()) continue;
+
                     //Div 1
                     var propMarkerAttribute = markerAttribute;
                     var htmlAttrAttribute = propertyInfo.GetAttribute<HtmlAttrAttribute>();
@@ -161,6 +164,9 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                 var result = new StringBuilder();
                 foreach (var propertyInfo in GetType().GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
                 {
+                    //skip if this property is not for display
+                    if (propertyInfo.HasAttribute<SkipForDisplayAttribute>()) continue;
+
                     //Div 1
                     var propMarkerAttribute = markerAttribute;
                     var htmlAttrAttribute = propertyInfo.GetAttribute<HtmlAttrAttribute>();
@@ -235,6 +241,9 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
 
                 foreach (var propertyInfo in GetType().GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
                 {
+                    //skip if this property is not for edit
+                    if (propertyInfo.HasAttribute<SkipForEditAttribute>()) continue;
+
                     //If this is a beginning of a row
                     if (currentColumn == 1) result.AppendLine("<div class='form-row'>"); 
 
@@ -332,6 +341,9 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                 var result = new StringBuilder();
                 foreach (var propertyInfo in GetType().GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
                 {
+                    //skip if this property is not for display
+                    if (propertyInfo.HasAttribute<SkipForDisplayAttribute>()) continue;
+
                     //If this is a beginning of a row
                     if (currentColumn == 1) result.AppendLine("<div class='form-row'>"); 
 

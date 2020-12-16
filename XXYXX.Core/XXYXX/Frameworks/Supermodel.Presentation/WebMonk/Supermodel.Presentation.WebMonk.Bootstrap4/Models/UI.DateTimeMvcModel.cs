@@ -32,7 +32,7 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
             }
             #endregion
 
-            #region IDisplauModelTemplate implementation
+            #region IDisplayModelTemplate implementation
             public override IGenerateHtml DisplayTemplate(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue, object? attributes = null)
             {
                 return new Txt(DateTimeValue == null ? "" : DateTimeValue.Value.ToString(CultureInfo.CurrentCulture));

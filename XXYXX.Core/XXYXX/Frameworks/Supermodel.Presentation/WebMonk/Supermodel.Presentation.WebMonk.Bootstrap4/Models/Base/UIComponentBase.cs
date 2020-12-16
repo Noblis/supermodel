@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Supermodel.DataAnnotations.Validations.Attributes;
+using Supermodel.DataAnnotations.Attributes;
 using Supermodel.ReflectionMapper;
 using WebMonk.Context;
 using WebMonk.Exceptions;

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Supermodel.DataAnnotations;
-using Supermodel.DataAnnotations.Validations.Attributes;
+using Supermodel.DataAnnotations.Attributes;
 using Supermodel.Presentation.WebMonk.Extensions;
 using Supermodel.Presentation.WebMonk.Models.Mvc;
 using Supermodel.ReflectionMapper;
@@ -66,6 +66,9 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
 
                 foreach (var propertyInfo in GetType().GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
                 {
+                    //skip if this property is not for edit
+                    if (propertyInfo.HasAttribute<SkipForEditAttribute>()) continue;
+                    
                     //Div 1
                     var htmlAttrAttribute = propertyInfo.GetAttribute<HtmlAttrAttribute>();
                     result.AppendAndPush(new Div(new { @class="form-group row" }))
@@ -140,6 +143,9 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                 var result = new HtmlStack();
                 foreach (var propertyInfo in GetType().GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
                 {
+                    //skip if this property is not for display
+                    if (propertyInfo.HasAttribute<SkipForDisplayAttribute>()) continue;
+
                     //Div 1
                     var htmlAttrAttribute = propertyInfo.GetAttribute<HtmlAttrAttribute>();
                     result.AppendAndPush(new Div(new { @class="form-group row" }))
@@ -220,6 +226,9 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
 
                 foreach (var propertyInfo in GetType().GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
                 {
+                    //skip if this property is not for edit
+                    if (propertyInfo.HasAttribute<SkipForEditAttribute>()) continue;
+                    
                     //If this is a beginning of a row
                     if (currentColumn == 1) result.AppendAndPush(new Div(new { @class="form-row"}));
 
@@ -304,6 +313,9 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                 var result = new HtmlStack();
                 foreach (var propertyInfo in GetType().GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
                 {
+                    //skip if this property is not for display
+                    if (propertyInfo.HasAttribute<SkipForDisplayAttribute>()) continue;
+
                     //If this is a beginning of a row
                     if (currentColumn == 1) result.AppendAndPush(new Div(new { @class="form-row"}));
 

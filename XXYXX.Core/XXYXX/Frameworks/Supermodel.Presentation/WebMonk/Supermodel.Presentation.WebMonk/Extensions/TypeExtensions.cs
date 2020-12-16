@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
-using Supermodel.DataAnnotations.Validations.Attributes;
+using Supermodel.DataAnnotations.Attributes;
 using Supermodel.Persistence.Entities;
 using WebMonk.Rendering.Templates;
 

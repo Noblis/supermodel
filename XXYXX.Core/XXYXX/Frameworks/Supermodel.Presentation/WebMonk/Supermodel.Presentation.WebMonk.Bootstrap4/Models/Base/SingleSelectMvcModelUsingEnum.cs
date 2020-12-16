@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -22,7 +24,7 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models.Base
         protected SingleSelectMvcModelUsingEnum()
         {
             var enumValues = new List<object>();
-            foreach (var item in Enum.GetValues(typeof(TEnum))) enumValues.Add(item);
+            foreach (var item in Enum.GetValues(typeof(TEnum))) enumValues.Add(item!);
             enumValues = enumValues.OrderBy(x => x.GetScreenOrder()).ToList();
 
             foreach (var option in enumValues) Options.Add(new EnumOption((TEnum)option));
@@ -39,10 +41,11 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models.Base
         public override Task MapFromCustomAsync<T>(T other)
         {
             if (typeof(T) != typeof(TEnum) && typeof(T) != typeof(TEnum?)) throw new PropertyCantBeAutomappedException($"{GetType().Name} can't be automapped to {typeof(T).Name}");
-            SelectedEnum = (TEnum?)(object)other;
+            SelectedEnum = (TEnum?)(object?)other;
             return Task.CompletedTask;
         }
         // ReSharper disable once RedundantAssignment
+        #nullable disable
         public override Task<T> MapToCustomAsync<T>(T other)
         {
             if (typeof(T) != typeof(TEnum) && typeof(T) != typeof(TEnum?)) throw new PropertyCantBeAutomappedException($"{GetType().Name} can't be automapped to {typeof(T).Name}");
@@ -50,6 +53,7 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models.Base
             other = (T)(object)SelectedEnum; //This assignment does not do anything but we still do it for consistency
             return Task.FromResult(other);
         }
+        #nullable enable
         #endregion
 
         #region Properties

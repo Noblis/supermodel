@@ -2,7 +2,6 @@
 
 namespace WebMonk.Rendering.Views
 {
-    #region Option nested class
     public class SelectListItem
     {
         #region Constructors
@@ -24,5 +23,4 @@ namespace WebMonk.Rendering.Views
         public static SelectListItem Empty { get; } = new SelectListItem("", "");
         #endregion
     }
-    #endregion
 }

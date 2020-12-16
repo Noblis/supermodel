@@ -2,7 +2,7 @@
 
 using System;
 using System.ComponentModel;
-using Supermodel.DataAnnotations.Validations.Attributes;
+using Supermodel.DataAnnotations.Attributes;
 
 namespace Supermodel.ReflectionMapper
 {

@@ -3,8 +3,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
+using Supermodel.DataAnnotations.Attributes;
 using Supermodel.DataAnnotations.Exceptions;
-using Supermodel.DataAnnotations.Validations.Attributes;
 using Supermodel.Presentation.WebMonk.Bootstrap4.Models;
 using Supermodel.Presentation.WebMonk.Extensions;
 using Supermodel.Presentation.WebMonk.Models;

@@ -8,9 +8,9 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
+using Supermodel.DataAnnotations.Attributes;
 using Supermodel.DataAnnotations.Exceptions;
 using Supermodel.DataAnnotations.Expressions;
-using Supermodel.DataAnnotations.Validations.Attributes;
 using WebMonk.Context;
 using WebMonk.Exceptions;
 using WebMonk.Extensions;
@@ -158,7 +158,6 @@ namespace WebMonk.Rendering.Views
                     throw new ArgumentException("Expression must describe a property or an indexer", nameof(expression));
                 }
             }
-            
             private static string GetExpressionName(Expression expression)
             {
                 if (expression.NodeType == ExpressionType.Parameter) return "";
@@ -518,7 +517,7 @@ namespace WebMonk.Rendering.Views
                 {
                     propertyValue ??= Activator.CreateInstance(propertyType);
                     if (propertyValue is IDisplayTemplate template) return template.DisplayTemplate();
-                    else throw new WebMonkException("This should never happen: propertyValue is not IEditorTemplate");
+                    else throw new WebMonkException("This should never happen: propertyValue is not IDisplayTemplate");
                 }
             }
 
@@ -966,7 +965,7 @@ namespace WebMonk.Rendering.Views
             var propertyName = Helper.GetPropertyName(model, propertyExpression);
             return DropdownList(model, propertyName, options, attributes);
         }
-        public static IGenerateHtml DropdownList<TModel>(TModel model, string expression, IEnumerable<SelectListItem> options, object? attributes = null, string? format = null)
+        public static IGenerateHtml DropdownList<TModel>(TModel model, string expression, IEnumerable<SelectListItem> options, object? attributes = null)
         {
             if (model == null && !string.IsNullOrEmpty(expression)) throw new ArgumentNullException(nameof(model));
 
