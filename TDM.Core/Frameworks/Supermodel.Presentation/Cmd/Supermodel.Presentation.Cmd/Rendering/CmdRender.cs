@@ -245,7 +245,7 @@ namespace Supermodel.Presentation.Cmd.Rendering
             if (typeof(decimal).IsAssignableFrom(propertyType) || typeof(decimal?).IsAssignableFrom(propertyType)) return ConsoleExt.EditFloat((decimal?)propertyValue, invalidValueColors, promptColors);
 
             //booleans
-            if (typeof(bool).IsAssignableFrom(propertyType) || typeof(bool?).IsAssignableFrom(propertyType)) return ConsoleExt.EditBool((bool?)propertyValue, invalidValueColors, promptColors);
+            if (typeof(bool).IsAssignableFrom(propertyType) || typeof(bool?).IsAssignableFrom(propertyType)) return ConsoleExt.EditBool((bool?)propertyValue, arrowColors, invalidValueColors, promptColors);
 
             //DateTime
             if (typeof(DateTime).IsAssignableFrom(propertyType) || typeof(DateTime?).IsAssignableFrom(propertyType)) return ConsoleExt.EditDate((DateTime?)propertyValue, StringWithColor.Empty, invalidValueColors, promptColors);

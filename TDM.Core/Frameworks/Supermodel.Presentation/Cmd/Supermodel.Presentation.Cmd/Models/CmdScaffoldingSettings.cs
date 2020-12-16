@@ -11,7 +11,7 @@ namespace Supermodel.Presentation.Cmd.Models
         
         public static FBColors? Prompt { get; set; } = new FBColors(ConsoleColor.Cyan, BackgroundColor);
         public static FBColors? CommandValue { get; set; } = new FBColors(ConsoleColor.Magenta, BackgroundColor);
-        public static FBColors? InvalidCommandMessage { get; set; } = new FBColors(ConsoleColor.DarkMagenta, BackgroundColor);
+        public static FBColors? InvalidCommandMessage { get; set; } = new FBColors(ConsoleColor.Magenta, BackgroundColor);
         public static FBColors? Title { get; set; } = new FBColors(ConsoleColor.Cyan, BackgroundColor);
 
         public static FBColors? ListEntityId { get; set; } = new FBColors(ConsoleColor.Cyan, BackgroundColor);
@@ -22,8 +22,8 @@ namespace Supermodel.Presentation.Cmd.Models
         public static FBColors? Placeholder { get; set; } = new FBColors(ConsoleColor.DarkYellow, BackgroundColor);
         public static FBColors? DropdownArrow { get; set; } = new FBColors(ConsoleColor.Cyan, BackgroundColor);
 
-        public static FBColors? InvalidValueMessage { get; set; } = new FBColors(ConsoleColor.DarkMagenta, BackgroundColor);
-        public static FBColors? ValidationErrorMessage { get; set; } = new FBColors(ConsoleColor.DarkMagenta, BackgroundColor);
+        public static FBColors? InvalidValueMessage { get; set; } = new FBColors(ConsoleColor.Magenta, BackgroundColor);
+        public static FBColors? ValidationErrorMessage { get; set; } = new FBColors(ConsoleColor.Magenta, BackgroundColor);
 
         public static StringWithColor RequiredMarker { get; set; } = new StringWithColor("*", ConsoleColor.Magenta, BackgroundColor);
     }

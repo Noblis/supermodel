@@ -305,7 +305,7 @@ namespace Supermodel.Presentation.Cmd.Controllers
                     CmdScaffoldingSettings.Label?.SetColors();
                     Console.Write($"Are you sure you want to delete {DetailTitle} with ID = {id}? ");
                     CmdScaffoldingSettings.Value?.SetColors();
-                    if (!ConsoleExt.EditBool(false, CmdScaffoldingSettings.DropdownArrow, CmdScaffoldingSettings.InvalidValueMessage)) 
+                    if (!ConsoleExt.EditBool(false, CmdScaffoldingSettings.DropdownArrow, CmdScaffoldingSettings.InvalidValueMessage, CmdScaffoldingSettings.Prompt)) 
                     {
                         Console.WriteLine();
                         return false;

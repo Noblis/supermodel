@@ -38,8 +38,12 @@ namespace Supermodel.Presentation.Cmd.Models.Base
                     selectListItemList.Add(item);
                 }
             }
-            var result = ConsoleExt.EditDropdownList(singleSelect.SelectedValue ?? "", selectListItemList, CmdScaffoldingSettings.DropdownArrow);
-            return result;
+            
+            while(true)
+            {
+                SelectedValue = ConsoleExt.EditDropdownList(singleSelect.SelectedValue ?? "", selectListItemList, CmdScaffoldingSettings.DropdownArrow);
+                return this;
+            }
         }
         #endregion
 

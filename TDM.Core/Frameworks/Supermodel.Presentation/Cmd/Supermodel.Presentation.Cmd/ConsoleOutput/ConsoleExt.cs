@@ -31,7 +31,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             #endregion
 
             #region Static constants
-            public static SelectListItem Empty { get; } = new SelectListItem("", "");
+            public static SelectListItem Empty { get; } = new SelectListItem("", "----");
             #endregion
         }
         #endregion
@@ -69,7 +69,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
         public static bool EditBool(bool? value, FBColors? arrowColors = null, FBColors? errorColors = null, FBColors? promptColors = null)
         {
             var valueStr = value == true ? "Yes" : "No";
-            var result = EditDropdownList(valueStr, BoolOptions, CmdScaffoldingSettings.DropdownArrow);
+            var result = EditDropdownList(valueStr, BoolOptions, arrowColors, errorColors, promptColors);
             return result == "Yes";
         }
         private static SelectListItem[] BoolOptions { get; } = new []{ new SelectListItem("Yes"), new SelectListItem("No")};
@@ -679,7 +679,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
         #endregion
 
         #region Low Level Dropdown List
-        public static string EditDropdownList(string value, IEnumerable<SelectListItem> options, FBColors? arrowColors = null)
+        public static string EditDropdownList(string value, IEnumerable<SelectListItem> options, FBColors? arrowColors = null, FBColors? errorColors = null, FBColors? promptColors = null)
         {
             var savedCursorVisible = Console.CursorVisible;
             Console.CursorVisible = false;
@@ -701,6 +701,12 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 var info = Console.ReadKey(true);
                 if (info.Key == ConsoleKey.Enter) 
                 {
+                    if (CmdContext.IsPropertyRequired && string.IsNullOrEmpty(selectedOption?.Value))
+                    {
+                        PrintRequiredFieldMessage(errorColors, promptColors);
+                        continue;
+                    }
+                    
                     Console.WriteLine(); 
                     Console.CursorVisible = savedCursorVisible;
                     return selectedOption!.Value;
