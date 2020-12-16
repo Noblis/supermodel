@@ -37,7 +37,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
         #endregion
         
         #region Date
-        public static DateTime? EditDate(DateTime? value, StringWithColor? placeholder, FBColors? errorColors = null, FBColors? promptColors = null)
+        public static DateTime? EditDate(DateTime? value, StringWithColor? placeholder)
         {
             placeholder ??= StringWithColor.Empty;
             
@@ -48,7 +48,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 if (string.IsNullOrWhiteSpace(input)) 
                 {
                     if (!CmdContext.IsPropertyRequired) return null;
-                    PrintRequiredFieldMessage(errorColors, promptColors);
+                    PrintRequiredFieldMessage();
                     continue;
                 }
 
@@ -58,7 +58,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 }
                 else
                 {
-                    PrintErrorMessage(errorColors, promptColors);
+                    PrintErrorMessage();
                     valueStr = input;
                 }
             }
@@ -66,17 +66,17 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
         #endregion
 
         #region Edit Boolean
-        public static bool EditBool(bool? value, FBColors? arrowColors = null, FBColors? errorColors = null, FBColors? promptColors = null)
+        public static bool EditBool(bool? value)
         {
             var valueStr = value == true ? "Yes" : "No";
-            var result = EditDropdownList(valueStr, BoolOptions, arrowColors, errorColors, promptColors);
+            var result = EditDropdownList(valueStr, BoolOptions);
             return result == "Yes";
         }
         private static SelectListItem[] BoolOptions { get; } = new []{ new SelectListItem("Yes"), new SelectListItem("No")};
         #endregion
 
         #region Edit Floating Point
-        public static decimal? EditFloat(decimal? value, FBColors? errorColors = null, FBColors? promptColors = null)
+        public static decimal? EditFloat(decimal? value)
         {
             var valueStr = value.ToString() ?? "";
             while(true)
@@ -85,7 +85,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 if (string.IsNullOrWhiteSpace(input)) 
                 {
                     if (!CmdContext.IsPropertyRequired) return null;
-                    PrintRequiredFieldMessage(errorColors, promptColors);
+                    PrintRequiredFieldMessage();
                     continue;
                 }
 
@@ -95,12 +95,12 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 }
                 else
                 {
-                    PrintErrorMessage(errorColors, promptColors);
+                    PrintErrorMessage();
                     valueStr = input;
                 }
             }
         }
-        public static double? EditFloat(double? value, FBColors? errorColors = null, FBColors? promptColors = null)
+        public static double? EditFloat(double? value)
         {
             var valueStr = value.ToString() ?? "";
             while(true)
@@ -109,7 +109,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 if (string.IsNullOrWhiteSpace(input)) 
                 {
                     if (!CmdContext.IsPropertyRequired) return null;
-                    PrintRequiredFieldMessage(errorColors, promptColors);
+                    PrintRequiredFieldMessage();
                     continue;
                 }
 
@@ -119,12 +119,12 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 }
                 else
                 {
-                    PrintErrorMessage(errorColors, promptColors);
+                    PrintErrorMessage();
                     valueStr = input;
                 }
             }
         }
-        public static float? EditFloat(float? value, FBColors? errorColors = null, FBColors? promptColors = null)
+        public static float? EditFloat(float? value)
         {
             var valueStr = value.ToString() ?? "";
             while(true)
@@ -133,7 +133,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 if (string.IsNullOrWhiteSpace(input)) 
                 {
                     if (!CmdContext.IsPropertyRequired) return null;
-                    PrintRequiredFieldMessage(errorColors, promptColors);
+                    PrintRequiredFieldMessage();
                     continue;
                 }
 
@@ -143,7 +143,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 }
                 else
                 {
-                    PrintErrorMessage(errorColors, promptColors);
+                    PrintErrorMessage();
                     valueStr = input;
                 }
             }
@@ -151,7 +151,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
         #endregion
         
         #region Edit Integer
-        public static ulong? EditInteger(ulong? value, FBColors? errorColors = null, FBColors? promptColors = null)
+        public static ulong? EditInteger(ulong? value)
         {
             var valueStr = value.ToString() ?? "";
             while(true)
@@ -160,7 +160,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 if (string.IsNullOrWhiteSpace(input)) 
                 {
                     if (!CmdContext.IsPropertyRequired) return null;
-                    PrintRequiredFieldMessage(errorColors, promptColors);
+                    PrintRequiredFieldMessage();
                     continue;
                 }
 
@@ -170,12 +170,12 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 }
                 else
                 {
-                    PrintErrorMessage(errorColors, promptColors);
+                    PrintErrorMessage();
                     valueStr = input;
                 }
             }
         }
-        public static uint? EditInteger(uint? value, FBColors? errorColors = null, FBColors? promptColors = null)
+        public static uint? EditInteger(uint? value)
         {
             var valueStr = value.ToString() ?? "";
             while(true)
@@ -184,7 +184,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 if (string.IsNullOrWhiteSpace(input)) 
                 {
                     if (!CmdContext.IsPropertyRequired) return null;
-                    PrintRequiredFieldMessage(errorColors, promptColors);
+                    PrintRequiredFieldMessage();
                     continue;
                 }
 
@@ -194,12 +194,12 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 }
                 else
                 {
-                    PrintErrorMessage(errorColors, promptColors);
+                    PrintErrorMessage();
                     valueStr = input;
                 }
             }
         }
-        public static ushort? EditInteger(ushort? value, FBColors? errorColors = null, FBColors? promptColors = null)
+        public static ushort? EditInteger(ushort? value)
         {
             var valueStr = value.ToString() ?? "";
             while(true)
@@ -208,7 +208,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 if (string.IsNullOrWhiteSpace(input)) 
                 {
                     if (!CmdContext.IsPropertyRequired) return null;
-                    PrintRequiredFieldMessage(errorColors, promptColors);
+                    PrintRequiredFieldMessage();
                     continue;
                 }
 
@@ -218,12 +218,12 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 }
                 else
                 {
-                    PrintErrorMessage(errorColors, promptColors);
+                    PrintErrorMessage();
                     valueStr = input;
                 }
             }
         }
-        public static byte? EditInteger(byte? value, FBColors? errorColors = null, FBColors? promptColors = null)
+        public static byte? EditInteger(byte? value)
         {
             var valueStr = value.ToString() ?? "";
             while(true)
@@ -232,7 +232,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 if (string.IsNullOrWhiteSpace(input)) 
                 {
                     if (!CmdContext.IsPropertyRequired) return null;
-                    PrintRequiredFieldMessage(errorColors, promptColors);
+                    PrintRequiredFieldMessage();
                     continue;
                 }
 
@@ -242,13 +242,13 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 }
                 else
                 {
-                    PrintErrorMessage(errorColors, promptColors);
+                    PrintErrorMessage();
                     valueStr = input;
                 }
             }
         }
         
-        public static long? EditInteger(long? value, FBColors? errorColors = null, FBColors? promptColors = null)
+        public static long? EditInteger(long? value)
         {
             var valueStr = value.ToString() ?? "";
             while(true)
@@ -257,7 +257,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 if (string.IsNullOrWhiteSpace(input)) 
                 {
                     if (!CmdContext.IsPropertyRequired) return null;
-                    PrintRequiredFieldMessage(errorColors, promptColors);
+                    PrintRequiredFieldMessage();
                     continue;
                 }
 
@@ -267,12 +267,12 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 }
                 else
                 {
-                    PrintErrorMessage(errorColors, promptColors);
+                    PrintErrorMessage();
                     valueStr = input;
                 }
             }
         }
-        public static int? EditInteger(int? value, FBColors? errorColors = null, FBColors? promptColors = null)
+        public static int? EditInteger(int? value)
         {
             var valueStr = value.ToString() ?? "";
             while(true)
@@ -281,7 +281,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 if (string.IsNullOrWhiteSpace(input)) 
                 {
                     if (!CmdContext.IsPropertyRequired) return null;
-                    PrintRequiredFieldMessage(errorColors, promptColors);
+                    PrintRequiredFieldMessage();
                     continue;
                 }
 
@@ -291,12 +291,12 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 }
                 else
                 {
-                    PrintErrorMessage(errorColors, promptColors);
+                    PrintErrorMessage();
                     valueStr = input;
                 }
             }
         }
-        public static short? EditInteger(short? value, FBColors? errorColors = null, FBColors? promptColors = null)
+        public static short? EditInteger(short? value)
         {
             var valueStr = value.ToString() ?? "";
             while(true)
@@ -305,7 +305,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 if (string.IsNullOrWhiteSpace(input)) 
                 {
                     if (!CmdContext.IsPropertyRequired) return null;
-                    PrintRequiredFieldMessage(errorColors, promptColors);
+                    PrintRequiredFieldMessage();
                     continue;
                 }
 
@@ -315,12 +315,12 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 }
                 else
                 {
-                    PrintErrorMessage(errorColors, promptColors);
+                    PrintErrorMessage();
                     valueStr = input;
                 }
             }
         }
-        public static sbyte? EditInteger(sbyte? value, FBColors? errorColors = null, FBColors? promptColors = null)
+        public static sbyte? EditInteger(sbyte? value)
         {
             var valueStr = value.ToString() ?? "";
             while(true)
@@ -329,7 +329,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 if (string.IsNullOrWhiteSpace(input)) 
                 {
                     if (!CmdContext.IsPropertyRequired) return null;
-                    PrintRequiredFieldMessage(errorColors, promptColors);
+                    PrintRequiredFieldMessage();
                     continue;
                 }
 
@@ -339,7 +339,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 }
                 else
                 {
-                    PrintErrorMessage(errorColors, promptColors);
+                    PrintErrorMessage();
                     valueStr = input;
                 }
             }
@@ -347,7 +347,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
         #endregion
         
         #region Edit String & Password
-        public static string EditString(string value, FBColors? errorColors = null, FBColors? promptColors = null)
+        public static string EditString(string value)
         {
             while(true)
             {
@@ -355,13 +355,13 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 if (string.IsNullOrWhiteSpace(input)) 
                 {
                     if (!CmdContext.IsPropertyRequired) return "";
-                    PrintRequiredFieldMessage(errorColors, promptColors);
+                    PrintRequiredFieldMessage();
                     continue;
                 }
                 return input;
             }
         }
-        public static string ReadPassword(StringWithColor? placeholder = null, FBColors? errorColors = null, FBColors? promptColors = null )
+        public static string ReadPassword(StringWithColor? placeholder = null)
         {
             placeholder ??= StringWithColor.Empty;
             
@@ -371,7 +371,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 if (string.IsNullOrWhiteSpace(input)) 
                 {
                     if (!CmdContext.IsPropertyRequired) return "";
-                    PrintRequiredFieldMessage(errorColors, promptColors);
+                    PrintRequiredFieldMessage();
                     continue;
                 }
                 return input;
@@ -679,7 +679,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
         #endregion
 
         #region Low Level Dropdown List
-        public static string EditDropdownList(string value, IEnumerable<SelectListItem> options, FBColors? arrowColors = null, FBColors? errorColors = null, FBColors? promptColors = null)
+        public static string EditDropdownList(string value, IEnumerable<SelectListItem> options)
         {
             var savedCursorVisible = Console.CursorVisible;
             Console.CursorVisible = false;
@@ -692,18 +692,22 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             var cursorTop = Console.CursorTop;
             var maxLenPlus2 = optionsArray.Select(x => x.Label.Length).Max() + 2;
 
-            var currentColors = FBColors.FromCurrent();
-
             while(true)
             {
-                PrintOption(selectedOption!, maxLenPlus2, cursorLeft, cursorTop, currentColors, arrowColors);
+                PrintOption(selectedOption!, maxLenPlus2, cursorLeft, cursorTop);
 
                 var info = Console.ReadKey(true);
                 if (info.Key == ConsoleKey.Enter) 
                 {
                     if (CmdContext.IsPropertyRequired && string.IsNullOrEmpty(selectedOption?.Value))
                     {
-                        PrintRequiredFieldMessage(errorColors, promptColors);
+                        Console.WriteLine();
+                        PrintRequiredFieldMessage();
+                        
+                        cursorLeft = Console.CursorLeft;
+                        cursorTop = Console.CursorTop;
+                        maxLenPlus2 = optionsArray.Select(x => x.Label.Length).Max() + 2;
+
                         continue;
                     }
                     
@@ -716,7 +720,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                     if (CmdContext.CtrlEscEnabled && info.Modifiers.HasFlag(ConsoleModifiers.Shift)) throw new ShiftEscException();
                     
                     selectedOption = optionsArray.Single(x => x.Value == value);
-                    PrintOption(selectedOption, maxLenPlus2, cursorLeft, cursorTop, currentColors, arrowColors);
+                    PrintOption(selectedOption, maxLenPlus2, cursorLeft, cursorTop);
                     Console.WriteLine(); 
                     Console.CursorVisible = savedCursorVisible;
                     return selectedOption!.Value;
@@ -758,7 +762,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
         #endregion
 
         #region Private Helpers
-        private static void PrintOption(SelectListItem selectedOption, int maxLenPlus2, int cursorLeft, int cursorTop, FBColors? valueColors, FBColors? arrowColors)
+        private static void PrintOption(SelectListItem selectedOption, int maxLenPlus2, int cursorLeft, int cursorTop)
         {
             //Erase the old value
             Console.CursorLeft = cursorLeft;
@@ -768,31 +772,31 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             //Print the new value
             Console.CursorLeft = cursorLeft;
             Console.CursorTop = cursorTop;
-            valueColors?.SetColors();
+            CmdScaffoldingSettings.Value?.SetColors();
             Console.Write(selectedOption.Label);
-            arrowColors?.SetColors();
+            CmdScaffoldingSettings.DropdownArrow?.SetColors();
             Console.Write('▼');
         }
-        private static void PrintRequiredFieldMessage(FBColors? errorColors, FBColors? tryAgainColors)
+        private static void PrintRequiredFieldMessage()
         {
             var currentColors = FBColors.FromCurrent();
-            errorColors?.SetColors();
+            CmdScaffoldingSettings.InvalidValueMessage?.SetColors();
 
             if (CmdContext.PropertyDisplayName != null) Console.Write($"The {CmdContext.PropertyDisplayName} is required. ");
             else Console.Write("This field is required. ");
 
-            tryAgainColors?.SetColors();
+            CmdScaffoldingSettings.Prompt?.SetColors();
             Console.Write("Try again: ");
 
             currentColors.SetColors();
         }
-        private static void PrintErrorMessage(FBColors? errorColors, FBColors? tryAgainColors)
+        private static void PrintErrorMessage()
         {
             var currentColors = FBColors.FromCurrent();
             
-            errorColors?.SetColors();
+            CmdScaffoldingSettings.InvalidValueMessage?.SetColors();
             Console.Write("Invalid entry. ");
-            tryAgainColors?.SetColors();
+            CmdScaffoldingSettings.Prompt?.SetColors();
             Console.Write("Try again: ");
 
             currentColors.SetColors();

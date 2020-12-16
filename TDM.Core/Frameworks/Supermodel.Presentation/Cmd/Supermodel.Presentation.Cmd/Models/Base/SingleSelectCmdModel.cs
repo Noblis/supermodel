@@ -41,7 +41,7 @@ namespace Supermodel.Presentation.Cmd.Models.Base
             
             while(true)
             {
-                SelectedValue = ConsoleExt.EditDropdownList(singleSelect.SelectedValue ?? "", selectListItemList, CmdScaffoldingSettings.DropdownArrow);
+                SelectedValue = ConsoleExt.EditDropdownList(singleSelect.SelectedValue ?? "", selectListItemList);
                 return this;
             }
         }

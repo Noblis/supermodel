@@ -19,7 +19,7 @@ namespace Supermodel.Presentation.Cmd.Models
         #region ICmdEditor
         public override object Edit(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
         {
-            DateTimeValue = ConsoleExt.EditDate(DateTimeValue, Placeholder, CmdScaffoldingSettings.InvalidValueMessage, CmdScaffoldingSettings.Prompt);
+            DateTimeValue = ConsoleExt.EditDate(DateTimeValue, Placeholder);
             return this;            
         }
         #endregion

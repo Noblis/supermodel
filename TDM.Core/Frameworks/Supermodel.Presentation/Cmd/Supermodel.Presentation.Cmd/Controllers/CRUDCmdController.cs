@@ -305,7 +305,7 @@ namespace Supermodel.Presentation.Cmd.Controllers
                     CmdScaffoldingSettings.Label?.SetColors();
                     Console.Write($"Are you sure you want to delete {DetailTitle} with ID = {id}? ");
                     CmdScaffoldingSettings.Value?.SetColors();
-                    if (!ConsoleExt.EditBool(false, CmdScaffoldingSettings.DropdownArrow, CmdScaffoldingSettings.InvalidValueMessage, CmdScaffoldingSettings.Prompt)) 
+                    if (!ConsoleExt.EditBool(false)) 
                     {
                         Console.WriteLine();
                         return false;
@@ -335,9 +335,7 @@ namespace Supermodel.Presentation.Cmd.Controllers
                 using(CmdContext.NewRequiredScope(true, "ID"))
                 {
                     CmdScaffoldingSettings.CommandValue?.SetColors();
-                    id = ConsoleExt.EditInteger((long?)null, 
-                             CmdScaffoldingSettings.ValidationErrorMessage, 
-                             CmdScaffoldingSettings.Prompt) ?? throw new Exception("ID == null: this should never happen!");
+                    id = ConsoleExt.EditInteger((long?)null) ?? throw new Exception("ID == null: this should never happen!");
                 }
             }
             else

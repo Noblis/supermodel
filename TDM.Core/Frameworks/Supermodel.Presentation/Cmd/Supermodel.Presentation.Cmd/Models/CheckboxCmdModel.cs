@@ -31,7 +31,7 @@ namespace Supermodel.Presentation.Cmd.Models
         #region ICmdEditor
         public override object Edit(int screenOrderFrom = Int32.MinValue, int screenOrderTo = Int32.MaxValue)
         {
-            ValueBool = ConsoleExt.EditBool(ValueBool, CmdScaffoldingSettings.DropdownArrow, CmdScaffoldingSettings.InvalidValueMessage, CmdScaffoldingSettings.Prompt);
+            ValueBool = ConsoleExt.EditBool(ValueBool);
             return this;            
         }
         #endregion
