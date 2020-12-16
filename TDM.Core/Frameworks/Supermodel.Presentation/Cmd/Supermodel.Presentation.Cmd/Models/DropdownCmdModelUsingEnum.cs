@@ -5,11 +5,11 @@ using Supermodel.Presentation.Cmd.Models.Base;
 
 namespace Supermodel.Presentation.Cmd.Models
 {
-    public class DropdownMvcModelUsingEnum<TEnum> : SingleSelectCmdModelUsingEnum<TEnum> where TEnum : struct, IConvertible
+    public class DropdownCmdModelUsingEnum<TEnum> : SingleSelectCmdModelUsingEnum<TEnum> where TEnum : struct, IConvertible
     {
         #region Constructors
-        public DropdownMvcModelUsingEnum(){}
-        public DropdownMvcModelUsingEnum(TEnum selectedEnum) : this()
+        public DropdownCmdModelUsingEnum(){}
+        public DropdownCmdModelUsingEnum(TEnum selectedEnum) : this()
         {
             SelectedEnum = selectedEnum;
         }

@@ -10,6 +10,8 @@ using WMDomain.Entities;
 
 namespace CmdTester
 {
+    public enum GenderEnum { Male, Female }
+    
     public class TDMUserCmdModel : CmdModelForEntity<TDMUser>
     {
         #region Overrides
@@ -26,8 +28,10 @@ namespace CmdTester
         [Required] public TextBoxCmdModel FirstName { get; set; } = new TextBoxCmdModel();
         [Required] public TextBoxCmdModel LastName { get; set; } = new TextBoxCmdModel();
         [Email, Required] public TextBoxCmdModel Username { get; set; } = new TextBoxCmdModel();
+        
         [Required, NotRMapped] public DateCmdModel DOB { get; set; } = new DateCmdModel { DateTimeValue = DateTime.Today };
         [NotRMapped] public CheckboxCmdModel Jewish {get; set; } = new CheckboxCmdModel();
+        [Required, NotRMapped]  DropdownCmdModelUsingEnum<GenderEnum> Sex { get; set; } = new DropdownCmdModelUsingEnum<GenderEnum>();
 
         [SkipForDisplay, ForceRequiredLabel, NotRMapped, MustEqualTo(nameof(ConfirmPassword), ErrorMessage = "Passwords do not match")]
         public PasswordTextBoxCmdModel NewPassword { get; set; } = new PasswordTextBoxCmdModel();
