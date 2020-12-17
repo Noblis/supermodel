@@ -34,6 +34,7 @@ namespace WebMonk
         public WebServer(int httpPort, string navigationBaseUrl, Assembly[]? appAssemblies = null)
         {
             ListeningBaseUrl =$"http://+:{httpPort}/";
+            Prompt = $"Supermodel WebMonk Server is Listening on {ListeningBaseUrl} ...";
             
             if (!navigationBaseUrl.EndsWith("/")) navigationBaseUrl += "/";
             NavigatingBaseUrl = navigationBaseUrl;
@@ -205,7 +206,7 @@ namespace WebMonk
                     throw;
                 }
             }
-            Console.WriteLine($"Supermodel WebMonk Server is Listening on {ListeningBaseUrl} ...");
+            Console.WriteLine(Prompt);
         }
         protected virtual async Task RunListenerLoopAsync(CancellationToken cancellationToken)
         {
@@ -424,6 +425,8 @@ namespace WebMonk
         protected HttpListener HttpListener { get; set; }
         public string ListeningBaseUrl { get; }
         public string NavigatingBaseUrl { get; }
+        
+        public string Prompt {get; private set; } = "N/A";
         #endregion
     }
 }

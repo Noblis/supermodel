@@ -10,7 +10,12 @@ namespace Supermodel.Tooling.SolutionMaker.Cmd
         {
             try
             {
+                SolutionMaker.Version = "2.04.000.Beta3";
+
                 //*******Un-comment and run this once to refresh the solution zip
+                //Console.WriteLine($"v{SolutionMaker.Version}");
+                //Console.WriteLine();
+                
                 //Console.Write("Deleting XXYXX\\Frameworks directory... ");
                 //Directory.Delete(@"..\..\..\..\..\..\..\XXYXX.Core\XXYXX\Frameworks", true);
                 //Console.WriteLine("Done!");
@@ -23,7 +28,7 @@ namespace Supermodel.Tooling.SolutionMaker.Cmd
                 //Console.WriteLine($"{SolutionMaker.ZipFileName} created successfully!");
                 //return;
                 //********Un-comment and run this once to refresh the solution zip
-
+                
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.Clear();
