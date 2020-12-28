@@ -2,7 +2,10 @@
 
 using System;
 using System.Threading.Tasks;
+using System.Web;
 using Supermodel.DataAnnotations.Misc;
+using Supermodel.Presentation.WebMonk.Extensions;
+using WebMonk.RazorSharp.HtmlTags;
 using WebMonk.RazorSharp.HtmlTags.BaseTags;
 using WebMonk.Rendering.Views;
 
@@ -52,9 +55,29 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                 return Render.TextAreaForModel(Value, htmlAttributes).AddOrUpdateAttr(attributes);
             }
             #endregion
+            
+            #region IDisplayTemplate implementation
+            public override IGenerateHtml DisplayTemplate(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue, object? attributes = null)
+            {
+                var value = Value;
+                if (DisplayNumericFormat != null && !string.IsNullOrEmpty(Value)) value = decimal.Parse(Value).ToString(DisplayNumericFormat);
+                if (DisplayCapLengthAt != null && value.Length > DisplayCapLengthAt) value = $"{value.CapLength(DisplayCapLengthAt.Value)}...";
+                if (DisplayShowLineBreaks) 
+                {
+                    value = HttpUtility.HtmlEncode(value).Replace("\n", "<br />");
+                    return new ExactHtml(value);
+                }
+                else
+                {
+                    return new Txt(value);
+                }
+            }
+            #endregion
 
             #region Properties
             public int Rows { get; set; } = 3;
+            public int? DisplayCapLengthAt { get; set; }
+            public bool DisplayShowLineBreaks { get; set; } = false;
             #endregion
         }
     }

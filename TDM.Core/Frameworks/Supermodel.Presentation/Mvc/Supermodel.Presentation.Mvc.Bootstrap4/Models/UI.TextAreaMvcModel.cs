@@ -2,6 +2,7 @@
 
 using System;
 using System.Threading.Tasks;
+using System.Web;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Supermodel.DataAnnotations.Misc;
@@ -56,9 +57,29 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                 return text.ToHtmlString();
             }
             #endregion
+            
+            #region ISupermodelDisplayTemplate implementation
+            public override IHtmlContent DisplayTemplate<TModel>(IHtmlHelper<TModel> html, int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue, string? markerAttribute = null)
+            {
+                var value = Value;
+                if (DisplayNumericFormat != null && !string.IsNullOrEmpty(Value)) value = decimal.Parse(Value).ToString(DisplayNumericFormat);
+                if (DisplayCapLengthAt != null && value.Length > DisplayCapLengthAt) value = $"{value.CapLength(DisplayCapLengthAt.Value)}...";
+                if (DisplayShowLineBreaks) 
+                {
+                    value = HttpUtility.HtmlEncode(value).Replace("\n", "<br />");
+                    return value.ToHtmlString();
+                }
+                else
+                {
+                    return value.ToHtmlEncodedHtmlString();
+                }
+            }
+            #endregion
 
             #region Properties
             public int Rows { get; set; } = 3;
+            public int? DisplayCapLengthAt { get; set; }
+            public bool DisplayShowLineBreaks { get; set; } = false;
             #endregion
         }
     }

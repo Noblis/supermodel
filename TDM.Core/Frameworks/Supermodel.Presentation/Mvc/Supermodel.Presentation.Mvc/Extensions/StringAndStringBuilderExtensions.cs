@@ -126,8 +126,9 @@ namespace Supermodel.Presentation.Mvc.Extensions
             return condition ? str.DisableAllControls() : str;
         }
 
-        public static string CapLength(this string str, int len)
+        public static string CapLength(this string? str, int len)
         {
+            if (string.IsNullOrEmpty(str)) return "";
             if (str.Length <= len) return str;
             return str.Substring(0, len - 3) + "...";
         }
