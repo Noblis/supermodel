@@ -31,8 +31,8 @@ namespace Supermodel.Tooling.SolutionMaker
             ZipFile.ExtractToDirectory(CombineAndAdjustPaths(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), ZipFileName), path);
 
             //Adjust version
-            const string versionMarker = "Version X.YY.ZZZ";
-            ReplaceInFile(CombineAndAdjustPaths(path, @"Frameworks\Version.txt"), versionMarker, $"Version {SolutionMaker.Version}");
+            File.WriteAllText(CombineAndAdjustPaths(path, @"Frameworks\Version.txt"), $"Version {SolutionMaker.Version}");
+            //ReplaceInFile(CombineAndAdjustPaths(path, @"Frameworks\Version.txt"), versionMarker, $"Version {SolutionMaker.Version}");
 
             //Adjust for Xamarin.Forms UI vs Native UI
             AdjustForMobileApi(solutionMakerParams.MobileApi, path);
