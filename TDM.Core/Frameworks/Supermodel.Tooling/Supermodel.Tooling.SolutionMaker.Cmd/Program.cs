@@ -13,20 +13,20 @@ namespace Supermodel.Tooling.SolutionMaker.Cmd
                 SolutionMaker.Version = "2.04.000.Beta3";
 
                 //*******Un-comment and run this once to refresh the solution zip
-                //Console.WriteLine($"v{SolutionMaker.Version}");
-                //Console.WriteLine();
+                Console.WriteLine($"v{SolutionMaker.Version}");
+                Console.WriteLine();
                 
-                //Console.Write("Deleting XXYXX\\Frameworks directory... ");
-                //Directory.Delete(@"..\..\..\..\..\..\..\XXYXX.Core\XXYXX\Frameworks", true);
-                //Console.WriteLine("Done!");
+                Console.Write("Deleting XXYXX\\Frameworks directory... ");
+                Directory.Delete(@"..\..\..\..\..\..\..\XXYXX.Core\XXYXX\Frameworks", true);
+                Console.WriteLine("Done!");
 
-                //Console.Write("Copying Frameworks directory from TDM.Core to XXYXX... ");
-                //CopyDirectory(@"..\..\..\..\..\..\Frameworks", @"..\..\..\..\..\..\..\XXYXX.Core\XXYXX\Frameworks");
-                //Console.WriteLine("Done!");
+                Console.Write("Copying Frameworks directory from TDM.Core to XXYXX... ");
+                CopyDirectory(@"..\..\..\..\..\..\Frameworks", @"..\..\..\..\..\..\..\XXYXX.Core\XXYXX\Frameworks");
+                Console.WriteLine("Done!");
 
-                //SolutionMaker.CreateSnapshot(@"..\..\..\..\..\..\..\XXYXX.Core\XXYXX", @"..\..\..\");
-                //Console.WriteLine($"{SolutionMaker.ZipFileName} created successfully!");
-                //return;
+                SolutionMaker.CreateSnapshot(@"..\..\..\..\..\..\..\XXYXX.Core\XXYXX", @"..\..\..\");
+                Console.WriteLine($"{SolutionMaker.ZipFileName} created successfully!");
+                return;
                 //********Un-comment and run this once to refresh the solution zip
                 
                 Console.BackgroundColor = ConsoleColor.Black;

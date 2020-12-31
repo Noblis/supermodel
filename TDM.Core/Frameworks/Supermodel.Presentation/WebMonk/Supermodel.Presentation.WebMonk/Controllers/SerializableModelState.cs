@@ -43,8 +43,39 @@ namespace Supermodel.Presentation.WebMonk.Controllers
             public static async Task<SerializableModelState> CreateFromContextAsync()
             {
                 var validationProviders = await HttpContext.Current.ValueProviderManager.GetValueProvidersListAsync().ConfigureAwait(false);
+                // ReSharper disable once IdentifierTypo
                 var mbvp = validationProviders.GetFirstOrDefaultValueProviderOfType<MessageBodyValueProvider>();
-                var dict = mbvp == null ? new Dictionary<string, object>() : mbvp.Values.ToDictionary(x => x.Key, x => x.Value);
+                
+                //var dict = mbvp == null ? new Dictionary<string, object>() : mbvp.Values.ToDictionary(x => x.Key, x => x.Value);
+                var dict = new Dictionary<string, object>();
+                if (mbvp != null)
+                {
+                    foreach(var value in mbvp.Values)
+                    {
+                        if (value.Value is IList<string> valueList)
+                        {
+                            var first = true;
+                            var composedValue = "";
+                            foreach (var subValue in valueList)
+                            {
+                                if (first)
+                                {
+                                    first = false;
+                                    composedValue += $"{subValue}";
+                                }
+                                else
+                                {
+                                    composedValue += $",{subValue}";
+                                }
+                            }
+                            dict.Add(value.Key, composedValue);
+                        }
+                        else
+                        {
+                            dict.Add(value.Key, value.Value);
+                        }
+                    }
+                }
                 
                 var vrl = HttpContext.Current.ValidationResultList;
                 
