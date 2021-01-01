@@ -78,6 +78,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
         #region Edit Floating Point
         public static decimal? EditFloat(decimal? value)
         {
+            // ReSharper disable once ConstantNullCoalescingCondition
             var valueStr = value.ToString() ?? "";
             while(true)
             {
@@ -102,6 +103,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
         }
         public static double? EditFloat(double? value)
         {
+            // ReSharper disable once ConstantNullCoalescingCondition
             var valueStr = value.ToString() ?? "";
             while(true)
             {
@@ -126,6 +128,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
         }
         public static float? EditFloat(float? value)
         {
+            // ReSharper disable once ConstantNullCoalescingCondition
             var valueStr = value.ToString() ?? "";
             while(true)
             {
@@ -153,6 +156,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
         #region Edit Integer
         public static ulong? EditInteger(ulong? value)
         {
+            // ReSharper disable once ConstantNullCoalescingCondition
             var valueStr = value.ToString() ?? "";
             while(true)
             {
@@ -177,6 +181,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
         }
         public static uint? EditInteger(uint? value)
         {
+            // ReSharper disable once ConstantNullCoalescingCondition
             var valueStr = value.ToString() ?? "";
             while(true)
             {
@@ -201,6 +206,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
         }
         public static ushort? EditInteger(ushort? value)
         {
+            // ReSharper disable once ConstantNullCoalescingCondition
             var valueStr = value.ToString() ?? "";
             while(true)
             {
@@ -225,6 +231,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
         }
         public static byte? EditInteger(byte? value)
         {
+            // ReSharper disable once ConstantNullCoalescingCondition
             var valueStr = value.ToString() ?? "";
             while(true)
             {
@@ -250,6 +257,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
         
         public static long? EditInteger(long? value)
         {
+            // ReSharper disable once ConstantNullCoalescingCondition
             var valueStr = value.ToString() ?? "";
             while(true)
             {
@@ -274,6 +282,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
         }
         public static int? EditInteger(int? value)
         {
+            // ReSharper disable once ConstantNullCoalescingCondition
             var valueStr = value.ToString() ?? "";
             while(true)
             {
@@ -298,6 +307,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
         }
         public static short? EditInteger(short? value)
         {
+            // ReSharper disable once ConstantNullCoalescingCondition
             var valueStr = value.ToString() ?? "";
             while(true)
             {
@@ -322,6 +332,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
         }
         public static sbyte? EditInteger(sbyte? value)
         {
+            // ReSharper disable once ConstantNullCoalescingCondition
             var valueStr = value.ToString() ?? "";
             while(true)
             {
@@ -699,7 +710,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 var info = Console.ReadKey(true);
                 if (info.Key == ConsoleKey.Enter) 
                 {
-                    if (CmdContext.IsPropertyRequired && string.IsNullOrEmpty(selectedOption?.Value))
+                    if (CmdContext.IsPropertyRequired && string.IsNullOrEmpty(selectedOption.Value))
                     {
                         Console.WriteLine();
                         PrintRequiredFieldMessage();

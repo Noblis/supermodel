@@ -1,8 +1,6 @@
 ﻿#nullable enable
 
 using System;
-using System.Text;
-using System.Web;
 
 namespace Supermodel.Presentation.WebMonk.Extensions
 {
@@ -21,6 +19,7 @@ namespace Supermodel.Presentation.WebMonk.Extensions
         
         public static string CapLength(this string? str, int len)
         {
+            if (str == null) return "";
             if (str.Length <= len) return str;
             return str.Substring(0, len - 3) + "...";
         }

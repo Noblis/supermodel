@@ -426,7 +426,7 @@ namespace WebMonk
         public string ListeningBaseUrl { get; }
         public string NavigatingBaseUrl { get; }
         
-        public string Prompt {get; private set; } = "N/A";
+        public string Prompt {get; private set; }
         #endregion
     }
 }
