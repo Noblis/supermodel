@@ -6,6 +6,7 @@ namespace HTML2RazorSharpWM.API.TranslatorApi
     {
         #region Properties
         public string RazorSharp { get; set; } = string.Empty;
+        public bool Error { get; set; } = false;
         #endregion
     }
 }

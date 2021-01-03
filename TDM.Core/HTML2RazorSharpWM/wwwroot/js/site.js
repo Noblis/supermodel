@@ -1,6 +1,8 @@
 ﻿$(document).ready(async function() {
     var input = $("#input-text-area");
     var output = $("#output-text-area");
+    //$('textarea').linenumbers();
+
 
     input.on("input",
         async function() {
@@ -14,7 +16,12 @@
                 contentType: "application/json",
                 dataType: "json",
                 success: function(data, textStatus, jqXHR) {
-                    output.val(data.RazorSharp)
+                    output.val(data.RazorSharp);
+                    if (data.Error) {
+                        output.css("background-color", "#ffa07aff");
+                    } else {
+                        output.css("background-color", "white");
+                    }
                 }
             });
         });

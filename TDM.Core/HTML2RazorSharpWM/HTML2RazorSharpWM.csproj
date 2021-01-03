@@ -7,10 +7,14 @@
 
   <ItemGroup>
     <None Remove="wwwroot\css\site.css" />
+    <None Remove="wwwroot\js\jquery-linenumbers.js" />
     <None Remove="wwwroot\js\site.js" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="wwwroot\js\jquery-linenumbers.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="wwwroot\js\site.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -32,6 +32,7 @@ namespace HTML2RazorSharpWM.API.TranslatorApi
             catch (Exception exception)
             {
                 output.RazorSharp = exception.Message;
+                output.Error = true;
             }
 
             return output;
