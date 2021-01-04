@@ -21,7 +21,7 @@ namespace HTML2RazorSharpWM.API.TranslatorApi
             {
                 if (input.Html != string.Empty)
                 {
-                    var translator = TranslatorBase.CreateTextual(input.Html, true, true);
+                    var translator = TranslatorBase.CreateTextual(input.Html, input.SortAttributes, input.GenerateInvalidTags);
                     output.RazorSharp = translator.ToRazorSharp();
                 }
                 else

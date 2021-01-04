@@ -21,6 +21,20 @@ namespace HTML2RazorSharpWM.Mvc.MainPage
                     },
                     new Textarea(new { id="input-text-area" })
                 },
+
+                new Br(),
+                new Input(new { id="sort-attributes", type="checkbox", value=true, }),
+                new Label(new { @for="sort-attributes", })
+                {
+                    new Txt("Sort Attributes"),
+                },
+                new Br(),
+                new Input(new { id="generate-invalid-tags", type="checkbox", value=true, }),
+                new Label(new { @for="generate-invalid-tags", })
+                {
+                    new Txt("Generate Invalid Attributes"),
+                },
+                new Br(),
                 new Div
                 {
                     new H2
