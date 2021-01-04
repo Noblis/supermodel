@@ -27,8 +27,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Frameworks\Supermodel.Presentation\WebMonk\Supermodel.Presentation.WebMonk\Supermodel.Presentation.WebMonk.csproj" />
-    <ProjectReference Include="..\Frameworks\WebMonk\WebMonk.RazorSharp\WebMonk.RazorSharp.csproj" />
+    <ProjectReference Include="..\..\..\Supermodel.Presentation\WebMonk\Supermodel.Presentation.WebMonk\Supermodel.Presentation.WebMonk.csproj" />
+    <ProjectReference Include="..\..\WebMonk.RazorSharp\WebMonk.RazorSharp.csproj" />
   </ItemGroup>
 
 </Project>
