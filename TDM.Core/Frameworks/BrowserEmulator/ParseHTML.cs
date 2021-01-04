@@ -117,18 +117,19 @@ namespace BrowserEmulator
 				Advance();
 
 				char ch = char.ToUpper(GetCurrentChar());
-				if ((ch >= 'A') && (ch <= 'Z') || (ch == '!') || (ch == '/') || (ch == '_')) {
+				if (ch >= 'A' && ch <= 'Z' || ch == '!' || ch == '/' || ch == '_') 
+                {
 					ParseTag();
 					return (char)0;
 				}
                 else
                 {
-                    return (AdvanceCurrentChar());
+                    return AdvanceCurrentChar();
                 }
 			}
             else
             {
-                return (AdvanceCurrentChar());
+                return AdvanceCurrentChar();
             }
 		}
 
