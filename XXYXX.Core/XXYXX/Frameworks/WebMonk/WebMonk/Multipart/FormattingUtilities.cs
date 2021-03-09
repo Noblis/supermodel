@@ -60,7 +60,7 @@ namespace WebMonk.Multipart
             HttpContentHeaders contentHeaders;
             try
             {
-                tempContent = new StringContent(String.Empty);
+                tempContent = new StringContent(string.Empty);
                 contentHeaders = tempContent.Headers;
                 contentHeaders.Clear();
             }
@@ -74,7 +74,7 @@ namespace WebMonk.Multipart
         }
         public static string UnquoteToken(string token)
         {
-            if (String.IsNullOrWhiteSpace(token)) return token;
+            if (string.IsNullOrWhiteSpace(token)) return token;
             if (token.StartsWith("\"", StringComparison.Ordinal) && token.EndsWith("\"", StringComparison.Ordinal) && token.Length > 1) return token.Substring(1, token.Length - 2);
             return token;
         }
@@ -104,7 +104,7 @@ namespace WebMonk.Multipart
 
         public static bool TryParseInt32(string value, out int result)
         {
-            return Int32.TryParse(value, NumberStyles.None, NumberFormatInfo.InvariantInfo, out result);
+            return int.TryParse(value, NumberStyles.None, NumberFormatInfo.InvariantInfo, out result);
         }    
     }
 }

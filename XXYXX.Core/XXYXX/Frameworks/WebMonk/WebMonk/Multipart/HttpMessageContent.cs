@@ -221,11 +221,11 @@ namespace WebMonk.Multipart
                     }
                     else if (_spaceSeparatedValueHeaderFields.Contains(header.Key))
                     {
-                        message.Append(header.Key + ColonSP + String.Join(SP, header.Value) + CRLF);
+                        message.Append(header.Key + ColonSP + string.Join(SP, header.Value) + CRLF);
                     }
                     else
                     {
-                        message.Append(header.Key + ColonSP + String.Join(CommaSeparator, header.Value) + CRLF);
+                        message.Append(header.Key + ColonSP + string.Join(CommaSeparator, header.Value) + CRLF);
                     }
                 }
             }

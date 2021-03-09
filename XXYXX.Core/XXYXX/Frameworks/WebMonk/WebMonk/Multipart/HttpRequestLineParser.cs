@@ -79,7 +79,7 @@ namespace WebMonk.Multipart
 
             // Set up parsing status with what will happen if we exceed the buffer.
             var parseStatus = ParserState.DataTooBig;
-            var effectiveMax = maximumHeaderLength <= 0 ? Int32.MaxValue : (maximumHeaderLength - totalBytesConsumed + bytesConsumed);
+            var effectiveMax = maximumHeaderLength <= 0 ? int.MaxValue : (maximumHeaderLength - totalBytesConsumed + bytesConsumed);
             if (bytesReady < effectiveMax)
             {
                 parseStatus = ParserState.NeedMoreData;
@@ -190,7 +190,7 @@ namespace WebMonk.Multipart
 
                     // Validate value
                     var version = currentToken.ToString();
-                    if (String.CompareOrdinal(FormattingUtilities.HttpVersionToken, version) != 0) throw new FormatException("HttpInvalidVersion");
+                    if (string.CompareOrdinal(FormattingUtilities.HttpVersionToken, version) != 0) throw new FormatException("HttpInvalidVersion");
                     currentToken.Clear();
 
                     // Move past the '/'

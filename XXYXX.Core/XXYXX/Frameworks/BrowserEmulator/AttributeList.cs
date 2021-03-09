@@ -29,7 +29,7 @@ namespace BrowserEmulator
 		/// </summary>
 		/// <returns>A new object that is a clone of the specified
 		/// object.</returns>
-		public override Object Clone()
+		public override object Clone()
         {
 			AttributeList rtn = new AttributeList();
 

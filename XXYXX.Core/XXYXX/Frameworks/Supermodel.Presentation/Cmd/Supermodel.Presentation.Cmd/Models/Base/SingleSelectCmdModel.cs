@@ -56,7 +56,7 @@ namespace Supermodel.Presentation.Cmd.Models.Base
         #endregion
 
         #region IDisplayTemplate implemetation
-        public override void Display(int screenOrderFrom = Int32.MinValue, int screenOrderTo = Int32.MaxValue)
+        public override void Display(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
         {
             Console.Write(SelectedLabel ?? "");
         }
