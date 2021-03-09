@@ -33,7 +33,7 @@ namespace Supermodel.Mobile.Runtime.Common.Multipart
         {
             // The minimum length which would be an empty message terminated by CRLF
             if (maxMessageSize < MinMessageSize) throw new ArgumentOutOfRangeException("maxMessageSize");
-            if (String.IsNullOrWhiteSpace(boundary)) throw new ArgumentNullException("boundary");
+            if (string.IsNullOrWhiteSpace(boundary)) throw new ArgumentNullException("boundary");
             if (boundary.Length > MaxBoundarySize - 10) throw new ArgumentOutOfRangeException("boundary");
             if (boundary.EndsWith(" ", StringComparison.Ordinal)) throw new ArgumentException("MimeMultipartParserBadBoundary", "boundary");
 
@@ -190,7 +190,7 @@ namespace Supermodel.Mobile.Runtime.Common.Multipart
 
             // Set up parsing status with what will happen if we exceed the buffer.
             State parseStatus = State.DataTooBig;
-            var effectiveMax = maximumMessageLength <= 0 ? Int64.MaxValue : (maximumMessageLength - totalBytesConsumed + bytesConsumed);
+            var effectiveMax = maximumMessageLength <= 0 ? long.MaxValue : (maximumMessageLength - totalBytesConsumed + bytesConsumed);
             if (effectiveMax == 0)
             {
                 // effectiveMax is based on our max message size - if we've arrrived at the max size, then we need
@@ -647,7 +647,7 @@ namespace Supermodel.Mobile.Runtime.Common.Multipart
                 var referenceBoundary = Encoding.UTF8.GetString(_referenceBoundary, 0, _referenceBoundaryLength);
                 var boundary = Encoding.UTF8.GetString(_boundary, 0, _boundaryLength);
 
-                return String.Format(
+                return string.Format(
                     CultureInfo.InvariantCulture,
                     "Expected: {0} *** Current: {1}",
                     referenceBoundary,

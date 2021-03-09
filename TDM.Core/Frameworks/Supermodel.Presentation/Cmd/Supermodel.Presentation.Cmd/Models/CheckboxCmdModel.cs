@@ -29,7 +29,7 @@ namespace Supermodel.Presentation.Cmd.Models
         #endregion
 
         #region ICmdEditor
-        public override object Edit(int screenOrderFrom = Int32.MinValue, int screenOrderTo = Int32.MaxValue)
+        public override object Edit(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
         {
             ValueBool = ConsoleExt.EditBool(ValueBool);
             return this;            

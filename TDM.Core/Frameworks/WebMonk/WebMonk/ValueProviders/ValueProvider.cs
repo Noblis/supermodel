@@ -142,7 +142,7 @@ namespace WebMonk.ValueProviders
                 if (typeof(bool).IsAssignableFrom(type) || typeof(bool?).IsAssignableFrom(type))
                 {
                     var @checked = false;
-                    foreach (var val in stringList) @checked |= Boolean.Parse(val);
+                    foreach (var val in stringList) @checked |= bool.Parse(val);
                     return new IValueProvider.Result(GetType(), @checked);
                 }
             }
@@ -256,7 +256,7 @@ namespace WebMonk.ValueProviders
         private static string? RemoveNullCharacters(string? s)
         {
             if (s == null) return null;
-            return s.IndexOf(Char.MinValue) > -1 ? s.Replace("\0", String.Empty) : s;
+            return s.IndexOf(char.MinValue) > -1 ? s.Replace("\0", string.Empty) : s;
         }
         private static char[] StartingChars { get; } =  { '<', '&' };
         #endregion

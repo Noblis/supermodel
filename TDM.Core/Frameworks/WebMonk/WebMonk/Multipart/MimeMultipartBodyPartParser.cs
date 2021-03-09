@@ -9,7 +9,7 @@ namespace WebMonk.Multipart
 {
     public class MimeMultipartBodyPartParser : IDisposable
     {
-        public const long DefaultMaxMessageSize = Int64.MaxValue;
+        public const long DefaultMaxMessageSize = long.MaxValue;
         private const int DefaultMaxBodyPartHeaderSize = 4 * 1024;
 
         // MIME parser

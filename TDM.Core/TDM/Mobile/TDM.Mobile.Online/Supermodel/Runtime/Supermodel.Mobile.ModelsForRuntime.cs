@@ -22,8 +22,8 @@ namespace Supermodel.ApiClient.Models
 		#region Properties
 		public DateTime CreatedOnUtc { get; set; } = new DateTime();
 		public DateTime ModifiedOnUtc { get; set; } = new DateTime();
-		public Int64 ListOwnerId { get; set; }
-		public String Name { get; set; }
+		public long ListOwnerId { get; set; }
+		public string Name { get; set; }
 		public List<ToDoItem> ToDoItems { get; set; } = new List<ToDoItem>();
 		#endregion
 	}
@@ -32,7 +32,7 @@ namespace Supermodel.ApiClient.Models
 	public partial class SimpleSearch
 	{
 		#region Properties
-		public String SearchTerm { get; set; }
+		public string SearchTerm { get; set; }
 		#endregion
 	}
 	#endregion
@@ -42,9 +42,9 @@ namespace Supermodel.ApiClient.Models
 	public partial class TDMUserUpdatePassword : Model
 	{
 		#region Properties
-		public String OldPassword { get; set; }
-		public String NewPassword { get; set; }
-		public String ConfirmPassword { get; set; }
+		public string OldPassword { get; set; }
+		public string NewPassword { get; set; }
+		public string ConfirmPassword { get; set; }
 		#endregion
 	}
 	#endregion
@@ -69,7 +69,7 @@ namespace Supermodel.ApiClient.Models
 	public partial class DeleteAllBeforeOutput
 	{
 		#region Properties
-		public Int64 DeletedCount { get; set; }
+		public long DeletedCount { get; set; }
 		#endregion
 	}
 	#endregion
@@ -79,11 +79,11 @@ namespace Supermodel.ApiClient.Models
 	public partial class ToDoItem
 	{
 		#region Properties
-		public String Name { get; set; }
+		public string Name { get; set; }
 		public PriorityEnum? Priority { get; set; }
 		public DateTime? DueOn { get; set; }
-		public Boolean Completed { get; set; }
-		public Int64 Id { get; set; }
+		public bool Completed { get; set; }
+		public long Id { get; set; }
 		#endregion
 	}
 	public enum PriorityEnum

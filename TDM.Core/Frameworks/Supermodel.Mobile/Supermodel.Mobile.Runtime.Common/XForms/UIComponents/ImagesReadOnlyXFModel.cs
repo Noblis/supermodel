@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System;
 using Xamarin.Forms;
 using System.Collections.Generic;
 using Supermodel.Mobile.Runtime.Common.XForms.UIComponents.Base;
@@ -9,7 +8,7 @@ namespace Supermodel.Mobile.Runtime.Common.XForms.UIComponents
     public class ImagesReadOnlyXFModel : BinaryFilesReadOnlyXFModel
     {
         #region ISupermodelMobileDetailTemplate implementation
-        public override List<Cell> RenderDetail(Page parentPage, int screenOrderFrom = Int32.MinValue, int screenOrderTo = Int32.MaxValue)
+        public override List<Cell> RenderDetail(Page parentPage, int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
         {
             ParentPage = parentPage;
             var cells = new List<Cell>();

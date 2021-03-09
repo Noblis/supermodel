@@ -293,7 +293,7 @@ namespace BrowserEmulator
 			return responseFile;
 		}
 
-        public async Task<string> HTTPPostFileAsync(string url, Byte[] file)
+        public async Task<string> HTTPPostFileAsync(string url, byte[] file)
         {
             HttpWebRequest request;
             string pageHtml;
@@ -327,7 +327,7 @@ namespace BrowserEmulator
             _referrer = url;
             return pageHtml;
         }
-        public string HTTPPostFile(string url, Byte[] file) 
+        public string HTTPPostFile(string url, byte[] file) 
         {
             HttpWebRequest request;
             string pageHtml;
@@ -362,7 +362,7 @@ namespace BrowserEmulator
             return pageHtml;
 		}
 
-		public async Task<byte[]> HTTPPostFileReceiveBinaryAsync(string url, Byte[] file) 
+		public async Task<byte[]> HTTPPostFileReceiveBinaryAsync(string url, byte[] file) 
         {
             HttpWebRequest request;
             byte[] responseFile;
@@ -396,7 +396,7 @@ namespace BrowserEmulator
 			_referrer = url;
 			return responseFile;
 		}
-        public byte[] HTTPPostFileReceiveBinary(string url, Byte[] file)
+        public byte[] HTTPPostFileReceiveBinary(string url, byte[] file)
         {
             HttpWebRequest request;
             byte[] responseFile;

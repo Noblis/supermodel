@@ -19,7 +19,7 @@ namespace Supermodel.ApiClient.Models
     public class ToDoListXFModel : XFModelForModel<ToDoList>
     {
         #region Overrdies
-        public override List<Cell> RenderDetail(Page parentPage, int screenOrderFrom = Int32.MinValue, int screenOrderTo = Int32.MaxValue)
+        public override List<Cell> RenderDetail(Page parentPage, int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
         {
             var cells = new List<Cell>();
 

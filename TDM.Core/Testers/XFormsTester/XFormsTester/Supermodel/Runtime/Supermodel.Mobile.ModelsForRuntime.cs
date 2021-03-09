@@ -22,15 +22,15 @@ namespace Supermodel.ApiClient.Models
 	public partial class Student : Model
 	{
 		#region Properties
-		public String FirstName { get; set; }
-		public String LastName { get; set; }
-		public String SocialSecurity { get; set; }
-		public Int32? Age { get; set; }
+		public string FirstName { get; set; }
+		public string LastName { get; set; }
+		public string SocialSecurity { get; set; }
+		public int? Age { get; set; }
 		public BinaryFile Image { get; set; } = new BinaryFile();
 		public GenderEnum? Gender { get; set; }
 		public School School { get; set; }
-		public String Notes { get; set; }
-		public Boolean? SecurityClearance { get; set; }
+		public string Notes { get; set; }
+		public bool? SecurityClearance { get; set; }
 		public DateTime? DateOfBirthday { get; set; }
 		#endregion
 	}
@@ -39,7 +39,7 @@ namespace Supermodel.ApiClient.Models
 	public partial class StudentSearch
 	{
 		#region Properties
-		public String Term { get; set; }
+		public string Term { get; set; }
 		#endregion
 	}
 	#endregion
@@ -57,15 +57,15 @@ namespace Supermodel.ApiClient.Models
 	public partial class Input
 	{
 		#region Properties
-		public Int32 Op1 { get; set; }
-		public Int32 Op2 { get; set; }
+		public int Op1 { get; set; }
+		public int Op2 { get; set; }
 		#endregion
 	}
 	// ReSharper disable once PartialTypeWithSinglePart
 	public partial class Output
 	{
 		#region Properties
-		public Int32 PlusResult { get; set; }
+		public int PlusResult { get; set; }
 		#endregion
 	}
 	#endregion
@@ -82,8 +82,8 @@ namespace Supermodel.ApiClient.Models
 	public partial class School
 	{
 		#region Properties
-		public String Name { get; set; }
-		public Int64 Id { get; set; }
+		public string Name { get; set; }
+		public long Id { get; set; }
 		#endregion
 	}
 	#endregion

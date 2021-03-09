@@ -22,7 +22,7 @@ namespace Supermodel.Mobile.Runtime.Common.Multipart
 
         public static bool IsMimeMultipartContent(this HttpContent content, string subtype)
         {
-            if (String.IsNullOrWhiteSpace(subtype)) throw new ArgumentNullException("subtype");
+            if (string.IsNullOrWhiteSpace(subtype)) throw new ArgumentNullException("subtype");
             if (IsMimeMultipartContent(content))
             {
                 if (content.Headers.ContentType.MediaType.Equals("multipart/" + subtype, StringComparison.OrdinalIgnoreCase)) return true;

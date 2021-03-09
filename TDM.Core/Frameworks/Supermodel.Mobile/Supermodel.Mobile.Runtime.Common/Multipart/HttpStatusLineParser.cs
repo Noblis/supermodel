@@ -74,7 +74,7 @@ namespace Supermodel.Mobile.Runtime.Common.Multipart
 
             // Set up parsing status with what will happen if we exceed the buffer.
             var parseStatus = ParserState.DataTooBig;
-            int effectiveMax = maximumHeaderLength <= 0 ? Int32.MaxValue : (maximumHeaderLength - totalBytesConsumed + bytesConsumed);
+            int effectiveMax = maximumHeaderLength <= 0 ? int.MaxValue : (maximumHeaderLength - totalBytesConsumed + bytesConsumed);
             if (bytesReady < effectiveMax)
             {
                 parseStatus = ParserState.NeedMoreData;
@@ -111,7 +111,7 @@ namespace Supermodel.Mobile.Runtime.Common.Multipart
 
                     // Validate value
                     var version = currentToken.ToString();
-                    if (String.CompareOrdinal(FormattingUtilities.HttpVersionToken, version) != 0) throw new FormatException("HttpInvalidVersion");
+                    if (string.CompareOrdinal(FormattingUtilities.HttpVersionToken, version) != 0) throw new FormatException("HttpInvalidVersion");
 
                     currentToken.Clear();
 
@@ -217,7 +217,7 @@ namespace Supermodel.Mobile.Runtime.Common.Multipart
                     }
 
                     // Copy value out
-                    int statusCode = Int32.Parse(currentToken.ToString(), CultureInfo.InvariantCulture);
+                    int statusCode = int.Parse(currentToken.ToString(), CultureInfo.InvariantCulture);
                     if (statusCode < 100 || statusCode > 1000)
                     {
                         throw new FormatException("HttpInvalidStatusCode");

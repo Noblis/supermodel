@@ -92,7 +92,7 @@ namespace Supermodel.Mobile.Runtime.Common.Multipart
 
             // Set up parsing status with what will happen if we exceed the buffer.
             ParserState parseStatus = ParserState.DataTooBig;
-            var effectiveMax = maximumHeaderLength <= 0 ? Int32.MaxValue : maximumHeaderLength - totalBytesConsumed + initialBytesParsed;
+            var effectiveMax = maximumHeaderLength <= 0 ? int.MaxValue : maximumHeaderLength - totalBytesConsumed + initialBytesParsed;
             if (bytesReady < effectiveMax)
             {
                 parseStatus = ParserState.NeedMoreData;

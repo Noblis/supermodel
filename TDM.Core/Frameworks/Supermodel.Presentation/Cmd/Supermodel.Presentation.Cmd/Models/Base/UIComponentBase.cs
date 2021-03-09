@@ -16,11 +16,11 @@ namespace Supermodel.Presentation.Cmd.Models.Base
         #endregion
         
         #region ICmdEditor implemtation
-        public abstract  object? Edit(int screenOrderFrom = Int32.MinValue, int screenOrderTo = Int32.MaxValue);
+        public abstract  object? Edit(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue);
         #endregion
 
         #region IDisplayTemplate implemetation
-        public abstract void Display(int screenOrderFrom = Int32.MinValue, int screenOrderTo = Int32.MaxValue);
+        public abstract void Display(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue);
         #endregion
 
         #region IUIComponentWithValue implemtation 
