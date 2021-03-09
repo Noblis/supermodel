@@ -226,7 +226,7 @@ namespace BrowserEmulator
         }
         public void SetParserPoint(int parserPoint)
         {
-            if (parserPoint < 0) throw new BrowserEmulatorException("Parser point must be geater than 0, while it is " + parserPoint);
+            if (parserPoint < 0) throw new BrowserEmulatorException("Parser point must be greater than 0, while it is " + parserPoint);
             m_idx = parserPoint;
         }
         public string GetTextToNextTag(out AttributeList tag) 
@@ -252,8 +252,10 @@ namespace BrowserEmulator
             {
 				throw new EOFException("Unexpected EOF where an HTML tag is expected");
 			}
-			return text.ToString().Trim();
-		}
+			var result = text.ToString().Trim();
+            if (result.Contains(">")) throw new BrowserEmulatorException($"Invalid HTML contract near '{result}'");
+            return result;
+        }
         public string GetTextAndTagsToTag(string tagName, object attributesObj = null)
         {
             return GetTextAndTagsToTag(tagName, AttributesHelper.AnonymousObjectToHtmlAttributes(attributesObj));

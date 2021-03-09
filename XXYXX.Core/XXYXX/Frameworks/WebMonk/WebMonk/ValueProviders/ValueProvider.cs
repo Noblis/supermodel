@@ -161,7 +161,7 @@ namespace WebMonk.ValueProviders
                 if (typeof(uint).IsAssignableFrom(type) || typeof(uint?).IsAssignableFrom(type)) return new IValueProvider.Result(GetType(), uint.Parse(strValue)); 
                 if (typeof(long).IsAssignableFrom(type) || typeof(long?).IsAssignableFrom(type)) return new IValueProvider.Result(GetType(), long.Parse(strValue));
                 if (typeof(ulong).IsAssignableFrom(type) || typeof(ulong?).IsAssignableFrom(type)) return new IValueProvider.Result(GetType(), ulong.Parse(strValue));
-                if (typeof(short).IsAssignableFrom(type) || typeof(short?).IsAssignableFrom(type)) return new IValueProvider.Result(GetType(), Int16.Parse(strValue));
+                if (typeof(short).IsAssignableFrom(type) || typeof(short?).IsAssignableFrom(type)) return new IValueProvider.Result(GetType(), short.Parse(strValue));
                 if (typeof(ushort).IsAssignableFrom(type) || typeof(ushort?).IsAssignableFrom(type)) return new IValueProvider.Result(GetType(), ushort.Parse(strValue));
                 if (typeof(byte).IsAssignableFrom(type) || typeof(byte?).IsAssignableFrom(type)) return new IValueProvider.Result(GetType(), byte.Parse(strValue));
                 if (typeof(sbyte).IsAssignableFrom(type) || typeof(sbyte?).IsAssignableFrom(type)) return new IValueProvider.Result(GetType(), sbyte.Parse(strValue));

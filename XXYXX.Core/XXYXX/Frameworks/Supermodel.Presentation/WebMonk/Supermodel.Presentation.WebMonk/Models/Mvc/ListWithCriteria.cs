@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Supermodel.DataAnnotations;
 using Supermodel.DataAnnotations.Exceptions;
 using Supermodel.ReflectionMapper;
 
@@ -27,6 +28,7 @@ namespace Supermodel.Presentation.WebMonk.Models.Mvc
             foreach (var otherItemObj in otherIEnumerable)
             {
                 var item = otherItemObj != null ? await ReflectionHelper.CreateType(myIEnumerableGenericArg).ExecuteGenericMethod("MapFromCustomAsync", new []{ otherItemObj.GetType() }, otherItemObj )!.GetResultAsObjectAsync().ConfigureAwait(false) : null;
+                if (item is IAsyncInit iAsyncInit && !iAsyncInit.AsyncInitialized) await iAsyncInit.InitAsync();
                 Add((TListItem)item!); //this is ok if item is null
             }
         }
@@ -49,6 +51,7 @@ namespace Supermodel.Presentation.WebMonk.Models.Mvc
             {
                 // ReSharper disable once MergeConditionalExpression
                 var item = myItemObj != null ? await myItemObj.ExecuteGenericMethod("MapToCustomAsync", new [] { otherICollectionGenericArg }, ReflectionHelper.CreateType(otherICollectionGenericArg))!.GetResultAsObjectAsync().ConfigureAwait(false) : null;
+                if (item is IAsyncInit iAsyncInit && !iAsyncInit.AsyncInitialized) await iAsyncInit.InitAsync();
                 otherICollection.AddToCollection(item);
             }
             

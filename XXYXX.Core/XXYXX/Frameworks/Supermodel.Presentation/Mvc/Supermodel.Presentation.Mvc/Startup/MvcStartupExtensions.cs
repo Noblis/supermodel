@@ -29,7 +29,7 @@ namespace Supermodel.Presentation.Mvc.Startup
             //    options.CheckConsentNeeded = context => true;
             //});
 
-            //services.AddSession();
+            services.AddSession();
 
             services.AddSingleton<ITempDataProvider, CookieTempDataProvider>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -93,7 +93,7 @@ namespace Supermodel.Presentation.Mvc.Startup
             //    options.CheckConsentNeeded = context => true;
             //});
 
-            //services.AddSession();
+            services.AddSession();
 
             services.AddSingleton<ITempDataProvider, CookieTempDataProvider>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

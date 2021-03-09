@@ -61,7 +61,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Startup
 
             //builder.UseHttpsRedirection();
             builder.UseCookiePolicy();
-            //builder.UseSession();
+            builder.UseSession();
 
             builder.UseEndpoints(endpoints =>
             {

@@ -70,7 +70,9 @@ namespace Supermodel.Mobile.Runtime.Common.Multipart
         private enum MessageState
         {
             Boundary = 0, // about to parse boundary
+            // ReSharper disable once UnusedMember.Local
             BodyPart, // about to parse body-part
+            // ReSharper disable once UnusedMember.Local
             CloseDelimiter // about to read close-delimiter
         }
 
@@ -639,6 +641,7 @@ namespace Supermodel.Mobile.Runtime.Common.Multipart
                 ClearBodyPart();
             }
 
+            // ReSharper disable once UnusedMember.Local
             private string DebuggerToString()
             {
                 var referenceBoundary = Encoding.UTF8.GetString(_referenceBoundary, 0, _referenceBoundaryLength);

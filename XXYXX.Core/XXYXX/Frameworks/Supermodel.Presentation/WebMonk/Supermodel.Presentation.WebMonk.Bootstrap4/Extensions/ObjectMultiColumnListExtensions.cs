@@ -145,7 +145,12 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Extensions
                                         input.Attributes["data-checked"] = "checked";
                                     }
                                 }
-                                if (selected && !HttpContext.Current.ValidationResultList.IsValid) result.Append(Render.ValidationMessage(me, propertyInfo.Name, new { @class=Bs4.ScaffoldingSettings.InlineValidationErrorCssClass }, true));
+                                if (selected && !HttpContext.Current.ValidationResultList.IsValid) 
+                                {
+                                    var msg = Render.ValidationMessage(me, propertyInfo.Name, new { @class=Bs4.ScaffoldingSettings.InlineValidationErrorCssClass }, true);
+                                    if (!(msg is Tags msgTags && msgTags.Count == 0)) showValidationSummary = false;
+                                    result.Append(msg);
+                                }
                             }
                             else
                             {
