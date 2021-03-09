@@ -10,7 +10,7 @@ namespace Supermodel.Tooling.SolutionMaker.Cmd
         {
             try
             {
-                SolutionMaker.Version = "2.05.000.Beta1";
+                SolutionMaker.Version = "2.05.001.Beta1";
 
                 //*******Un-comment and run this once to refresh the solution zip
                 Console.WriteLine($"v{SolutionMaker.Version}");
@@ -24,8 +24,14 @@ namespace Supermodel.Tooling.SolutionMaker.Cmd
                 CopyDirectory(@"..\..\..\..\..\..\Frameworks", @"..\..\..\..\..\..\..\XXYXX.Core\XXYXX\Frameworks");
                 Console.WriteLine("Done!");
 
+                //Adjust versions in XXYXX and in TDM
+                File.WriteAllText(SolutionMaker.CombineAndAdjustPaths(@"..\..\..\..\..\..\..\XXYXX.Core\XXYXX\", @"Frameworks\Version.txt"), $"Version {SolutionMaker.Version}");
+                File.WriteAllText(SolutionMaker.CombineAndAdjustPaths(@"..\..\..\..\..\..\", @"Frameworks\Version.txt"), $"Version {SolutionMaker.Version}");
+                Console.WriteLine("Version.txt files updated successfully!");
+
                 SolutionMaker.CreateSnapshot(@"..\..\..\..\..\..\..\XXYXX.Core\XXYXX", @"..\..\..\");
                 Console.WriteLine($"{SolutionMaker.ZipFileName} created successfully!");
+
                 return;
                 //********Un-comment and run this once to refresh the solution zip
 

@@ -30,7 +30,7 @@ namespace Supermodel.Tooling.SolutionMaker
             // ReSharper disable once AssignNullToNotNullAttribute
             ZipFile.ExtractToDirectory(CombineAndAdjustPaths(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), ZipFileName), path);
 
-            //Adjust version
+            //Adjust version (it is probably already adjusted from copying Frameworks folder, but we do it again just in case)
             File.WriteAllText(CombineAndAdjustPaths(path, @"Frameworks\Version.txt"), $"Version {SolutionMaker.Version}");
             //ReplaceInFile(CombineAndAdjustPaths(path, @"Frameworks\Version.txt"), versionMarker, $"Version {SolutionMaker.Version}");
 
