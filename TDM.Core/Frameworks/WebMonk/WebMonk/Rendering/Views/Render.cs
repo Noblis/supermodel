@@ -1047,12 +1047,13 @@ namespace WebMonk.Rendering.Views
         #region Render ActionLink Methods
         public static IGenerateHtml ActionLink<T>(string label, Expression<Action<T>> action, object? attributes = null) where T : MvcController
         {
+            // ReSharper disable once RedundantCast
             return ActionLink(label, action, (QueryStringDict?)null, attributes);
         }
-        private static IGenerateHtml ActionLink<T>(string label, Expression<Action<T>> action, NameValueCollection queryString, object? attributes = null) where T : MvcController
-        {
-            return ActionLink(label, action, queryString.ToQueryStringDictionary(), attributes);
-        }
+        //private static IGenerateHtml ActionLink<T>(string label, Expression<Action<T>> action, NameValueCollection queryString, object? attributes = null) where T : MvcController
+        //{
+        //    return ActionLink(label, action, queryString.ToQueryStringDictionary(), attributes);
+        //}
         private static IGenerateHtml ActionLink<T>(string label, Expression<Action<T>> action, QueryStringDict? queryStringDict = null, object? attributes = null) where T : MvcController
         {
             var (controllerName, actionName, id, updatedQueryStringDict) = Helper.GetControllerActionIdQs(action, queryStringDict);

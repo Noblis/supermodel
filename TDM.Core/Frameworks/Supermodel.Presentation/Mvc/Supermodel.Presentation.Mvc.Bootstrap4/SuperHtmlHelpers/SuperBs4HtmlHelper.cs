@@ -20,7 +20,6 @@ using Supermodel.Persistence.UnitOfWork;
 using Supermodel.Presentation.Mvc.Bootstrap4.Extensions;
 using Supermodel.Presentation.Mvc.Bootstrap4.Models.Base;
 using Supermodel.Presentation.Mvc.Context;
-using Supermodel.Presentation.Mvc.Controllers.Mvc;
 using Supermodel.Presentation.Mvc.Extensions;
 using Supermodel.Presentation.Mvc.HtmlHelpers;
 using Supermodel.Presentation.Mvc.Models;
@@ -857,17 +856,17 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
             }
         }
 
-        private Type? GetBaseGenericChildCRUDControllerType(Type me)
-        {
-            Type? toCheck = me;
-            while (toCheck != null && toCheck != typeof(object))
-            {
-                var curType = toCheck.IsGenericType ? toCheck.GetGenericTypeDefinition() : toCheck;
-                if (typeof(ChildCRUDController<,,,,>) == curType) return toCheck;
-                toCheck = toCheck.BaseType;
-            }
-            return null;
-        }
+        //private Type? GetBaseGenericChildCRUDControllerType(Type me)
+        //{
+        //    Type? toCheck = me;
+        //    while (toCheck != null && toCheck != typeof(object))
+        //    {
+        //        var curType = toCheck.IsGenericType ? toCheck.GetGenericTypeDefinition() : toCheck;
+        //        if (typeof(ChildCRUDController<,,,,>) == curType) return toCheck;
+        //        toCheck = toCheck.BaseType;
+        //    }
+        //    return null;
+        //}
         #endregion
 
         #region New Search Action Link Helpers

@@ -6,7 +6,7 @@
 
     input.linenumbers({ col_width: "25px", start: 1, digits:4});
 
-    update = async function() {
+    var update = async function() {
         $.ajax({
             url: "/api/translator",
             type: "POST",
@@ -14,14 +14,14 @@
                 {
                     "Html": input.val(),
                     "GenerateInvalidTags": generateInvalidTags.is(":checked"),
-                    "SortAttributes": sortAttributes.is(":checked"),
+                    "SortAttributes": sortAttributes.is(":checked")
                 }),
             contentType: "application/json",
             dataType: "json",
-            success: function(data, textStatus, jqXHR) {
+            success: function(data) {
                 output.val(data.RazorSharp);
                 if (data.Error) {
-                    output.css("background-color", "#ffa07aff");
+                    output.css("background-color", "#ffa07a");
                 } else {
                     output.css("background-color", "white");
                 }
@@ -33,11 +33,11 @@
     sortAttributes.on("change", update);
     generateInvalidTags.on("change", update);
 
-    window.onresize = function (event) {
+    window.onresize = function () {
         location.reload();
     };
 
-})
+});
 
 window.onbeforeunload = function () {
     localStorage.setItem("input", $("#input-text-area").val());
@@ -45,7 +45,7 @@ window.onbeforeunload = function () {
     localStorage.setItem("sortAttributes", $("#sort-attributes").is(":checked"));
     //alert($("#sort-attributes").is(":checked"));
     localStorage.setItem("generateInvalidTags", $("#generate-invalid-tags").is(":checked"));
-}
+};
 
 window.onload = function () {
     var inputVal = localStorage.getItem("input");
@@ -54,6 +54,6 @@ window.onload = function () {
     var outputVal = localStorage.getItem("output");
     if (outputVal !== null) $("#output-text-area").val(outputVal);
 
-    $("#sort-attributes").prop("checked", localStorage.getItem("sortAttributes") == 'true');
-    $("#generate-invalid-tags").prop("checked", localStorage.getItem("generateInvalidTags") == 'true');
-}
+    $("#sort-attributes").prop("checked", localStorage.getItem("sortAttributes") === 'true');
+    $("#generate-invalid-tags").prop("checked", localStorage.getItem("generateInvalidTags") === 'true');
+};

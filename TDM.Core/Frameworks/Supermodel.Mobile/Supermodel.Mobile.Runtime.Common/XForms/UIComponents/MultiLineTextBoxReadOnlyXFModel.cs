@@ -4,7 +4,6 @@ using Supermodel.Mobile.Runtime.Common.XForms.UIComponents.Base;
 
 namespace Supermodel.Mobile.Runtime.Common.XForms.UIComponents
 {
-
     public class MultiLineTextBoxReadOnlyXFModel : SingleCellReadOnlyUIComponentForTextXFModel
     {
         #region Constructors
