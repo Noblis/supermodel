@@ -3,8 +3,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Supermodel.ApiClient.Models;
+using Supermodel.DataAnnotations.Attributes;
 using Supermodel.DataAnnotations.Validations;
-using Supermodel.DataAnnotations.Validations.Attributes;
 using Supermodel.Mobile.Runtime.Common.XForms.UIComponents;
 using Supermodel.Mobile.Runtime.Common.XForms.ViewModels;
 using Supermodel.ReflectionMapper;

@@ -3,8 +3,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Domain.Entities;
+using Supermodel.DataAnnotations.Attributes;
 using Supermodel.DataAnnotations.Validations;
-using Supermodel.DataAnnotations.Validations.Attributes;
 using Supermodel.Presentation.Mvc.Bootstrap4.Models;
 using Supermodel.Presentation.Mvc.Models.Api;
 using Supermodel.ReflectionMapper;

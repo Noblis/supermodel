@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Supermodel.Mobile.Runtime.Common.DataContext.WebApi;
 using Supermodel.Mobile.Runtime.Common.Models;
 using System.ComponentModel;
-using Supermodel.DataAnnotations.Validations.Attributes;
+using Supermodel.DataAnnotations.Attributes;
 // ReSharper restore RedundantUsingDirective
 
 // ReSharper disable once CheckNamespace
