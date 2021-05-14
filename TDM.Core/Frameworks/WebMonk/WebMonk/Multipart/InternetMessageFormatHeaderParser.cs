@@ -27,9 +27,8 @@ namespace WebMonk.Multipart
         public InternetMessageFormatHeaderParser(HttpHeaders headers, int maxHeaderSize)
         {
             // The minimum length which would be an empty header terminated by CRLF
-            if (maxHeaderSize < MinHeaderSize) throw new ArgumentOutOfRangeException("maxHeaderSize");
-            if (headers == null) throw new ArgumentNullException("headers");
-            _headers = headers;
+            if (maxHeaderSize < MinHeaderSize) throw new ArgumentOutOfRangeException(nameof(maxHeaderSize));
+            _headers = headers ?? throw new ArgumentNullException(nameof(headers));
             _maxHeaderSize = maxHeaderSize;
             _currentHeader = new CurrentHeaderFieldStore();
         }
