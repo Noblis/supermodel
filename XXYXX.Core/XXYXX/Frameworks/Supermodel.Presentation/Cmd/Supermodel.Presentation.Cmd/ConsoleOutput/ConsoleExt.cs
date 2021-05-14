@@ -710,7 +710,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 var info = Console.ReadKey(true);
                 if (info.Key == ConsoleKey.Enter) 
                 {
-                    if (CmdContext.IsPropertyRequired && string.IsNullOrEmpty(selectedOption.Value))
+                    if (CmdContext.IsPropertyRequired && string.IsNullOrEmpty(selectedOption?.Value))
                     {
                         Console.WriteLine();
                         PrintRequiredFieldMessage();

@@ -94,7 +94,7 @@ namespace Supermodel.Presentation.Mvc.Controllers
             var modelState = new ModelStateDictionary();
             foreach (var error in errorsDict)
             {
-                if (error.Value == null) continue;
+                //if (error.Value == null) continue;
                 foreach (var errorMsg in error.Value.ErrorMessages)
                 {
                     modelState.AddModelError(error.Key, errorMsg);
