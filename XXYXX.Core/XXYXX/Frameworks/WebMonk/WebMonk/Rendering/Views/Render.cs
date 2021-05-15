@@ -1045,94 +1045,94 @@ namespace WebMonk.Rendering.Views
         #endregion
 
         #region Render ActionLink Methods
-        public static IGenerateHtml ActionLink<T>(string label, Expression<Action<T>> action, object? attributes = null) where T : MvcController
+        public static IGenerateHtml ActionLink<T>(string label, Expression<Action<T>> action, object? attributes = null, bool generateInline = false) where T : MvcController
         {
             // ReSharper disable once RedundantCast
-            return ActionLink(label, action, (QueryStringDict?)null, attributes);
+            return ActionLink(label, action, (QueryStringDict?)null, attributes, generateInline);
         }
         //private static IGenerateHtml ActionLink<T>(string label, Expression<Action<T>> action, NameValueCollection queryString, object? attributes = null) where T : MvcController
         //{
-        //    return ActionLink(label, action, queryString.ToQueryStringDictionary(), attributes);
+        //    return ActionLink(label, action, queryString.ToQueryStringDictionary(), attributes, generateInline);
         //}
-        private static IGenerateHtml ActionLink<T>(string label, Expression<Action<T>> action, QueryStringDict? queryStringDict = null, object? attributes = null) where T : MvcController
+        private static IGenerateHtml ActionLink<T>(string label, Expression<Action<T>> action, QueryStringDict? queryStringDict = null, object? attributes = null, bool generateInline = false) where T : MvcController
         {
             var (controllerName, actionName, id, updatedQueryStringDict) = Helper.GetControllerActionIdQs(action, queryStringDict);
-            return ActionLinkStrId(label, controllerName, actionName, id, updatedQueryStringDict, attributes);
+            return ActionLinkStrId(label, controllerName, actionName, id, updatedQueryStringDict, attributes, generateInline);
         }
 
-        public static IGenerateHtml ActionLink(string label, string controller, string action, long? id, object? attributes = null)
+        public static IGenerateHtml ActionLink(string label, string controller, string action, long? id, object? attributes = null, bool generateInline = false)
         {
-            return ActionLinkStrId(label, controller, action, id?.ToString(), attributes);
+            return ActionLinkStrId(label, controller, action, id?.ToString(), attributes, generateInline);
         }
-        public static IGenerateHtml ActionLinkStrId(string label, string controller, string action, string? id, object? attributes = null)
+        public static IGenerateHtml ActionLinkStrId(string label, string controller, string action, string? id, object? attributes = null, bool generateInline = false)
         {
-            return ActionLinkStrId(label, controller, action, id, (QueryStringDict?)null, attributes);
+            return ActionLinkStrId(label, controller, action, id, (QueryStringDict?)null, attributes, generateInline);
         }
         
-        public static IGenerateHtml ActionLink(string label, string controller, string action, long? id, NameValueCollection queryString, object? attributes = null)
+        public static IGenerateHtml ActionLink(string label, string controller, string action, long? id, NameValueCollection queryString, object? attributes = null, bool generateInline = false)
         {
-            return ActionLinkStrId(label, controller, action, id?.ToString(), queryString, attributes);
+            return ActionLinkStrId(label, controller, action, id?.ToString(), queryString, attributes, generateInline);
 
         }
-        public static IGenerateHtml ActionLinkStrId(string label, string controller, string action, string? id, NameValueCollection queryString, object? attributes = null)
+        public static IGenerateHtml ActionLinkStrId(string label, string controller, string action, string? id, NameValueCollection queryString, object? attributes = null, bool generateInline = false)
         {
-            return ActionLinkStrId(label, controller, action, id, queryString.ToQueryStringDictionary(), attributes);
+            return ActionLinkStrId(label, controller, action, id, queryString.ToQueryStringDictionary(), attributes, generateInline);
         }
         
-        public static IGenerateHtml ActionLink(string label, string controller, string action, long? id, QueryStringDict? queryStringDict = null, object? attributes = null)
+        public static IGenerateHtml ActionLink(string label, string controller, string action, long? id, QueryStringDict? queryStringDict = null, object? attributes = null, bool generateInline = false)
         {
-            return ActionLinkStrId(label, controller, action, id?.ToString(), queryStringDict, attributes);
+            return ActionLinkStrId(label, controller, action, id?.ToString(), queryStringDict, attributes, generateInline);
 
         }
-        public static IGenerateHtml ActionLinkStrId(string label, string controller, string action, string? id, QueryStringDict? queryStringDict = null, object? attributes = null)
+        public static IGenerateHtml ActionLinkStrId(string label, string controller, string action, string? id, QueryStringDict? queryStringDict = null, object? attributes = null, bool generateInline = false)
         {
             var labelTags = new Tags { new Txt(label) };
-            return ActionLinkStrId(labelTags, controller, action, id, queryStringDict, attributes);
+            return ActionLinkStrId(labelTags, controller, action, id, queryStringDict, attributes, generateInline);
         }
         #endregion
 
         #region Render ActionLink with Html Content Methods
-        public static IGenerateHtml ActionLink<T>(IGenerateHtml label, Expression<Action<T>> action, object? attributes = null) where T : MvcController
+        public static IGenerateHtml ActionLink<T>(IGenerateHtml label, Expression<Action<T>> action, object? attributes = null, bool generateInline = false) where T : MvcController
         {
             var (controllerName, actionName, id, updatedQueryStringDict) = Helper.GetControllerActionIdQs(action, null);
-            return ActionLinkStrId(label, controllerName, actionName, id, updatedQueryStringDict, attributes);
+            return ActionLinkStrId(label, controllerName, actionName, id, updatedQueryStringDict, attributes, generateInline);
         }
-        public static IGenerateHtml ActionLink<T>(IGenerateHtml label, Expression<Action<T>> action, NameValueCollection queryString, object? attributes = null) where T : MvcController
+        public static IGenerateHtml ActionLink<T>(IGenerateHtml label, Expression<Action<T>> action, NameValueCollection queryString, object? attributes = null, bool generateInline = false) where T : MvcController
         {
-            return ActionLink(label, action, queryString.ToQueryStringDictionary(), attributes);
+            return ActionLink(label, action, queryString.ToQueryStringDictionary(), attributes, generateInline);
         }
-        public static IGenerateHtml ActionLink<T>(IGenerateHtml label, Expression<Action<T>> action, QueryStringDict? queryStringDict = null, object? attributes = null) where T : MvcController
+        public static IGenerateHtml ActionLink<T>(IGenerateHtml label, Expression<Action<T>> action, QueryStringDict? queryStringDict = null, object? attributes = null, bool generateInline = false) where T : MvcController
         {
             var (controllerName, actionName, id, updatedQueryStringDict) = Helper.GetControllerActionIdQs(action, queryStringDict);
-            return ActionLinkStrId(label, controllerName, actionName, id, updatedQueryStringDict, attributes);
+            return ActionLinkStrId(label, controllerName, actionName, id, updatedQueryStringDict, attributes, generateInline);
         }
 
-        public static IGenerateHtml ActionLink(IGenerateHtml label, string controller, string action, int? id, object? attributes = null)
+        public static IGenerateHtml ActionLink(IGenerateHtml label, string controller, string action, int? id, object? attributes = null, bool generateInline = false)
         {
-            return ActionLinkStrId(label, controller, action, id?.ToString(), attributes);
+            return ActionLinkStrId(label, controller, action, id?.ToString(), attributes, generateInline);
         }
-        public static IGenerateHtml ActionLinkStrId(IGenerateHtml label, string controller, string action, string? id, object? attributes = null)
+        public static IGenerateHtml ActionLinkStrId(IGenerateHtml label, string controller, string action, string? id, object? attributes = null, bool generateInline = false)
         {
-            return ActionLinkStrId(label, controller, action, id, (QueryStringDict?)null, attributes);
-        }
-        
-        public static IGenerateHtml ActionLink(IGenerateHtml label, string controller, string action, long? id, NameValueCollection queryString, object? attributes = null)
-        {
-            return ActionLinkStrId(label, controller, action, id?.ToString(), queryString, attributes);
-        }
-        public static IGenerateHtml ActionLinkStrId(IGenerateHtml label, string controller, string action, string? id, NameValueCollection queryString, object? attributes = null)
-        {
-            return ActionLinkStrId(label, controller, action, id, queryString.ToQueryStringDictionary(), attributes);
+            return ActionLinkStrId(label, controller, action, id, (QueryStringDict?)null, attributes, generateInline);
         }
         
-        public static IGenerateHtml ActionLink(IGenerateHtml label, string controller, string action, long? id, QueryStringDict? queryStringDict = null, object? attributes = null)
+        public static IGenerateHtml ActionLink(IGenerateHtml label, string controller, string action, long? id, NameValueCollection queryString, object? attributes = null, bool generateInline = false)
         {
-            return ActionLinkStrId(label, controller, action, id?.ToString(), queryStringDict, attributes);
+            return ActionLinkStrId(label, controller, action, id?.ToString(), queryString, attributes, generateInline);
         }
-        public static IGenerateHtml ActionLinkStrId(IGenerateHtml label, string controller, string action, string? id, QueryStringDict? queryStringDict = null, object? attributes = null)
+        public static IGenerateHtml ActionLinkStrId(IGenerateHtml label, string controller, string action, string? id, NameValueCollection queryString, object? attributes = null, bool generateInline = false)
+        {
+            return ActionLinkStrId(label, controller, action, id, queryString.ToQueryStringDictionary(), attributes, generateInline);
+        }
+        
+        public static IGenerateHtml ActionLink(IGenerateHtml label, string controller, string action, long? id, QueryStringDict? queryStringDict = null, object? attributes = null, bool generateInline = false)
+        {
+            return ActionLinkStrId(label, controller, action, id?.ToString(), queryStringDict, attributes, generateInline);
+        }
+        public static IGenerateHtml ActionLinkStrId(IGenerateHtml label, string controller, string action, string? id, QueryStringDict? queryStringDict = null, object? attributes = null, bool generateInline = false)
         {
             var url = Helper.UrlToMvcAction(controller, action, id, queryStringDict);
-            var aTag = new A(new { href = url }) { label };
+            var aTag = new A(new { href = url }, generateInline) { label };
             aTag.AddOrUpdateAttr(attributes);
             return aTag;
         }
