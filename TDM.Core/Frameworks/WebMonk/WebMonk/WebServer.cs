@@ -53,17 +53,29 @@ namespace WebMonk
 
             //Check for warnings
             var mvcControllers = SortedHttpRequestHandlers.Where(x => x is MvcController);
+            // ReSharper disable once PossibleMultipleEnumeration
             var duplicateMvcControllers = mvcControllers.GroupBy(x => x.GetType().Name).Where(g => g.Count() > 1).Select(y => y.Key).ToList();
             foreach (var duplicateMvcController in duplicateMvcControllers)
             {
-                Console.WriteLine($"Warning! Found multiple mvc controllers named {duplicateMvcController}.");
+                Console.WriteLine($"WARNING! Found multiple mvc controllers named {duplicateMvcController}:");
+                // ReSharper disable once PossibleMultipleEnumeration
+                foreach (var duplicate in mvcControllers.Where(x => x.GetType().Name == duplicateMvcController))
+                {
+                    Console.WriteLine($" - {duplicate.GetType().FullName}");
+                }
             }
 
             var apiControllers = SortedHttpRequestHandlers.Where(x => x is ApiController);
+            // ReSharper disable once PossibleMultipleEnumeration
             var duplicateApiControllers = apiControllers.GroupBy(x => x.GetType().Name).Where(g => g.Count() > 1).Select(y => y.Key).ToList();
             foreach (var duplicateApiController in duplicateApiControllers)
             {
-                Console.WriteLine($"Warning! Found multiple api controllers named {duplicateApiController}.");
+                Console.WriteLine($"WARNING! Found multiple api controllers named {duplicateApiController}:");
+                // ReSharper disable once PossibleMultipleEnumeration
+                foreach (var duplicate in apiControllers.Where(x => x.GetType().Name == duplicateApiController))
+                {
+                    Console.WriteLine($" - {duplicate.GetType().FullName}");
+                }
             }
 
             if (Debugger.IsAttached) ShowErrorDetails = true;
