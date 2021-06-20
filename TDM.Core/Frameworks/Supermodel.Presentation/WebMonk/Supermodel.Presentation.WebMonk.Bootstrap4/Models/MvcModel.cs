@@ -1,7 +1,9 @@
 ﻿#nullable enable
 
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Supermodel.DataAnnotations;
 using Supermodel.DataAnnotations.Attributes;
@@ -64,7 +66,7 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                 //var validationSummaryPlaceholder = new HtmlStack();
                 //result.Append(validationSummaryPlaceholder);
 
-                foreach (var propertyInfo in GetType().GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
+                foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
                 {
                     //skip if this property is not for edit
                     if (propertyInfo.HasAttribute<SkipForEditAttribute>()) continue;
@@ -141,7 +143,7 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                 if (NumberOfColumns != NumberOfColumnsEnum.One) return DisplayTemplateForMultipleColumnsInternal(screenOrderFrom, screenOrderTo, attributes, NumberOfColumns);
                 
                 var result = new HtmlStack();
-                foreach (var propertyInfo in GetType().GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
+                foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
                 {
                     //skip if this property is not for display
                     if (propertyInfo.HasAttribute<SkipForDisplayAttribute>()) continue;
@@ -198,7 +200,7 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
             public virtual IGenerateHtml HiddenTemplate(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue, object? attributes = null)
             {
                 var tags = new Tags();
-                foreach (var propertyInfo in GetType().GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
+                foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
                 {
                     var hiddenTags = Render.Hidden(this, propertyInfo.Name);
                     foreach (var tag in hiddenTags.GetTagsInOrder().Where(x => x.Name == "Input" && x.Attributes.KeyExistsAndEqualsTo("type", "hidden")))
@@ -224,7 +226,7 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                 //var validationSummaryPlaceholder = new HtmlStack();
                 //result.Append(validationSummaryPlaceholder);
 
-                foreach (var propertyInfo in GetType().GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
+                foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
                 {
                     //skip if this property is not for edit
                     if (propertyInfo.HasAttribute<SkipForEditAttribute>()) continue;
@@ -311,7 +313,7 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                 var currentColumn = 1;
                 
                 var result = new HtmlStack();
-                foreach (var propertyInfo in GetType().GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
+                foreach (var propertyInfo in GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo))
                 {
                     //skip if this property is not for display
                     if (propertyInfo.HasAttribute<SkipForDisplayAttribute>()) continue;
@@ -375,6 +377,10 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                 if (currentColumn != 1) result.Pop<Div>();
 
                 return result;                   
+            }
+            protected virtual IEnumerable<PropertyInfo> GetDetailPropertyInfosInOrder(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue)
+            {
+                return GetType().GetDetailPropertyInfosInOrder(screenOrderFrom, screenOrderTo);
             }
             #endregion
 
