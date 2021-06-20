@@ -20,6 +20,7 @@ using WebMonk.Context.WMHttpListenerObjects;
 using WebMonk.Exceptions;
 using WebMonk.Filters.Base;
 using WebMonk.HttpRequestHandlers;
+using WebMonk.HttpRequestHandlers.Controllers;
 using WebMonk.Rendering.Views;
 using WebMonk.Results;
 using WebMonk.Session;
@@ -48,7 +49,22 @@ namespace WebMonk
             
             //It is ok because this is the last method in the constructor
             // ReSharper disable once VirtualMemberCallInConstructor
-            SortedHttpRequestHandlers = GetAndSortHttpRequestHandlers(AppAssemblies); 
+            SortedHttpRequestHandlers = GetAndSortHttpRequestHandlers(AppAssemblies);
+
+            //Check for warnings
+            var mvcControllers = SortedHttpRequestHandlers.Where(x => x is MvcController);
+            var duplicateMvcControllers = mvcControllers.GroupBy(x => x.GetType().Name).Where(g => g.Count() > 1).Select(y => y.Key).ToList();
+            foreach (var duplicateMvcController in duplicateMvcControllers)
+            {
+                Console.WriteLine($"Warning! Found multiple mvc controllers named {duplicateMvcController}.");
+            }
+
+            var apiControllers = SortedHttpRequestHandlers.Where(x => x is ApiController);
+            var duplicateApiControllers = apiControllers.GroupBy(x => x.GetType().Name).Where(g => g.Count() > 1).Select(y => y.Key).ToList();
+            foreach (var duplicateApiController in duplicateApiControllers)
+            {
+                Console.WriteLine($"Warning! Found multiple api controllers named {duplicateApiController}.");
+            }
 
             if (Debugger.IsAttached) ShowErrorDetails = true;
         }
@@ -128,7 +144,7 @@ namespace WebMonk
         
         public Task RunAsync(string? localPathUrl = null, bool autoregisterWithNetsh = true, bool autoUnregisterNetsh = true)
         {
-            return RunAsync(CancellationToken.None, localPathUrl, autoregisterWithNetsh);
+            return RunAsync(CancellationToken.None, localPathUrl, autoregisterWithNetsh, autoUnregisterNetsh);
         }
         public virtual async Task RunAsync(CancellationToken cancellationToken, string? localPathUrl = null, bool autoregisterWithNetsh = true, bool autoUnregisterNetsh = true)
         {
