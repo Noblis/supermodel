@@ -39,15 +39,29 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
         {
             Content.AppendLine(str);
         }
+
+        public void Append(string str, ConsoleColor foregroundColor, ConsoleColor? backgroundColor = null)
+        {
+            var colorChanges = new[] { new ColorChange(0, foregroundColor, backgroundColor) }.ToImmutableArray();
+            AppendColorChanges(colorChanges);
+            Content.Append(str);
+        }
+        public void AppendLine(string str, ConsoleColor foregroundColor, ConsoleColor? backgroundColor = null)
+        {
+            var colorChanges = new[] { new ColorChange(0, foregroundColor, backgroundColor) }.ToImmutableArray();
+            AppendColorChanges(colorChanges);
+            Content.AppendLine(str);
+        }
+
         public void Append(StringWithColor str)
         {
-            Content.Append(str.Content);
             AppendColorChanges(str.ColorChanges);
+            Content.Append(str.Content);
         }
         public void AppendLine(StringWithColor str)
         {
-            Content.AppendLine(str.Content);
             AppendColorChanges(str.ColorChanges);
+            Content.AppendLine(str.Content);
         }
         protected void AppendColorChanges(ImmutableArray<ColorChange> colorChanges)
         {

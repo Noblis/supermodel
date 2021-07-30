@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 
 namespace Supermodel.Presentation.Cmd.ConsoleOutput
 {

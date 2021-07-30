@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 
 namespace Supermodel.Presentation.Cmd.ConsoleOutput
 {
@@ -33,7 +35,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
         {
             return ForegroundColor == other.ForegroundColor && BackgroundColor == other.BackgroundColor;
         }
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return obj is FBColors other && Equals(other);
         }
