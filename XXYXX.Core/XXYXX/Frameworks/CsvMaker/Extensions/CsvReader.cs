@@ -13,6 +13,7 @@ namespace CsvMaker.Extensions
 {
     public static class CsvReader
     {
+        #region Methods
         public static T ValidateCsvHeaderRow<T>(this T me, CsvStringReader sr)
         {
             if (me is ICsvReaderCustom custom) return custom.ValidateCsvHeaderCustom<T>(sr);
@@ -129,6 +130,7 @@ namespace CsvMaker.Extensions
             me.AddRange(resultList);
             return me;
         }
+        #endregion
 
         #region Private Helpers
         private static bool ParseBool(string str)
