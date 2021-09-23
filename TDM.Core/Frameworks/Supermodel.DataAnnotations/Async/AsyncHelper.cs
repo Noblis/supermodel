@@ -12,6 +12,7 @@ namespace Supermodel.DataAnnotations.Async
             var oldContext = SynchronizationContext.Current;
             var synch = new ExclusiveSynchronizationContext();
             SynchronizationContext.SetSynchronizationContext(synch);
+            // ReSharper disable once AsyncVoidLambda
             synch.Post(async _ =>
             {
                 try
@@ -39,6 +40,7 @@ namespace Supermodel.DataAnnotations.Async
             var synch = new ExclusiveSynchronizationContext();
             SynchronizationContext.SetSynchronizationContext(synch);
             var ret = default(T);
+            // ReSharper disable once AsyncVoidLambda
             synch.Post(async _ =>
             {
                 try
