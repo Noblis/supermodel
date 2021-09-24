@@ -479,7 +479,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                 Console.CursorLeft = cursorLeft;
                 if (chars.Count > 0)
                 {
-                    var newValue = new string(chars!.ToArray());
+                    var newValue = new string(chars.ToArray());
                     Console.Write(newValue);
                 }
                 else
@@ -676,7 +676,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
             {
                 Console.CursorTop = cursorTop;
                 Console.CursorLeft = cursorLeft;
-                var newValue = new string(chars!.ToArray());
+                var newValue = new string(chars.ToArray());
                 Console.Write(newValue);
                 Console.Write(' ');
             }
@@ -734,7 +734,7 @@ namespace Supermodel.Presentation.Cmd.ConsoleOutput
                     PrintOption(selectedOption, maxLenPlus2, cursorLeft, cursorTop);
                     Console.WriteLine(); 
                     Console.CursorVisible = savedCursorVisible;
-                    return selectedOption!.Value;
+                    return selectedOption.Value;
                 }
                 if (info.Key == ConsoleKey.DownArrow)
                 {

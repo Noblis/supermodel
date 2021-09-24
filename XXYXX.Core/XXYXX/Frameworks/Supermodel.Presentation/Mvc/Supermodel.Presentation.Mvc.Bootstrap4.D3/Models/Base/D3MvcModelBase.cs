@@ -46,7 +46,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.D3.Models.Base
             else svgTagAttributesDict["id"] = svgId;
 
             return new HtmlString($@"
-                    {GenerateContainerTag(svgId!, svgTagAttributesDict)}
+                    {GenerateContainerTag(svgId, svgTagAttributesDict)}
                     {GenerateD3Script(svgId)}");
 		}
 		#endregion

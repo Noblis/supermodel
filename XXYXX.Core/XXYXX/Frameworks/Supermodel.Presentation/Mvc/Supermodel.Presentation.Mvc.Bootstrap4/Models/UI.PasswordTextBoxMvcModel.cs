@@ -48,7 +48,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
             #region ISupermodelEditorTemplate implemtation
             public override IHtmlContent EditorTemplate<TModel>(IHtmlHelper<TModel> html, int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue, string? markerAttribute = null)
             {
-                var htmlAttributes = new AttributesDict(HtmlAttributesAsDict!);
+                var htmlAttributes = new AttributesDict(HtmlAttributesAsDict);
                 
                 Type = "password";
 

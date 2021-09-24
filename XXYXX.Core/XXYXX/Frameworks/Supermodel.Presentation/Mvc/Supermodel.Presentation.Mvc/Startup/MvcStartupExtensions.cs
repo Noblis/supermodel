@@ -60,7 +60,7 @@ namespace Supermodel.Presentation.Mvc.Startup
                         //This is to correct MVC craziness, they add ReturnUrl page to the 403 error page
                         context.RedirectUri = context.RedirectUri.Substring(0, context.RedirectUri.IndexOf("?", StringComparison.Ordinal)).Replace("%3F", "?");
 
-                        if (!controllerName!.ToLower().EndsWith("api")) context.Response.Redirect(context.RedirectUri);
+                        if (!controllerName.ToLower().EndsWith("api")) context.Response.Redirect(context.RedirectUri);
                         else context.Response.StatusCode = StatusCodes.Status403Forbidden;
                         
                         return Task.CompletedTask;
@@ -126,7 +126,7 @@ namespace Supermodel.Presentation.Mvc.Startup
                         //This is to correct MVC craziness, they add ReturnUrl page to the 403 error page
                         context.RedirectUri = context.RedirectUri.Substring(0, context.RedirectUri.IndexOf("?", StringComparison.Ordinal)).Replace("%3F", "?");
 
-                        if (!controllerName!.ToLower().EndsWith("api")) context.Response.Redirect(context.RedirectUri);
+                        if (!controllerName.ToLower().EndsWith("api")) context.Response.Redirect(context.RedirectUri);
                         else context.Response.StatusCode = StatusCodes.Status403Forbidden;
                         
                         return Task.CompletedTask;

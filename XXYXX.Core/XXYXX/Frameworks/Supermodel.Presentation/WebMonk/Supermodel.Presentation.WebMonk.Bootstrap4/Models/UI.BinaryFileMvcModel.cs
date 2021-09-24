@@ -124,7 +124,7 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
             protected (long?, long?, string, string) GetIdParentIdControllerPropertyName()
             {
                 var valueProviders = HttpContext.Current.ValueProviderManager.GetCachedValueProvidersList();
-                var id = ((IViewModelForEntity)HttpContext.Current.PrefixManager.CurrentParent!)!.Id; //valueProviders.GetValueOrDefault<long?>("id").GetNewValue<long?>();
+                var id = ((IViewModelForEntity)HttpContext.Current.PrefixManager.CurrentParent!).Id; //valueProviders.GetValueOrDefault<long?>("id").GetNewValue<long?>();
                 var parentId = valueProviders.GetValueOrDefault<long?>("parentId").GetNewValue<long?>();
 
                 var controller = HttpContext.Current.RouteManager.GetController();
