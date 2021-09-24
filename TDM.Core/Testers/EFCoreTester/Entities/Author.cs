@@ -12,7 +12,7 @@ namespace EFCoreTester.Entities
     {
         protected override void DeleteInternal()
         {
-            foreach (var book in Books!.ToArray())
+            foreach (var book in Books.ToArray())
             {
                 book.Delete();
             }

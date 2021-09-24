@@ -70,28 +70,28 @@ namespace Supermodel.Presentation.WebMonk.Batch
                                     await HttpContext.Current.WebServer.ProcessHttpRequestAsync(httpListenerContext, CancellationToken.None).ConfigureAwait(false);
                                     if (httpListenerContext.Response.StatusCode < 200 || httpListenerContext.Response.StatusCode > 299)
                                     {
-                                        unitOfWork!.Context.CommitOnDispose = false;
+                                        unitOfWork.Context.CommitOnDispose = false;
                                         rollback = true;
                                     }
                                     responses.Add(httpListenerContext.Response);
                                 }
                                 catch (Exception)
                                 {
-                                    unitOfWork!.Context.CommitOnDispose = false;
+                                    unitOfWork.Context.CommitOnDispose = false;
                                     rollback = true;
                                 }
                             }
                         }
                     }
 
-                    if (unitOfWork!.Context.CommitOnDispose && !rollback)
+                    if (unitOfWork.Context.CommitOnDispose && !rollback)
                     {
-                        await unitOfWork!.Context.FinalSaveChangesAsync(cancellationToken).ConfigureAwait(false);
-                        transaction!.Commit();
+                        await unitOfWork.Context.FinalSaveChangesAsync(cancellationToken).ConfigureAwait(false);
+                        transaction.Commit();
                     }
                     else
                     {
-                        transaction!.Rollback();
+                        transaction.Rollback();
                     }                
                 }
             }

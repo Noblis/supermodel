@@ -42,8 +42,10 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                 if (parentEntity == null && ParentId != null ||
                     parentEntity != null && parentEntity.Id != ParentId)
                 {
+                    // ReSharper disable RedundantSuppressNullableWarningExpression
                     if (ParentId == null) SetParentEntity((TEntity)(object)other!, null);
                     else SetParentEntity((TEntity)(object)other!, await RepoFactory.Create<TParentEntity>().GetByIdAsync((long)ParentId));
+                    // ReSharper restore RedundantSuppressNullableWarningExpression
                 }
 
                 return other;

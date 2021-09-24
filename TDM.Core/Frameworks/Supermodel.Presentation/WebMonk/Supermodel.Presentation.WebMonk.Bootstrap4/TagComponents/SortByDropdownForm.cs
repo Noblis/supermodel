@@ -45,8 +45,8 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                             break;
 
                         default:
-                            var id = key!.ToHtmlId();
-                            var name = key!.ToHtmlName();
+                            var id = key.ToHtmlId();
+                            var name = key.ToHtmlName();
                             var values = query.GetValues(key);
                             var value = values?.FirstOrDefault() ?? "";
                             Append(new Input(new { id, name, type="hidden", value }));

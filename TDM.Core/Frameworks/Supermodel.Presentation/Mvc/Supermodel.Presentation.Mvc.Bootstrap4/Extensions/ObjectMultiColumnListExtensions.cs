@@ -81,7 +81,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Extensions
                 var listColumnAttr = propertyInfo.GetCustomAttribute<ListColumnAttribute>();
                 if (listColumnAttr != null)
                 {
-                    header = listColumnAttr!.Header ?? me.GetType().GetDisplayNameForProperty(propertyInfo.Name);
+                    header = listColumnAttr.Header ?? me.GetType().GetDisplayNameForProperty(propertyInfo.Name);
                     orderBy = listColumnAttr.OrderBy;
                     orderByDesc = listColumnAttr.OrderByDesc;
                 }

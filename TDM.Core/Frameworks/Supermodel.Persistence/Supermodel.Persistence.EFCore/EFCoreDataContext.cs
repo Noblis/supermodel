@@ -246,7 +246,7 @@ namespace Supermodel.Persistence.EFCore
         {
             if (dataSetType == null) throw new ArgumentNullException(nameof(dataSetType));
             if (IsDbSetTypeAProxy(dataSetType)) dataSetType = dataSetType.BaseType!; //for EF Core Lazy Loading
-            return dataSetType!;
+            return dataSetType;
         }
         private static bool IsDbSetTypeAProxy(Type dataSetType)
         {

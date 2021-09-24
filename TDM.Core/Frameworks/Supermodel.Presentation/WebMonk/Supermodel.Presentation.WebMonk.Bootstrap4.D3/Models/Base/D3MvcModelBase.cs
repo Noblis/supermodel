@@ -50,7 +50,7 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.D3.Models.Base
 
             return new Tags 
             {
-                GenerateContainerTag(svgId!, svgTagAttributesDict),
+                GenerateContainerTag(svgId, svgTagAttributesDict),
                 GenerateD3Script(svgId)
             };
         }

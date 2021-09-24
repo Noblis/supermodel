@@ -71,7 +71,7 @@ namespace EFCoreTester
                     {
                         // ReSharper disable once UnusedVariable
                         var address = book.Author.Address;
-                        Console.WriteLine($"{book.Title} by {book.Author!.Name}. Cost: ${book.Price}");
+                        Console.WriteLine($"{book.Title} by {book.Author.Name}. Cost: ${book.Price}");
                     }
                 }
             }
