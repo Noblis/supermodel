@@ -9,7 +9,6 @@
     <None Remove="StaticWebFiles\britecharts.min.css" />
     <None Remove="StaticWebFiles\britecharts.min.js" />
     <None Remove="StaticWebFiles\d3.v5.min.js" />
-    <None Remove="StaticWebFiles\jquery-3.6.0.min.js" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,7 +21,6 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="StaticWebFiles\d3.v5.min.js" />
-    <EmbeddedResource Include="StaticWebFiles\jquery-3.6.0.min.js" />
   </ItemGroup>
 
   <ItemGroup>

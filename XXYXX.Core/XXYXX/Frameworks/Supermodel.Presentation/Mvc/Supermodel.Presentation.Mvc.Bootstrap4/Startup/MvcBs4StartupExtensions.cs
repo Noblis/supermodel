@@ -21,10 +21,11 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Startup
         #region Constructors
         static MvcBs4StartupExtensions()
         {
-            JqueryJs = EmbeddedResource.ReadTextFile(typeof(MvcBs4StartupExtensions).Assembly, "Supermodel.Presentation.Mvc.Bootstrap4.StaticWebFiles.super.bs4.js");
+            JqueryJs = EmbeddedResource.ReadTextFile(typeof(MvcBs4StartupExtensions).Assembly, "Supermodel.Presentation.Mvc.Bootstrap4.StaticWebFiles.jquery-3.6.0.min.js");
             SuperBs4Js = EmbeddedResource.ReadTextFile(typeof(MvcBs4StartupExtensions).Assembly, "Supermodel.Presentation.Mvc.Bootstrap4.StaticWebFiles.super.bs4.js");
             SuperBs4Css = EmbeddedResource.ReadTextFile(typeof(MvcBs4StartupExtensions).Assembly, "Supermodel.Presentation.Mvc.Bootstrap4.StaticWebFiles.super.bs4.css");
             BootboxJs = EmbeddedResource.ReadTextFile(typeof(MvcBs4StartupExtensions).Assembly, "Supermodel.Presentation.Mvc.Bootstrap4.StaticWebFiles.bootbox.all.min.js");
+            BootstrapJs = EmbeddedResource.ReadTextFile(typeof(MvcBs4StartupExtensions).Assembly, "Supermodel.Presentation.Mvc.Bootstrap4.StaticWebFiles.bootstrap.bundle.min.js");
 
             MessageHtml = EmbeddedResource.ReadTextFile(typeof(MvcBs4StartupExtensions).Assembly, "Supermodel.Presentation.Mvc.Bootstrap4.StaticWebFiles.Message.html");
         }
@@ -78,10 +79,11 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Startup
             endpoints.MapControllerRoute("DefaultMvc", "{controller=Home}/{action=Index}/{id:long?}");
             endpoints.MapRazorPages();
 
-            endpoints.MapGet("static_web_files/jquery-3.6.0.min.js", async context => { await context.Response.WriteAsync(SuperBs4Js); });
+            endpoints.MapGet("static_web_files/jquery-3.6.0.min.js", async context => { await context.Response.WriteAsync(JqueryJs); });
             endpoints.MapGet("static_web_files/super.bs4.js", async context => { await context.Response.WriteAsync(SuperBs4Js); });
             endpoints.MapGet("static_web_files/super.bs4.css", async context => { await context.Response.WriteAsync(SuperBs4Css); });
             endpoints.MapGet("static_web_files/bootbox.all.min.js", async context => { await context.Response.WriteAsync(BootboxJs); });
+            endpoints.MapGet("static_web_files/bootstrap.bundle.min.js", async context => { await context.Response.WriteAsync(BootstrapJs); });
 
             endpoints.MapGet("static_web_files/Message.html", async context =>
             {
@@ -104,6 +106,8 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Startup
         public static string SuperBs4Css { get; }
         public static string BootboxJs { get; }
         public static string JqueryJs { get; }
+        public static string BootstrapJs { get; }
+
 
         public static string MessageHtml { get; }
         #endregion
