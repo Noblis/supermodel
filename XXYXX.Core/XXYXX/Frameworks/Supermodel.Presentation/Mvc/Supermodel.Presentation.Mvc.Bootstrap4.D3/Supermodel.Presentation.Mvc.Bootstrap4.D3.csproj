@@ -6,6 +6,26 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="StaticWebFiles\britecharts.min.css" />
+    <None Remove="StaticWebFiles\britecharts.min.js" />
+    <None Remove="StaticWebFiles\d3.v5.min.js" />
+    <None Remove="StaticWebFiles\jquery-3.6.0.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="StaticWebFiles\britecharts.min.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StaticWebFiles\britecharts.min.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StaticWebFiles\d3.v5.min.js" />
+    <EmbeddedResource Include="StaticWebFiles\jquery-3.6.0.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Supermodel.Presentation.Mvc.Bootstrap4\Supermodel.Presentation.Mvc.Bootstrap4.csproj" />
   </ItemGroup>
 

@@ -4,7 +4,7 @@ using Domain.Supermodel.Persistence;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Supermodel.Presentation.Mvc.Bootstrap4.Startup;
+using Supermodel.Presentation.Mvc.Bootstrap4.D3.Startup;
 using WebMVC.Supermodel.Auth;
 
 namespace WebMVC
@@ -15,14 +15,14 @@ namespace WebMVC
         public void ConfigureServices(IServiceCollection services)
         {
             //Pick one of these for web api authentication
-            //services.AddSupermodelMvcBs4Services<ApiSecureAuthenticationHandler>();
-            services.AddSupermodelMvcBs4Services<ApiBasicAuthenticationHandler>();
+            //services.AddSupermodelMvcBs4D3Services<ApiSecureAuthenticationHandler>();
+            services.AddSupermodelMvcBs4D3Services<ApiBasicAuthenticationHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseSupermodelMvcBs4Middleware<DataContext>(env);
+            app.UseSupermodelMvcBs4D3Middleware<DataContext>(env);
         }
     }
 }

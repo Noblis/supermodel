@@ -32,10 +32,12 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.D3.TagHelpers
                 <link rel=""stylesheet"" href=""https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"" integrity=""sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"" crossorigin=""anonymous"" />
                 <link rel=""stylesheet"" href=""https://cdnjs.cloudflare.com/ajax/libs/open-iconic/1.1.1/font/css/open-iconic-bootstrap.min.css"" integrity=""sha256-BJ/G+e+y7bQdrYkS2RBTyNfBHpA9IuGaPmf9htub5MQ="" crossorigin=""anonymous"" />
                 <link rel=""stylesheet"" href=""https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"" />
-                <link rel=""stylesheet"" href=""https://cdn.jsdelivr.net/npm/britecharts/dist/css/britecharts.min.css"" type=""text/css"" />
+                <link rel=""stylesheet"" href=""{urlHelper.Content("~/static_web_files/britecharts.min.css")}"" />
                 <link rel=""stylesheet"" href=""{urlHelper.Content("~/static_web_files/super.bs4.css")}"" />
             ";
             // ReSharper restore Html.PathError
+
+            //britecharts.min.css: https://cdn.jsdelivr.net/npm/britecharts/dist/css/britecharts.min.css
             return result;
         }
         #endregion
