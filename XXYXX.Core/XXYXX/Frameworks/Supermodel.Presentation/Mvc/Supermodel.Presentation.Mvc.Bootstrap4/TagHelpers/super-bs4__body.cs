@@ -53,7 +53,6 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.TagHelpers
             // ReSharper disable Html.PathError
             var result = $@"
                 <script src=""{urlHelper.Content("~/static_web_files/jquery-3.6.0.min.js")}""></script>
-                <script src=""https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"" integrity=""sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"" crossorigin=""anonymous""></script>
                 <script src=""{urlHelper.Content("~/static_web_files/bootstrap.bundle.min.js")}""></script>
                 <script src=""{urlHelper.Content("~/static_web_files/jquery-ui.min.js")}""></script>
                 <script src=""{urlHelper.Content("~/static_web_files/bootbox.all.min.js")}""></script>
