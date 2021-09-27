@@ -18,10 +18,9 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
             {
                 AppendAndPush(new Body(bodyAttributes)); 
 
-                Append(new Script(new { src="https://code.jquery.com/jquery-3.4.1.min.js", integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=", crossorigin="anonymous" }));
-                Append(new Script(new { src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js", integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q", crossorigin="anonymous" }));
-                Append(new Script(new { src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js", integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM", crossorigin="anonymous" }));
-                Append(new Script(new { src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js", integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=", crossorigin="anonymous" }));
+                Append(new Script(new { src="/js/jquery-3.6.0.min.js" }));
+                Append(new Script(new { src="/js/bootstrap.bundle.min.js" }));
+                Append(new Script(new { src="/js/jquery-ui.min.js" }));
                 Append(new Script(new { src="/js/bootbox.all.min.js"}));
                 Append(new Script(new { src="/js/super.bs4.js" }));
                 

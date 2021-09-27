@@ -16,7 +16,7 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.D3.Models
             {
                 var bs4HeadContainer = new Bs4.HeadContainer(headAttributes);
                 AppendAndPush(bs4HeadContainer);
-                Append(new Link(new { rel="stylesheet", href="https://cdn.jsdelivr.net/npm/britecharts/dist/css/britecharts.min.css", type="text/css" }));
+                Append(new Link(new { rel="stylesheet", href="/css/britecharts.min.css", type="text/css" }));
                 Pop<Bs4.HeadContainer>();
                 InnerContent = bs4HeadContainer.InnerContent;
             }
