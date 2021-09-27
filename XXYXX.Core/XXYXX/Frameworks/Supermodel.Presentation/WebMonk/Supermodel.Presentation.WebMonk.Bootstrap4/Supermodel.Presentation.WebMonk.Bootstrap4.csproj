@@ -5,9 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="wwwroot\bootstrap.bundle.min.js" />
+    <None Remove="wwwroot\bootstrap.min.css" />
     <None Remove="wwwroot\css\super.bs4.css" />
+    <None Remove="wwwroot\jquery-3.6.0.min.js" />
+    <None Remove="wwwroot\jquery-ui.min.css" />
+    <None Remove="wwwroot\jquery-ui.min.js" />
     <None Remove="wwwroot\js\bootbox.all.min.js" />
     <None Remove="wwwroot\js\super.bs4.js" />
+    <None Remove="wwwroot\open-iconic-bootstrap.min.css" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,6 +24,27 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="wwwroot\js\super.bs4.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\js\bootstrap.bundle.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\css\bootstrap.min.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\js\jquery-3.6.0.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\css\jquery-ui.min.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\js\jquery-ui.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\css\open-iconic-bootstrap.min.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

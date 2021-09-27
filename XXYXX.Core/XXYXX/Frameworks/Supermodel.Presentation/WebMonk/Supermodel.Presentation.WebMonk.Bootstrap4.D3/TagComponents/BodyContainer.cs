@@ -16,8 +16,8 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.D3.Models
             {
                 var bs4BodyContainer = new Bs4.BodyContainer(bodyAttributes);
                 AppendAndPush(bs4BodyContainer);
-                Append(new Script(new { src="https://d3js.org/d3.v5.min.js" }));
-                Append(new Script(new { src="https://cdn.jsdelivr.net/npm/britecharts@2/dist/bundled/britecharts.min.js" }));
+                Append(new Script(new { src="/js/d3.v5.min.js" }));
+                Append(new Script(new { src="/js/britecharts.min.js" }));
                 Pop<Bs4.BodyContainer>();
                 InnerContent = bs4BodyContainer.InnerContent;
             }
