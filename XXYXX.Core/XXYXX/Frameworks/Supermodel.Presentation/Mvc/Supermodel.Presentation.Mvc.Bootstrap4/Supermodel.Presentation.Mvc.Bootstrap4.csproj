@@ -10,6 +10,7 @@
     <None Remove="StaticWebFiles\bootbox.all.min.js" />
     <None Remove="StaticWebFiles\bootstrap.bundle.min.js" />
     <None Remove="StaticWebFiles\jquery-3.6.0.min.js" />
+    <None Remove="StaticWebFiles\jquery-ui.min.js" />
     <None Remove="StaticWebFiles\Message.html" />
     <None Remove="StaticWebFiles\super.bs4.css" />
     <None Remove="StaticWebFiles\Super.bs4.js" />
@@ -18,6 +19,7 @@
   <ItemGroup>
     <EmbeddedResource Include="StaticWebFiles\bootstrap.bundle.min.js" />
     <EmbeddedResource Include="StaticWebFiles\jquery-3.6.0.min.js" />
+    <EmbeddedResource Include="StaticWebFiles\jquery-ui.min.js" />
     <EmbeddedResource Include="StaticWebFiles\Message.html" />
   </ItemGroup>
 
