@@ -9,22 +9,28 @@
   <ItemGroup>
     <None Remove="StaticWebFiles\bootbox.all.min.js" />
     <None Remove="StaticWebFiles\bootstrap.bundle.min.js" />
+    <None Remove="StaticWebFiles\bootstrap.min.css" />
     <None Remove="StaticWebFiles\jquery-3.6.0.min.js" />
+    <None Remove="StaticWebFiles\jquery-ui.min.css" />
     <None Remove="StaticWebFiles\jquery-ui.min.js" />
     <None Remove="StaticWebFiles\Message.html" />
+    <None Remove="StaticWebFiles\open-iconic-bootstrap.min.css" />
     <None Remove="StaticWebFiles\super.bs4.css" />
     <None Remove="StaticWebFiles\Super.bs4.js" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="StaticWebFiles\bootstrap.bundle.min.js" />
+    <EmbeddedResource Include="StaticWebFiles\bootstrap.min.css" />
     <EmbeddedResource Include="StaticWebFiles\jquery-3.6.0.min.js" />
+    <EmbeddedResource Include="StaticWebFiles\jquery-ui.min.css" />
     <EmbeddedResource Include="StaticWebFiles\jquery-ui.min.js" />
     <EmbeddedResource Include="StaticWebFiles\Message.html" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="StaticWebFiles\bootbox.all.min.js" />
+    <EmbeddedResource Include="StaticWebFiles\open-iconic-bootstrap.min.css" />
     <EmbeddedResource Include="StaticWebFiles\super.bs4.css" />
   </ItemGroup>
 
