@@ -5,16 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="wwwroot\js\supermodel-restful-link.js" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="wwwroot\js\supermodel-restful-link.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\..\Supermodel.Encryptor\Supermodel.Encryptor.csproj" />
     <ProjectReference Include="..\..\..\Supermodel.Persistence\Supermodel.Persistence\Supermodel.Persistence.csproj" />
     <ProjectReference Include="..\..\..\WebMonk\WebMonk\WebMonk.csproj" />
