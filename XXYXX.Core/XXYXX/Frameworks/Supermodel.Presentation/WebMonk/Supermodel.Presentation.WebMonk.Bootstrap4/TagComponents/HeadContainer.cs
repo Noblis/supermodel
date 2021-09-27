@@ -20,7 +20,7 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
 
                 Append(new Link(new { rel="stylesheet", href="/css/bootstrap.min.css" }));
                 Append(new Link(new { rel="stylesheet", href="/css/open-iconic-bootstrap.min.css" }));
-                Append(new Link(new { rel="stylesheet", href="/css/jquery-ui.css" }));
+                Append(new Link(new { rel="stylesheet", href="/css/jquery-ui.min.css" }));
                 Append(new Link(new { rel="stylesheet", href="/css/super.bs4.css" }));
 
                 Append(InnerContent = new Tags());
