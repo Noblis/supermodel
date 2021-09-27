@@ -21,11 +21,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.D3.Startup
         {
             var assembly = typeof(MvcBs4D3StartupExtensions).Assembly;
             var names = EmbeddedResource.GetAllResourceNamesInFolder(assembly, "StaticWebFiles").Where(x => x.EndsWith(".css") || x.EndsWith(".js")).ToArray();
-            foreach (var name in names) Files[name] = EmbeddedResource.ReadTextFileWithFileName(assembly, name);
-
-            //D3Js = EmbeddedResource.ReadTextFile(typeof(MvcBs4D3StartupExtensions).Assembly, "Supermodel.Presentation.Mvc.Bootstrap4.D3.StaticWebFiles.d3.v5.min.js");
-            //BrightChartsJs = EmbeddedResource.ReadTextFile(typeof(MvcBs4D3StartupExtensions).Assembly, "Supermodel.Presentation.Mvc.Bootstrap4.D3.StaticWebFiles.britecharts.min.js");
-            //BrightChartsCss = EmbeddedResource.ReadTextFile(typeof(MvcBs4D3StartupExtensions).Assembly, "Supermodel.Presentation.Mvc.Bootstrap4.D3.StaticWebFiles.britecharts.min.css");
+            foreach (var name in names) Files[name] = EmbeddedResource.ReadTextFileWithFileName(assembly, $"StaticWebFiles.{name}");
         }
         #endregion
 
@@ -56,9 +52,6 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.D3.Startup
         {
             MvcBs4StartupExtensions.SetUpEndpoints(endpoints);
 
-            //endpoints.MapGet("static_web_files/d3.v5.min.js", async context => { await context.Response.WriteAsync(D3Js); });
-            //endpoints.MapGet("static_web_files/britecharts.min.js", async context => { await context.Response.WriteAsync(BrightChartsJs); });
-            //endpoints.MapGet("static_web_files/britecharts.min.css", async context => { await context.Response.WriteAsync(BrightChartsCss); });
             foreach (var fileName in Files.Keys)
             {
                 endpoints.MapGet($"static_web_files/{fileName}", async context => { await context.Response.WriteAsync(Files[fileName]); });
@@ -68,9 +61,6 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.D3.Startup
         #endregion
 
         #region Properties
-        //public static string BrightChartsJs { get; }
-        //public static string BrightChartsCss { get; }
-        //public static string D3Js { get; }
         public static Dictionary<string, string> Files { get; } = new Dictionary<string, string>();
         #endregion
     }
