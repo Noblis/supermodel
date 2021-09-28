@@ -51,7 +51,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.TagHelpers
                 <meta charset=""utf-8"">
                 <meta name=""viewport"" content=""width=device-width, initial-scale=1, shrink-to-fit=no"">
                 <link rel=""stylesheet"" href=""{urlHelper.Content("~/static_web_files/bootstrap.min.css")}"" />
-                <link rel=""stylesheet"" href=""{urlHelper.Content("~/static_web_files/open-iconic-bootstrap.min.css")}"" />
+                <link rel=""stylesheet"" href=""{urlHelper.Content("~/static_web_files//open-iconic/font/css/open-iconic-bootstrap.min.css")}"" />
                 <link rel=""stylesheet"" href=""{urlHelper.Content("~/static_web_files/jquery-ui.min.css")}"" />
                 <link rel=""stylesheet"" href=""{urlHelper.Content("~/static_web_files/super.bs4.css")}"" />
             ";

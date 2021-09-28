@@ -13,26 +13,26 @@ namespace Supermodel.Tooling.SolutionMaker.Cmd
                 SolutionMaker.Version = "2.20.000.Beta1";
 
                 ////*******Un-comment and run this once to refresh the solution zip
-                Console.WriteLine($"v{SolutionMaker.Version}");
-                Console.WriteLine();
+                //Console.WriteLine($"v{SolutionMaker.Version}");
+                //Console.WriteLine();
 
-                Console.Write("Deleting XXYXX\\Frameworks directory... ");
-                Directory.Delete(@"..\..\..\..\..\..\..\XXYXX.Core\XXYXX\Frameworks", true);
-                Console.WriteLine("Done!");
+                //Console.Write("Deleting XXYXX\\Frameworks directory... ");
+                //Directory.Delete(@"..\..\..\..\..\..\..\XXYXX.Core\XXYXX\Frameworks", true);
+                //Console.WriteLine("Done!");
 
-                Console.Write("Copying Frameworks directory from TDM.Core to XXYXX... ");
-                CopyDirectory(@"..\..\..\..\..\..\Frameworks", @"..\..\..\..\..\..\..\XXYXX.Core\XXYXX\Frameworks");
-                Console.WriteLine("Done!");
+                //Console.Write("Copying Frameworks directory from TDM.Core to XXYXX... ");
+                //CopyDirectory(@"..\..\..\..\..\..\Frameworks", @"..\..\..\..\..\..\..\XXYXX.Core\XXYXX\Frameworks");
+                //Console.WriteLine("Done!");
 
-                //Adjust versions in XXYXX and in TDM
-                File.WriteAllText(SolutionMaker.CombineAndAdjustPaths(@"..\..\..\..\..\..\..\XXYXX.Core\XXYXX\", @"Frameworks\Version.txt"), $"Version {SolutionMaker.Version}");
-                File.WriteAllText(SolutionMaker.CombineAndAdjustPaths(@"..\..\..\..\..\..\", @"Frameworks\Version.txt"), $"Version {SolutionMaker.Version}");
-                Console.WriteLine("Version.txt files updated successfully!");
+                ////Adjust versions in XXYXX and in TDM
+                //File.WriteAllText(SolutionMaker.CombineAndAdjustPaths(@"..\..\..\..\..\..\..\XXYXX.Core\XXYXX\", @"Frameworks\Version.txt"), $"Version {SolutionMaker.Version}");
+                //File.WriteAllText(SolutionMaker.CombineAndAdjustPaths(@"..\..\..\..\..\..\", @"Frameworks\Version.txt"), $"Version {SolutionMaker.Version}");
+                //Console.WriteLine("Version.txt files updated successfully!");
 
-                SolutionMaker.CreateSnapshot(@"..\..\..\..\..\..\..\XXYXX.Core\XXYXX", @"..\..\..\");
-                Console.WriteLine($"{SolutionMaker.ZipFileName} created successfully!");
+                //SolutionMaker.CreateSnapshot(@"..\..\..\..\..\..\..\XXYXX.Core\XXYXX", @"..\..\..\");
+                //Console.WriteLine($"{SolutionMaker.ZipFileName} created successfully!");
 
-                return;
+                //return;
                 //********Un-comment and run this once to refresh the solution zip
 
                 Console.BackgroundColor = ConsoleColor.Black;

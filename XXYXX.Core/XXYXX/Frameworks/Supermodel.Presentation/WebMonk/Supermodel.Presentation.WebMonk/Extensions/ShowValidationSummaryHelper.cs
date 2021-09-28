@@ -16,7 +16,7 @@ namespace Supermodel.Presentation.WebMonk.Extensions
             {
                 case ValidationSummaryVisible.IfNoVisibleErrors:
                 {
-                    var selectedId = ParseNullableLong(HttpContext.Current.HttpListenerContext.Request.QueryString["selectedId"]);
+                    var selectedId = ParseNullableLong(HttpContext.Current.HttpListenerContext.Request.QueryString["selectedId"]!);
                     var showValidationSummary = !HttpContext.Current.ValidationResultList.IsValid && selectedId == null;
                     foreach (var propertyInfo in model.GetType().GetDetailPropertyInfosInOrder())
                     {

@@ -36,7 +36,7 @@ namespace WebMonk.ModeBinding
             {
                 if (obj is Array array) 
                 {
-                    var mustNotBeNull = objType.ToContextualType().ElementType.Nullability == Nullability.NotNullable;
+                    var mustNotBeNull = objType.ToContextualType().ElementType!.Nullability == Nullability.NotNullable;
                     for(var i = 0; i < array.Length; i++)
                     {
                         using(HttpContext.Current.PrefixManager.NewPrefix($"[{i}]", obj))

@@ -11,7 +11,7 @@ namespace Supermodel.Presentation.Mvc.Extensions
     {
         public static bool IsPropertyRequired(this ModelBindingContext bindingContext)
         {
-            var propInfo = bindingContext.ModelMetadata.ContainerType.GetProperty(bindingContext.ModelMetadata.PropertyName);
+            var propInfo = bindingContext.ModelMetadata.ContainerType!.GetProperty(bindingContext.ModelMetadata.PropertyName!);
             if (propInfo == null) throw new NoNullAllowedException("propInfo == null");
             return Attribute.IsDefined(propInfo, typeof(RequiredAttribute));
         }

@@ -241,7 +241,7 @@ namespace Supermodel.Presentation.Mvc.HtmlHelpers
                 var properties = NotTypedHtml.ViewData.ModelMetadata.Properties.Where(pm => pm.ShowForEdit);
                 foreach (var prop in properties)
                 {
-                    result.AppendLine(Html.Super().Hidden(prop.PropertyName).GetString());
+                    result.AppendLine(Html.Super().Hidden(prop.PropertyName!).GetString());
                 }
             }
 
@@ -424,7 +424,7 @@ namespace Supermodel.Presentation.Mvc.HtmlHelpers
                 Values = routeValues
             };
             var url = urlHelper.Action(actionContext);
-            return url;
+            return url!;
         }
         #endregion
 

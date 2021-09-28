@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,6 +14,12 @@
     <None Remove="wwwroot\js\bootbox.all.min.js" />
     <None Remove="wwwroot\js\super.bs4.js" />
     <None Remove="wwwroot\open-iconic-bootstrap.min.css" />
+    <None Remove="wwwroot\open-iconic\font\css\open-iconic-bootstrap.min.css" />
+    <None Remove="wwwroot\open-iconic\font\fonts\open-iconic.eot" />
+    <None Remove="wwwroot\open-iconic\font\fonts\open-iconic.otf" />
+    <None Remove="wwwroot\open-iconic\font\fonts\open-iconic.svg" />
+    <None Remove="wwwroot\open-iconic\font\fonts\open-iconic.ttf" />
+    <None Remove="wwwroot\open-iconic\font\fonts\open-iconic.woff" />
   </ItemGroup>
 
   <ItemGroup>
@@ -44,7 +50,22 @@
     <Content Include="wwwroot\js\jquery-ui.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="wwwroot\css\open-iconic-bootstrap.min.css">
+    <Content Include="wwwroot\open-iconic\font\css\open-iconic-bootstrap.min.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\open-iconic\font\fonts\open-iconic.eot">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\open-iconic\font\fonts\open-iconic.otf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\open-iconic\font\fonts\open-iconic.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\open-iconic\font\fonts\open-iconic.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\open-iconic\font\fonts\open-iconic.woff">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

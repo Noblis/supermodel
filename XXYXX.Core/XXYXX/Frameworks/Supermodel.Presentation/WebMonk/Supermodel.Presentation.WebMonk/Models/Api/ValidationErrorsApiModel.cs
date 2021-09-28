@@ -33,7 +33,7 @@ namespace Supermodel.Presentation.WebMonk.Models.Api
                 foreach (var memberName in vr.MemberNames)
                 {
                     if (!modelState.ContainsKey(memberName)) modelState[memberName] = new List<string>();
-                    modelState[memberName].Add(vr.ErrorMessage);
+                    modelState[memberName].Add(vr.ErrorMessage!);
                 }
             }
 

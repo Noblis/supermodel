@@ -107,7 +107,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models.Base
             {
                 if (bindingContext.IsPropertyRequired()) 
                 {
-                    var displayName = bindingContext.ModelMetadata.ContainerType.GetDisplayNameForProperty(bindingContext.ModelMetadata.PropertyName);
+                    var displayName = bindingContext.ModelMetadata.ContainerType!.GetDisplayNameForProperty(bindingContext.ModelMetadata.PropertyName!);
                     bindingContext.ModelState.AddModelError(key, $"The {displayName} field is required");
                     success = false;
                 }
@@ -122,7 +122,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models.Base
 
             SelectedValue = attemptedValue;
 
-            if (bindingContext.Model == null) bindingContext.Model = this;
+            //if (bindingContext.Model == null) bindingContext.Model = this;
             var existingModel = (SingleSelectMvcModel)bindingContext.Model;
             existingModel.SelectedValue = SelectedValue;
 

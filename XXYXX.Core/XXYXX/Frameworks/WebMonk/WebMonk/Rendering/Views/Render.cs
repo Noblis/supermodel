@@ -288,7 +288,7 @@ namespace WebMonk.Rendering.Views
                     var tags = new Tags();
                     foreach (var errorMessage in errorMessages)
                     {
-                        tags.Add(new Li(liAttributes) { new Txt(errorMessage) });
+                        tags.Add(new Li(liAttributes) { new Txt(errorMessage!) });
                     }
                     return tags;
                 })

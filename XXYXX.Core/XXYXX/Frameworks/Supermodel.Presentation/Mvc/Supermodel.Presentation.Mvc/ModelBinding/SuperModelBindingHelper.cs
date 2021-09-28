@@ -334,7 +334,7 @@ namespace Supermodel.Presentation.Mvc.ModelBinding
                 var memberExpression = (MemberExpression)expression;
                 if (memberExpression.Member is PropertyInfo memberInfo)
                 {
-                    if (memberExpression.Expression.NodeType != ExpressionType.Parameter)
+                    if (memberExpression.Expression!.NodeType != ExpressionType.Parameter)
                     {
                         // Chained expressions and non parameter based expressions are not supported.
                         throw new InvalidOperationException("FormatInvalid_IncludePropertyExpression");
@@ -464,7 +464,8 @@ namespace Supermodel.Presentation.Mvc.ModelBinding
                         for (var i = 0; i < modelMetadata.Properties.Count; i++)
                         {
                             var property = modelMetadata.Properties[i];
-                            modelState.ClearValidationState(property.BinderModelName ?? property.PropertyName);
+                            //modelState.ClearValidationState(property.BinderModelName ?? property.PropertyName);
+                            modelState.ClearValidationState(property.BinderModelName);
                         }
                     }
                     else
