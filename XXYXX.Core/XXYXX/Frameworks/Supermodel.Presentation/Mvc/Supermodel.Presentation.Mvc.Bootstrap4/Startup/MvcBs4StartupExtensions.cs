@@ -24,8 +24,11 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Startup
         static MvcBs4StartupExtensions()
         {
             var assembly = typeof(MvcBs4StartupExtensions).Assembly;
-            var names = EmbeddedResource.GetAllResourceNamesInFolder(assembly, "StaticWebFiles").Where(x => x.EndsWith(".css") || x.EndsWith(".js")).ToArray();
-            foreach (var name in names) Files[name] = EmbeddedResource.ReadTextFileWithFileName(assembly, $"StaticWebFiles.{name}");
+            var names = EmbeddedResource.GetAllResourceNamesInFolder(assembly, "StaticWebFiles").Where(x => !x.EndsWith("Message.html")).ToArray();
+            foreach (var name in names)
+            {
+                Files[name] = EmbeddedResource.ReadTextFileWithFileName(assembly, $"StaticWebFiles.{name}");
+            }
 
             MessageHtml = EmbeddedResource.ReadTextFileWithFileName(typeof(MvcBs4StartupExtensions).Assembly, "StaticWebFiles.Message.html");
         }
@@ -81,7 +84,18 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Startup
 
             foreach (var fileName in Files.Keys)
             {
-                endpoints.MapGet($"static_web_files/{fileName}", async context => { await context.Response.WriteAsync(Files[fileName]); });
+                if (fileName.Contains("open_iconic.font.css."))
+                {
+                    endpoints.MapGet($"static_web_files/open_iconic/font/css/{fileName.Replace("open_iconic.font.css.", "")}", async context => { await context.Response.WriteAsync(Files[fileName]); });
+                }
+                else if (fileName.Contains("open_iconic.font.fonts."))
+                {
+                    endpoints.MapGet($"static_web_files/open_iconic/font/fonts/{fileName.Replace("open_iconic.font.fonts.", "")}", async context => { await context.Response.WriteAsync(Files[fileName]); });
+                }
+                else
+                {
+                    endpoints.MapGet($"static_web_files/{fileName}", async context => { await context.Response.WriteAsync(Files[fileName]); });
+                }
             }
             
             endpoints.MapGet("static_web_files/Message.html", async context =>
