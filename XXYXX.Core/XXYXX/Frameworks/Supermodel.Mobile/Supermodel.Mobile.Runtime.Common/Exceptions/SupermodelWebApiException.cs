@@ -23,6 +23,6 @@ namespace Supermodel.Mobile.Runtime.Common.Exceptions
 
 		public HttpStatusCode StatusCode { get; }
 		public string Content { get; }
-        public string ContentJsonMessage => JsonConvert.DeserializeObject<JsonMessage>(Content).Message;
+        public string ContentJsonMessage => JsonConvert.DeserializeObject<JsonMessage>(Content)!.Message;
     }
 }

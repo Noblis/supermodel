@@ -50,7 +50,7 @@ namespace Supermodel.Mobile.Runtime.Common.DataContext.WebApi
                 if (dataResponse.IsSuccessStatusCode)
                 {
                     var validateLoginResponse = JsonConvert.DeserializeObject<ValidateLoginResponse>(dataResponseContentStr);
-                    return new LoginResult(true, validateLoginResponse.UserId, validateLoginResponse.UserLabel);
+                    return new LoginResult(true, validateLoginResponse!.UserId, validateLoginResponse.UserLabel);
                 }
                 if (dataResponse.StatusCode == HttpStatusCode.Unauthorized) return new LoginResult(false, null, null);
                 throw new SupermodelWebApiException(dataResponse.StatusCode, dataResponseContentStr);
@@ -147,7 +147,7 @@ namespace Supermodel.Mobile.Runtime.Common.DataContext.WebApi
                     else if (response.StatusCode == HttpStatusCode.ExpectationFailed) //If validation error(s)
                     {
                         var validationError = JsonConvert.DeserializeObject<SupermodelDataContextValidationException.ValidationError>(responseContentStr);
-                        validationError.FailedAction = pendingActions.Single();
+                        validationError!.FailedAction = pendingActions.Single();
                         ThrowSupermodelValidationException(validationError);
                     }
                     else

@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Supermodel.DataAnnotations\Supermodel.DataAnnotations.csproj" />
+    <ProjectReference Include="..\..\Supermodel.ReflectionMapper\Supermodel.ReflectionMapper.csproj" />
     <ProjectReference Include="..\WebMonk.RazorSharp\WebMonk.RazorSharp.csproj" />
   </ItemGroup>
 

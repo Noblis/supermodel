@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Supermodel.DataAnnotations.Attributes;
+using Supermodel.ReflectionMapper;
 using WebMonk.Context;
 using WebMonk.Context.WMHttpListenerObjects;
 using WebMonk.Exceptions;
@@ -45,7 +46,7 @@ namespace WebMonk
                 AuthenticationSchemes = AuthenticationSchemes.Anonymous,
                 Prefixes = { ListeningBaseUrl }
             };
-            AppAssemblies = appAssemblies ?? AppDomain.CurrentDomain.GetAssemblies();
+            AppAssemblies = appAssemblies ?? AppDomain.CurrentDomain.GetAllAssemblies();
             
             //It is ok because this is the last method in the constructor
             // ReSharper disable once VirtualMemberCallInConstructor
