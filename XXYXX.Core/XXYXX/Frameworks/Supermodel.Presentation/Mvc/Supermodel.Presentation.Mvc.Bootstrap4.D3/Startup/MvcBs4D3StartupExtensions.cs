@@ -21,7 +21,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.D3.Startup
         {
             var assembly = typeof(MvcBs4D3StartupExtensions).Assembly;
             var names = EmbeddedResource.GetAllResourceNamesInFolder(assembly, "StaticWebFiles").Where(x => x.EndsWith(".css") || x.EndsWith(".js")).ToArray();
-            foreach (var name in names) Files[name] = EmbeddedResource.ReadTextFileWithFileName(assembly, $"StaticWebFiles.{name}");
+            foreach (var name in names) Files[name] = EmbeddedResource.ReadBinaryFileWithFileName(assembly, $"StaticWebFiles.{name}");
         }
         #endregion
 
@@ -54,14 +54,14 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.D3.Startup
 
             foreach (var fileName in Files.Keys)
             {
-                endpoints.MapGet($"static_web_files/{fileName}", async context => { await context.Response.WriteAsync(Files[fileName]); });
+                endpoints.MapGet($"static_web_files/{fileName}", async context => { await context.Response.Body.WriteAsync(Files[fileName], 0, Files[fileName].Length); });
             }
 
         }
         #endregion
 
         #region Properties
-        public static Dictionary<string, string> Files { get; } = new Dictionary<string, string>();
+        public static Dictionary<string, byte[]> Files { get; } = new Dictionary<string, byte[]>();
         #endregion
     }
 }
