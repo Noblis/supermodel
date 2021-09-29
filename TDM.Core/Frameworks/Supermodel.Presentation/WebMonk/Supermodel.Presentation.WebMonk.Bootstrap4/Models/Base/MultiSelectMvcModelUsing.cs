@@ -60,62 +60,119 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models.Base
             return listOfOptions;
         }
         #endregion
-        
+
         #region IRMapperCustom implementation
         public Task MapFromCustomAsync<T>(T other)
         {
             if (other == null) throw new ArgumentNullException(nameof(other));
 
-            if (EntityType == null ) throw new SupermodelException("TMvcModel must be a valid MvcModelForEntity<> in order to MapFromAsync");
+            if (EntityType == null) throw new SupermodelException("TMvcModel must be a valid MvcModelForEntity<> in order to MapFromAsync");
 
             // ReSharper disable once InconsistentNaming
-            foreach (var m2m in (IEnumerable<IM2M>)other)
+            if (other is IEnumerable<IM2M> m2mOther)
             {
-                var match = Options.Find(x => x.Value == m2m.GetConnectionToOther(EntityType).Id.ToString(CultureInfo.InvariantCulture));
-                if (match != null) match.Selected = true;
+                // ReSharper disable once InconsistentNaming
+                foreach (var m2m in m2mOther)
+                {
+                    var match = Options.Find(x => x.Value == m2m.GetConnectionToOther(EntityType).Id.ToString(CultureInfo.InvariantCulture));
+                    if (match != null) match.Selected = true;
+                }
+                return Task.CompletedTask;
             }
-            return Task.CompletedTask;
+
+            if (other is IEnumerable<IEntity> entityOther) //note that IM2M can also be IEntity, that's why order is important
+            {
+                // ReSharper disable once InconsistentNaming
+                foreach (var entity in entityOther)
+                {
+                    var match = Options.Find(x => x.Value == entity.Id.ToString(CultureInfo.InvariantCulture));
+                    if (match != null) match.Selected = true;
+                }
+                return Task.CompletedTask;
+            }
+
+            throw new SupermodelException("MultiSelectMvcModelUsing.MapFromCustomAsync(): other is neither IEnumerable<IM2M> nor IEnumerable<IEntity>");
         }
         public async Task<T> MapToCustomAsync<T>(T other)
         {
             // ReSharper disable once InconsistentNaming
-            var m2mType = typeof(T).GetICollectionGenericArg();
-            if (m2mType == null || !typeof(IM2M).IsAssignableFrom(m2mType)) throw new PropertyCantBeAutomappedException($"{GetType().Name} can't be automapped to {typeof(T).Name}");
+            var innerType = typeof(T).GetICollectionGenericArg();
+            if (innerType == null) throw new PropertyCantBeAutomappedException($"{GetType().Name} can't be automapped to {typeof(T).Name}");
 
-            ICollection collection;
-            if (typeof(T).IsGenericType) collection = (ICollection)(other ?? ReflectionHelper.CreateGenericType(typeof(List<>), typeof(T).GetGenericArguments()[0]));
-            else collection = (ICollection)(other ?? ReflectionHelper.CreateType(typeof(T)));
-            
-            var entityRepo = RepoFactory.CreateForRuntimeType(EntityType);
-
-            //Add or Leave alone
-            foreach (var option in Options)
+            if (typeof(IM2M).IsAssignableFrom(innerType))
             {
-                if (!option.Selected) continue;
-                var id = long.Parse(option.Value);
+                ICollection collection;
+                if (typeof(T).IsGenericType) collection = (ICollection)(other ?? ReflectionHelper.CreateGenericType(typeof(List<>), typeof(T).GetGenericArguments()[0]));
+                else collection = (ICollection)(other ?? ReflectionHelper.CreateType(typeof(T)));
 
-                if (((IEnumerable<IM2M>)collection).All(x => x.GetConnectionToOther(EntityType).Id != id))
+                var entityRepo = RepoFactory.CreateForRuntimeType(EntityType);
+
+                //Add or Leave alone
+                foreach (var option in Options)
                 {
-                    var newM2M = (IM2M)ReflectionHelper.CreateType(m2mType);
-                    var newEntity = await entityRepo.GetIEntityByIdAsync(id);
-                    newM2M.SetConnectionToOther(newEntity);
-                    collection.AddToCollection(newM2M);
+                    if (!option.Selected) continue;
+                    var id = long.Parse(option.Value);
+
+                    if (((IEnumerable<IM2M>)collection).All(x => x.GetConnectionToOther(EntityType).Id != id))
+                    {
+                        var newM2M = (IM2M)ReflectionHelper.CreateType(innerType);
+                        var newEntity = await entityRepo.GetIEntityByIdAsync(id);
+                        newM2M.SetConnectionToOther(newEntity);
+                        collection.AddToCollection(newM2M);
+                    }
                 }
+
+                //Delete
+                // ReSharper disable once InconsistentNaming
+                foreach (IM2M m2m in (IEnumerable<IM2M>)collection)
+                {
+                    if (!Options.Any(x => x.Selected && x.Value == m2m.GetConnectionToOther(EntityType).Id.ToString()))
+                    {
+                        var iEntity = (IEntity)m2m;
+                        if (!iEntity.IsNewModel()) iEntity.Delete();
+                        //collection.RemoveFromCollection(iEntity);
+                    }
+                }
+
+                return (T)collection;
             }
 
-            //Delete
-            // ReSharper disable once InconsistentNaming
-            foreach (IM2M m2m in (IEnumerable<IM2M>)collection) 
+            if (typeof(IEntity).IsAssignableFrom(innerType))
             {
-                if (!Options.Any(x => x.Selected && x.Value == m2m.GetConnectionToOther(EntityType).Id.ToString()))
+                ICollection collection;
+                if (typeof(T).IsGenericType) collection = (ICollection)(other ?? ReflectionHelper.CreateGenericType(typeof(List<>), typeof(T).GetGenericArguments()[0]));
+                else collection = (ICollection)(other ?? ReflectionHelper.CreateType(typeof(T)));
+
+                var entityRepo = RepoFactory.CreateForRuntimeType(EntityType);
+
+                //Add or Leave alone
+                foreach (var option in Options)
                 {
-                    var iEntity = (IEntity)m2m;
-                    if (!iEntity.IsNewModel()) iEntity.Delete();
-                    //collection.RemoveFromCollection(iEntity);
+                    if (!option.Selected) continue;
+                    var id = long.Parse(option.Value);
+
+                    if (((IEnumerable<IEntity>)collection).All(x => x.Id != id))
+                    {
+                        var newEntity = await entityRepo.GetIEntityByIdAsync(id);
+                        collection.AddToCollection(newEntity);
+                    }
                 }
+
+                //Delete
+                var entitiesToDelete = new List<IEntity>();
+                foreach (var entity in (IEnumerable<IEntity>)collection)
+                {
+                    if (!Options.Any(x => x.Selected && x.Value == entity.Id.ToString())) entitiesToDelete.Add(entity);
+                }
+                foreach (var entity in entitiesToDelete)
+                {
+                    collection.RemoveFromCollection(entity);
+                }
+
+                return (T)collection;
             }
 
-            return (T)collection;
+            throw new SupermodelException("MultiSelectMvcModelUsing.MapToCustomAsync(): other is neither IEnumerable<IM2M> nor IEnumerable<IEntity>");
         }
         #endregion
 

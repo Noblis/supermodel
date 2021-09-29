@@ -72,10 +72,10 @@ namespace Supermodel.Presentation.Mvc.Controllers
             {
                 foreach (var memberName in validationResult.MemberNames)
                 {
-                    if (string.IsNullOrEmpty(prefix)) modelState.AddModelError(memberName, validationResult.ErrorMessage);
-                    else modelState.AddModelError($"{prefix}.{memberName}", validationResult.ErrorMessage);
+                    if (string.IsNullOrEmpty(prefix)) modelState.AddModelError(memberName, validationResult.ErrorMessage!);
+                    else modelState.AddModelError($"{prefix}.{memberName}", validationResult.ErrorMessage!);
                 }
-                if (!validationResult.MemberNames.Any()) modelState.AddModelError("", validationResult.ErrorMessage);
+                if (!validationResult.MemberNames.Any()) modelState.AddModelError("", validationResult.ErrorMessage!);
             }
         }
         public static string SerializeModelState(ModelStateDictionary modelState)
@@ -99,7 +99,7 @@ namespace Supermodel.Presentation.Mvc.Controllers
                 {
                     modelState.AddModelError(error.Key, errorMsg);
                 }
-                modelState.SetModelValue(error.Key, error.Value.AttemptedValue?.Split(','), error.Value.AttemptedValue);
+                modelState.SetModelValue(error.Key, error.Value.AttemptedValue?.Split(','), error.Value.AttemptedValue!);
             }
             return modelState;
         }

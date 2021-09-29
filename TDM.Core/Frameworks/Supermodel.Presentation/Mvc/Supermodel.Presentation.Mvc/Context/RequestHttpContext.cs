@@ -18,7 +18,7 @@ namespace Supermodel.Presentation.Mvc.Context
         {
             _httpContextAccessor = httpContextAccessor;
         }
-        public static Microsoft.AspNetCore.Http.HttpContext Current => _httpContextAccessor.HttpContext;
+        public static Microsoft.AspNetCore.Http.HttpContext Current => _httpContextAccessor.HttpContext!;
 
         public static long? CurrentUserId
         {
@@ -38,8 +38,8 @@ namespace Supermodel.Presentation.Mvc.Context
                 return userNameClaim.Value; 
             }
         }
-        public static IEnumerable<Claim> CurrentUserClaims => ((ClaimsIdentity)Current.User.Identity).Claims;
-        public static bool CurrentUserHasClaim(Predicate<Claim> match) => ((ClaimsIdentity)Current.User.Identity).HasClaim(match);
+        public static IEnumerable<Claim> CurrentUserClaims => ((ClaimsIdentity)Current.User.Identity!).Claims;
+        public static bool CurrentUserHasClaim(Predicate<Claim> match) => ((ClaimsIdentity)Current.User.Identity!).HasClaim(match);
         public static bool IsCurrentUserInRole(string role) => CurrentUserHasClaim(x => x.Type == ClaimTypes.Role && x.Value == role);
         public static ClaimsPrincipal CurrentUser => Current.User;
 

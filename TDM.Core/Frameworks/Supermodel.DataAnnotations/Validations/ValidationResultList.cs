@@ -48,7 +48,7 @@ namespace Supermodel.DataAnnotations.Validations
             var errors = new List<string>();
             foreach (var vr in this)
             {
-                if (vr.MemberNames.Contains(memberName)) errors.Add(vr.ErrorMessage);
+                if (vr.MemberNames.Contains(memberName)) errors.Add(vr.ErrorMessage!);
             }
             return errors;
         }

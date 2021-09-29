@@ -149,7 +149,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                 string attemptedValue;
                 if (string.IsNullOrEmpty(val.FirstValue))
                 {
-                    displayName = bindingContext.ModelMetadata.ContainerType.GetDisplayNameForProperty(bindingContext.ModelMetadata.PropertyName);
+                    displayName = bindingContext.ModelMetadata.ContainerType!.GetDisplayNameForProperty(bindingContext.ModelMetadata.PropertyName!);
                     
                     if (bindingContext.IsPropertyRequired())
                     {
@@ -170,14 +170,14 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                 catch (FormatException)
                 {
                     Value = "";
-                    if (displayName == null) displayName = bindingContext.ModelMetadata.ContainerType.GetDisplayNameForProperty(bindingContext.ModelMetadata.PropertyName);
+                    if (displayName == null) displayName = bindingContext.ModelMetadata.ContainerType!.GetDisplayNameForProperty(bindingContext.ModelMetadata.PropertyName!);
                     bindingContext.ModelState.AddModelError(key, $"The field {displayName} is invalid");
                     success = false;
                 }
 
                 bindingContext.ModelState.SetModelValue(key, val);
 
-                if (bindingContext.Model == null) bindingContext.Model = this;
+                //if (bindingContext.Model == null) bindingContext.Model = this;
                 var existingModel = (TextBoxMvcModel)bindingContext.Model;
                 existingModel.Value = Value;
 

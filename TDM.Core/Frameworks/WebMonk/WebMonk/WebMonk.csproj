@@ -7,13 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Namotion.Reflection" Version="1.0.14" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="System.Collections.Immutable" Version="1.7.1" />
+    <PackageReference Include="Namotion.Reflection" Version="2.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="System.Collections.Immutable" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Supermodel.DataAnnotations\Supermodel.DataAnnotations.csproj" />
+    <ProjectReference Include="..\..\Supermodel.ReflectionMapper\Supermodel.ReflectionMapper.csproj" />
     <ProjectReference Include="..\WebMonk.RazorSharp\WebMonk.RazorSharp.csproj" />
   </ItemGroup>
 

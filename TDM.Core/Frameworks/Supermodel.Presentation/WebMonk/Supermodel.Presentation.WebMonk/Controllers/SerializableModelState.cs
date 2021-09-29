@@ -37,7 +37,7 @@ namespace Supermodel.Presentation.WebMonk.Controllers
             public static SerializableModelState CreateFromJson(string json)
             {
                 var tmp = JsonConvert.DeserializeObject<TmpSerializableModelState>(json);
-                return new SerializableModelState(tmp);
+                return new SerializableModelState(tmp!);
             }
             public static async Task<SerializableModelState> CreateFromContextAsync()
             {

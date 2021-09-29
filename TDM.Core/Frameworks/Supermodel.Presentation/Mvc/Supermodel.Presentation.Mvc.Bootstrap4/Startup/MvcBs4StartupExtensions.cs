@@ -24,8 +24,11 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Startup
         static MvcBs4StartupExtensions()
         {
             var assembly = typeof(MvcBs4StartupExtensions).Assembly;
-            var names = EmbeddedResource.GetAllResourceNamesInFolder(assembly, "StaticWebFiles").Where(x => x.EndsWith(".css") || x.EndsWith(".js")).ToArray();
-            foreach (var name in names) Files[name] = EmbeddedResource.ReadTextFileWithFileName(assembly, $"StaticWebFiles.{name}");
+            var names = EmbeddedResource.GetAllResourceNamesInFolder(assembly, "StaticWebFiles").Where(x => !x.EndsWith("Message.html")).ToArray();
+            foreach (var name in names)
+            {
+                Files[name] = EmbeddedResource.ReadBinaryFileWithFileName(assembly, $"StaticWebFiles.{name}");
+            }
 
             MessageHtml = EmbeddedResource.ReadTextFileWithFileName(typeof(MvcBs4StartupExtensions).Assembly, "StaticWebFiles.Message.html");
         }
@@ -81,7 +84,18 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Startup
 
             foreach (var fileName in Files.Keys)
             {
-                endpoints.MapGet($"static_web_files/{fileName}", async context => { await context.Response.WriteAsync(Files[fileName]); });
+                if (fileName.Contains("open_iconic.font.css."))
+                {
+                    endpoints.MapGet($"static_web_files/open_iconic/font/css/{fileName.Replace("open_iconic.font.css.", "")}", async context => { await context.Response.Body.WriteAsync(Files[fileName], 0, Files[fileName].Length); });
+                }
+                else if (fileName.Contains("open_iconic.font.fonts."))
+                {
+                    endpoints.MapGet($"static_web_files/open_iconic/font/fonts/{fileName.Replace("open_iconic.font.fonts.", "")}", async context => { await context.Response.Body.WriteAsync(Files[fileName], 0, Files[fileName].Length); });
+                }
+                else
+                {
+                    endpoints.MapGet($"static_web_files/{fileName}", async context => { await context.Response.Body.WriteAsync(Files[fileName], 0, Files[fileName].Length); });
+                }
             }
             
             endpoints.MapGet("static_web_files/Message.html", async context =>
@@ -101,7 +115,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Startup
         #endregion
 
         #region Properties
-        public static Dictionary<string, string> Files{ get; } =new Dictionary<string, string>();
+        public static Dictionary<string, byte[]> Files{ get; } =new Dictionary<string, byte[]>();
         public static string MessageHtml { get; }
         #endregion
     }

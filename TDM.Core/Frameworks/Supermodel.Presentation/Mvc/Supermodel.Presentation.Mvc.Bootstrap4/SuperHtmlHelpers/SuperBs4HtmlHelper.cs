@@ -281,7 +281,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
             var result = new StringBuilder();
 
             action ??= "List";
-            controller ??= Html.ViewContext.RouteData.Values["controller"].ToString();
+            controller ??= Html.ViewContext.RouteData.Values["controller"]!.ToString();
 
             var url = SuperHtml.GenerateUrl(action, controller);
             result.AppendLine($"<form {UtilsLib.MakeIdAttribute(ScaffoldingSettings.SearchFormId)} action='{url}' method='{HtmlHelper.GetFormMethodString(FormMethod.Get)}'>");
@@ -348,7 +348,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
         {
             var controllerName = controllerType != null ?
                                      controllerType.GetControllerName() :
-                                     Html.ViewContext.RouteData.Values["controller"].ToString();
+                                     Html.ViewContext.RouteData.Values["controller"]!.ToString();
             if (controllerName == null) throw new SupermodelException("controllerName == null. this should never happen");
 
             var result = new StringBuilder();
@@ -546,7 +546,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
         {
             var controllerName = detailControllerType != null ?
                                      detailControllerType.GetControllerName() :
-                                     Html.ViewContext.RouteData.Values["controller"].ToString();
+                                     Html.ViewContext.RouteData.Values["controller"]!.ToString();
             if (controllerName == null) throw new SupermodelException("controllerName == null. this should never happen");
 
             var result = new StringBuilder();
@@ -695,7 +695,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
         {
             var controllerName = detailControllerType != null ?
                 detailControllerType.GetControllerName() :
-                Html.ViewContext.RouteData.Values["controller"].ToString();
+                Html.ViewContext.RouteData.Values["controller"]!.ToString();
             if (controllerName == null) throw new SupermodelException("controllerName == null. this should never happen");
 
 
@@ -878,7 +878,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
         {
             linkLabel ??= "<span class='oi oi-magnifying-glass'></span>&nbsp;New Search".ToHtmlString();
             var routeValues = SuperHtml.QueryStringRouteValues();
-            var controller = Html.ViewContext.RouteData.Values["controller"].ToString();
+            var controller = Html.ViewContext.RouteData.Values["controller"]!.ToString();
             var htmlAttributesDict = HtmlHelper.AnonymousObjectToHtmlAttributes(new {id = ScaffoldingSettings.NewSearchButtonId, @class = ScaffoldingSettings.NewSearchButtonCssClass});
             return SuperHtml.ActionLinkHtmlContent(linkLabel, "Search", controller!, routeValues, htmlAttributesDict);
         }
@@ -943,7 +943,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
         }
         private string GetPageActionLink(string linkText, int pageNum, int pageSize)
         {
-            return Html.ActionLink(linkText, (string)Html.ViewContext.RouteData.Values["action"], Html.Super().QueryStringRouteValues().AddOrUpdateWith("smSkip", (pageNum - 1) * pageSize), new { @class = "page-link"}).GetString();
+            return Html.ActionLink(linkText, (string)Html.ViewContext.RouteData.Values["action"]!, Html.Super().QueryStringRouteValues().AddOrUpdateWith("smSkip", (pageNum - 1) * pageSize), new { @class = "page-link"}).GetString();
         }
         #endregion
 
@@ -1015,7 +1015,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.SuperHtmlHelpers
 
             var query = Html.ViewContext.HttpContext.Request.Query;
             var currentSortByValue = (query["smSortBy"].FirstOrDefault() ?? "").Trim();
-            var action = (string)Html.ViewContext.RouteData.Values["action"];
+            var action = (string)Html.ViewContext.RouteData.Values["action"]!;
 
             var routeValues = query.ToRouteValueDictionary().
                 AddOrUpdateWith("smSkip", 0).

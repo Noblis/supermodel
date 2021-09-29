@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <LangVersion>8.0</LangVersion>
     <NullableContextOptions>enable</NullableContextOptions>
   </PropertyGroup>
@@ -14,9 +14,35 @@
     <None Remove="StaticWebFiles\jquery-ui.min.css" />
     <None Remove="StaticWebFiles\jquery-ui.min.js" />
     <None Remove="StaticWebFiles\Message.html" />
-    <None Remove="StaticWebFiles\open-iconic-bootstrap.min.css" />
+    <None Remove="StaticWebFiles\open_iconic\font\css\open-iconic-bootstrap.min.css" />
+    <None Remove="StaticWebFiles\open_iconic\font\fonts\open-iconic.eot" />
+    <None Remove="StaticWebFiles\open_iconic\font\fonts\open-iconic.otf" />
+    <None Remove="StaticWebFiles\open_iconic\font\fonts\open-iconic.svg" />
+    <None Remove="StaticWebFiles\open_iconic\font\fonts\open-iconic.ttf" />
+    <None Remove="StaticWebFiles\open_iconic\font\fonts\open-iconic.woff" />
     <None Remove="StaticWebFiles\super.bs4.css" />
     <None Remove="StaticWebFiles\Super.bs4.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="StaticWebFiles\open_iconic\font\css\open-iconic-bootstrap.min.css">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StaticWebFiles\open_iconic\font\fonts\open-iconic.eot">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StaticWebFiles\open_iconic\font\fonts\open-iconic.otf">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StaticWebFiles\open_iconic\font\fonts\open-iconic.svg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StaticWebFiles\open_iconic\font\fonts\open-iconic.ttf">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StaticWebFiles\open_iconic\font\fonts\open-iconic.woff">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
@@ -30,7 +56,6 @@
 
   <ItemGroup>
     <EmbeddedResource Include="StaticWebFiles\bootbox.all.min.js" />
-    <EmbeddedResource Include="StaticWebFiles\open-iconic-bootstrap.min.css" />
     <EmbeddedResource Include="StaticWebFiles\super.bs4.css" />
   </ItemGroup>
 

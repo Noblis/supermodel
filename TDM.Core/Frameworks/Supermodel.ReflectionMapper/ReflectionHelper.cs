@@ -16,6 +16,41 @@ namespace Supermodel.ReflectionMapper
     public static class ReflectionHelper
     {
         #region Methods
+        public static void LoadAllAssemblies(this AppDomain me)
+        {
+            if (AllAssembliesLoaded)
+            {
+                AllAssembliesLoaded = true;
+                lock (_loadAllAssembliesLock)
+                {
+                    var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies().Select(x => x.FullName).ToHashSet();
+
+                    var assembliesToCheck = new Queue<Assembly>();
+                    assembliesToCheck.Enqueue(Assembly.GetEntryAssembly());
+
+                    while (assembliesToCheck.Any())
+                    {
+                        var assemblyToCheck = assembliesToCheck.Dequeue();
+
+                        foreach (var reference in assemblyToCheck.GetReferencedAssemblies())
+                        {
+                            if (!loadedAssemblies.Contains(reference.FullName))
+                            {
+                                var assembly = Assembly.Load(reference);
+                                assembliesToCheck.Enqueue(assembly);
+                                loadedAssemblies.Add(reference.FullName);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        public static Assembly[] GetAllAssemblies(this AppDomain me)
+        {
+            me.LoadAllAssemblies();
+            return AppDomain.CurrentDomain.GetAssemblies();
+        }
+        
         public static Task<object?> GetResultAsObjectAsync(this object task)
         {
             return ((Task)task).GetResultAsObjectAsync();
@@ -366,6 +401,11 @@ namespace Supermodel.ReflectionMapper
                 throw new ReflectionPropertyCantBeInvoked(myType, propertyName);
             }
         }
+        #endregion
+
+        #region Properties
+        private static bool AllAssembliesLoaded { get; set; }
+        private static object _loadAllAssembliesLock = new object();
         #endregion
     }
 }

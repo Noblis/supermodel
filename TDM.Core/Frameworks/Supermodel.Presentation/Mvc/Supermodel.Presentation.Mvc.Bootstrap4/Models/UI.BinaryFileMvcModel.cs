@@ -47,7 +47,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
 
                         if (bindingContext.IsPropertyRequired())
                         {
-                            var displayName = bindingContext.ModelMetadata.ContainerType.GetDisplayNameForProperty(bindingContext.ModelMetadata.PropertyName);
+                            var displayName = bindingContext.ModelMetadata.ContainerType!.GetDisplayNameForProperty(bindingContext.ModelMetadata.PropertyName!);
                             bindingContext.ModelState.AddModelError(bindingContext.ModelName, $"The {displayName} field is required");
                             success = false;
                         }
@@ -106,7 +106,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                     var outerHtml = (IHtmlHelper)html.ViewContext.ViewData["OuterHtml"];
                     if (!outerHtml.ViewData.Model.GetType().GetProperty(propName)!.HasAttribute<RequiredAttribute>())
                     {
-                        var controllerName = RequestHttpContext.Current.Request.RouteValues["controller"].ToString();
+                        var controllerName = RequestHttpContext.Current.Request.RouteValues["controller"]!.ToString();
                         var linkStr = html.Super().RESTfulActionLinkHtmlContent(HttpMethod.Delete, "<span class=\"oi oi-trash\"></span>&nbsp;Delete File".ToHtmlString(), "BinaryFile", controllerName!, route, HtmlHelper.AnonymousObjectToHtmlAttributes(new { @class = ScaffoldingSettings.CRUDBinaryFileDeleteCssClass }), "This will permanently delete the file. Are you sure?", false).GetString();                         
                         result.AppendLine(linkStr);
                     }

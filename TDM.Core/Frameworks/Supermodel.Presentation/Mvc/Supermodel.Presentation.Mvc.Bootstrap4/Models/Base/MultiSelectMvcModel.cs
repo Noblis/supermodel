@@ -95,7 +95,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models.Base
             string[] attemptedValues;
             if (val.Length <= 0)
             {
-                var displayName = bindingContext.ModelMetadata.ContainerType.GetDisplayNameForProperty(bindingContext.ModelMetadata.PropertyName);
+                var displayName = bindingContext.ModelMetadata.ContainerType!.GetDisplayNameForProperty(bindingContext.ModelMetadata.PropertyName!);
                 
                 if (bindingContext.IsPropertyRequired())
                 {

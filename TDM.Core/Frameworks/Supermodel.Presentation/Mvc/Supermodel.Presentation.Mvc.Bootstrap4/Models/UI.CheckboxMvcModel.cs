@@ -88,7 +88,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                 
                 bindingContext.ModelState.SetModelValue(key, val);
 
-                if (bindingContext.Model == null) bindingContext.Model = this;
+                //if (bindingContext.Model == null) bindingContext.Model = this;
                 var existingModel = (CheckboxMvcModel)bindingContext.Model;
                 existingModel.Value = Value;
 

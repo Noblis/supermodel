@@ -15,12 +15,12 @@ namespace Supermodel.DataAnnotations.Attributes
         {   
             if (value is IUIComponentWithValue valueWithValue) 
             {
-                if (string.IsNullOrEmpty(valueWithValue.ComponentValue)) return ValidationResult.Success;
-                return base.IsValid(valueWithValue.ComponentValue, validationContext);
+                if (string.IsNullOrEmpty(valueWithValue.ComponentValue)) return ValidationResult.Success!;
+                return base.IsValid(valueWithValue.ComponentValue, validationContext)!;
             }
 
-            if (value == null || string.IsNullOrEmpty(value.ToString())) return ValidationResult.Success;
-            return base.IsValid(value.ToString(), validationContext);
+            if (value == null || string.IsNullOrEmpty(value.ToString())) return ValidationResult.Success!;
+            return base.IsValid(value.ToString(), validationContext)!;
         }
     }
 }

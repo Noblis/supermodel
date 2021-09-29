@@ -32,7 +32,7 @@ namespace Supermodel.Persistence.EFCore
 
         #region Overrides and Virtual Methods
         //Returns the assemblies containing entities and entity config classes for this unit of work. Default returns AppDomain.CurrentDomain.GetAssemblies(). Override it for finer control 
-        protected virtual Assembly[] GetDomainEntitiesAssemblies() { return AppDomain.CurrentDomain.GetAssemblies(); }
+        protected virtual Assembly[] GetDomainEntitiesAssemblies() { return AppDomain.CurrentDomain.GetAllAssemblies(); }
         protected override async void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

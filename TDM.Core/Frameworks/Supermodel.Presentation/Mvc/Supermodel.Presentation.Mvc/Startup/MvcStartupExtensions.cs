@@ -55,7 +55,7 @@ namespace Supermodel.Presentation.Mvc.Startup
                     };
                     options.Events.OnRedirectToAccessDenied = context =>
                     {
-                        var controllerName = context.Request.RouteValues["controller"].ToString()!;
+                        var controllerName = context.Request.RouteValues["controller"]!.ToString()!;
 
                         //This is to correct MVC craziness, they add ReturnUrl page to the 403 error page
                         context.RedirectUri = context.RedirectUri.Substring(0, context.RedirectUri.IndexOf("?", StringComparison.Ordinal)).Replace("%3F", "?");
@@ -121,7 +121,7 @@ namespace Supermodel.Presentation.Mvc.Startup
                     };
                     options.Events.OnRedirectToAccessDenied = context =>
                     {
-                        var controllerName = context.Request.RouteValues["controller"].ToString()!;
+                        var controllerName = context.Request.RouteValues["controller"]!.ToString()!;
 
                         //This is to correct MVC craziness, they add ReturnUrl page to the 403 error page
                         context.RedirectUri = context.RedirectUri.Substring(0, context.RedirectUri.IndexOf("?", StringComparison.Ordinal)).Replace("%3F", "?");

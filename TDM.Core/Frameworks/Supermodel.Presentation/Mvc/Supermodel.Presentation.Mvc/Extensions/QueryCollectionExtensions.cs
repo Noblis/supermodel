@@ -14,7 +14,7 @@ namespace Supermodel.Presentation.Mvc.Extensions
             var dict = new RouteValueDictionary();
             foreach (var key in qc.Keys)
             {
-                if (key == null) continue;
+                //if (key == null) continue;
                 var value = qc[key].ToString().TrimEnd().EndsWith(",") ? qc[key].ToString().RemoveStartingLast(",") : qc[key].ToString();
                 dict.Add(key, value);
             }
