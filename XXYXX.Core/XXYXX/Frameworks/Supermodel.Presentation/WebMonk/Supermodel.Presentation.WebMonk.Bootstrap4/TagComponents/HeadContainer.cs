@@ -19,7 +19,7 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                 Append(new Meta(new { name="viewport", content="width=device-width, initial-scale=1, shrink-to-fit=no"}));
 
                 Append(new Link(new { rel="stylesheet", href="/css/bootstrap.min.css" }));
-                Append(new Link(new { rel="stylesheet", href="/open-iconic/font/css/open-iconic-bootstrap.min.css" }));
+                Append(new Link(new { rel="stylesheet", href="/open_iconic/font/css/open-iconic-bootstrap.min.css" }));
                 Append(new Link(new { rel="stylesheet", href="/css/jquery-ui.min.css" }));
                 Append(new Link(new { rel="stylesheet", href="/css/super.bs4.css" }));
 
