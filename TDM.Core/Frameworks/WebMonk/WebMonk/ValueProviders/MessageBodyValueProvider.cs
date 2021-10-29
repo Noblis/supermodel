@@ -9,6 +9,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web;
 using WebMonk.Context.WMHttpListenerObjects;
+using WebMonk.Exceptions;
 using WebMonk.Multipart;
 
 namespace WebMonk.ValueProviders
@@ -144,7 +145,7 @@ namespace WebMonk.ValueProviders
                 }
             }
 
-            throw new Exception($"Unknown Content-Type: '{request.ContentType}'");
+            throw new Exception415UnsupportedMediaType(request.ContentType);
         }
         #endregion
     }

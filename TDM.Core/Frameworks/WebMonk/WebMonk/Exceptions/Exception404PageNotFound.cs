@@ -2,7 +2,5 @@
 
 namespace WebMonk.Exceptions
 {
-    public class Exception404PageNotFound : WebMonkException
-    {
-    }
+    public class Exception404PageNotFound : WebMonkException {}
 }
