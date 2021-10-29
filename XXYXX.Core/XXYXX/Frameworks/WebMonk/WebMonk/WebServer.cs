@@ -348,6 +348,12 @@ namespace WebMonk
                     await new StatusCodeResult(HttpStatusCode.NotFound).ExecuteResultAsync().ConfigureAwait(false);
                     await OnPageNotFoundAsync().ConfigureAwait(false);
                 }
+                catch (Exception415UnsupportedMediaType ex)
+                {
+                    //415 Unsupported Media Type (typically this is used for bad Content-Type)
+                    await new StatusCodeResult(HttpStatusCode.UnsupportedMediaType).ExecuteResultAsync().ConfigureAwait(false);
+                    await OnUnsupportedMediaTypeAsync(ex).ConfigureAwait(false);
+                }
                 catch (Exception ex)
                 {
                     //500 Internal Server Error
@@ -437,8 +443,13 @@ namespace WebMonk
             //override this if you want to log/email a server error
             return Task.CompletedTask;
         }
+        protected virtual Task OnUnsupportedMediaTypeAsync(Exception415UnsupportedMediaType ex)
+        {
+            //override this if you want to log/email a server error
+            return Task.CompletedTask;
+        }
         #endregion
-        
+
         #region Properties
         public Assembly[] AppAssemblies { get ; }
         public bool ShowErrorDetails { get; set; } 
