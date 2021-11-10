@@ -378,7 +378,7 @@ namespace Supermodel.ReflectionMapper
         {
             try
             {
-                return myType.GetProperties(BindingFlags.NonPublic | BindingFlags.Instance).Single(p => p.Name == propertyName);
+                return myType.GetProperties(BindingFlags.NonPublic | BindingFlags.Instance).SingleOrDefault(p => p.Name == propertyName);
             }
             catch (Exception)
             {
