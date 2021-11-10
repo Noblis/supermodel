@@ -102,7 +102,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models.Base
                     bindingContext.ModelState.AddModelError(key, $"The {displayName} field is required");
                     success = false; 
                 }
-                attemptedValues = new string[0];
+                attemptedValues = Array.Empty<string>();
             }
             else
             {
@@ -110,7 +110,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models.Base
             }
 
             bindingContext.ModelState.SetModelValue(key, val);
-            var existingModel = (MultiSelectMvcModel)bindingContext.Model;
+            var existingModel = (MultiSelectMvcModel)bindingContext.Model!;
             if (existingModel is IAsyncInit iAsyncInit && !iAsyncInit.AsyncInitialized) await iAsyncInit.InitAsync();
 
             //Clear out selected

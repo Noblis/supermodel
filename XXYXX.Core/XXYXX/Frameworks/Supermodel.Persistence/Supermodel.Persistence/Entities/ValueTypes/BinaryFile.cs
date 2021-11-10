@@ -31,7 +31,7 @@ namespace Supermodel.Persistence.Entities.ValueTypes
         public void Empty()
         {
             FileName = "";
-            BinaryContent = new byte[0];
+            BinaryContent = Array.Empty<byte>();
         }
         #endregion
 
@@ -61,7 +61,7 @@ namespace Supermodel.Persistence.Entities.ValueTypes
         [JsonIgnore, NotMapped] public string FileNameWithoutExtension => Path.GetFileNameWithoutExtension(FileName);
 
         public string FileName { get; set; } = "";
-        public byte[] BinaryContent { get; set; } = new byte[0];
+        public byte[] BinaryContent { get; set; } = Array.Empty<byte>();
         #endregion
     }
 }

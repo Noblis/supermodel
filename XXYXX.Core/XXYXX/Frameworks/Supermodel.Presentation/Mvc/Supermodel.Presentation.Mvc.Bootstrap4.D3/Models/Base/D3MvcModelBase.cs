@@ -61,7 +61,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.D3.Models.Base
 		#region ISuperModelBinder implementation
 		public virtual Task BindModelAsync(ModelBindingContext bindingContext)
 		{
-            var originalValue = (D3MvcModelBase)bindingContext.Model;
+            var originalValue = (D3MvcModelBase)bindingContext.Model!;
             bindingContext.Result = ModelBindingResult.Success(originalValue);
             return Task.CompletedTask;
 		}

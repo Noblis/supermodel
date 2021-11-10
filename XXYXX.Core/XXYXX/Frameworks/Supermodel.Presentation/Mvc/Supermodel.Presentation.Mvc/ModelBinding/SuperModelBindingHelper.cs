@@ -465,7 +465,7 @@ namespace Supermodel.Presentation.Mvc.ModelBinding
                         {
                             var property = modelMetadata.Properties[i];
                             //modelState.ClearValidationState(property.BinderModelName ?? property.PropertyName);
-                            modelState.ClearValidationState(property.BinderModelName);
+                            modelState.ClearValidationState(property.BinderModelName!);
                         }
                     }
                     else

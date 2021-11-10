@@ -89,7 +89,7 @@ namespace Supermodel.Presentation.Mvc.Controllers
         }
         public static ModelStateDictionary DeserializeModelState(string json)
         {
-            var errorsDict = JsonConvert.DeserializeObject<Dictionary<string, ModelStateError>>(json);
+            var errorsDict = JsonConvert.DeserializeObject<Dictionary<string, ModelStateError>>(json)!;
             
             var modelState = new ModelStateDictionary();
             foreach (var error in errorsDict)

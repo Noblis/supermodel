@@ -7,7 +7,7 @@ namespace WebMonk.Multipart
     public static class HttpUtilities
     {
         //internal static readonly Version DefaultVersion = HttpVersion.Version11;
-        internal static readonly byte[] EmptyByteArray = new byte[0];
+        internal static readonly byte[] EmptyByteArray = Array.Empty<byte>();
 
         static HttpUtilities() { }
 
@@ -18,7 +18,7 @@ namespace WebMonk.Multipart
             else return true;
         }
 
-        public static bool HandleFaultsAndCancelation<T>(Task task, TaskCompletionSource<T> tcs)
+        public static bool HandleFaultsAndCancellation<T>(Task task, TaskCompletionSource<T> tcs)
         {
             if (task.IsFaulted)
             {

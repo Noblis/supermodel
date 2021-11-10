@@ -7,7 +7,7 @@ namespace Supermodel.Mobile.Runtime.Common.Models
         protected DirectChildModel()
         {
             // ReSharper disable once VirtualMemberCallInConstructor
-            ParentGuidIdentities = new Guid[0];
+            ParentGuidIdentities = Array.Empty<Guid>();
         }
     }
 }

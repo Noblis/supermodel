@@ -178,7 +178,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                 bindingContext.ModelState.SetModelValue(key, val);
 
                 //if (bindingContext.Model == null) bindingContext.Model = this;
-                var existingModel = (TextBoxMvcModel)bindingContext.Model;
+                var existingModel = (TextBoxMvcModel)bindingContext.Model!;
                 existingModel.Value = Value;
 
                 if (success) bindingContext.Result = ModelBindingResult.Success(existingModel);  

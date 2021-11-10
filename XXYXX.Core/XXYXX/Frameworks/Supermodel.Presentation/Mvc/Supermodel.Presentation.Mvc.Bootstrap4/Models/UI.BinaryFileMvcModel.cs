@@ -39,11 +39,11 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                 var file = (BinaryFileMvcModel)ReflectionHelper.CreateType(GetType());
                 if (rawFile == null || rawFile.Length == 0 || string.IsNullOrEmpty(rawFile.FileName))
                 {
-                    var originalValue = (BinaryFileMvcModel)bindingContext.Model;
+                    var originalValue = (BinaryFileMvcModel)bindingContext.Model!;
                     if (originalValue.IsEmpty)
                     {
                         file.FileName = "";
-                        file.BinaryContent = new byte[0];
+                        file.BinaryContent = Array.Empty<byte>();
 
                         if (bindingContext.IsPropertyRequired())
                         {
@@ -103,8 +103,8 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                     // ReSharper disable once Mvc.ActionNotResolved
                     result.AppendLine(html.Super().ActionLinkHtmlContent(("<span class=\"oi oi-cloud-download\"></span>&nbsp;" + HttpUtility.HtmlEncode(model.FileName)).ToHtmlString(), "BinaryFile", route, new { @class = ScaffoldingSettings.CRUDBinaryFileDownloadCssClass }).GetString());
                     
-                    var outerHtml = (IHtmlHelper)html.ViewContext.ViewData["OuterHtml"];
-                    if (!outerHtml.ViewData.Model.GetType().GetProperty(propName)!.HasAttribute<RequiredAttribute>())
+                    var outerHtml = (IHtmlHelper)html.ViewContext.ViewData["OuterHtml"]!;
+                    if (!outerHtml.ViewData.Model!.GetType().GetProperty(propName)!.HasAttribute<RequiredAttribute>())
                     {
                         var controllerName = RequestHttpContext.Current.Request.RouteValues["controller"]!.ToString();
                         var linkStr = html.Super().RESTfulActionLinkHtmlContent(HttpMethod.Delete, "<span class=\"oi oi-trash\"></span>&nbsp;Delete File".ToHtmlString(), "BinaryFile", controllerName!, route, HtmlHelper.AnonymousObjectToHtmlAttributes(new { @class = ScaffoldingSettings.CRUDBinaryFileDeleteCssClass }), "This will permanently delete the file. Are you sure?", false).GetString();                         
