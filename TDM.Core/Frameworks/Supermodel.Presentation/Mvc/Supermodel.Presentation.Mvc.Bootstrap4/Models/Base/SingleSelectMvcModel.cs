@@ -123,7 +123,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models.Base
             SelectedValue = attemptedValue;
 
             //if (bindingContext.Model == null) bindingContext.Model = this;
-            var existingModel = (SingleSelectMvcModel)bindingContext.Model;
+            var existingModel = (SingleSelectMvcModel)bindingContext.Model!;
             existingModel.SelectedValue = SelectedValue;
 
             if (success) bindingContext.Result = ModelBindingResult.Success(existingModel);  

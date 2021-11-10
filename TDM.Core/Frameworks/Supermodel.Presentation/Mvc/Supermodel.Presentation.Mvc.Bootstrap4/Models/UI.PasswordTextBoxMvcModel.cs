@@ -52,7 +52,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                 
                 Type = "password";
 
-                var outerHtml = (IHtmlHelper)html.ViewContext.ViewData["OuterHtml"];
+                var outerHtml = (IHtmlHelper)html.ViewContext.ViewData["OuterHtml"]!;
                 if (outerHtml.ViewData.Model is IViewModelForEntity model && !model.IsNewModel() && PlaceholderBehavior != PlaceholderBehaviorEnum.ForceNoPlaceholder || PlaceholderBehavior == PlaceholderBehaviorEnum.ForceDotDotDotPlaceholder)  htmlAttributes.Add("placeholder", "•••••••");
                 else htmlAttributes.Remove("placeholder");
 

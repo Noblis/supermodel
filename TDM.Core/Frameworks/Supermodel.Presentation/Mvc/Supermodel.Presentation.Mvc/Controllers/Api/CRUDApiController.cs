@@ -187,7 +187,7 @@ namespace Supermodel.Presentation.Mvc.Controllers.Api
         #region Protected helpers
         protected virtual Task<TEntity?> GetItemOrDefaultAsync(long id)
         {
-            return GetItems().SingleOrDefaultAsync(x => x.Id == id)!; //this exclamation point here is to pacify Resharper
+            return GetItems().SingleOrDefaultAsync(x => x.Id == id);
         }
         protected virtual async Task<TEntity?> GetItemOrDefaultAndCacheItAsync(long id)
         {

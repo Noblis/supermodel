@@ -1,5 +1,6 @@
 ﻿#nullable enable
 
+using System;
 using System.Linq;
 using System.Net;
 using System.Security.Claims;
@@ -55,7 +56,7 @@ namespace WebMonk.Filters
                         var response = HttpContext.Current.HttpListenerContext.Response;
                         response.StatusCode = (int)HttpStatusCode.Redirect;
                         response.RedirectLocation = loginUrl;
-                        await response.OutputStream.WriteAsync(new byte[0], 0, 0).ConfigureAwait(false);
+                        await response.OutputStream.WriteAsync(Array.Empty<byte>(), 0, 0).ConfigureAwait(false);
                     }));
                 }
                 else

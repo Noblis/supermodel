@@ -72,7 +72,7 @@ namespace Supermodel.Persistence.EFCore
             {
                 if (typeof(IValueObject).IsAssignableFrom(relationship.PrincipalEntityType.ClrType)) 
                 {
-                    var ownerType = relationship.DependentToPrincipal.DeclaringType.ClrType;
+                    var ownerType = relationship.DependentToPrincipal!.DeclaringType.ClrType;
                     var ownedType = relationship.DependentToPrincipal.ClrType;
                     var ownedName = relationship.DependentToPrincipal.Name;
                     var etb = modelBuilder.Entity(ownerType);

@@ -1,5 +1,6 @@
 ﻿#nullable enable
 
+using System;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,7 +34,7 @@ namespace WebMonk.Results
             }
             else
             {
-                await response.OutputStream.WriteAsync(new byte[0], 0, 0).ConfigureAwait(false);
+                await response.OutputStream.WriteAsync(Array.Empty<byte>(), 0, 0).ConfigureAwait(false);
             }
         }
         #endregion

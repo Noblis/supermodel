@@ -21,7 +21,7 @@ namespace Supermodel.Presentation.WebMonk.Models
         public void Empty()
         {
             FileName = "";
-            BinaryContent = new byte[0];
+            BinaryContent = Array.Empty<byte>();
         }
         #endregion
 
@@ -32,7 +32,7 @@ namespace Supermodel.Presentation.WebMonk.Models
             if (!(obj is BinaryFileModelBase typedObj)) throw new SupermodelException("obj is not BinaryFileApiModel");
             if (FileName == null) return 0; //if we are an empty object, we say it equals b/c then we do not override db value
             var result = string.CompareOrdinal(FileName, typedObj.FileName);
-            return result != 0 ? result : (BinaryContent ?? new byte[0]).GetHashCode().CompareTo(typedObj.GetHashCode());
+            return result != 0 ? result : (BinaryContent ?? Array.Empty<byte>()).GetHashCode().CompareTo(typedObj.GetHashCode());
         }
         #endregion
 
@@ -72,7 +72,7 @@ namespace Supermodel.Presentation.WebMonk.Models
 
             var binaryFileOther = (BinaryFile?)(object?)other;
             FileName = binaryFileOther?.FileName ?? "";
-            BinaryContent = binaryFileOther?.BinaryContent ?? new byte[0];
+            BinaryContent = binaryFileOther?.BinaryContent ?? Array.Empty<byte>();
 
             return Task.CompletedTask;
         }
@@ -91,14 +91,14 @@ namespace Supermodel.Presentation.WebMonk.Models
             }
             if (binaryFileOther == null) throw new SupermodelException("binaryFileOther == null: this should never happen");
             binaryFileOther.FileName = FileName ?? "";
-            binaryFileOther.BinaryContent = BinaryContent ?? new byte[0];
+            binaryFileOther.BinaryContent = BinaryContent ?? Array.Empty<byte>();
             return Task.FromResult((T)(object)binaryFileOther);
         }
         #endregion
 
         #region Properties
         public string? FileName { get; set; } = "";
-        public byte[]? BinaryContent { get; set; } = new byte[0];
+        public byte[]? BinaryContent { get; set; } = Array.Empty<byte>();
         #endregion
     }
 }

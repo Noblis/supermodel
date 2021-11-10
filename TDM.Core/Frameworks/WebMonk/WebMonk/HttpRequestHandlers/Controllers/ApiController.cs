@@ -129,7 +129,7 @@ namespace WebMonk.HttpRequestHandlers.Controllers
                         }
                         catch (WebMonkInvalidFormatException)
                         {
-                            return (false, new object?[0]);
+                            return (false, Array.Empty<object?>());
                         }
                     }
                 }
@@ -140,7 +140,7 @@ namespace WebMonk.HttpRequestHandlers.Controllers
                 }
                 else if (parameterValue == Type.Missing)
                 {
-                    if (!parameterInfo.IsOptional) return(false, new object?[0]);
+                    if (!parameterInfo.IsOptional) return(false, Array.Empty<object?>());
                 }
                 else
                 {

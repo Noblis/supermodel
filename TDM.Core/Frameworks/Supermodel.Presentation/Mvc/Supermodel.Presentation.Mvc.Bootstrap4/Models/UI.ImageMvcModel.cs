@@ -46,7 +46,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
             #region ISupermodelModelBinder implementation
             public override Task BindModelAsync(ModelBindingContext bindingContext)
             {
-                var originalValue = (BinaryFileMvcModel)bindingContext.Model;
+                var originalValue = (BinaryFileMvcModel)bindingContext.Model!;
                 bindingContext.Result = ModelBindingResult.Success(originalValue);
                 return Task.CompletedTask;
             }
