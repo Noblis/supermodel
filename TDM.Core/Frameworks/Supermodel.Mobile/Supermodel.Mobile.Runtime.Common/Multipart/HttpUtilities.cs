@@ -7,7 +7,7 @@
     public static class HttpUtilities
     {
         //internal static readonly Version DefaultVersion = HttpVersion.Version11;
-        internal static readonly byte[] EmptyByteArray = new byte[0];
+        internal static readonly byte[] EmptyByteArray = Array.Empty<byte>();
 
         static HttpUtilities() { }
 

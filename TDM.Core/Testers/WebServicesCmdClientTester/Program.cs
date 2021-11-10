@@ -16,7 +16,7 @@ namespace WebServicesCmdClientTester
             Console.ReadLine();
 
             //var authHeaderGenerator = new BasicAuthHeaderGenerator("ilya.basin@gmail.org", "0");
-            var authHeaderGenerator = new SecureAuthHeaderGenerator("ilya.basin@gmail.org", "0", new byte[0]);
+            var authHeaderGenerator = new SecureAuthHeaderGenerator("ilya.basin@gmail.org", "0", Array.Empty<byte>());
 
             await using (new UnitOfWork<TestWebApiDataContext>())
             {

@@ -19,7 +19,7 @@ namespace ApiClientCmd
             Console.ReadLine();
 
             //var authHeaderGenerator = new BasicAuthHeaderGenerator("ilya.basin@noblis.org", "0");
-            var authHeaderGenerator = new TDMSecureAuthHeaderGenerator("ilya.basin@noblis.org", "0", new byte[0]);
+            var authHeaderGenerator = new TDMSecureAuthHeaderGenerator("ilya.basin@noblis.org", "0", Array.Empty<byte>());
 
             // ReSharper disable once NotAccessedVariable
             DelayedModels<ToDoList> delayedTodoLists;

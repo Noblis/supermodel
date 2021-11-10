@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -10,7 +11,7 @@ namespace Supersonic.Ranges
         #region Constructors
         public Range()
         {
-            _simpleRanges = new SimpleRange[0];
+            _simpleRanges = Array.Empty<SimpleRange>();
         }
         public Range(params SimpleRange[] simpleRanges)
         {

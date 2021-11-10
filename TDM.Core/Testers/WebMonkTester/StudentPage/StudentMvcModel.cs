@@ -1,5 +1,6 @@
 ﻿#nullable enable
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -26,7 +27,7 @@ namespace WebMonkTester.StudentPage
 
         public bool MinorityStudent { get; set; } = true;
         
-        [Required] public byte[] Picture { get; set; } = new byte[0];
+        [Required] public byte[] Picture { get; set; } = Array.Empty<byte>();
         [ScaffoldColumn(false)] public string PictureFileName { get; set; } = "";
 
         public AddressMvcModel Address { get; set; } = new AddressMvcModel 
