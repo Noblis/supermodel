@@ -155,7 +155,17 @@
       "ProjectGuid": "fa48e7d3-ac48-4fe8-9507-8ae62940b65c",
       "DisplayName": "XFormsTester.iOS",
       "ColorIndex": 14
+    },
+    "32ac02a0-12a9-4394-a44c-2c90b36ec761": {
+      "ProjectGuid": "32ac02a0-12a9-4394-a44c-2c90b36ec761",
+      "DisplayName": "TDM.Mobile.Online",
+      "ColorIndex": 15
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Miscellaneous Files",
+      "ColorIndex": -1
     }
   },
-  "NextColorIndex": 15
+  "NextColorIndex": 0
 }

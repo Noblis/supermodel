@@ -45,7 +45,17 @@
       "ProjectGuid": "ad0dfa5f-8d59-4775-8a87-ea83f9a8437b",
       "DisplayName": "ModelGeneratorWM",
       "ColorIndex": 8
+    },
+    "e955f92e-87ee-40b9-b44d-8d4010cd2fc4": {
+      "ProjectGuid": "e955f92e-87ee-40b9-b44d-8d4010cd2fc4",
+      "DisplayName": "Supermodel.Encryptor",
+      "ColorIndex": 9
+    },
+    "370fb0bd-1083-429b-a031-6eb2f7867009": {
+      "ProjectGuid": "370fb0bd-1083-429b-a031-6eb2f7867009",
+      "DisplayName": "Supermodel.Mobile.Runtime.Common",
+      "ColorIndex": 10
     }
   },
-  "NextColorIndex": 9
+  "NextColorIndex": 11
 }
