@@ -165,7 +165,17 @@
       "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
       "DisplayName": "Miscellaneous Files",
       "ColorIndex": -1
+    },
+    "0e9bd10e-6693-41f7-b716-6f743fc21ce9": {
+      "ProjectGuid": "0e9bd10e-6693-41f7-b716-6f743fc21ce9",
+      "DisplayName": "Supermodel.Presentation.Mvc",
+      "ColorIndex": 0
+    },
+    "f8926708-3a68-4763-8e36-b05ed494b5b7": {
+      "ProjectGuid": "f8926708-3a68-4763-8e36-b05ed494b5b7",
+      "DisplayName": "Supermodel.Tooling.SolutionMaker",
+      "ColorIndex": 1
     }
   },
-  "NextColorIndex": 0
+  "NextColorIndex": 2
 }
