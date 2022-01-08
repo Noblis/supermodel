@@ -27,7 +27,16 @@ namespace Supermodel.Presentation.WebMonk.Models.Mvc
             var myIEnumerableGenericArg = myEnumerableInterfaceType.GetGenericArguments()[0];
             foreach (var otherItemObj in otherIEnumerable)
             {
-                var item = otherItemObj != null ? await ReflectionHelper.CreateType(myIEnumerableGenericArg).ExecuteGenericMethod("MapFromCustomAsync", new []{ otherItemObj.GetType() }, otherItemObj )!.GetResultAsObjectAsync().ConfigureAwait(false) : null;
+                //Old implementation
+                //var item = otherItemObj != null ? await ReflectionHelper.CreateType(myIEnumerableGenericArg).ExecuteGenericMethod("MapFromCustomAsync", new []{ otherItemObj.GetType() }, otherItemObj )!.GetResultAsObjectAsync().ConfigureAwait(false) : null;
+
+                object? item = null;
+                if (otherItemObj != null)
+                {
+                    item = (TListItem?)ReflectionHelper.CreateType(myIEnumerableGenericArg);
+                    await item!.ExecuteGenericMethod("MapFromCustomAsync", new[] { otherItemObj.GetType() }, otherItemObj)!.GetResultAsObjectAsync().ConfigureAwait(false);
+                }
+
                 if (item is IAsyncInit iAsyncInit && !iAsyncInit.AsyncInitialized) await iAsyncInit.InitAsync();
                 Add((TListItem)item!); //this is ok if item is null
             }

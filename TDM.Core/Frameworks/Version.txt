@@ -1,1 +1,1 @@
-Version 2.60.001.Beta1
+Version 2.60.002.Beta1
