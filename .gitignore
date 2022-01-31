@@ -22,3 +22,5 @@ DesignTimeBuild/
 /TDM.Core/.vs/TDM.Core/v17/fileList.bin
 /XXYXX.Core/XXYXX/.vs/XXYXX/v17/.futdcache.v1
 /XXYXX.Core/XXYXX/.vs/XXYXX/v17/fileList.bin
+/TDM.Core/TDM/Server/TDMCore.SQLite.db-shm
+/TDM.Core/TDM/Server/TDMCore.SQLite.db-wal
