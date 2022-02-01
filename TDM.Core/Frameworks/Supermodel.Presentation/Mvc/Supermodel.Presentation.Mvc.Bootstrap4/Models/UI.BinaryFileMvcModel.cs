@@ -63,7 +63,8 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                     file.BinaryContent = new byte[rawFile.Length];
                     
                     using var stream = rawFile.OpenReadStream();
-                    stream.Read(file.BinaryContent, 0, (int)rawFile.Length);
+                    var bytesRead = stream.Read(file.BinaryContent, 0, (int)rawFile.Length);
+                    if (bytesRead != rawFile.Length) throw new SupermodelException("This should never happen: bytesRead != rawFile.Length");
                 }
                 
                 if (success) bindingContext.Result = ModelBindingResult.Success(file);  
