@@ -175,7 +175,22 @@
       "ProjectGuid": "f8926708-3a68-4763-8e36-b05ed494b5b7",
       "DisplayName": "Supermodel.Tooling.SolutionMaker",
       "ColorIndex": 1
+    },
+    "72f2740e-b64c-41af-ac7a-9a91d7f033c0": {
+      "ProjectGuid": "72f2740e-b64c-41af-ac7a-9a91d7f033c0",
+      "DisplayName": "Supermodel.Presentation.Cmd",
+      "ColorIndex": 2
+    },
+    "cab119bd-a7ee-4aa1-8701-2ff74e306747": {
+      "ProjectGuid": "cab119bd-a7ee-4aa1-8701-2ff74e306747",
+      "DisplayName": "Supermodel.Presentation.WebMonk",
+      "ColorIndex": 3
+    },
+    "2d16f925-fb7b-428e-982e-d515ac1dff9c": {
+      "ProjectGuid": "2d16f925-fb7b-428e-982e-d515ac1dff9c",
+      "DisplayName": "Supermodel.Encryptor",
+      "ColorIndex": 4
     }
   },
-  "NextColorIndex": 2
+  "NextColorIndex": 5
 }
