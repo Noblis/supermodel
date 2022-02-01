@@ -31,7 +31,7 @@ namespace ApiClientCmd
                 
                 var todoLists = await repo.GetAllAsync();
 
-                todoLists[2].Delete(); //this causes things to fail
+                //todoLists[2].Delete(); //this causes things to fail
 
                 todoLists[0].ToDoItems.Add(new ToDoItem { Name = "New One" });
                 todoLists[1].ToDoItems.Add(new ToDoItem { Name = "Another New One" });
