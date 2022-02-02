@@ -190,7 +190,22 @@
       "ProjectGuid": "2d16f925-fb7b-428e-982e-d515ac1dff9c",
       "DisplayName": "Supermodel.Encryptor",
       "ColorIndex": 4
+    },
+    "0b83c8d3-a10d-44d1-94d9-9b9a416b027d": {
+      "ProjectGuid": "0b83c8d3-a10d-44d1-94d9-9b9a416b027d",
+      "DisplayName": "Supermodel.Presentation.Mvc.Bootstrap4",
+      "ColorIndex": 5
+    },
+    "5bfad491-b678-453d-a7d1-2e1e38991bba": {
+      "ProjectGuid": "5bfad491-b678-453d-a7d1-2e1e38991bba",
+      "DisplayName": "Util",
+      "ColorIndex": 6
+    },
+    "ff7461e9-b4c0-4272-b66d-9d5b9e60fefc": {
+      "ProjectGuid": "ff7461e9-b4c0-4272-b66d-9d5b9e60fefc",
+      "DisplayName": "TDM.Mobile.Offline",
+      "ColorIndex": 7
     }
   },
-  "NextColorIndex": 5
+  "NextColorIndex": 8
 }
