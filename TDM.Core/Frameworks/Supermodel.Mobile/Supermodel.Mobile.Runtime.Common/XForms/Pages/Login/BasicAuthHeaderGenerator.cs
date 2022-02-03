@@ -2,8 +2,6 @@
 using System.Threading.Tasks;
 using Supermodel.DataAnnotations.Exceptions;
 using Supermodel.Mobile.Runtime.Common.PersistentDict;
-using Supermodel.Mobile.Runtime.Common.Services;
-using Xamarin.Forms;
 
 namespace Supermodel.Mobile.Runtime.Common.XForms.Pages.Login
 {
@@ -40,7 +38,7 @@ namespace Supermodel.Mobile.Runtime.Common.XForms.Pages.Login
         }
         public virtual async Task SaveToAppPropertiesAsync()
         {
-            if (Pick.RunningPlatform() == Platform.DotNetCore) throw new SupermodelException("SaveToAppPropertiesAsync() is only supported on mobile platforms");
+            //if (Pick.RunningPlatform() == Platform.DotNetCore) throw new SupermodelException("SaveToAppPropertiesAsync() is only supported on mobile platforms");
             
             if (LocalStorageEncryptionKey == null) throw new SupermodelException("SaveToAppPropertiesAsync(): LocalStorageEncryptionKey = null");
 
@@ -57,7 +55,7 @@ namespace Supermodel.Mobile.Runtime.Common.XForms.Pages.Login
         }
         public virtual bool LoadFromAppProperties()
         {
-            if (Pick.RunningPlatform() == Platform.DotNetCore) throw new SupermodelException("LoadFromAppProperties() is only supported on mobile platforms");
+            //if (Pick.RunningPlatform() == Platform.DotNetCore) throw new SupermodelException("LoadFromAppProperties() is only supported on mobile platforms");
             
             if (LocalStorageEncryptionKey == null) throw new SupermodelException("LoadFromAppProperties(): LocalStorageEncryptionKey = null");
 

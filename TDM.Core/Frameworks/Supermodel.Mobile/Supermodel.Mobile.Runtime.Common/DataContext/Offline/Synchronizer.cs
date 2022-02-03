@@ -12,7 +12,6 @@ using Supermodel.Mobile.Runtime.Common.Repository;
 using Supermodel.Mobile.Runtime.Common.DataContext.Core;
 using Supermodel.Mobile.Runtime.Common.PersistentDict;
 using Supermodel.Mobile.Runtime.Common.UnitOfWork;
-using Xamarin.Forms;
 
 namespace Supermodel.Mobile.Runtime.Common.DataContext.Offline
 {
