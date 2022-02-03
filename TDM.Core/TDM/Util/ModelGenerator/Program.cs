@@ -10,11 +10,8 @@ namespace ModelGenerator
     {
         static void Main()
         {
-            Console.WriteLine(Environment.GetFolderPath(Environment.SpecialFolder.Personal));
-            Console.ReadLine();
-            
-            var modelGenerator = new ModelGen(new[] { typeof(Web.Controllers.ToDoItemController).Assembly });
-            //var modelGenerator = new ModelGen(new[] { typeof(WMWeb.Mvc.ToDoItemPage.ToDoItemMvcController).Assembly });
+            //var modelGenerator = new ModelGen(new[] { typeof(Web.Controllers.ToDoItemController).Assembly });
+            var modelGenerator = new ModelGen(new[] { typeof(WMWeb.Mvc.ToDoItemPage.ToDoItemMvcController).Assembly });
             var sb = modelGenerator.GenerateModels();
             var code = sb.ToString();
             File.WriteAllText(@"..\..\..\Supermodel.Mobile.ModelsForRuntime.cs", code);

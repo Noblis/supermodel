@@ -9,8 +9,8 @@ namespace ApiClientCmd.Supermodel.Persistence
     public class TDMWebApiDataContext : WebApiDataContext
     {
         #region Overrides
-        //public override string BaseUrl => "http://10.211.55.6:54326/api/"; //this one is for WM
-        public override string BaseUrl => "http://localhost:5000/";
+        public override string BaseUrl => "http://10.211.55.6:54326/api/"; //this one is for WM
+        //public override string BaseUrl => "http://localhost:5000/";
 
         protected override HttpClient CreateHttpClient()
         {

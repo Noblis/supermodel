@@ -21,13 +21,21 @@ namespace ApiClientCmd
             await using (new UnitOfWork<TDMSqliteDataContext>())
             {
                 //var x = await RepoFactory.Create<ToDoList>().GetAllAsync();
-                
+
                 var toDoList = new ToDoList();
+                toDoList.Name = "Synched List";
+                toDoList.ListOwnerId = 1;
                 toDoList.Add();
 
                 toDoList.ToDoItems.Add(new ToDoItem { Name = "Item1" });
                 toDoList.ToDoItems.Add(new ToDoItem { Name = "Item2" });
             }
+
+            var synchronizer = new TDMSynchronizer();
+            await synchronizer.SynchronizeAsync();
+
+            Console.WriteLine("Press enter to continue...");
+            Console.ReadLine();
 
             //var authHeaderGenerator = new BasicAuthHeaderGenerator("ilya.basin@noblis.org", "0");
             var authHeaderGenerator = new TDMSecureAuthHeaderGenerator("ilya.basin@noblis.org", "0", Array.Empty<byte>());
