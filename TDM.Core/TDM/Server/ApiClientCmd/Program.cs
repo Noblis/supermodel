@@ -20,6 +20,8 @@ namespace ApiClientCmd
 
             await using (new UnitOfWork<TDMSqliteDataContext>())
             {
+                var x = await RepoFactory.Create<ToDoList>().GetAllAsync();
+                
                 var toDoList = new ToDoList();
                 toDoList.Add();
 
