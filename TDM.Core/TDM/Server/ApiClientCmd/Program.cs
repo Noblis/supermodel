@@ -18,6 +18,15 @@ namespace ApiClientCmd
             Console.WriteLine("Press enter to continue...");
             Console.ReadLine();
 
+            await using (new UnitOfWork<TDMSqliteDataContext>())
+            {
+                var toDoList = new ToDoList();
+                toDoList.Add();
+
+                toDoList.ToDoItems.Add(new ToDoItem { Name = "Item1" });
+                toDoList.ToDoItems.Add(new ToDoItem { Name = "Item2" });
+            }
+
             //var authHeaderGenerator = new BasicAuthHeaderGenerator("ilya.basin@noblis.org", "0");
             var authHeaderGenerator = new TDMSecureAuthHeaderGenerator("ilya.basin@noblis.org", "0", Array.Empty<byte>());
 

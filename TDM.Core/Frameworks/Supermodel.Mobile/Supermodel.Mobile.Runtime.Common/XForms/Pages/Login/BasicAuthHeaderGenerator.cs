@@ -1,6 +1,7 @@
 ﻿using Supermodel.Encryptor;
 using System.Threading.Tasks;
 using Supermodel.DataAnnotations.Exceptions;
+using Supermodel.Mobile.Runtime.Common.PersistentDict;
 using Supermodel.Mobile.Runtime.Common.Services;
 using Xamarin.Forms;
 
@@ -32,10 +33,10 @@ namespace Supermodel.Mobile.Runtime.Common.XForms.Pages.Login
             if (LocalStorageEncryptionKey == null) throw new SupermodelException("ClearAndSaveToPropertiesAsync(): LocalStorageEncryptionKey = null");
 
             Clear();
-            Application.Current.Properties["smUsername"] = null;
-            Application.Current.Properties["smPasswordCode"] = null;
-            Application.Current.Properties["smPasswordIV"] = null;
-            await Application.Current.SavePropertiesAsync();
+            Properties.Dict["smUsername"] = null;
+            Properties.Dict["smPasswordCode"] = null;
+            Properties.Dict["smPasswordIV"] = null;
+            await Properties.Dict.SaveToDiskAsync();
         }
         public virtual async Task SaveToAppPropertiesAsync()
         {
@@ -47,12 +48,12 @@ namespace Supermodel.Mobile.Runtime.Common.XForms.Pages.Login
 
             var passwordCode = EncryptorAgent.Lock(LocalStorageEncryptionKey, Password, out var passwordIV);
 
-            Application.Current.Properties["smUsername"] = Username;
-            Application.Current.Properties["smPasswordCode"] = passwordCode;
-            Application.Current.Properties["smPasswordIV"] = passwordIV;
-            Application.Current.Properties["smUserLabel"] = UserLabel;
-            Application.Current.Properties["smUserId"] = UserId;
-            await Application.Current.SavePropertiesAsync();
+            Properties.Dict["smUsername"] = Username;
+            Properties.Dict["smPasswordCode"] = passwordCode;
+            Properties.Dict["smPasswordIV"] = passwordIV;
+            Properties.Dict["smUserLabel"] = UserLabel;
+            Properties.Dict["smUserId"] = UserId;
+            await Properties.Dict.SaveToDiskAsync();
         }
         public virtual bool LoadFromAppProperties()
         {
@@ -60,19 +61,19 @@ namespace Supermodel.Mobile.Runtime.Common.XForms.Pages.Login
             
             if (LocalStorageEncryptionKey == null) throw new SupermodelException("LoadFromAppProperties(): LocalStorageEncryptionKey = null");
 
-            if (Application.Current.Properties.ContainsKey("smUsername") && 
-                Application.Current.Properties.ContainsKey("smPasswordCode") && 
-                Application.Current.Properties.ContainsKey("smPasswordIV") && 
-                Application.Current.Properties.ContainsKey("smUserLabel") && 
-                Application.Current.Properties.ContainsKey("smUserId"))
+            if (Properties.Dict.ContainsKey("smUsername") &&
+                Properties.Dict.ContainsKey("smPasswordCode") &&
+                Properties.Dict.ContainsKey("smPasswordIV") &&
+                Properties.Dict.ContainsKey("smUserLabel") &&
+                Properties.Dict.ContainsKey("smUserId"))
             {
-                if (!(Application.Current.Properties["smUsername"] is string username)) return false;
-                if (!(Application.Current.Properties["smPasswordCode"] is byte[] passwordCode)) return false;
-                if (!(Application.Current.Properties["smPasswordIV"] is byte[] passwordIV)) return false;
+                if (!(Properties.Dict["smUsername"] is string username)) return false;
+                if (!(Properties.Dict["smPasswordCode"] is byte[] passwordCode)) return false;
+                if (!(Properties.Dict["smPasswordIV"] is byte[] passwordIV)) return false;
 
                 //User label and userId can be null
-                var userLabel = Application.Current.Properties["smUserLabel"] as string;
-                var userId = Application.Current.Properties["smUserId"] as long?;
+                var userLabel = Properties.Dict["smUserLabel"] as string;
+                var userId = Properties.Dict["smUserId"] as long?;
 
                 Password = EncryptorAgent.Unlock(LocalStorageEncryptionKey, passwordCode, passwordIV);
                 Username = username;
