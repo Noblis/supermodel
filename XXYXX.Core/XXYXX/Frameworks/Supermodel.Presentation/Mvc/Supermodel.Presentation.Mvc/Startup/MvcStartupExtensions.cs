@@ -156,7 +156,7 @@ namespace Supermodel.Presentation.Mvc.Startup
             builder.UseHttpMethodOverride(new HttpMethodOverrideOptions { FormFieldName = "X-HTTP-Method-Override" }); 
             builder.UseBatchMiddleware(options => 
             { 
-                options.Match = "/$batch"; // "/api/$batch"
+                options.Match = "/$batch";
                 options.Events = new SupermodelBatchMiddlewareEvents<TDataContext>();
             });
             builder.UseRouting();

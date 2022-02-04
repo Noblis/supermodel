@@ -80,7 +80,7 @@ namespace Supermodel.Mobile.Runtime.Common.PersistentDict
         #region Persistence
         public Task SaveToDiskAsync()
         {
-            return Properties.Dict.SaveToDiskAsync();
+            return Application.Current.SavePropertiesAsync();
         }
         #endregion
     }
