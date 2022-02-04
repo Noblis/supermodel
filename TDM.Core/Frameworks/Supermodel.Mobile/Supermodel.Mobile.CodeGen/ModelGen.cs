@@ -269,7 +269,7 @@ namespace Supermodel.Mobile.CodeGen
                     if (property.PropertyType.Name == "BinaryFileApiModel" || property.PropertyType == typeof(DateTime)) sb.AppendLineFormat("{{ get; set; }} = new {0}();", typeName);
                     else sb.AppendLine("{ get; set; }");
                 }
-                else if (property.PropertyType.IsEnum || property.PropertyType.IsClass || property.PropertyType.IsValueType)
+                else if (property.PropertyType.IsEnum || property.PropertyType.IsValueType)
                 {
                     sb.AppendFormat("public {0} {1} ", property.PropertyType.Name.Replace("ApiModel", ""), property.Name);
                     if (!_globalCustomTypesDefined.Contains(property.PropertyType))
@@ -278,6 +278,16 @@ namespace Supermodel.Mobile.CodeGen
                         _globalCustomTypesDefined.Add(property.PropertyType);
                     }
                     sb.AppendLine("{ get; set; }");
+                }
+                else if (property.PropertyType.IsClass)
+                {
+                    sb.AppendFormat("public {0} {1} ", property.PropertyType.Name.Replace("ApiModel", ""), property.Name);
+                    if (!_globalCustomTypesDefined.Contains(property.PropertyType))
+                    {
+                        customTypesDefined.Add(property.PropertyType);
+                        _globalCustomTypesDefined.Add(property.PropertyType);
+                    }
+                    sb.AppendLine("{ get; set; } = new " + property.PropertyType.Name.Replace("ApiModel", "") + "();");
                 }
                 else
                 {
