@@ -11,7 +11,6 @@ using Supermodel.Mobile.Runtime.Common.DataContext.Sqlite;
 using Supermodel.Mobile.Runtime.Common.DataContext.WebApi;
 using Supermodel.Mobile.Runtime.Common.Models;
 using Supermodel.Mobile.Runtime.Common.Repository;
-using Supermodel.Mobile.Runtime.Common.Services;
 using Supermodel.Mobile.Runtime.Common.UnitOfWork;
 using Supermodel.ReflectionMapper;
 
@@ -24,7 +23,7 @@ namespace Supermodel.Mobile.Runtime.Common.DataContext.CachedWebApi
         #region Constructors
         public CachedWebApiDataContext()
         {
-            if (Pick.RunningPlatform() == Platform.DotNetCore) throw new SupermodelException("Supermodel's CachedWebApiDataContext is only supported on mobile platforms");
+            //if (Pick.RunningPlatform() == Platform.DotNetCore) throw new SupermodelException("Supermodel's CachedWebApiDataContext is only supported on mobile platforms");
             CacheAgeToleranceInSeconds = 5 * 60; // 5 min
         }
         #endregion

@@ -10,8 +10,8 @@ using Supermodel.Mobile.Runtime.Common.Models;
 using Supermodel.ReflectionMapper;
 using Supermodel.Mobile.Runtime.Common.Repository;
 using Supermodel.Mobile.Runtime.Common.DataContext.Core;
+using Supermodel.Mobile.Runtime.Common.PersistentDict;
 using Supermodel.Mobile.Runtime.Common.UnitOfWork;
-using Xamarin.Forms;
 
 namespace Supermodel.Mobile.Runtime.Common.DataContext.Offline
 {
@@ -305,14 +305,14 @@ namespace Supermodel.Mobile.Runtime.Common.DataContext.Offline
         {
             get
             {
-                if (!Application.Current.Properties.ContainsKey("smLastSynchDateTimeUtc")) return null;
-                return Application.Current.Properties["smLastSynchDateTimeUtc"] as DateTime?;
+                if (!Properties.Dict.ContainsKey("smLastSynchDateTimeUtc")) return null;
+                return Properties.Dict["smLastSynchDateTimeUtc"] as DateTime?;
             }
             set
             {
-                Application.Current.Properties["smLastSynchDateTimeUtc"] = value;
+                Properties.Dict["smLastSynchDateTimeUtc"] = value;
                 #pragma warning disable 4014
-                Application.Current.SavePropertiesAsync();
+                Properties.Dict.SaveToDiskAsync();
                 #pragma warning restore 4014
             }
         }

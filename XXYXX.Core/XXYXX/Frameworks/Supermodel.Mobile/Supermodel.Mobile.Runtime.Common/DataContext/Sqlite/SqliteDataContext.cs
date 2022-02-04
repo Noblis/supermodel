@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -9,20 +10,20 @@ using Supermodel.DataAnnotations.Exceptions;
 using Supermodel.Mobile.Runtime.Common.DataContext.Core;
 using Supermodel.Mobile.Runtime.Common.Models;
 using Supermodel.DataAnnotations.LogicalContext;
+using Supermodel.Mobile.Runtime.Common.PersistentDict;
 using Supermodel.Mobile.Runtime.Common.Services;
 using Supermodel.Mobile.Runtime.Common.UnitOfWork;
-using Xamarin.Forms;
 
 namespace Supermodel.Mobile.Runtime.Common.DataContext.Sqlite
 {
     public abstract class SqliteDataContext : DataContextBase, ISqlQueryProvider
     {
-        #region Constructors
-        protected SqliteDataContext()
-        {
-            if (Pick.RunningPlatform() == Platform.DotNetCore) throw new SupermodelException("Supermodel's SqliteDataContext is only supported on mobile platforms");
-        }
-        #endregion
+        //#region Constructors
+        //protected SqliteDataContext()
+        //{
+        //    if (Pick.RunningPlatform() == Platform.DotNetCore) throw new SupermodelException("Supermodel's SqliteDataContext is only supported on mobile platforms");
+        //}
+        //#endregion
 
         #region ISqlQueryProvider implemetation
         public virtual object GetIndex<TModel>(int idxNum0To29, TModel model)
@@ -572,17 +573,15 @@ namespace Supermodel.Mobile.Runtime.Common.DataContext.Sqlite
             await ResetDatabaseAsync();
 
 		    //we do this because, in a case when db is deleted but LastSynchDateTimeUtc is set, all records on the server will be deleted
-		    Application.Current.Properties.Remove("smLastSynchDateTimeUtc");
-		    await Application.Current.SavePropertiesAsync();
+		    Properties.Dict.Remove("smLastSynchDateTimeUtc");
+		    await Properties.Dict.SaveToDiskAsync();
 
             return true;
 		}
-        // ReSharper disable UnusedParameter.Global
         public virtual async Task MigrateDbAsync(int? fromVersion, int toVersion)
         {
             await UnitOfWorkContext.ResetDatabaseAsync();
         }
-        // ReSharper restore UnusedParameter.Global
         #endregion
 
         #region Properties and Contants
@@ -595,7 +594,7 @@ namespace Supermodel.Mobile.Runtime.Common.DataContext.Sqlite
             Pick.ForPlatform(
                 Environment.GetFolderPath(Environment.SpecialFolder.Personal), 
                 Environment.GetFolderPath(Environment.SpecialFolder.Personal),
-                ""), 
+                Path.GetDirectoryName(Process.GetCurrentProcess().MainModule!.FileName)), 
             DbFileName);
 
         // ReSharper disable InconsistentNaming

@@ -21,7 +21,7 @@ namespace Supermodel.Encryptor
                     {
                         using (var csw = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write))
                         {
-                            var bytes = Converter.StringToByteArr(str);
+                            var bytes = Encoding.Unicode.GetBytes(str);
                             csw.Write(bytes, 0, bytes.Length); //This breaks old code
                             csw.FlushFinalBlock();
                             var cryptoData = memoryStream.ToArray();
@@ -42,23 +42,31 @@ namespace Supermodel.Encryptor
                         using (var csr = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read))
                         {
                             var dataFragments = new List<byte[]>();
+                            var dataFragmentsLengths = new List<int>();
+
                             var received = 0;
                             while (true)
                             {
                                 var dataFragment = new byte[1024];
                                 var receivedThisFragment = csr.Read(dataFragment, 0, dataFragment.Length);
                                 if (receivedThisFragment == 0) break;
+                                
                                 dataFragments.Add(dataFragment);
-                                received = received + receivedThisFragment;
+                                dataFragmentsLengths.Add(receivedThisFragment);
+
+                                received += receivedThisFragment;
                             }
 
                             var data = new byte[dataFragments.Count * 1024];
                             var idx = 0;
 
                             //now let's build the entire data
-                            foreach (var t in dataFragments)
+                            for (var i = 0; i < dataFragments.Count; i++)
                             {
-                                for (var j = 0; j < 1024; j++) data[idx++] = t[j];
+                                for (var j = 0; j < dataFragmentsLengths[i]; j++)
+                                {
+                                    data[idx++] = dataFragments[i][j];
+                                }
                             }
 
                             var newPhrase = Encoding.Unicode.GetString(data, 0, received);
