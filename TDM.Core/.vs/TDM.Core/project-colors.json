@@ -205,7 +205,12 @@
       "ProjectGuid": "ff7461e9-b4c0-4272-b66d-9d5b9e60fefc",
       "DisplayName": "TDM.Mobile.Offline",
       "ColorIndex": 7
+    },
+    "14d9e5b7-bc76-4ff1-b453-f7613f4d6669": {
+      "ProjectGuid": "14d9e5b7-bc76-4ff1-b453-f7613f4d6669",
+      "DisplayName": "Frameworks",
+      "ColorIndex": 8
     }
   },
-  "NextColorIndex": 8
+  "NextColorIndex": 9
 }
