@@ -158,7 +158,7 @@ namespace Supermodel.ReflectionMapper
                 //Get other prop value 
                 var otherProperty = otherPropertyMeta.Get();
 
-                //Get my property value. If null, create a default instance (if no default constructor, we get an exception)
+                //Get my property value
                 var myProperty = myPropertyMeta.Get();
 
                 //ICustomMapper
@@ -281,6 +281,7 @@ namespace Supermodel.ReflectionMapper
                         //... and not marked for shallow copy, use reflection mapper recursively
                         myProperty ??= myPropertyMeta.CreateDefaultInstance();
                         await myProperty.MapFromAsync(otherProperty, otherPropertyMeta.PropertyInfo.PropertyType);
+                        myPropertyMeta.Set(myProperty, true);
                     }
                 }
             }
@@ -359,7 +360,7 @@ namespace Supermodel.ReflectionMapper
                 //Get my property value
                 var myProperty = myPropertyMeta.Get();
                 
-                //Get other property or create a default instance (if no default constructor, exception will be thrown)
+                //Get other property
                 var otherProperty = otherPropertyMeta.Get();
 
                 //ICustomMapper
@@ -472,6 +473,8 @@ namespace Supermodel.ReflectionMapper
 
                         //Because this is a non-primitive type, we don't need to assign the result of the method below
                         await myProperty.MapToAsync(otherProperty, otherPropertyMeta.PropertyInfo.PropertyType);
+
+                        otherPropertyMeta.Set(otherProperty, true);
                     }
                 }
             }
