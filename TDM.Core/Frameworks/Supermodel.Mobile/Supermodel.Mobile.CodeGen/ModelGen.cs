@@ -19,6 +19,7 @@ namespace Supermodel.Mobile.CodeGen
         public ModelGen(IEnumerable<Assembly> assemblies, string nameSpace = "Supermodel.ApiClient.Models")
         {
             Assemblies = assemblies;
+            if (Assemblies.GroupBy(x => x).Where(g => g.Count() > 1).Select(y => y.Key).Any()) Console.WriteLine("WARNING! Duplicate assemblies passed into ModelGen constructor!");
             NameSpace = nameSpace;
         }
         #endregion
@@ -92,7 +93,7 @@ namespace Supermodel.Mobile.CodeGen
                     sb.AppendLineIndentMinus("}");
                     sb.AppendLineIndentMinus("}");
 
-                    if (!_globalCustomTypesDefined.Contains(modelTypes[0]))
+                    if (!IsInGlobalCustomTypesDefinedOrExternal(modelTypes[0]))
                     {
                         _globalCustomTypesDefined.Add(modelTypes[0]);
                         sb.AppendLine("// ReSharper disable once PartialTypeWithSinglePart");
@@ -104,7 +105,7 @@ namespace Supermodel.Mobile.CodeGen
                         sb.AppendLineFormat("//Class {0} is already defined elsewhere", modelTypes[0].Name.Replace("ApiModel", ""));
                     }
 
-                    if (!_globalCustomTypesDefined.Contains(modelTypes[1]))
+                    if (!IsInGlobalCustomTypesDefinedOrExternal(modelTypes[1]))
                     {
                         _globalCustomTypesDefined.Add(modelTypes[1]);
                         sb.AppendLine("// ReSharper disable once PartialTypeWithSinglePart");
@@ -133,7 +134,7 @@ namespace Supermodel.Mobile.CodeGen
                     if (controllerKind == ControllerKindEnum.CRUD || controllerKind == ControllerKindEnum.EnhancedCRUD) restUrlAttribute = $"[RestUrl(\"{controllerType.Name.Replace("Controller", "")}\")]";
                     else restUrlAttribute = $"[RestUrl(\"{controllerType.Name.Replace("ApiController", "")}\")]";
 
-                    if (!_globalCustomTypesDefined.Contains(modelTypes[0]))
+                    if (!IsInGlobalCustomTypesDefinedOrExternal(modelTypes[0]))
                     {
                         _globalCustomTypesDefined.Add(modelTypes[0]);
                         sb.AppendLine(restUrlAttribute);
@@ -153,7 +154,7 @@ namespace Supermodel.Mobile.CodeGen
                         sb.AppendLine(restUrlAttribute);
                         if (!modelTypes[1].Name.EndsWith("ListApiModel")) throw new SupermodelException("List Model " + modelTypes[0].Name + ": names by convention must end with 'ListApiModel'");
 
-                        if (!_globalCustomTypesDefined.Contains(modelTypes[1]))
+                        if (!IsInGlobalCustomTypesDefinedOrExternal(modelTypes[1]))
                         {
                             _globalCustomTypesDefined.Add(modelTypes[1]);
                             sb.AppendLine("// ReSharper disable once PartialTypeWithSinglePart");
@@ -172,7 +173,7 @@ namespace Supermodel.Mobile.CodeGen
                         sb.AppendLine("");
                         if (!modelTypes[2].Name.EndsWith("SearchApiModel")) throw new SupermodelException("Search Model " + modelTypes[0].Name + ": names by convention must end with 'SearchApiModel'");
 
-                        if (!_globalCustomTypesDefined.Contains(modelTypes[2]))
+                        if (!IsInGlobalCustomTypesDefinedOrExternal(modelTypes[2]))
                         {
                             _globalCustomTypesDefined.Add(modelTypes[2]);
                             sb.AppendLine("// ReSharper disable once PartialTypeWithSinglePart");
@@ -194,7 +195,7 @@ namespace Supermodel.Mobile.CodeGen
                 var types = assembly.GetTypes().Where(x => Attribute.IsDefined(x, typeof(IncludeInApiClientAttribute))).ToList();
                 foreach (var type in types)
                 {
-                    if (!_globalCustomTypesDefined.Contains(type))
+                    if (!IsInGlobalCustomTypesDefinedOrExternal(type))
                     {
                         customTypesDefined.Add(type);
                         _globalCustomTypesDefined.Add(type);
@@ -236,14 +237,24 @@ namespace Supermodel.Mobile.CodeGen
                 else if (property.PropertyType != typeof(string) && property.PropertyType.GetInterfaces().Any(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IEnumerable<>)))
                 {
                     var genericArgType = property.PropertyType.GetInterfaces().Single(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IEnumerable<>)).GetGenericArguments()[0];
-                    if (!_globalCustomTypesDefined.Contains(genericArgType))
+                    if (!IsInGlobalCustomTypesDefinedOrExternal(genericArgType))
                     {
                         customTypesDefined.Add(genericArgType);
                         _globalCustomTypesDefined.Add(genericArgType);
                     }
                     var genericParam = genericArgType.Name.Replace("ApiModel", "");
-                    sb.AppendFormat("public List<{0}> {1} ", genericParam, property.Name);
-                    sb.AppendLineFormat("{{ get; set; }} = new List<{0}>();", genericParam);
+
+                    //If array, it is a special case
+                    if (property.PropertyType.IsArray)
+                    {
+                        sb.AppendFormat("public {0}[] {1} ", genericParam, property.Name);
+                        sb.AppendLineFormat("{{ get; set; }} = new {0}[0];", genericParam);
+                    }
+                    else
+                    {
+                        sb.AppendFormat("public List<{0}> {1} ", genericParam, property.Name);
+                        sb.AppendLineFormat("{{ get; set; }} = new List<{0}>();", genericParam);
+                    }
                 }
                 else if (Nullable.GetUnderlyingType(property.PropertyType) != null)
                 {
@@ -252,7 +263,7 @@ namespace Supermodel.Mobile.CodeGen
                     sb.AppendFormat("public {0}? {1} ", underlyingPropType.Name, property.Name);
                     if (underlyingPropType.IsEnum)
                     {
-                        if (!_globalCustomTypesDefined.Contains(underlyingPropType))
+                        if (!IsInGlobalCustomTypesDefinedOrExternal(underlyingPropType))
                         {
                             customTypesDefined.Add(underlyingPropType);
                             _globalCustomTypesDefined.Add(underlyingPropType);
@@ -272,7 +283,7 @@ namespace Supermodel.Mobile.CodeGen
                 else if (property.PropertyType.IsEnum || property.PropertyType.IsValueType)
                 {
                     sb.AppendFormat("public {0} {1} ", property.PropertyType.Name.Replace("ApiModel", ""), property.Name);
-                    if (!_globalCustomTypesDefined.Contains(property.PropertyType))
+                    if (!IsInGlobalCustomTypesDefinedOrExternal(property.PropertyType))
                     {
                         customTypesDefined.Add(property.PropertyType);
                         _globalCustomTypesDefined.Add(property.PropertyType);
@@ -282,7 +293,7 @@ namespace Supermodel.Mobile.CodeGen
                 else if (property.PropertyType.IsClass)
                 {
                     sb.AppendFormat("public {0} {1} ", property.PropertyType.Name.Replace("ApiModel", ""), property.Name);
-                    if (!_globalCustomTypesDefined.Contains(property.PropertyType))
+                    if (!IsInGlobalCustomTypesDefinedOrExternal(property.PropertyType))
                     {
                         customTypesDefined.Add(property.PropertyType);
                         _globalCustomTypesDefined.Add(property.PropertyType);
@@ -315,7 +326,7 @@ namespace Supermodel.Mobile.CodeGen
                     foreach (var enumValue in Enum.GetValues(customType))
                     {
                         var enumValueLabel = enumValue!.ToString();
-                        
+
                         var descriptionAttribute = "";
                         var descriptionStr = enumValue.GetDescription();
                         if (descriptionStr != enumValueLabel) descriptionAttribute = $"[Description(\"{descriptionStr}\")] ";
@@ -375,7 +386,7 @@ namespace Supermodel.Mobile.CodeGen
                     if (controllerEnhancedBaseType.GetGenericTypeDefinition() == _enhancedCrudApiControllerType) controllerKind = ControllerKindEnum.EnhancedCRUD;
                     else if (controllerEnhancedBaseType.GetGenericTypeDefinition() == _wmEnhancedCrudApiControllerType) controllerKind = ControllerKindEnum.WMEnhancedCRUD;
                     else throw new SupermodelException("unknown controllerEnhancedBaseType");
-                    
+
                     modelTypes.Add(controllerEnhancedBaseType.GetGenericArguments()[3]);
                 }
                 else
@@ -454,6 +465,11 @@ namespace Supermodel.Mobile.CodeGen
             }
             return null;
         }
+        private bool IsInGlobalCustomTypesDefinedOrExternal(Type type)
+        {
+            return _globalCustomTypesDefined.Contains(type) || !Assemblies.Contains(type.Assembly);
+
+        }
         #endregion
 
         #region Proprties & Attributes
@@ -461,7 +477,7 @@ namespace Supermodel.Mobile.CodeGen
         public string NameSpace { get; }
 
         private readonly HashSet<Type> _globalCustomTypesDefined = new HashSet<Type>();
-        
+
         //private readonly Type _ApiControllerBaseType = typeof(ApiControllerBase);
         private readonly Type _enhancedCrudApiControllerType = typeof(Presentation.Mvc.Controllers.Api.EnhancedCRUDApiController<,,,,>);
         private readonly Type _crudApiControllerType = typeof(Presentation.Mvc.Controllers.Api.CRUDApiController<,,,>);

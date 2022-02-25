@@ -17,50 +17,50 @@ namespace Supermodel.ReflectionMapper
     {
         #region Methods
         #nullable disable
-        public static async Task<TMe> MapFromAsync<TMe, TOther>(this TMe me, TOther other) 
+        public static async Task<TMe> MapFromAsync<TMe, TOther>(this TMe me, TOther other)
         {
-            if (me is IRMapperCustom customMe) 
+            if (me is IRMapperCustom customMe)
             {
                 var otherType = typeof(TOther);
                 if (other != null && !(otherType.IsGenericType && otherType.GetGenericTypeDefinition() == typeof(Nullable<>))) otherType = other.GetType();
-                
-                if (typeof(TOther) == otherType) 
+
+                if (typeof(TOther) == otherType)
                 {
                     await customMe.MapFromCustomAsync(other);
                 }
-                else 
+                else
                 {
                     var otherObj = (object)other;
-                    await me.MapFromAsync(otherObj, otherType);
+                    me = (TMe)await me.MapFromAsync(otherObj, otherType);
                 }
             }
-            else 
+            else
             {
-                await MapFromCustomBaseAsync(me, other);
+                me = await MapFromCustomBaseAsync(me, other);
             }
             return me;
         }
         public static async Task<TOther> MapToAsync<TMe, TOther>(this TMe me, TOther other)
         {
-            if (me is IRMapperCustom customMe) 
+            if (me is IRMapperCustom customMe)
             {
                 var otherType = typeof(TOther);
                 if (other != null && !(otherType.IsGenericType && otherType.GetGenericTypeDefinition() == typeof(Nullable<>))) otherType = other.GetType();
-                
+
                 // ReSharper disable once PossibleNullReferenceException
                 if (otherType.FullName.StartsWith("Castle.Proxies.")) otherType = otherType.BaseType ?? throw new SupermodelException("Castle.Proxies does not have a base type.");
 
-                if (typeof(TOther) == otherType) 
+                if (typeof(TOther) == otherType)
                 {
                     other = await customMe.MapToCustomAsync(other);
                 }
-                else 
+                else
                 {
                     var otherObj = (object)other;
                     other = (TOther)await me.MapToAsync(otherObj, otherType);
                 }
             }
-            else 
+            else
             {
                 other = await MapToCustomBaseAsync(me, other);
             }
@@ -69,13 +69,13 @@ namespace Supermodel.ReflectionMapper
 
         public static Task<object> MapFromAsync(this object me, object other, Type otherType)
         {
-            var task = ReflectionHelper.ExecuteStaticGenericMethod(typeof(RMExtensions), nameof(MapFromAsync), new []{ me.GetType(), otherType}, me, other);
+            var task = ReflectionHelper.ExecuteStaticGenericMethod(typeof(RMExtensions), nameof(MapFromAsync), new[] { me.GetType(), otherType }, me, other);
             if (task == null) throw new SystemException("MapFromAsync: task == null");
             return task.GetResultAsObjectAsync();
         }
         public static Task<object> MapToAsync(this object me, object other, Type otherType)
         {
-            var task = ReflectionHelper.ExecuteStaticGenericMethod(typeof(RMExtensions), nameof(MapToAsync), new []{ me.GetType(), otherType}, me, other);
+            var task = ReflectionHelper.ExecuteStaticGenericMethod(typeof(RMExtensions), nameof(MapToAsync), new[] { me.GetType(), otherType }, me, other);
             if (task == null) throw new SystemException("MapToAsync: task == null");
             return task.GetResultAsObjectAsync();
         }
@@ -85,7 +85,14 @@ namespace Supermodel.ReflectionMapper
             if (me == null) throw new ReflectionMapperException($"{nameof(MapFromCustomBaseAsync)}: me is null");
             if (other == null) throw new ReflectionMapperException($"{nameof(MapFromCustomBaseAsync)}: other is null");
 
-            
+            //if primitive types
+            if (me.GetType().IsPrimitiveOrValueTypeOrNullable())
+            {
+                //if primitive type, it must match 100%
+                if (me.GetType() == other.GetType()) return (TMe)(object)other;
+                else throw new PropertyCantBeAutomappedException($"Cannot map {me.GetType()} to {other.GetType()} because their types are incompatible.");
+            }
+
             //Arrays with same element types of active element type that implements ICustomMapper
             if (AreCompatibleArrays(me.GetType(), other.GetType()))
             {
@@ -113,9 +120,9 @@ namespace Supermodel.ReflectionMapper
                         myArray.SetValue(myArrayItem, i);
                     }
                 }
-                return (TMe)(object)myArray;   
+                return (TMe)(object)myArray;
             }
-            
+
             //ICollection<ICustomMapper> (if main objects are compatible collections)
             //WARNING: if we derive from a collection, we ignore all properties that could be on a collection object itself
             if (AreCompatibleCollections(me.GetType(), other.GetType()))
@@ -143,7 +150,7 @@ namespace Supermodel.ReflectionMapper
                 }
                 return me;
             }
-            
+
             foreach (var myPropertyInfo in me.GetType().GetProperties())
             {
                 //Get my property meta
@@ -166,7 +173,7 @@ namespace Supermodel.ReflectionMapper
                 {
                     try
                     {
-                        if (myProperty == null) 
+                        if (myProperty == null)
                         {
                             myProperty = ReflectionHelper.CreateType(myPropertyMeta.PropertyInfo.PropertyType);
                             if (myProperty is IAsyncInit iAsyncInit && !iAsyncInit.AsyncInitialized) await iAsyncInit.InitAsync().ConfigureAwait(false);
@@ -182,8 +189,8 @@ namespace Supermodel.ReflectionMapper
                         var vr = new ValidationResultList();
                         foreach (var validationResult in ex.ValidationResultList)
                         {
-		                    if (validationResult.MemberNames.Any(x => !string.IsNullOrWhiteSpace(x))) vr.Add(validationResult);
-		                    else vr.Add(new ValidationResult(validationResult.ErrorMessage, new [] { myPropertyMeta.PropertyInfo.Name }));
+                            if (validationResult.MemberNames.Any(x => !string.IsNullOrWhiteSpace(x))) vr.Add(validationResult);
+                            else vr.Add(new ValidationResult(validationResult.ErrorMessage, new[] { myPropertyMeta.PropertyInfo.Name }));
                         }
                         throw new ValidationResultException(vr);
                     }
@@ -210,7 +217,7 @@ namespace Supermodel.ReflectionMapper
                     //if (myProperty == null) myProperty = myPropertyMeta.CreateDefaultInstance();
                     var myArray = Array.CreateInstance(myArrayItemType, otherArray.Length);
 
-                    for(var i = 0; i < otherArray.Length; i++)
+                    for (var i = 0; i < otherArray.Length; i++)
                     {
                         var otherArrayItem = otherArray.GetValue(i);
                         if (otherArrayItem == null)
@@ -222,7 +229,7 @@ namespace Supermodel.ReflectionMapper
                             var myArrayItem = ReflectionHelper.CreateType(myArrayItemType);
                             if (myArrayItem is IAsyncInit iAsyncInit && !iAsyncInit.AsyncInitialized) await iAsyncInit.InitAsync().ConfigureAwait(false);
 
-                            await myArrayItem.MapFromAsync(otherArrayItem, otherArrayItemType);
+                            myArrayItem = await myArrayItem.MapFromAsync(otherArrayItem, otherArrayItemType);
                             myArray.SetValue(myArrayItem, i);
                         }
                     }
@@ -292,6 +299,15 @@ namespace Supermodel.ReflectionMapper
             if (me == null) throw new ReflectionMapperException($"{nameof(MapToCustomBaseAsync)}: me is null");
             if (other == null) throw new ReflectionMapperException($"{nameof(MapToCustomBaseAsync)}: other is null");
 
+            //if primitive types
+            if (me.GetType().IsPrimitiveOrValueTypeOrNullable())
+            {
+                //if primitive type, it must match 100%
+                if (me.GetType() == other.GetType()) return (TOther)(object)me;
+                else throw new PropertyCantBeAutomappedException($"Cannot map {me.GetType()} to {other.GetType()} because their types are incompatible.");
+            }
+
+            //Arrays with same element types of active element type that implements ICustomMapper
             if (AreCompatibleArrays(me.GetType(), other.GetType()))
             {
                 var myArray = (Array)(object)me;
@@ -300,7 +316,7 @@ namespace Supermodel.ReflectionMapper
                 if (otherArrayItemType == null) throw new SupermodelException("otherArrayItemType == null");
 
                 otherArray = Array.CreateInstance(otherArrayItemType, myArray.Length);
-                for(var i = 0; i < myArray.Length; i++)
+                for (var i = 0; i < myArray.Length; i++)
                 {
                     var myArrayItem = myArray.GetValue(i);
                     if (myArrayItem == null)
@@ -345,7 +361,7 @@ namespace Supermodel.ReflectionMapper
                 }
                 return other;
             }
-            
+
             foreach (var myPropertyInfo in me.GetType().GetProperties())
             {
                 //Get my property meta
@@ -356,10 +372,10 @@ namespace Supermodel.ReflectionMapper
 
                 //Find matching property on other
                 var otherPropertyMeta = GetMatchingProperty(me, myPropertyMeta.PropertyInfo, other);
-                
+
                 //Get my property value
                 var myProperty = myPropertyMeta.Get();
-                
+
                 //Get other property
                 var otherProperty = otherPropertyMeta.Get();
 
@@ -376,8 +392,8 @@ namespace Supermodel.ReflectionMapper
                         var vr = new ValidationResultList();
                         foreach (var validationResult in ex.ValidationResultList)
                         {
-		                    if (validationResult.MemberNames.Any(x => !string.IsNullOrWhiteSpace(x))) vr.Add(validationResult);
-		                    else vr.Add(new ValidationResult(validationResult.ErrorMessage, new [] { myPropertyMeta.PropertyInfo.Name }));
+                            if (validationResult.MemberNames.Any(x => !string.IsNullOrWhiteSpace(x))) vr.Add(validationResult);
+                            else vr.Add(new ValidationResult(validationResult.ErrorMessage, new[] { myPropertyMeta.PropertyInfo.Name }));
                         }
                         throw new ValidationResultException(vr);
                     }
@@ -400,7 +416,7 @@ namespace Supermodel.ReflectionMapper
                     var otherArrayItemType = otherPropertyMeta.PropertyInfo.PropertyType.GetElementType();
                     if (otherArrayItemType == null) throw new SupermodelException("otherArrayItemType == null");
                     var otherArray = Array.CreateInstance(otherArrayItemType, myArray.Length);
-                    
+
                     for (var i = 0; i < myArray.Length; i++)
                     {
                         var myArrayItem = myArray.GetValue(i);
@@ -428,7 +444,7 @@ namespace Supermodel.ReflectionMapper
 
                     otherProperty ??= otherPropertyMeta.CreateDefaultInstance();
                     var otherICollection = (ICollection)otherProperty;
-                    
+
                     otherICollection.ClearCollection();
                     foreach (var myICollectionItem in myICollection)
                     {
@@ -563,7 +579,7 @@ namespace Supermodel.ReflectionMapper
                         throw new ArgumentException($"Property '{myPropertyInfo.Name}' of type '{me.GetType().Name}' can't be compared to type '{other.GetType().Name}' property '{otherPropertyInfo.Name}' because IComparable implementation threw an exception: {ex.Message}.");
                     }
                 }
-                
+
                 //Everything else
                 else
                 {
@@ -593,7 +609,7 @@ namespace Supermodel.ReflectionMapper
         #endregion
 
         #region Private Helper Methods
-		private static bool AreCompatibleArrays(Type activeType, Type passiveType)
+        private static bool AreCompatibleArrays(Type activeType, Type passiveType)
         {
             //both types are arrays
             if (!activeType.GetTypeInfo().IsArray) return false;
@@ -601,7 +617,7 @@ namespace Supermodel.ReflectionMapper
 
             //get element types
             var activeElementType = activeType.GetElementType();
-            var passiveElementType =passiveType.GetElementType();
+            var passiveElementType = passiveType.GetElementType();
 
             //if element types match, we are good already
             if (activeElementType == passiveElementType) return true;
@@ -609,37 +625,37 @@ namespace Supermodel.ReflectionMapper
             return true;
         }
         private static bool AreCompatibleCollections(Type activeType, Type passiveType)
-		{
-		    //both types are generic
-		    if (!activeType.GetTypeInfo().IsGenericType) return false;
-		    if (!passiveType.GetTypeInfo().IsGenericType) return false;
+        {
+            //both types are generic
+            if (!activeType.GetTypeInfo().IsGenericType) return false;
+            if (!passiveType.GetTypeInfo().IsGenericType) return false;
 
-		    //get generic type definitions
-		    var activeTypeGenericDefinition = activeType.GetGenericTypeDefinition();
-		    var passiveTypeGenericDefinition = passiveType.GetGenericTypeDefinition();
-		
-		    //make sure the types are the same except for the generic parameter
-		    if (activeTypeGenericDefinition != passiveTypeGenericDefinition) return false;
-		
-			//set up ICollection interface in a variable
-			//var activeICollectionInterface = activeType.GetInterface(typeof(ICollection<>).Name);
-			var activeICollectionInterface = activeType.GetTypeInfo().ImplementedInterfaces.SingleOrDefault(x => x.GetTypeInfo().IsGenericType && x.GetGenericTypeDefinition() == typeof(ICollection<>));
-			if (activeICollectionInterface == null && activeTypeGenericDefinition == typeof(ICollection<>)) activeICollectionInterface = activeType;
-						
-			//var passiveICollectionInterface = passiveType.GetInterface(typeof(ICollection<>).Name);
-			var passiveICollectionInterface = passiveType.GetTypeInfo().ImplementedInterfaces.SingleOrDefault(x => x.GetTypeInfo().IsGenericType && x.GetGenericTypeDefinition() == typeof(ICollection<>));
-			if (passiveICollectionInterface == null && passiveTypeGenericDefinition == typeof(ICollection<>)) passiveICollectionInterface = passiveType;
-		            
-		    //both types are ICollection
-		    if (activeICollectionInterface == null) return false;
-		    if (passiveICollectionInterface == null) return false;
-		
-		    //both are generic types (this might be generic but just in case)
-		    if (!activeICollectionInterface.GetTypeInfo().IsGenericType) return false;
-		    if (!passiveICollectionInterface.GetTypeInfo().IsGenericType) return false;
+            //get generic type definitions
+            var activeTypeGenericDefinition = activeType.GetGenericTypeDefinition();
+            var passiveTypeGenericDefinition = passiveType.GetGenericTypeDefinition();
 
-		    return true;
-		}
+            //make sure the types are the same except for the generic parameter
+            if (activeTypeGenericDefinition != passiveTypeGenericDefinition) return false;
+
+            //set up ICollection interface in a variable
+            //var activeICollectionInterface = activeType.GetInterface(typeof(ICollection<>).Name);
+            var activeICollectionInterface = activeType.GetTypeInfo().ImplementedInterfaces.SingleOrDefault(x => x.GetTypeInfo().IsGenericType && x.GetGenericTypeDefinition() == typeof(ICollection<>));
+            if (activeICollectionInterface == null && activeTypeGenericDefinition == typeof(ICollection<>)) activeICollectionInterface = activeType;
+
+            //var passiveICollectionInterface = passiveType.GetInterface(typeof(ICollection<>).Name);
+            var passiveICollectionInterface = passiveType.GetTypeInfo().ImplementedInterfaces.SingleOrDefault(x => x.GetTypeInfo().IsGenericType && x.GetGenericTypeDefinition() == typeof(ICollection<>));
+            if (passiveICollectionInterface == null && passiveTypeGenericDefinition == typeof(ICollection<>)) passiveICollectionInterface = passiveType;
+
+            //both types are ICollection
+            if (activeICollectionInterface == null) return false;
+            if (passiveICollectionInterface == null) return false;
+
+            //both are generic types (this might be generic but just in case)
+            if (!activeICollectionInterface.GetTypeInfo().IsGenericType) return false;
+            if (!passiveICollectionInterface.GetTypeInfo().IsGenericType) return false;
+
+            return true;
+        }
         private static RMPropertyMetadata GetMatchingProperty(object me, PropertyInfo myProperty, object other)
         {
             // ReSharper disable PossibleMultipleEnumeration
@@ -653,8 +669,8 @@ namespace Supermodel.ReflectionMapper
             {
                 var attrPropertyName = ((RMapToAttribute)myReflectionMappedToAttribute).PropertyName;
                 if (!string.IsNullOrEmpty(attrPropertyName)) myPropertyName = attrPropertyName;
-                
-                var attrObjectPath = ((RMapToAttribute) myReflectionMappedToAttribute).ObjectPath;
+
+                var attrObjectPath = ((RMapToAttribute)myReflectionMappedToAttribute).ObjectPath;
                 if (!string.IsNullOrEmpty(attrObjectPath))
                 {
                     var mappedToNameComponents = attrObjectPath.Split('.');
@@ -669,7 +685,7 @@ namespace Supermodel.ReflectionMapper
                     }
                 }
             }
-            
+
             var otherProperties = parentObj.GetType().GetProperties().Where(x => x.Name == myPropertyName);
             if (otherProperties.Count() != 1) throw new PropertyCantBeAutomappedException($"Property '{myProperty.Name}' of class '{me.GetType().Name}' can't be automapped to type '{parentObj.GetType().Name}' because '{myPropertyName}' property does not exist in type '{parentObj.GetType().Name}'.");
             var propertyInfo = otherProperties.Single();
