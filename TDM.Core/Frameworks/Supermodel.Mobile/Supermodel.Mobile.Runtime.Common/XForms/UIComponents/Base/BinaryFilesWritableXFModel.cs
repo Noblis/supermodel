@@ -8,7 +8,7 @@ namespace Supermodel.Mobile.Runtime.Common.XForms.UIComponents.Base
     public abstract class BinaryFilesWritableXFModel : BinaryFilesReadOnlyXFModel, IWritableUIComponentXFModel
     {
         #region Custom Mapper implementation
-        public override async Task MapFromCustomAsync<T>(T other)
+        public override async Task<T> MapToCustomAsync<T>(T other)
         {
             var modelsWithImage = (IEnumerable<IModelWithBinaryFile>)other;
 
@@ -29,6 +29,7 @@ namespace Supermodel.Mobile.Runtime.Common.XForms.UIComponents.Base
                     await modelWithBinaryFileXFModel.MapToAsync(modelWithImage);
                 }
             }
+            return other;
         }
         #endregion
 
