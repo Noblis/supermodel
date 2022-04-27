@@ -29,6 +29,16 @@ namespace Supermodel.ReflectionMapper
     public class RMCopyShallowFromAttribute : Attribute { }
 
 
+    [AttributeUsage(AttributeTargets.Class)]
+    public class RMCopyAllPropsShallowAttribute : Attribute { }
+
+    [AttributeUsage(AttributeTargets.Class)]
+    public class RMCopyAllPropsShallowToAttribute : Attribute { }
+
+    [AttributeUsage(AttributeTargets.Class)]
+    public class RMCopyAllPropsShallowFromAttribute : Attribute { }
+
+
     [AttributeUsage(AttributeTargets.Property)]
     public class RMapToAttribute : Attribute
     {

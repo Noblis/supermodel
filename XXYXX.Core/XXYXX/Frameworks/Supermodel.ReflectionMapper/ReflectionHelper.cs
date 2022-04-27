@@ -232,13 +232,13 @@ namespace Supermodel.ReflectionMapper
             return attr != null ? ((DescriptionAttribute)attr).Description : type.Name.InsertSpacesBetweenWords();
         }
 
-        public static bool HasAttribute<TAttribute>(this MemberInfo element) where TAttribute : Attribute
+        public static bool HasAttribute<TAttribute>(this MemberInfo element, bool inherit = true) where TAttribute : Attribute
         {
-            return Attribute.GetCustomAttribute(element, typeof(TAttribute)) != null;
+            return Attribute.GetCustomAttribute(element, typeof(TAttribute), inherit) != null;
         }
-        public static TAttribute? GetAttribute<TAttribute>(this MemberInfo element) where TAttribute : Attribute
+        public static TAttribute? GetAttribute<TAttribute>(this MemberInfo element, bool inherit = true) where TAttribute : Attribute
         {
-            return (TAttribute?)Attribute.GetCustomAttribute(element, typeof(TAttribute));
+            return (TAttribute?)Attribute.GetCustomAttribute(element, typeof(TAttribute), inherit);
         }
 
         public static object? PropertyGetWithNullIfNoProperty(this object me, string propertyName)

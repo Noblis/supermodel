@@ -1,6 +1,7 @@
 ﻿#nullable enable
 
 using System;
+using System.Collections.Concurrent;
 using System.ComponentModel;
 using Supermodel.DataAnnotations.Attributes;
 
@@ -14,23 +15,26 @@ namespace Supermodel.ReflectionMapper
             
             //Tries to find a DescriptionAttribute for a potential friendly name for the enum
             var type = value.GetType();
-
-            var valueToString = value.ToString();
-
             if (type.IsEnum)
             {
-                var memberInfo = type.GetMember(valueToString);
+                if (_enumDescDict.ContainsKey((Enum)value)) return _enumDescDict[(Enum)value];
+
+                var memberInfo = type.GetMember(value.ToString());
                 if (memberInfo.Length > 0)
                 {
                     var attr = Attribute.GetCustomAttribute(memberInfo[0], typeof(DescriptionAttribute), true);
                     if (attr != null) return ((DescriptionAttribute)attr).Description;
                 }
                 //If we have no description attribute, just return the ToString() or ToString().InsertSpacesBetweenWords() for enum
-                return value.ToString().InsertSpacesBetweenWords();
+                var valueToString = value.ToString().InsertSpacesBetweenWords();
+                _enumDescDict[(Enum)value] = valueToString;
+                return valueToString;
             }
 
-            return valueToString;
+            return value.ToString();
         }
+        private static ConcurrentDictionary<Enum, string> _enumDescDict = new ConcurrentDictionary<Enum, string>();
+
         public static int GetScreenOrder(this object value)
         {
             //Tries to find a ScreenOrderAttribute for a potential friendly name for the enum

@@ -282,7 +282,7 @@ namespace Supermodel.Mobile.Runtime.Common.DataContext.Offline
         {
             if (model1.BroughtFromMasterDbOnUtc == null || model2.BroughtFromMasterDbOnUtc == null) throw new SupermodelException("(model1.BroughtFromMasterDbOnUtc == null || model2.BroughtFromMasterDbOnUtc == null): this should not happen");
             model1.BroughtFromMasterDbOnUtc = model2.BroughtFromMasterDbOnUtc = (model1.BroughtFromMasterDbOnUtc > model2.BroughtFromMasterDbOnUtc ? model1.BroughtFromMasterDbOnUtc : model2.BroughtFromMasterDbOnUtc);
-            await model2.MapFromAsync(model1);
+            await model2.MapFromAsync(model1, true); //note that we force shallow copy here for performance reasons
         }
         public virtual async Task CopyNewerModelIntoOlderAsync(TModel model1, TModel model2)
         {

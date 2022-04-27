@@ -4,6 +4,7 @@ using Supermodel.Mobile.Runtime.Common.Services;
 using System;
 using System.IO;
 using UIKit;
+using Xamarin.Essentials;
 
 namespace Supermodel.Mobile.Runtime.iOS.Services
 {
@@ -50,13 +51,9 @@ namespace Supermodel.Mobile.Runtime.iOS.Services
             catch (Exception){} //if exception is thrown, we are not jailbroken
 
             if (UIApplication.SharedApplication.CanOpenUrl(new NSUrl("cydia://package/com.exapmle.package"))) result = true;
-            return result;        }
-        public bool IsRunningOnEmulator()
-        {
-            var result = false;
-            if (ObjCRuntime.Runtime.Arch == ObjCRuntime.Arch.SIMULATOR) result = true;
             return result;
         }
+        public bool IsRunningOnEmulator() => DeviceInfo.DeviceType == DeviceType.Virtual;
         #endregion
     }
 }
