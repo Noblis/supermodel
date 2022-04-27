@@ -15,7 +15,6 @@ namespace Supermodel.ReflectionMapper
             
             //Tries to find a DescriptionAttribute for a potential friendly name for the enum
             var type = value.GetType();
-
             if (type.IsEnum)
             {
                 if (_enumDescDict.ContainsKey((Enum)value)) return _enumDescDict[(Enum)value];
