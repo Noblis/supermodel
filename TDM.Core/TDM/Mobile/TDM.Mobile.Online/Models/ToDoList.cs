@@ -7,7 +7,6 @@ using Supermodel.Mobile.Runtime.Common.DataContext.Core;
 using Supermodel.Mobile.Runtime.Common.UnitOfWork;
 using Supermodel.Mobile.Runtime.Common.XForms.UIComponents;
 using Supermodel.Mobile.Runtime.Common.XForms.ViewModels;
-using Supermodel.ReflectionMapper;
 using TDM.Mobile.AppCore;
 using TDM.Mobile.Pages.MyToDoListItemDetail;
 using TDM.Mobile.Supermodel.Persistence;
@@ -49,7 +48,8 @@ namespace Supermodel.ApiClient.Models
         #region Properties
         [Required] public TextBoxXFModel Name { get; set; } = new TextBoxXFModel();
         //[ScaffoldColumn(false)/*, RMCopyShallow*/] public ListViewModel<ToDoItem> ToDoItems { get; set; } = new ListViewModel<ToDoItem>();
-        [ScaffoldColumn(false), RMCopyShallow] public List<ToDoItem> ToDoItems { get; set; } = new List<ToDoItem>();
+        //[ScaffoldColumn(false), RMCopyShallow] public List<ToDoItem> ToDoItems { get; set; } = new List<ToDoItem>();
+        [ScaffoldColumn(false)] public List<ToDoItem> ToDoItems { get; set; } = new List<ToDoItem>();
         #endregion
     }
 

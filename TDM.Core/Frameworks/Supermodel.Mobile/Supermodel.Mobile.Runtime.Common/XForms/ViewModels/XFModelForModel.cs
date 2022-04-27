@@ -1,8 +1,10 @@
 using System.Threading.Tasks;
 using Supermodel.Mobile.Runtime.Common.Models;
+using Supermodel.ReflectionMapper;
 
 namespace Supermodel.Mobile.Runtime.Common.XForms.ViewModels
 {
+    [RMCopyAllPropsShallow]
     public abstract class XFModelForModel<TModel> : XFModelForModelBase<TModel> where TModel : class, IModel, ISupermodelNotifyPropertyChanged, new()
     {
         #region Constructors
