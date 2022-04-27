@@ -51,7 +51,8 @@ namespace Supermodel.Mobile.Runtime.iOS.Services
             catch (Exception){} //if exception is thrown, we are not jailbroken
 
             if (UIApplication.SharedApplication.CanOpenUrl(new NSUrl("cydia://package/com.exapmle.package"))) result = true;
-            return result;        }
+            return result;
+        }
         public bool IsRunningOnEmulator() => DeviceInfo.DeviceType == DeviceType.Virtual;
         #endregion
     }
