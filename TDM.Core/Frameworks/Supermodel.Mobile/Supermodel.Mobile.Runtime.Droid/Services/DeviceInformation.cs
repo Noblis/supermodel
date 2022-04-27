@@ -2,6 +2,7 @@
 using Android.OS;
 using Android.App;
 using Supermodel.Mobile.Runtime.Common.Services;
+using Xamarin.Essentials;
 
 namespace Supermodel.Mobile.Runtime.Droid.Services
 {
@@ -55,12 +56,7 @@ namespace Supermodel.Mobile.Runtime.Droid.Services
 
             return result;        
         }
-        public bool IsRunningOnEmulator()
-        {
-            var result = false;
-            if (Build.Fingerprint != null && (Build.Fingerprint.Contains("vbox") || Build.Fingerprint.Contains("generic"))) result = true;
-            return result;
-        }
+        public bool IsRunningOnEmulator() => DeviceInfo.DeviceType == DeviceType.Virtual;
         #endregion
     }
 }
