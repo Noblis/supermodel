@@ -3,6 +3,8 @@
 using System;
 using System.Collections.Concurrent;
 using System.ComponentModel;
+using System.Net;
+using System.Runtime.Serialization;
 using Supermodel.DataAnnotations.Attributes;
 
 namespace Supermodel.ReflectionMapper
@@ -23,7 +25,11 @@ namespace Supermodel.ReflectionMapper
                 if (memberInfo.Length > 0)
                 {
                     var attr = Attribute.GetCustomAttribute(memberInfo[0], typeof(DescriptionAttribute), true);
-                    if (attr != null) return ((DescriptionAttribute)attr).Description;
+                    if (attr != null)
+                    {
+                        var result = _enumDescDict[(Enum)value] = ((DescriptionAttribute)attr).Description;
+                        return result;
+                    }
                 }
                 //If we have no description attribute, just return the ToString() or ToString().InsertSpacesBetweenWords() for enum
                 var valueToString = value.ToString().InsertSpacesBetweenWords();
@@ -33,7 +39,7 @@ namespace Supermodel.ReflectionMapper
 
             return value.ToString();
         }
-        private static ConcurrentDictionary<Enum, string> _enumDescDict = new ConcurrentDictionary<Enum, string>();
+        private static readonly ConcurrentDictionary<Enum, string> _enumDescDict = new ConcurrentDictionary<Enum, string>();
 
         public static int GetScreenOrder(this object value)
         {
@@ -48,6 +54,7 @@ namespace Supermodel.ReflectionMapper
             //If we have no order, default is 100
             return 100;
         }
+
         public static bool IsDisabled(this object value)
         {
             var type = value.GetType();
@@ -60,5 +67,29 @@ namespace Supermodel.ReflectionMapper
             //If we have no disabled attribute, we assume active
             return false;
         }
+        
+        public static string? GetEnumMemberAttributeValueOrNull(this Enum value)
+        {
+            if (_enumMemberDict.ContainsKey(value)) return _enumMemberDict[value];
+
+            //Tries to find a EnumMemberAttribute for a potential serialization name for the enum
+            var type = value.GetType();
+
+            var memberInfo = type.GetMember(value.ToString());
+            if (memberInfo.Length > 0)
+            {
+                var attr = Attribute.GetCustomAttribute(memberInfo[0], typeof(EnumMemberAttribute), true);
+                if (attr != null)
+                {
+                    var result = _enumMemberDict[value] = ((EnumMemberAttribute)attr).Value;
+                    return result;
+                }
+            }
+            //If we have no EnumMemberAttribute attribute, just return null
+            _enumMemberDict[value] = null;
+            return null;
+        }
+        private static readonly ConcurrentDictionary<Enum, string?> _enumMemberDict = new ConcurrentDictionary<Enum, string?>();
+
     }
 }
