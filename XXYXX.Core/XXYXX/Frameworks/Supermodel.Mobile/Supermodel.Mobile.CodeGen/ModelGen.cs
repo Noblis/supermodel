@@ -50,6 +50,7 @@ namespace Supermodel.Mobile.CodeGen
             sb.AppendLine("using Supermodel.Mobile.Runtime.Common.DataContext.WebApi;");
             sb.AppendLine("using Supermodel.Mobile.Runtime.Common.Models;");
             sb.AppendLine("using System.ComponentModel;");
+            sb.AppendLine("using System.Runtime.Serialization;");
             sb.AppendLine("using Supermodel.DataAnnotations.Attributes;");
             sb.AppendLine("// ReSharper restore RedundantUsingDirective");
             sb.AppendLine("");
