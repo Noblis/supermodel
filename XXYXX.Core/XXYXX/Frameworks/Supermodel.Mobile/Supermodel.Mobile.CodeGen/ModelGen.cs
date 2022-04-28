@@ -58,7 +58,7 @@ namespace Supermodel.Mobile.CodeGen
             sb.AppendLineIndentPlus("{");
 
             var first = true;
-            foreach (var controllerType in FindAllSupermodelControllers())
+            foreach (var controllerType in FindAllSupermodelControllers().OrderBy(x => x.Name)) //We order to always generate identical runtime
             {
                 if (!controllerType.Name.EndsWith("ApiController")) throw new SupermodelException("Controller " + controllerType.Name + ": names by convention must end with 'ApiController'");
 
@@ -93,7 +93,7 @@ namespace Supermodel.Mobile.CodeGen
                     sb.AppendLineIndentMinus("}");
                     sb.AppendLineIndentMinus("}");
 
-                    if (!IsInGlobalCustomTypesDefinedOrExternal(modelTypes[0]))
+                    if (!IsInGlobalCustomTypesDefinedOrSystem(modelTypes[0]))
                     {
                         _globalCustomTypesDefined.Add(modelTypes[0]);
                         sb.AppendLine("// ReSharper disable once PartialTypeWithSinglePart");
@@ -105,7 +105,7 @@ namespace Supermodel.Mobile.CodeGen
                         sb.AppendLineFormat("//Class {0} is already defined elsewhere", modelTypes[0].Name.Replace("ApiModel", ""));
                     }
 
-                    if (!IsInGlobalCustomTypesDefinedOrExternal(modelTypes[1]))
+                    if (!IsInGlobalCustomTypesDefinedOrSystem(modelTypes[1]))
                     {
                         _globalCustomTypesDefined.Add(modelTypes[1]);
                         sb.AppendLine("// ReSharper disable once PartialTypeWithSinglePart");
@@ -134,7 +134,7 @@ namespace Supermodel.Mobile.CodeGen
                     if (controllerKind == ControllerKindEnum.CRUD || controllerKind == ControllerKindEnum.EnhancedCRUD) restUrlAttribute = $"[RestUrl(\"{controllerType.Name.Replace("Controller", "")}\")]";
                     else restUrlAttribute = $"[RestUrl(\"{controllerType.Name.Replace("ApiController", "")}\")]";
 
-                    if (!IsInGlobalCustomTypesDefinedOrExternal(modelTypes[0]))
+                    if (!IsInGlobalCustomTypesDefinedOrSystem(modelTypes[0])) //We do not expect an external type with DetailApiModel suffix
                     {
                         _globalCustomTypesDefined.Add(modelTypes[0]);
                         sb.AppendLine(restUrlAttribute);
@@ -154,7 +154,7 @@ namespace Supermodel.Mobile.CodeGen
                         sb.AppendLine(restUrlAttribute);
                         if (!modelTypes[1].Name.EndsWith("ListApiModel")) throw new SupermodelException("List Model " + modelTypes[0].Name + ": names by convention must end with 'ListApiModel'");
 
-                        if (!IsInGlobalCustomTypesDefinedOrExternal(modelTypes[1]))
+                        if (!IsInGlobalCustomTypesDefinedOrSystem(modelTypes[1])) //We do not expect an external type with ListApiModel suffix
                         {
                             _globalCustomTypesDefined.Add(modelTypes[1]);
                             sb.AppendLine("// ReSharper disable once PartialTypeWithSinglePart");
@@ -173,7 +173,7 @@ namespace Supermodel.Mobile.CodeGen
                         sb.AppendLine("");
                         if (!modelTypes[2].Name.EndsWith("SearchApiModel")) throw new SupermodelException("Search Model " + modelTypes[0].Name + ": names by convention must end with 'SearchApiModel'");
 
-                        if (!IsInGlobalCustomTypesDefinedOrExternal(modelTypes[2]))
+                        if (!IsInGlobalCustomTypesDefinedOrSystem(modelTypes[2])) //We do not expect an external type with SearchApiModel suffix
                         {
                             _globalCustomTypesDefined.Add(modelTypes[2]);
                             sb.AppendLine("// ReSharper disable once PartialTypeWithSinglePart");
@@ -195,7 +195,7 @@ namespace Supermodel.Mobile.CodeGen
                 var types = assembly.GetTypes().Where(x => Attribute.IsDefined(x, typeof(IncludeInApiClientAttribute))).ToList();
                 foreach (var type in types)
                 {
-                    if (!IsInGlobalCustomTypesDefinedOrExternal(type))
+                    if (!IsInGlobalCustomTypesDefinedOrSystem(type))
                     {
                         customTypesDefined.Add(type);
                         _globalCustomTypesDefined.Add(type);
@@ -237,7 +237,7 @@ namespace Supermodel.Mobile.CodeGen
                 else if (property.PropertyType != typeof(string) && property.PropertyType.GetInterfaces().Any(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IEnumerable<>)))
                 {
                     var genericArgType = property.PropertyType.GetInterfaces().Single(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IEnumerable<>)).GetGenericArguments()[0];
-                    if (!IsInGlobalCustomTypesDefinedOrExternal(genericArgType))
+                    if (!IsInGlobalCustomTypesDefinedOrSystem(genericArgType))
                     {
                         customTypesDefined.Add(genericArgType);
                         _globalCustomTypesDefined.Add(genericArgType);
@@ -263,7 +263,7 @@ namespace Supermodel.Mobile.CodeGen
                     sb.AppendFormat("public {0}? {1} ", underlyingPropType.Name, property.Name);
                     if (underlyingPropType.IsEnum)
                     {
-                        if (!IsInGlobalCustomTypesDefinedOrExternal(underlyingPropType))
+                        if (!IsInGlobalCustomTypesDefinedOrSystem(underlyingPropType))
                         {
                             customTypesDefined.Add(underlyingPropType);
                             _globalCustomTypesDefined.Add(underlyingPropType);
@@ -283,7 +283,7 @@ namespace Supermodel.Mobile.CodeGen
                 else if (property.PropertyType.IsEnum || property.PropertyType.IsValueType)
                 {
                     sb.AppendFormat("public {0} {1} ", property.PropertyType.Name.Replace("ApiModel", ""), property.Name);
-                    if (!IsInGlobalCustomTypesDefinedOrExternal(property.PropertyType))
+                    if (!IsInGlobalCustomTypesDefinedOrSystem(property.PropertyType))
                     {
                         customTypesDefined.Add(property.PropertyType);
                         _globalCustomTypesDefined.Add(property.PropertyType);
@@ -293,7 +293,7 @@ namespace Supermodel.Mobile.CodeGen
                 else if (property.PropertyType.IsClass)
                 {
                     sb.AppendFormat("public {0} {1} ", property.PropertyType.Name.Replace("ApiModel", ""), property.Name);
-                    if (!IsInGlobalCustomTypesDefinedOrExternal(property.PropertyType))
+                    if (!IsInGlobalCustomTypesDefinedOrSystem(property.PropertyType))
                     {
                         customTypesDefined.Add(property.PropertyType);
                         _globalCustomTypesDefined.Add(property.PropertyType);
@@ -469,10 +469,17 @@ namespace Supermodel.Mobile.CodeGen
             }
             return null;
         }
-        private bool IsInGlobalCustomTypesDefinedOrExternal(Type type)
+        private bool IsInGlobalCustomTypesDefinedOrSystem(Type type)
         {
-            return _globalCustomTypesDefined.Contains(type) || !Assemblies.Contains(type.Assembly);
-
+            return IsInGlobalCustomTypesDefined(type) || IsSystemType(type);
+        }
+        private bool IsInGlobalCustomTypesDefined(Type type)
+        {
+            return _globalCustomTypesDefined.Contains(type);
+        }
+        private bool IsSystemType(Type type)
+        {
+            return type.Namespace!.StartsWith("System");
         }
         #endregion
 

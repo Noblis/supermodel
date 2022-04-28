@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.ComponentModel;
-using System.Net;
 using System.Runtime.Serialization;
 using Supermodel.DataAnnotations.Attributes;
 
