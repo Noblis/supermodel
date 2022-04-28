@@ -111,7 +111,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                 //If this is numeric, remove $ and ,
                 var value = Type == "number" ? Value.Replace("$", "").Replace(",", "") : Value;
                 
-                // ReSharper disable once ConstantNullCoalescingCondition
+                // ReSharper disable once NullCoalescingConditionIsAlwaysNotNullAccordingToAPIContract
                 var text = html.TextBox("", value ?? "", htmlAttributes.ToMvcDictionary()).GetString();
                 text = text.Replace("/>", $"{markerAttribute} />");
                 return text.ToHtmlString();
@@ -130,7 +130,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
             #region ISupermodelHiddenTemplate implemtation
             public virtual IHtmlContent HiddenTemplate<TModel>(IHtmlHelper<TModel> html, int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue, string? markerAttribute = null)
             {
-                // ReSharper disable once ConstantNullCoalescingCondition
+                // ReSharper disable once NullCoalescingConditionIsAlwaysNotNullAccordingToAPIContract
                 return html.Hidden("", Value ?? "");
             }
             #endregion
@@ -203,12 +203,10 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                 else
                 {
                     var valueToCompareWith = ((TextBoxMvcModel)obj).Value;
-                    // ReSharper disable ConditionIsAlwaysTrueOrFalse
-                    // ReSharper disable once HeuristicUnreachableCode
+                    // ReSharper disable ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
                     if (Value == null && valueToCompareWith == null) return 0;
-                    // ReSharper disable once HeuristicUnreachableCode
                     if (Value == null || valueToCompareWith == null) return 1;
-                    // ReSharper restore ConditionIsAlwaysTrueOrFalse
+                    // ReSharper restore ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
                     return string.Compare(Value, valueToCompareWith, StringComparison.InvariantCulture);
                 }
             }

@@ -203,8 +203,18 @@ namespace Supermodel.ReflectionMapper
                             myPropertyMeta.Set(myProperty, true);
                         }
 
-                        if (myProperty is IRMapperCustom myPropertyRMCustom) await myPropertyRMCustom.MapFromCustomAsync(otherProperty);
-                        else throw new ReflectionMapperException($"{nameof(MapFromCustomBaseAsync)}: myProperty does not implement {nameof(IRMapperCustom)}. This should never happen");
+                        if (myProperty is IRMapperCustom myPropertyRMCustom)
+                        {
+                            //the below is equivalent of await myPropertyRMCustom.MapFromCustomAsync(otherProperty); but we need other property to go in as <T>
+                            var task = myPropertyRMCustom.ExecuteGenericMethod(nameof(IRMapperCustom.MapFromCustomAsync), new []{ otherPropertyMeta.PropertyInfo.PropertyType}, otherProperty);  
+                            if (task == null) throw new SystemException("MapFromCustomAsync: task == null");
+                            await task.GetResultAsObjectAsync();
+
+                        }
+                        else
+                        {
+                            throw new ReflectionMapperException($"{nameof(MapFromCustomBaseAsync)}: myProperty does not implement {nameof(IRMapperCustom)}. This should never happen");
+                        }
                     }
                     catch (ValidationResultException ex)
                     {
@@ -424,7 +434,10 @@ namespace Supermodel.ReflectionMapper
                 {
                     try
                     {
-                        otherProperty = await myPropertyRMCustom.MapToCustomAsync(otherProperty);
+                        //the below is equivalent of otherProperty = await myPropertyRMCustom.MapToCustomAsync(otherProperty); but we need other property to go in as <T>
+                        var task = myPropertyRMCustom.ExecuteGenericMethod(nameof(IRMapperCustom.MapToCustomAsync), new[] { otherPropertyMeta.PropertyInfo.PropertyType }, otherProperty);
+                        if (task == null) throw new SystemException("MapToCustomAsync: task == null");
+                        otherProperty = await task.GetResultAsObjectAsync();
                         otherPropertyMeta.Set(otherProperty, true);
                     }
                     catch (ValidationResultException ex)

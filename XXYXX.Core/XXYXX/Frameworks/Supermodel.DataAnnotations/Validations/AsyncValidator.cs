@@ -115,7 +115,7 @@ namespace Supermodel.DataAnnotations.Validations
             {
                 var results = validatable.Validate(validationContext);
  
-                // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+                // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
                 if (results != null)
                 {
                     foreach (var result in results.Where(r => r != ValidationResult.Success))
@@ -130,7 +130,7 @@ namespace Supermodel.DataAnnotations.Validations
             {
                 var results = await asyncValidatable.ValidateAsync(validationContext);
  
-                // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+                // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
                 if (results != null)
                 {
                     foreach (var result in results.Where(r => r != ValidationResult.Success))

@@ -49,7 +49,7 @@ namespace Supermodel.Persistence.Entities
         #region Validation
         public override async Task<ValidationResultList> ValidateAsync(ValidationContext validationContext)
         {
-            // ReSharper disable once ConstantNullCoalescingCondition
+            // ReSharper disable once NullCoalescingConditionIsAlwaysNotNullAccordingToAPIContract
             var vr = await base.ValidateAsync(validationContext) ?? new ValidationResultList();
             await using (new UnitOfWork<TDataContext>(ReadOnly.Yes))
             {

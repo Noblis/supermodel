@@ -379,14 +379,14 @@ namespace Supermodel.Presentation.Mvc.HtmlHelpers
             if (isButton)
             {
                 tag = new TagBuilder("button");
-                // ReSharper disable once ConstantNullCoalescingCondition
+                // ReSharper disable once NullCoalescingConditionIsAlwaysNotNullAccordingToAPIContract
                 tag.InnerHtml.AppendHtml(linkHtml.GetString() ?? "");
                 tag.MergeAttribute("type", "button");
             }
             else
             {
                 tag = new TagBuilder("a");
-                // ReSharper disable once ConstantNullCoalescingCondition
+                // ReSharper disable once NullCoalescingConditionIsAlwaysNotNullAccordingToAPIContract
                 tag.InnerHtml.AppendHtml(linkHtml.GetString() ?? "");
                 tag.MergeAttribute("href", "#");
             }

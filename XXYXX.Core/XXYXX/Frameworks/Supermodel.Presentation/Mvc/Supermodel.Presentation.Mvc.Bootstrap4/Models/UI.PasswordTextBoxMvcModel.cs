@@ -62,7 +62,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                 if (Pattern != "") htmlAttributes.Add("pattern", Pattern);
                 if (Step != "") htmlAttributes.Add("step", Step);
                 
-                // ReSharper disable once ConstantNullCoalescingCondition
+                // ReSharper disable once NullCoalescingConditionIsAlwaysNotNullAccordingToAPIContract
                 var text = html.TextBox("", Value ?? "", htmlAttributes.ToMvcDictionary()).GetString();
                 text = text.Replace("/>", $"{markerAttribute} />");
                 return text.ToHtmlString();
