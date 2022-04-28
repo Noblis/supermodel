@@ -335,15 +335,19 @@ namespace Supermodel.Mobile.CodeGen
                         var isDisabled = enumValue.IsDisabled();
                         if (isDisabled) disabledAttribute = "[Disabled] ";
 
+                        var enumMemberAttribute = "";
+                        var enumMemberValue = ((Enum)enumValue).GetEnumMemberAttributeValueOrNull();
+                        if (enumMemberValue != null) enumMemberAttribute = $"[EnumMember(Value = \"{enumMemberValue}\")] ";
+
                         if (first)
                         {
-                            sb.AppendFormat("{0}{1}{2} = {3}", descriptionAttribute, disabledAttribute, enumValueLabel!, Convert.ChangeType(enumValue, Enum.GetUnderlyingType(customType)));
+                            sb.AppendFormat("{0}{1}{2}{3} = {4}", descriptionAttribute, disabledAttribute, enumMemberAttribute, enumValueLabel!, Convert.ChangeType(enumValue, Enum.GetUnderlyingType(customType)));
                             first = false;
                         }
                         else
                         {
                             sb.AppendLine(",");
-                            sb.AppendFormat("{0}{1}{2} = {3}", descriptionAttribute, disabledAttribute, enumValueLabel!, Convert.ChangeType(enumValue, Enum.GetUnderlyingType(customType)));
+                            sb.AppendFormat("{0}{1}{2}{3} = {4}", descriptionAttribute, disabledAttribute, enumMemberAttribute, enumValueLabel!, Convert.ChangeType(enumValue, Enum.GetUnderlyingType(customType)));
                         }
                     }
                     sb.AppendLine("");

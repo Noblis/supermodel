@@ -24,7 +24,11 @@ namespace Supermodel.Mobile.Runtime.Common.XForms.UIComponents
 		        }
 		    };
             StackLayoutView.Children.Add(Switch);
-            Tapped += (sender, args) => Switch.Focus();
+            Tapped += (sender, args) =>
+            {
+                Switch.Focus();
+                Switch.IsToggled = !Switch.IsToggled; //Surenra's change
+            };
 		}
         #endregion
 

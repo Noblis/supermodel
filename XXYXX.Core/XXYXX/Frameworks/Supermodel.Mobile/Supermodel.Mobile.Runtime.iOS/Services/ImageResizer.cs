@@ -2,13 +2,14 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using System.Drawing;
+using Supermodel.Mobile.Runtime.Common.Services;
 using UIKit;
 
 namespace Supermodel.Mobile.Runtime.iOS.Services
 {
-    public static class ImageResizer
+    public class ImageResizer : IImageResizer
     {
-        public static async Task<byte[]> ResizeImageAsync(byte[] imageData, float maxWidth, float maxHeight)
+        public async Task<byte[]> ResizeImageAsync(byte[] imageData, float maxWidth, float maxHeight)
         {
             var result = await ResizeImageIOSAsync(imageData, maxWidth, maxHeight);
             return result;
@@ -16,7 +17,7 @@ namespace Supermodel.Mobile.Runtime.iOS.Services
         
         [SuppressMessage("ReSharper", "InconsistentNaming")]
         [SuppressMessage("ReSharper", "IdentifierTypo")]
-        public static Task<byte[]> ResizeImageIOSAsync(byte[] imageData, float width, float height)
+        public Task<byte[]> ResizeImageIOSAsync(byte[] imageData, float width, float height)
         {
             // Load the bitmap
             UIImage originalImage = ImageFromByteArray(imageData);
