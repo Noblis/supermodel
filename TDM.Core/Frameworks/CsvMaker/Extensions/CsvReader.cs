@@ -104,7 +104,9 @@ namespace CsvMaker.Extensions
 
                         else if (property.PropertyType == typeof(ulong) || property.PropertyType == typeof(ulong?)) me.PropertySet(property.Name, ulong.Parse(csvColumnStr.Replace(",", "").Replace("$", "")));
                         else if (property.PropertyType == typeof(long) || property.PropertyType == typeof(long?)) me.PropertySet(property.Name, long.Parse(csvColumnStr.Replace(",", "").Replace("$", "")));
-                        
+
+                        else if (property.PropertyType == typeof(char) || property.PropertyType == typeof(char?)) me.PropertySet(property.Name, char.Parse(csvColumnStr));
+
                         else if (property.PropertyType == typeof(float) || property.PropertyType == typeof(float?)) me.PropertySet(property.Name, float.Parse(csvColumnStr.Replace(",", "").Replace("$", "")));
                         
                         else if (property.PropertyType == typeof(double) || property.PropertyType == typeof(double?)) me.PropertySet(property.Name, double.Parse(csvColumnStr.Replace(",", "").Replace("$", "")));
