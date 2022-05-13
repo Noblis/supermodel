@@ -92,13 +92,31 @@ namespace CsvMaker.Extensions
                     {
                         if (string.IsNullOrWhiteSpace(csvColumnStr)) me.PropertySet(property.Name, property.PropertyType.DefaultValue());
                         else if (property.PropertyType == typeof(string)) me.PropertySet(property.Name, csvColumnStr);
+
+                        else if (property.PropertyType == typeof(byte) || property.PropertyType == typeof(byte?)) me.PropertySet(property.Name, byte.Parse(csvColumnStr.Replace(",", "").Replace("$", "")));
+                        else if (property.PropertyType == typeof(sbyte) || property.PropertyType == typeof(sbyte?)) me.PropertySet(property.Name, sbyte.Parse(csvColumnStr.Replace(",", "").Replace("$", "")));
+
+                        else if (property.PropertyType == typeof(ushort) || property.PropertyType == typeof(ushort?)) me.PropertySet(property.Name, ushort.Parse(csvColumnStr.Replace(",", "").Replace("$", "")));
+                        else if (property.PropertyType == typeof(short) || property.PropertyType == typeof(short?)) me.PropertySet(property.Name, short.Parse(csvColumnStr.Replace(",", "").Replace("$", "")));
+
+                        else if (property.PropertyType == typeof(uint) || property.PropertyType == typeof(uint?)) me.PropertySet(property.Name, uint.Parse(csvColumnStr.Replace(",", "").Replace("$", "")));
                         else if (property.PropertyType == typeof(int) || property.PropertyType == typeof(int?)) me.PropertySet(property.Name, int.Parse(csvColumnStr.Replace(",", "").Replace("$", "")));
+
+                        else if (property.PropertyType == typeof(ulong) || property.PropertyType == typeof(ulong?)) me.PropertySet(property.Name, ulong.Parse(csvColumnStr.Replace(",", "").Replace("$", "")));
                         else if (property.PropertyType == typeof(long) || property.PropertyType == typeof(long?)) me.PropertySet(property.Name, long.Parse(csvColumnStr.Replace(",", "").Replace("$", "")));
+                        
                         else if (property.PropertyType == typeof(float) || property.PropertyType == typeof(float?)) me.PropertySet(property.Name, float.Parse(csvColumnStr.Replace(",", "").Replace("$", "")));
+                        
                         else if (property.PropertyType == typeof(double) || property.PropertyType == typeof(double?)) me.PropertySet(property.Name, double.Parse(csvColumnStr.Replace(",", "").Replace("$", "")));
+                        
                         else if (property.PropertyType == typeof(DateTime) || property.PropertyType == typeof(DateTime?)) me.PropertySet(property.Name, DateTime.Parse(csvColumnStr));
+                        
                         else if (property.PropertyType == typeof(bool) || property.PropertyType == typeof(bool?)) me.PropertySet(property.Name, ParseBool(csvColumnStr));
+
+                        else if (property.PropertyType == typeof(Guid) || property.PropertyType == typeof(Guid?)) me.PropertySet(property.Name, Guid.Parse(csvColumnStr));
+
                         else if (property.PropertyType.IsEnumOrNullableEnum()) me.PropertySet(property.Name, ParseEnum(property.PropertyType, csvColumnStr));
+                        
                         else throw new Exception($"'{property.PropertyType.Name}' type is not supported");
                     }
                     catch (FormatException)
