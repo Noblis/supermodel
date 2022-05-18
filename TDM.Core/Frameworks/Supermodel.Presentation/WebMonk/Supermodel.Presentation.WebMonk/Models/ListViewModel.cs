@@ -63,7 +63,7 @@ namespace Supermodel.Presentation.WebMonk.Models
 
         #region IAsyncInit implemetation
         public bool AsyncInitialized { get; set; }
-        public async Task InitAsync()
+        public virtual async Task InitAsync()
         {
             if (AsyncInitialized) return;
             
