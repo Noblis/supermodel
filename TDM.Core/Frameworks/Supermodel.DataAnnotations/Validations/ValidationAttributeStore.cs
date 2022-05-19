@@ -1,4 +1,5 @@
-﻿//This is an exact copy of .NET Core internal class
+﻿#nullable disable
+//This is an exact copy of .NET Core internal class
 
 using System;
 using System.Collections.Generic;
