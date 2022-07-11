@@ -1,4 +1,5 @@
-﻿
+﻿#nullable disable
+
 using System.Threading.Tasks;
 
 namespace WebMonk.Multipart

@@ -1,4 +1,4 @@
-﻿//#nullable enable: this is intentionally disabled because we need to be able to return null from MapToCustomAsync
+﻿#nullable disable //this is intentionally disabled because we need to be able to return null from MapToCustomAsync
 
 using System.Globalization;
 using System.Threading.Tasks;

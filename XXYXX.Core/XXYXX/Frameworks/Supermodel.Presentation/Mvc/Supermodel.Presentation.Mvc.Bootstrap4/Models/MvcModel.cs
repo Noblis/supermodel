@@ -34,7 +34,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
             
             #region IAsyncInit implementation
             [ScaffoldColumn(false), NotRMapped] public virtual bool AsyncInitialized { get; protected set; }
-            public async Task InitAsync()
+            public virtual async Task InitAsync()
             {
                 //If already initialized, do nothing
                 if (AsyncInitialized) return;
