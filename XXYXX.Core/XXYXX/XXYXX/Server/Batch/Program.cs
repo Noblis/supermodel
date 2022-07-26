@@ -19,19 +19,19 @@ namespace Batch
             Console.ReadLine();
 
             //Comment this out if you don't want to recreate and re-seed db every time you start the app in debug mode
-            if (Debugger.IsAttached || !await EFCoreUnitOfWorkContext.Database.CanConnectAsync())
+            await using (new UnitOfWork<DataContext>())
             {
-                Console.Write("Recreating the database... ");
-                await using (new UnitOfWork<DataContext>())
+                if (Debugger.IsAttached || !await EFCoreUnitOfWorkContext.Database.CanConnectAsync())
                 {
+                    Console.Write("Recreating the database... ");
                     await EFCoreUnitOfWorkContext.Database.EnsureDeletedAsync();
                     await EFCoreUnitOfWorkContext.Database.EnsureCreatedAsync();
                     await UnitOfWorkContext.SeedDataAsync();
+                    Console.WriteLine("Done!");
                 }
-                Console.WriteLine("Done!");
             }
 
-            await using(new UnitOfWork<DataContext>())
+            await using (new UnitOfWork<DataContext>())
             {
                 var repo = RepoFactory.Create<XXYXXUser>();
                 var user = await repo.GetByIdOrDefaultAsync(1);

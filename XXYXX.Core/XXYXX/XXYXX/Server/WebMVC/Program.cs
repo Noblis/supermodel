@@ -16,16 +16,16 @@ namespace WebMVC
         public static async Task Main(string[] args)
         {
             //Comment this out if you don't want to recreate and re-seed db every time you start the app in debug mode
-            if (Debugger.IsAttached || !await EFCoreUnitOfWorkContext.Database.CanConnectAsync())
+            await using (new UnitOfWork<DataContext>())
             {
-                Console.Write("Recreating the database... ");
-                await using (new UnitOfWork<DataContext>())
+                if (Debugger.IsAttached || !await EFCoreUnitOfWorkContext.Database.CanConnectAsync())
                 {
+                    Console.Write("Recreating the database... ");
                     await EFCoreUnitOfWorkContext.Database.EnsureDeletedAsync();
                     await EFCoreUnitOfWorkContext.Database.EnsureCreatedAsync();
                     await UnitOfWorkContext.SeedDataAsync();
+                    Console.WriteLine("Done!");
                 }
-                Console.WriteLine("Done!");
             }
 
             await CreateHostBuilder(args).Build().RunAsync();
