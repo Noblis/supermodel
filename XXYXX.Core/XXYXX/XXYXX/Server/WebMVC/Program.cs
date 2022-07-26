@@ -16,7 +16,7 @@ namespace WebMVC
         public static async Task Main(string[] args)
         {
             //Comment this out if you don't want to recreate and re-seed db every time you start the app in debug mode
-            await using (new UnitOfWork<DataContext>(ReadOnly.Yes))
+            await using (new UnitOfWork<DataContext>())
             {
                 if (Debugger.IsAttached || !await EFCoreUnitOfWorkContext.Database.CanConnectAsync())
                 {
