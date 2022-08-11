@@ -24,6 +24,7 @@ sqlite3/
 *.bin
 *.lock
 *.v2
+*.v5
 *.vsidx
 *.zip
 /TDM.Core/.vs/TDM.Core/project-colors.json
