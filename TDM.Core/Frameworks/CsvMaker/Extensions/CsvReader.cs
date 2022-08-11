@@ -134,9 +134,10 @@ namespace CsvMaker.Extensions
             return me;
         }
 
-        public static List<T> ReadCsv<T>(this List<T> me, CsvStringReader sr) where T: class, new()
+        public static List<T> ReadCsv<T>(this List<T> me, CsvStringReader sr, bool validateHeader = true) where T: class, new()
         {
-            new T().ValidateCsvHeaderRow(sr); //Check file format matches our expectations
+            if (validateHeader) new T().ValidateCsvHeaderRow(sr); //Check file format matches our expectations
+            
             var resultList = new List<T>();
 
             while(!sr.IsEOF())
