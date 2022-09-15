@@ -11,7 +11,7 @@ namespace Supermodel.Persistence.Entities
         #region Overrides
         protected override void DeleteInternal()
         {
-            throw new UnableToDeleteException("Settings cannot be deleted");
+            throw new UnableToDeleteException("Singleton Entity cannot be deleted");
         }
         #endregion
 
@@ -19,7 +19,7 @@ namespace Supermodel.Persistence.Entities
         public override async Task<ValidationResultList> ValidateAsync(ValidationContext validationContext)
         {
             var vr = await base.ValidateAsync(validationContext);
-            if (Id != 1 && Id != 0) vr.Add(new ValidationResult("There could only be one record in Settings table"));
+            if (Id != 1 && Id != 0) vr.Add(new ValidationResult("There could only be one record for a SingleTon Entity"));
             return vr;
         }
         #endregion
