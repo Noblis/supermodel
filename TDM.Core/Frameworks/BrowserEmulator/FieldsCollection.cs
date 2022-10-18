@@ -1505,6 +1505,7 @@ namespace BrowserEmulator
 			return arrayListOptions;
 		}
 
-		private ArrayList mArr = new ArrayList();
+        // ReSharper disable once InconsistentNaming
+        private readonly ArrayList mArr = new ArrayList();
 	}
 }
