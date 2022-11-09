@@ -17,7 +17,7 @@ namespace Supermodel.Presentation.WebMonk.Context
                 return long.Parse(userNameIdentifierClaim.Value);
             }
         }
-        public static string CurrentUserLabel
+        public static string? CurrentUserLabel
         {
             get
             {

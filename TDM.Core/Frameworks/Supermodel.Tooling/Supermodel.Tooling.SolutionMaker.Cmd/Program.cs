@@ -10,7 +10,7 @@ namespace Supermodel.Tooling.SolutionMaker.Cmd
         {
             try
             {
-                SolutionMaker.Version = "2.83.000.Beta1";
+                SolutionMaker.Version = "2.84.000.Pre-Beta";
 
                 ////*******Un-comment and run this once to refresh the solution zip
                 //Console.WriteLine($"v{SolutionMaker.Version}");

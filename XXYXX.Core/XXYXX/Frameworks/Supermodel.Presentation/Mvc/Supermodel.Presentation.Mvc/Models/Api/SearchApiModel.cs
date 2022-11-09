@@ -19,7 +19,7 @@ namespace Supermodel.Presentation.Mvc.Models.Api
             foreach (var property in bindingContext.Model.GetType().GetProperties().Where(p => p.GetSetMethod() != null && p.GetGetMethod() != null && !p.HasAttribute<JsonIgnoreAttribute>()))
             {
                 var valResult = bindingContext.ValueProvider.GetValue(property.Name);
-                var valObj = SuperModelBindingHelper.ConvertTo(valResult, property.PropertyType, CultureInfo.CurrentCulture);
+                var valObj = SuperModelBindingHelper.ConvertTo(valResult.FirstValue, property.PropertyType, CultureInfo.CurrentCulture);
                 if (valObj != null) bindingContext.Model.PropertySet(property.Name, valObj);
             }
             bindingContext.Result = ModelBindingResult.Success(bindingContext.Model);

@@ -23,12 +23,12 @@ namespace CsvMaker.Models
         #endregion
 
         #region ICsvReaderCustom implementation
-        public T ValidateCsvHeaderCustom<T>(CsvStringReader sr)
+        public virtual T ValidateCsvHeaderCustom<T>(CsvStringReader sr)
         {
             return (T)(object)this.ValidateCsvHeaderRowBase(sr);
         }
 
-        public T ReadCsvRowCustom<T>(CsvStringReader sr)
+        public virtual T ReadCsvRowCustom<T>(CsvStringReader sr)
         {
             return (T)(object)this.ReadCsvRowBase(sr);
         }

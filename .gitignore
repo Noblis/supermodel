@@ -28,3 +28,4 @@ sqlite3/
 *.vsidx
 *.zip
 /TDM.Core/.vs/TDM.Core/project-colors.json
+*.v5.2
