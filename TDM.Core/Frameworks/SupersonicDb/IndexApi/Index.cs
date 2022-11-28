@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+// ReSharper disable once RedundantUsingDirective
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -9,7 +11,6 @@ using Supersonic.BNF;
 using Supersonic.GC;
 using Supersonic.Linq;
 using Supersonic.Ranges;
-using Range = Supersonic.Ranges.Range;
 
 namespace Supersonic.IndexApi
 {
@@ -618,17 +619,17 @@ namespace Supersonic.IndexApi
             return factor;
         }
 
-        internal Range ProcessCondition(Condition condition)
+        internal Ranges.Range ProcessCondition(Condition condition)
         {
-            var range = new Range();
+            var range = new Ranges.Range();
             foreach (var term in condition.Terms) range += ProcessTerm(term);
             return range;
         }
-        internal Range ProcessTerm(Term term)
+        internal Ranges.Range ProcessTerm(Term term)
         {
             var equalityRange = ProcessEqualityFactors(term.EqualityFactors);
             var inequalityRange = ProcessInequalityFactors(term.InequalityFactors, equalityRange);
-            return new Range(inequalityRange);
+            return new Ranges.Range(inequalityRange);
         }
 
         internal TItem ProcessConditionForFirst(Condition condition)

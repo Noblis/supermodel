@@ -5,6 +5,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using WebMonk.Context;
@@ -43,13 +44,15 @@ namespace WebMonk.HttpRequestHandlers
         public virtual bool SaveSessionState => false;
         public virtual async Task<IHttpRequestHandler.HttpRequestHandlerResult> TryExecuteHttpRequestAsync(CancellationToken cancellationToken)
         {
+            var execDir = Path.GetDirectoryName(Assembly.GetEntryAssembly()!.Location)!;
             var localPath = $"wwwroot{HttpContext.Current.RouteManager.LocalPath}";
+            var fullPath = Path.Combine(execDir, localPath);
             
             var file = CachedFiles.ContainsKey(localPath)? CachedFiles[localPath] : null;
             if (file == null)
             {
-                if (!File.Exists(localPath)) return IHttpRequestHandler.HttpRequestHandlerResult.False;
-                file = new CachedFile(await File.ReadAllBytesAsync(localPath, cancellationToken).ConfigureAwait(false));
+                if (!File.Exists(fullPath)) return IHttpRequestHandler.HttpRequestHandlerResult.False;
+                file = new CachedFile(await File.ReadAllBytesAsync(fullPath, cancellationToken).ConfigureAwait(false));
 
                 CachedFiles[localPath] = file;
                 if (CachedFiles.Count > MaxNumberOfFilesInCache) RemoveOldestCacheElement();
