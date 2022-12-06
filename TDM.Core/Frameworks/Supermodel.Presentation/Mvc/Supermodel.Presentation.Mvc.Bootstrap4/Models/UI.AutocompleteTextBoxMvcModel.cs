@@ -39,6 +39,10 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                 HtmlAttributesAsDict = tmpHtmlAttributesAsDict;
                 return result;
             }
+            public override TextBoxMvcModel InitFor<T>()
+            {
+                return base.InitFor<string>(); //autocomplete is always a string text box
+            }
             #endregion
 
             #region Properies

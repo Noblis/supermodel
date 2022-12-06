@@ -26,7 +26,6 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
             #endregion
 
             #region Overrides
-
             public override IGenerateHtml EditorTemplate(int screenOrderFrom = int.MinValue, int screenOrderTo = int.MaxValue, object? attributes = null)
             {
                 if (AutocompleteControllerName == null) throw new SupermodelException("AutocompleteControllerType == null");
@@ -38,6 +37,10 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Models
                 
                 HtmlAttributesAsDict = tmpHtmlAttributesAsDict;
                 return result;
+            }
+            public override TextBoxMvcModel InitFor<T>()
+            {
+                return base.InitFor<string>(); //autocomplete is always a string text box
             }
             #endregion
 

@@ -90,7 +90,7 @@ namespace Supermodel.Presentation.Mvc.Bootstrap4.Models
                 }
                 else 
                 {
-                    throw new Exception($"TextBoxMvcModel.MapFromCustom: Unknown type {typeof(T).GetTypeFriendlyDescription()}");
+                    throw new Exception($"TextBoxMvcModel.InitFor<T>: Unknown type {typeof(T).GetTypeFriendlyDescription()}");
                 }
                 
                 //this is for fluent initialization
