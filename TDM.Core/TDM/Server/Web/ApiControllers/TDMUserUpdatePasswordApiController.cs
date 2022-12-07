@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Supermodel.Presentation.Mvc.Auth;
 using Supermodel.Presentation.Mvc.Controllers.Api;
 using Supermodel.Presentation.Mvc.Models.Api;
+using Web.ViewModels;
 
 namespace Web.ApiControllers
 {

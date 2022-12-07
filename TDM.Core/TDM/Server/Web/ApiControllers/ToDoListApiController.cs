@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Supermodel.Persistence.UnitOfWork;
 using Supermodel.Presentation.Mvc.Auth;
 using Supermodel.Presentation.Mvc.Controllers.Api;
+using Web.ViewModels;
 
 namespace Web.ApiControllers
 {

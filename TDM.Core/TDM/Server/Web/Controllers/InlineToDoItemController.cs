@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Supermodel.Persistence.Repository;
 using Supermodel.Presentation.Mvc.Auth;
 using Supermodel.Presentation.Mvc.Controllers.Mvc;
+using Web.ViewModels;
 
 namespace Web.Controllers
 {

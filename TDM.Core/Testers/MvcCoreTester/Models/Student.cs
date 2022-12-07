@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using MvcCoreTester.ApiControllers;
+using MvcCoreTester.DataContexts;
 using Supermodel.DataAnnotations.Attributes;
 using Supermodel.DataAnnotations.Validations;
 using Supermodel.Persistence.Entities;
@@ -63,8 +64,8 @@ namespace MvcCoreTester.Models
         };
 
         //[Email] public Super.Bs4.TextBoxMvcModel Email { get; set; } = new Super.Bs4.TextBoxMvcModel();
-        public Bs4.AutocompleteTextBoxMvcModel Name { get; set; } = new Bs4.AutocompleteTextBoxMvcModel(typeof(StudentAutocompleteApiController));
-        public Bs4.AutocompleteTextBoxMvcModel Name2 { get; set; } = new Bs4.AutocompleteTextBoxMvcModel(typeof(Student2AutocompleteApiController));
+        public Bs4.AutocompleteTextBoxMvcModel<Student, StudentAutocompleteApiController, DataContext> Name { get; set; } = new ();
+        public Bs4.AutocompleteTextBoxMvcModel<Student, Student2AutocompleteApiController, DataContext> Name2 { get; set; } = new ();
         public Bs4.TextBoxMvcModel FirstName { get; set; } = new Bs4.TextBoxMvcModel();
         public Bs4.TextBoxMvcModel LastName { get; set; } = new Bs4.TextBoxMvcModel();
         public Bs4.DropdownMvcModelUsingEnum<GenderEnum> Gender { get; set; } = new Bs4.DropdownMvcModelUsingEnum<GenderEnum>();
