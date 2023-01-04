@@ -33,7 +33,7 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Views
             var result = new HtmlStack();
 
             if (FilterTitle != null) result.Append(new Bs4.CRUDSearchForm(model, FilterTitle, resetButton:ResetButtonOnFilter));
-            else result.Append(new Bs4.CRUDSearchForm(model, (IGenerateHtml?)null, resetButton:ResetButtonOnFilter));
+            else result.Append(new Bs4.CRUDSearchForm(model, resetButton:ResetButtonOnFilter));
 
             return ApplyToDefaultLayout(result);
         }
@@ -44,7 +44,7 @@ namespace Supermodel.Presentation.WebMonk.Bootstrap4.Views
             if (ShowFilterOnList) 
             {
                 if (FilterTitle != null) result.Append(new Bs4.CRUDSearchForm(models.Criteria, FilterTitle, resetButton:ResetButtonOnFilter));
-                else result.Append(new Bs4.CRUDSearchForm(models.Criteria, (IGenerateHtml?)null, resetButton:ResetButtonOnFilter));
+                else result.Append(new Bs4.CRUDSearchForm(models.Criteria, resetButton:ResetButtonOnFilter));
             }
 
             if (ListPageTitle != null) result.Append(new H2 { new Txt(ListPageTitle) });
