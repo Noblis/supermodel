@@ -29,3 +29,5 @@ sqlite3/
 *.zip
 /TDM.Core/.vs/TDM.Core/project-colors.json
 *.v5.2
+/TDM.Core/.vs/ProjectEvaluation/tdm.core.metadata.v6.1
+/TDM.Core/.vs/ProjectEvaluation/tdm.core.projects.v6.1
